@@ -1,0 +1,235 @@
+﻿@using Microsoft.AspNetCore.Http;
+
+@{
+    string userRole = Context.Session.GetString("Role");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GizmosbuyWeb</title>
+    <link rel="stylesheet" href="@Url.Content("~/lib/twitter-bootstrap/css/bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/css/custom-css/custom-sidebar.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/lib/font-awesome/css/all.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/lib/datatables/css/datatables.bootstrap5.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/css/custom-css/custom-datepicker.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/css/custom-css/styles.css")" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    <div class="toast-container position-fixed top-0 end-0 mt-4 p-3">
+        <div id="toastSuccess" class="toast text-bg-success" role="alert" data-bs-delay="3000" data-bs-autohide="true" aria-live="assertive" aria-atomic="true">
+            <div class="toast-body">
+                <div class="d-flex gap-4">
+                    <span><i class="fa-solid fa-circle-check fa-lg"></i></span>
+                    <div class="d-flex flex-grow-1 align-items-center">
+                        <span class="font-weight-bold body-text">Welcome to the room</span>
+                        <button type="button"
+                        class="btn-close btn-close-white btn-close-sm ms-auto"
+                        data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="toastError" class="toast fade text-bg-danger" role="alert">
+            <div class="toast-body">
+                <div class="d-flex gap-4">
+                    <span><i class="fa-solid fa-circle-exclamation fa-lg"></i></span>
+                    <div class="d-flex flex-grow-1 align-items-center">
+                        <span class="font-weight-bold body-text">We are having issues</span>
+                        <button type="button"
+                        class="btn-close btn-close-white btn-close-sm ms-auto"
+                        data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="toastWarning" class="toast fade text-bg-warning" role="alert">
+            <div class="toast-body">
+                <div class="d-flex gap-4">
+                    <span><i class="fa-solid fa-triangle-exclamation fa-lg"></i></span>
+                    <div class="d-flex flex-grow-1 align-items-center">
+                        <span class="font-weight-bold body-text">Trying again...</span>
+                        <button type="button"
+                        class="btn-close btn-close-white btn-close-sm ms-auto"
+                        data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper d-flex align-items-stretch">
+        <nav id="sidebar" class="active">
+            <a href="@Url.Action("Index","Home")" class="image-box">
+                <div class="img logo" style="background-image: url(@Url.Content("~/images/gizmosbuy-logo-square.jpg"));">
+                    @* <img src="~/images/gizmosbuy-logo-square.jpg" /> *@
+
+                </div>
+            </a>
+            <div class="p-3">
+                <ul class="list-unstyled components mb-5">
+                    <li class="active">
+
+                        <a href="@Url.Action("Index","Home")">
+                            <i class="fas fa-dashboard"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    @if (userRole == "SuperAdmin" || userRole == "Admin")
+                    {
+                        <li>
+
+                            <a href="@Url.Action("Index","Purchase")">
+                                <i class="fas fa-shopping-bag"></i>
+                                <span>Purchase</span>
+                            </a>
+                        </li>
+                    }
+                    @if (userRole == "SuperAdmin" || userRole == "Admin" || userRole == "User")
+                    {
+                        <li>
+                            <a href="@Url.Action("Index","Sales")">
+                                <i class="fas fa-balance-scale"></i>
+                                <span>Sales</span>
+                            </a>
+                        </li>
+                    }
+                    @if (userRole == "SuperAdmin" || userRole == "Admin")
+                    {
+                        <li>
+                            <a href="@Url.Action("RawData","Inventory")">
+                                <i class="fas fa-table"></i>
+                                <span>Raw Data</span>
+                            </a>
+                        </li>
+                    }
+                    @if (userRole == "SuperAdmin" || userRole == "Admin")
+                    {
+                        <li>
+                            <a href="@Url.Action("Summary","Inventory")">
+                                <i class="fas fa-hourglass-half"></i>
+                                <span>Summery</span>
+                            </a>
+                        </li>
+                    }
+                    @* <li>
+                            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sales</a>
+                            <ul class="collapse list-unstyled" id="pageSubmenu">
+                                <li>
+                                    <a href="#">Page 1</a>
+                                </li>
+                                <li>
+                                    <a href="#">Page 2</a>
+                                </li>
+                                <li>
+                                    <a href="#">Page 3</a>
+                                </li>
+                            </ul> 
+                        </li> *@
+
+
+                </ul>
+                <div class="footer">
+                    @* <p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright ©<script>document.write(new Date().getFullYear());</script> All rights reserved
+                        This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib.com</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p> *@
+                </div>
+            </div>
+        </nav>
+        <section id="content">
+
+            <nav class="navbar navbar-expand navbar-toggleable fixed-top ">
+                @* <i class="fas fa-chevron-left" id="sidebarCollapse"></i> *@
+                <i class="fas fa-bars" id="sidebarCollapse"></i>
+                @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GizmosbuyWeb</a> *@
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav flex-grow-1">
+                        @* <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Auth" asp-action="Logout">Logout</a>
+                                </li> *@
+                    </ul>
+                    <ul class="nav col-12 col-lg-auto justify-content-center my-md-0 text-small">
+                        <li class="nav-item dropdown">
+                            <a aria-current="page" href="/dashboard#" class="active-link exact-active-link nav-link dropdown-toggle show" role="button" data-bs-toggle="dropdown" aria-expanded="true"> Hi, @Context.Session.GetString("UserName")</a>
+                            <ul class="dropdown-menu" style="left: initial; right: 0px;" data-bs-popper="static">
+                                <li>
+                                    <a aria-current="page" href="@Url.Action("Logout","Auth")" class="active-link exact-active-link dropdown-item">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+
+            <main role="main" class="main-section mb-3">
+                <div class="container-fluid" style="padding:0px">
+                    @RenderBody()
+                </div>
+            </main>
+
+            <footer class="border-top site-footer text-muted">
+                <div class="container-fluid">
+                    Copyright ©<script>document.write(new Date().getFullYear());</script> All rights reserved - GizmosbuyWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </div>
+            </footer>
+        </section>
+    </div>
+
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/lib/datatables/js/datatables.js")"></script>
+    <script src="@Url.Content("~/lib/datatables/js/datatables.bootstrap5.min.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js")"></script>
+    @* <script src="@Url.Content("~/js/scripts.js")" asp-append-version="true"></script> *@
+    <script src="@Url.Content("~/js/shared.js")"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script type="text/javascript">
+        $(document).ready( function () {
+
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+
+            $(window).on('resize', function(){
+                var win = $(this); //this = window
+
+                if (win.width() <= 992) {
+                    $('#sidebar').removeClass("active");
+                }
+                else{
+                    if(!$('#sidebar').hasClass("active")){
+                        $('#sidebar').addClass("active");
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

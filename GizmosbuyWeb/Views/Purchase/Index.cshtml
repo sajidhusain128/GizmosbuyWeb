@@ -1,0 +1,116 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="page-header">
+    <div class="header-title">Purchase List</div>
+</div>
+<div class="page-content">
+    <div class="page-title">
+        <h3></h3>
+        <a href="@Url.Action("Create","Purchase")" class="btn btn-custom"><i class="fas fa-save"></i> Create Entry</a>
+    </div>
+    <div class="page-body">
+        <div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
+            <table id="tblPurchase" class="">
+                <thead>
+                    <tr>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="@Url.Content("~/lib/moment.js/moment.min.js")"></script>
+    @*<script src="https://momentjs.com/downloads/moment.js" defer></script> *@
+
+    <script type="text/javascript">
+
+              
+        $(document).ready( function () {
+
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                  return new bootstrap.Tooltip(tooltipTriggerEl)
+                })
+
+            $('#tblPurchase').DataTable({
+                scrollX: true,
+                scrollY: 360,
+                scrollCollapse: true,
+                fixedColumns: true,
+                processing: true,
+                serverSide:true,
+                pageLength:10,
+                "paging":true,
+                "ajax":{
+                    "url": "/Purchase/GetPurchaseList",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns":[
+                    {"data": "serialNo","title":"Serial No"},
+                    {"data": "purchaseDate","title":"Purchase Date",render:function (data, type, row){
+                        if(data === null) return "";
+
+                        return moment(data).format('DD/MM/YYYY');
+                    }},
+                    {"data": "categoryName","title":"Category"},
+                    {"data": "brandName","title":"Brand"},
+                    {"data": "model","title":"Model"},
+                    {"data": "specifications","title":"Specifications"},
+                    {"data": "purchasePrice","title":"Purchase Price",render:function (data, type, row){
+                        if(data === null) return "";
+
+                        return "&#8377; "+ data;
+                    }},
+                    {"data": "quantity","title":"Quantity"},
+                    {"data": "upgradePrice","title":"Upgrade Price",render:function (data, type, row){
+                        if(data === null) return "";
+
+                        return "&#8377; "+ data;
+                    }},
+                    {"data": "totalPrice","title":"Total Price",render:function (data, type, row){
+                        if(data === null) return "";
+
+                        return "&#8377; "+ data;
+                    }},
+                    {"data": "paymentModeName","title":"Payment Mode"},
+                    {"data": "buyingLead","title":"BuyingLead"},
+                    {"data": "purchaseID","title":"Action",render:function (data, type, row){
+                        if(data === null) return "";
+
+                        return '<a href="/Purchase/Edit/' + data + '" class="custom-link-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="fas fa-edit fa-lg color-info"></i></a>';
+                    }},
+                ],
+                columnDefs: [
+                    { targets: 0,className: 'text-nowrap'},
+                    { targets: 1,className: 'text-nowrap'},
+                    { targets: 2,className: 'text-nowrap'},
+                    { targets: 3,className: 'text-nowrap'},
+                    { targets: 4,className: 'text-nowrap'},
+                    { targets: 5,className: 'text-nowrap'},
+                    { targets: 6,className: 'text-nowrap text-right'},
+                    { targets: 7,className: 'text-nowrap'},
+                    { targets: 8,className: 'text-nowrap text-right'},
+                    { targets: 9,className: 'text-nowrap text-right'},
+                    { targets: 10,className: 'text-nowrap'},
+                    { targets: 11,className: 'text-nowrap'},
+                    { targets: 12,className: 'text-nowrap text-center'}
+                ]
+            });
+        });
+    </script>
+}

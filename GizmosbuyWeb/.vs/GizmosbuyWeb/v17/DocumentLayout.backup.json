@@ -1,0 +1,959 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\wwwroot\\js\\scripts.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\wwwroot\\js\\scripts.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\controllers\\purchasecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\controllers\\purchasecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\repository\\purchasebl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\repository\\purchasebl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\repository\\salesbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\repository\\salesbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\wwwroot\\css\\custom-css\\styles.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\wwwroot\\css\\custom-css\\styles.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\sales\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\sales\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\inventory\\rawdata.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\inventory\\rawdata.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\inventory\\summary.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\inventory\\summary.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\controllers\\salescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\controllers\\salescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\purchase\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\purchase\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\wwwroot\\js\\shared.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\wwwroot\\js\\shared.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\purchase\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\purchase\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\sales\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\sales\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\repository\\commonbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\repository\\commonbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\controllers\\inventorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\controllers\\inventorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.core\\models\\summarymodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|solutionrelative:gizmosbuy.core\\models\\summarymodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.core\\interfaces\\isummarymodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|solutionrelative:gizmosbuy.core\\interfaces\\isummarymodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\inventory\\purchase.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\inventory\\purchase.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.core\\interfaces\\idaterange.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|solutionrelative:gizmosbuy.core\\interfaces\\idaterange.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\repository\\inventorybl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\repository\\inventorybl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\interfaces\\iinventorybl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\interfaces\\iinventorybl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\interfaces\\ipurchasebl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\interfaces\\ipurchasebl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\shared\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\shared\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\models\\errorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\models\\errorviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\filters\\authorizeattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\filters\\authorizeattribute.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\controllers\\basecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\controllers\\basecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\wwwroot\\css\\custom-css\\custom-sidebar.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\wwwroot\\css\\custom-css\\custom-sidebar.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\sales\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\sales\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\interfaces\\isalesbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\interfaces\\isalesbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\purchase\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\purchase\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.core\\interfaces\\isalesmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|solutionrelative:gizmosbuy.core\\interfaces\\isalesmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.core\\interfaces\\ipurchasemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|solutionrelative:gizmosbuy.core\\interfaces\\ipurchasemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\repository\\authenticationbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\repository\\authenticationbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\interfaces\\iauthenticationbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\interfaces\\iauthenticationbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\wwwroot\\lib\\autocomplete\\jquery.autocomplete.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\wwwroot\\lib\\autocomplete\\jquery.autocomplete.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\auth\\accessdenied.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\auth\\accessdenied.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\interfaces\\icommonbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\interfaces\\icommonbl.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\configurations\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\configurations\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\configurations\\extension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\configurations\\extension.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\repository\\pager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\repository\\pager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.bal\\commons\\utility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8D23D29C-6D65-4498-B4C3-BD174A7A5FBD}|Gizmosbuy.BAL\\Gizmosbuy.BAL.csproj|solutionrelative:gizmosbuy.bal\\commons\\utility.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\auth\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4546BE17-7B7F-43F7-B2AF-1334AE4C247B}|Gizmosbuy.DAL\\Gizmosbuy.DAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.dal\\models\\spgetpurchaselistresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4546BE17-7B7F-43F7-B2AF-1334AE4C247B}|Gizmosbuy.DAL\\Gizmosbuy.DAL.csproj|solutionrelative:gizmosbuy.dal\\models\\spgetpurchaselistresult.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\wwwroot\\js\\newfile.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\wwwroot\\js\\newfile.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\views\\home\\privacy.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\wwwroot\\css\\custom-css\\custom-datepicker.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\wwwroot\\css\\custom-css\\custom-datepicker.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.core\\models\\paymentmodemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|solutionrelative:gizmosbuy.core\\models\\paymentmodemodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4546BE17-7B7F-43F7-B2AF-1334AE4C247B}|Gizmosbuy.DAL\\Gizmosbuy.DAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.dal\\models\\paymentmodemaster.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4546BE17-7B7F-43F7-B2AF-1334AE4C247B}|Gizmosbuy.DAL\\Gizmosbuy.DAL.csproj|solutionrelative:gizmosbuy.dal\\models\\paymentmodemaster.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.core\\models\\webconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{98E8BDF6-50C7-493B-A690-476088160F9F}|Gizmosbuy.Core\\Gizmosbuy.Core.csproj|solutionrelative:gizmosbuy.core\\models\\webconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuyweb\\gizmosbuy.web.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{A88E3931-FE3C-4041-9C1E-A74528DE9102}|GizmosbuyWeb\\Gizmosbuy.Web.csproj|solutionrelative:gizmosbuyweb\\gizmosbuy.web.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4546BE17-7B7F-43F7-B2AF-1334AE4C247B}|Gizmosbuy.DAL\\Gizmosbuy.DAL.csproj|d:\\sajid\\my works and practise\\my freelance projects\\gizmosbuy\\gizmosbuyweb\\gizmosbuy.dal\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4546BE17-7B7F-43F7-B2AF-1334AE4C247B}|Gizmosbuy.DAL\\Gizmosbuy.DAL.csproj|solutionrelative:gizmosbuy.dal\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 6,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Purchase.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Inventory\\Purchase.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Inventory\\Purchase.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Inventory\\Purchase.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Inventory\\Purchase.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-21T17:34:10.765Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "styles.css",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\css\\custom-css\\styles.css",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\wwwroot\\css\\custom-css\\styles.css",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\css\\custom-css\\styles.css",
+              "RelativeToolTip": "GizmosbuyWeb\\wwwroot\\css\\custom-css\\styles.css",
+              "ViewState": "AgIAAAwCAAAAAAAAAAAAACgCAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-02-21T17:39:50.476Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "PurchaseController.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\PurchaseController.cs",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Controllers\\PurchaseController.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\PurchaseController.cs",
+              "RelativeToolTip": "GizmosbuyWeb\\Controllers\\PurchaseController.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAvwDMAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-22T18:18:59.72Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "scripts.js",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\js\\scripts.js",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\wwwroot\\js\\scripts.js",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\js\\scripts.js",
+              "RelativeToolTip": "GizmosbuyWeb\\wwwroot\\js\\scripts.js",
+              "ViewState": "AgIAAK8AAAAAAAAAAIA+wK8AAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-02-26T13:04:58.407Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Purchase\\Create.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Purchase\\Create.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Purchase\\Create.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Purchase\\Create.cshtml",
+              "ViewState": "AgIAAMwAAAAAAAAAAAAAADkAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-22T18:19:38.886Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Sales\\Create.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Sales\\Create.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Sales\\Create.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Sales\\Create.cshtml",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-08T18:28:39.777Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "SalesController.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\SalesController.cs",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Controllers\\SalesController.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\SalesController.cs",
+              "RelativeToolTip": "GizmosbuyWeb\\Controllers\\SalesController.cs",
+              "ViewState": "AgIAAEsAAAAAAAAAAAAvwGAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T19:32:07.719Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "InventoryController.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\InventoryController.cs",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Controllers\\InventoryController.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\InventoryController.cs",
+              "RelativeToolTip": "GizmosbuyWeb\\Controllers\\InventoryController.cs",
+              "ViewState": "AgIAAB0AAAAAAAAAAAAgwDkAAABGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-21T17:31:55.279Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Summary.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Inventory\\Summary.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Inventory\\Summary.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Inventory\\Summary.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Inventory\\Summary.cshtml",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAAGAAAABHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-12T17:40:12.113Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAD0AAAAAAAAAAAAAwHYAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-03T17:27:58.145Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Controllers\\HomeController.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "GizmosbuyWeb\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAswCgAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T20:22:36.321Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "IDateRange.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Interfaces\\IDateRange.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.Core\\Interfaces\\IDateRange.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Interfaces\\IDateRange.cs",
+              "RelativeToolTip": "Gizmosbuy.Core\\Interfaces\\IDateRange.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T15:44:04.18Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "IInventoryBL.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Interfaces\\IInventoryBL.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Interfaces\\IInventoryBL.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Interfaces\\IInventoryBL.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Interfaces\\IInventoryBL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAcAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-05T19:14:00.184Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "shared.js",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\js\\shared.js",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\wwwroot\\js\\shared.js",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\js\\shared.js",
+              "RelativeToolTip": "GizmosbuyWeb\\wwwroot\\js\\shared.js",
+              "ViewState": "AgIAAHoAAAAAAAAAAAAAwKIAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-02-25T18:22:32.353Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "CommonBL.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\CommonBL.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Repository\\CommonBL.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\CommonBL.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Repository\\CommonBL.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAvwGEAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T19:14:35.661Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "RawData.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Inventory\\RawData.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Inventory\\RawData.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Inventory\\RawData.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Inventory\\RawData.cshtml",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAAAFkAAAB1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-05T19:06:29.131Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "SalesBL.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\SalesBL.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Repository\\SalesBL.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\SalesBL.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Repository\\SalesBL.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAvwBYAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-28T18:43:26.765Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PurchaseBL.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\PurchaseBL.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Repository\\PurchaseBL.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\PurchaseBL.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Repository\\PurchaseBL.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAJkAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-15T18:31:31.656Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\appsettings.json",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\appsettings.json",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\appsettings.json",
+              "RelativeToolTip": "GizmosbuyWeb\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-02-20T19:42:57.499Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Error.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Shared\\Error.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Shared\\Error.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Shared\\Error.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Shared\\Error.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-12T15:40:15.114Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Sales\\Index.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Sales\\Index.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Sales\\Index.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Sales\\Index.cshtml",
+              "ViewState": "AgIAADsAAAAAAAAAAAAEwEUAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-08T18:25:40.53Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Purchase\\Index.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Purchase\\Index.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Purchase\\Index.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Purchase\\Index.cshtml",
+              "ViewState": "AgIAADkAAAAAAAAAAAAAAEMAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-05T17:49:12.644Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "ISummaryModel.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Interfaces\\ISummaryModel.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.Core\\Interfaces\\ISummaryModel.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Interfaces\\ISummaryModel.cs",
+              "RelativeToolTip": "Gizmosbuy.Core\\Interfaces\\ISummaryModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAQAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T17:50:23.322Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "SummaryModel.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Models\\SummaryModel.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.Core\\Models\\SummaryModel.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Models\\SummaryModel.cs",
+              "RelativeToolTip": "Gizmosbuy.Core\\Models\\SummaryModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T17:48:58.093Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "IPurchaseBL.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Interfaces\\IPurchaseBL.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Interfaces\\IPurchaseBL.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Interfaces\\IPurchaseBL.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Interfaces\\IPurchaseBL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-15T19:16:01.699Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "InventoryBL.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\InventoryBL.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Repository\\InventoryBL.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\InventoryBL.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Repository\\InventoryBL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-05T19:14:17.975Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "ErrorViewModel.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Models\\ErrorViewModel.cs",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Models\\ErrorViewModel.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Models\\ErrorViewModel.cs",
+              "RelativeToolTip": "GizmosbuyWeb\\Models\\ErrorViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-12T15:39:47.602Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Program.cs",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Program.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Program.cs",
+              "RelativeToolTip": "GizmosbuyWeb\\Program.cs",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAEwHYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-04T13:14:54.981Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "AuthorizeAttribute.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Filters\\AuthorizeAttribute.cs",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Filters\\AuthorizeAttribute.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Filters\\AuthorizeAttribute.cs",
+              "RelativeToolTip": "GizmosbuyWeb\\Filters\\AuthorizeAttribute.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAAAUwCYAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T19:39:07.413Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Controllers\\AuthController.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "GizmosbuyWeb\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAD8AAAAAAAAAAAAowAwAAABtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T15:49:02.022Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "BaseController.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\BaseController.cs",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Controllers\\BaseController.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Controllers\\BaseController.cs",
+              "RelativeToolTip": "GizmosbuyWeb\\Controllers\\BaseController.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwDgAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-04T17:42:12.263Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "custom-sidebar.css",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\css\\custom-css\\custom-sidebar.css",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\wwwroot\\css\\custom-css\\custom-sidebar.css",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\css\\custom-css\\custom-sidebar.css",
+              "RelativeToolTip": "GizmosbuyWeb\\wwwroot\\css\\custom-css\\custom-sidebar.css",
+              "ViewState": "AgIAACoHAAAAAAAAAAAgwEMHAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-02-25T17:46:03.863Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Sales\\Edit.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Sales\\Edit.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Sales\\Edit.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Sales\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-05T17:48:09.317Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "ISalesBL.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Interfaces\\ISalesBL.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Interfaces\\ISalesBL.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Interfaces\\ISalesBL.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Interfaces\\ISalesBL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAoAAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T19:45:26.142Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Purchase\\Edit.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Purchase\\Edit.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Purchase\\Edit.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Purchase\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-03T17:27:19.245Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "ISalesModel.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Interfaces\\ISalesModel.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.Core\\Interfaces\\ISalesModel.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Interfaces\\ISalesModel.cs",
+              "RelativeToolTip": "Gizmosbuy.Core\\Interfaces\\ISalesModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-05T18:30:02.417Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "IPurchaseModel.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Interfaces\\IPurchaseModel.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.Core\\Interfaces\\IPurchaseModel.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Interfaces\\IPurchaseModel.cs",
+              "RelativeToolTip": "Gizmosbuy.Core\\Interfaces\\IPurchaseModel.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAYwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-05T18:06:26.264Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "DependencyInjection.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\DependencyInjection.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\DependencyInjection.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\DependencyInjection.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\DependencyInjection.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T19:30:59.19Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "AuthenticationBL.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\AuthenticationBL.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Repository\\AuthenticationBL.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\AuthenticationBL.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Repository\\AuthenticationBL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA4AAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T19:04:16.766Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "IAuthenticationBL.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Interfaces\\IAuthenticationBL.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Interfaces\\IAuthenticationBL.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Interfaces\\IAuthenticationBL.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Interfaces\\IAuthenticationBL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T19:04:17.662Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "jquery.autocomplete.js",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\lib\\autocomplete\\jquery.autocomplete.js",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\wwwroot\\lib\\autocomplete\\jquery.autocomplete.js",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\lib\\autocomplete\\jquery.autocomplete.js",
+              "RelativeToolTip": "GizmosbuyWeb\\wwwroot\\lib\\autocomplete\\jquery.autocomplete.js",
+              "ViewState": "AgIAAB0DAAAAAAAAAAAAwDADAABQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-03-10T19:39:07.704Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "AccessDenied.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Auth\\AccessDenied.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Auth\\AccessDenied.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Auth\\AccessDenied.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Auth\\AccessDenied.cshtml",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAAAEkAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-03-09T18:43:12.479Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "ICommonBL.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Interfaces\\ICommonBL.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Interfaces\\ICommonBL.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Interfaces\\ICommonBL.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Interfaces\\ICommonBL.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwAgAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T19:14:24.681Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "Role.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Configurations\\Role.cs",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Configurations\\Role.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Configurations\\Role.cs",
+              "RelativeToolTip": "GizmosbuyWeb\\Configurations\\Role.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T19:09:51.06Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "Extension.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Configurations\\Extension.cs",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Configurations\\Extension.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Configurations\\Extension.cs",
+              "RelativeToolTip": "GizmosbuyWeb\\Configurations\\Extension.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-08T19:09:54.177Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "Pager.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\Pager.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Repository\\Pager.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Repository\\Pager.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Repository\\Pager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-01T19:51:56.227Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "Utility.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Commons\\Utility.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.BAL\\Commons\\Utility.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.BAL\\Commons\\Utility.cs",
+              "RelativeToolTip": "Gizmosbuy.BAL\\Commons\\Utility.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAAwDQAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-06T18:43:27.099Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Auth\\Login.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Auth\\Login.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Auth\\Login.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Auth\\Login.cshtml",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAAwFQAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-20T20:13:11.264Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "spGetPurchaseListResult.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.DAL\\Models\\spGetPurchaseListResult.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.DAL\\Models\\spGetPurchaseListResult.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.DAL\\Models\\spGetPurchaseListResult.cs",
+              "RelativeToolTip": "Gizmosbuy.DAL\\Models\\spGetPurchaseListResult.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-01T17:39:30.678Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "newFile.js",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\js\\newFile.js",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\wwwroot\\js\\newFile.js",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\js\\newFile.js",
+              "RelativeToolTip": "GizmosbuyWeb\\wwwroot\\js\\newFile.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-02-28T20:07:17.043Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "Privacy.cshtml",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Home\\Privacy.cshtml",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Views\\Home\\Privacy.cshtml",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Views\\Home\\Privacy.cshtml",
+              "RelativeToolTip": "GizmosbuyWeb\\Views\\Home\\Privacy.cshtml",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-02-26T19:29:41.989Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "custom-datepicker.css",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\css\\custom-css\\custom-datepicker.css",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\wwwroot\\css\\custom-css\\custom-datepicker.css",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\wwwroot\\css\\custom-css\\custom-datepicker.css",
+              "RelativeToolTip": "GizmosbuyWeb\\wwwroot\\css\\custom-css\\custom-datepicker.css",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAAAFIAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-02-24T19:14:10.242Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "PaymentModeModel.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Models\\PaymentModeModel.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.Core\\Models\\PaymentModeModel.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Models\\PaymentModeModel.cs",
+              "RelativeToolTip": "Gizmosbuy.Core\\Models\\PaymentModeModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T19:37:52.625Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "PaymentModeMaster.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.DAL\\Models\\PaymentModeMaster.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.DAL\\Models\\PaymentModeMaster.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.DAL\\Models\\PaymentModeMaster.cs",
+              "RelativeToolTip": "Gizmosbuy.DAL\\Models\\PaymentModeMaster.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T19:07:48.285Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "WebConfiguration.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Models\\WebConfiguration.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.Core\\Models\\WebConfiguration.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.Core\\Models\\WebConfiguration.cs",
+              "RelativeToolTip": "Gizmosbuy.Core\\Models\\WebConfiguration.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T19:42:19.296Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "Gizmosbuy.Web",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Gizmosbuy.Web.csproj",
+              "RelativeDocumentMoniker": "GizmosbuyWeb\\Gizmosbuy.Web.csproj",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\GizmosbuyWeb\\Gizmosbuy.Web.csproj",
+              "RelativeToolTip": "GizmosbuyWeb\\Gizmosbuy.Web.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-02-20T20:17:10.623Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "DependencyInjection.cs",
+              "DocumentMoniker": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.DAL\\DependencyInjection.cs",
+              "RelativeDocumentMoniker": "Gizmosbuy.DAL\\DependencyInjection.cs",
+              "ToolTip": "D:\\Sajid\\My Works and Practise\\My Freelance Projects\\Gizmosbuy\\GizmosbuyWeb\\Gizmosbuy.DAL\\DependencyInjection.cs",
+              "RelativeToolTip": "Gizmosbuy.DAL\\DependencyInjection.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T20:15:05.179Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

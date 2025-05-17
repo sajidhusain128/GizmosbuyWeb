@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="efpt.config.json.user" />
+	</ItemGroup>
+
+	<ItemGroup>				
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.13" />				
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />				
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />				
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.13" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.13" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.13" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.13">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.13" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.13">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Gizmosbuy.BAL\Gizmosbuy.BAL.csproj" />
+	  <ProjectReference Include="..\Gizmosbuy.Core\Gizmosbuy.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\lib\datatables\css\" />
+	  <Folder Include="wwwroot\lib\datatables\js\" />
+	</ItemGroup>
+
+</Project>

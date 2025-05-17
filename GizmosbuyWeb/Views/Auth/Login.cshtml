@@ -1,0 +1,409 @@
+﻿@model Gizmosbuy.Core.Models.UserModel
+@using GizmosbuyWeb.Configurations
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - GizmosbuyWeb</title>
+    <link rel="stylesheet" href="@Url.Content("~/lib/twitter-bootstrap/css/bootstrap.min.css")" /> 
+    <link rel="stylesheet" href="@Url.Content("~/lib/font-awesome/css/all.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/css/custom-css/styles.css")" asp-append-version="true" />
+</head>
+<body>
+
+
+    <div class="content">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-4 contents">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12">
+                            <div class="form-block">
+                                <div class="logo-view text-center">
+                                    <img class="logo" src="~/images/gizmosbuy-logo-square.jpg" />
+                                </div>
+                                <div class="mb-4 text-center">
+                                    <h3>Sign In</h3>
+                                </div>
+                                <form action="/Auth/Login" method="post" returnurl="@ViewData["ReturnUrl"]" class="needs-validation was-validated">
+                                    @if (Convert.ToString(ViewBag.ErrorMessage) != "")
+                                    {
+                                        <div class="alert alert-danger" role="alert">
+                                            <div>
+                                                <i class="fa-solid fa-triangle-exclamation"></i> @Html.ValidationSummary(true, "", new { @style = "display: inline-block;" })
+                                            </div>
+                                        </div>
+                                    }
+                                    @Html.AntiForgeryToken()
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="loginError" style="display:none;">
+                                        <i class="fa-solid fa-triangle-exclamation"></i>
+                                        <span id="spnErrorMessage"></span>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="input-group-text first">
+                                            <i class="fas fa-user"></i>
+                                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @id = "username", @placeholder = "UserName", @autocomplete = "off" })
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                                        <div class="invalid-feedback">
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <div class="input-group-text last">
+                                            <i class="fas fa-key"></i>
+                                            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @id = "password", @placeholder = "Password", @type = "password" })
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                        <div class="invalid-feedback">
+                                        </div>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Log In</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style media="font-face">
+        font-face {
+            font-family: 'Nunito';
+            src: url('../../wwwroot/fonts/Nunito/Nunito-SemiBold.ttf');
+        }
+    </style>
+    <style>
+
+
+        body {
+            font-family: 'Nunito' Impact;
+            background-color: #f8fafb;
+        }
+
+        p {
+            color: #b3b3b3;
+            font-weight: 300;
+        }
+
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+            /* font-family: "Roboto", sans-serif; */
+        }
+
+        a {
+            -webkit-transition: .3s all ease;
+            -o-transition: .3s all ease;
+            transition: .3s all ease;
+        }
+
+            a:hover {
+                text-decoration: none !important;
+            }
+
+        .content {
+            padding: 7rem 0;
+            background-color: var(--utl-light-blue);
+        }
+
+        h2 {
+            font-size: 20px;
+        }
+
+        .form-block {
+            background: #fff;
+            padding: 40px;
+            -webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        @@media (max-width: 991.98px) {
+            .form-block {
+                padding: 30px;
+            }
+        }
+
+        @@media (max-width: 991.98px) {
+            .content .bg {
+                height: 500px;
+            }
+        }
+
+        @@media (max-width: 1199.98px) {
+            .content .contents, .content .bg {
+                width: 100%;
+            }
+        }
+
+        .content .contents .form-group, .content .bg .form-group {
+            position: relative;
+        }
+
+            .content .contents .form-group label, .content .bg .form-group label {
+                position: absolute;
+                top: 48%;
+                -webkit-transform: translateY(-50%);
+                -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
+                -webkit-transition: .3s all ease;
+                -o-transition: .3s all ease;
+                transition: .3s all ease;
+            }
+
+            .content .contents .form-group input, .content .bg .form-group input {
+                background: transparent;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .content .contents .form-group.first, .content .bg .form-group.first {
+                border-top-left-radius: 7px;
+                border-top-right-radius: 7px;
+            }
+
+            .content .contents .form-group.last, .content .bg .form-group.last {
+                border-bottom-left-radius: 7px;
+                border-bottom-right-radius: 7px;
+            }
+
+            .content .contents .form-group label, .content .bg .form-group label {
+                font-size: 16px;
+                display: block;
+                margin-bottom: 0;
+                color: #b3b3b3;
+            }
+
+            .content .contents .form-group.focus, .content .bg .form-group.focus {
+                background: #fff;
+            }
+
+            .content .contents .form-group .form-control:focus ~ label {
+                margin-top: -25px;
+                font-size: 14px;
+            }
+
+        .content .contents .form-control, .content .bg .form-control {
+            border: none;
+            padding: 0 5px;
+            font-size: 16px;
+            border-radius: 0;
+            background-color: inherit;
+        }
+
+            .content .contents .form-control:active, .content .contents .form-control:focus, .content .bg .form-control:active, .content .bg .form-control:focus {
+                outline: none;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+            }
+
+        .content .bg {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .content a {
+            color: #888;
+            text-decoration: underline;
+        }
+
+        .content .btn {
+            height: 54px;
+            padding-left: 30px;
+            padding-right: 30px;
+            width: 100%;
+            background-color: var(--utl-common-green);
+            border-radius: 2px;
+            border: 1px solid var(--utl-common-green);
+        }
+
+        .btn:hover {
+            background-color: #047716;
+        }
+
+        .content .forgot-pass {
+            position: relative;
+            top: 2px;
+            font-size: 14px;
+        }
+
+        .social-login a {
+            text-decoration: none;
+            position: relative;
+            text-align: center;
+            color: #fff;
+            margin-bottom: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+            .social-login a span {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                -webkit-transform: translate(-50%, -50%);
+                -ms-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+            }
+
+            .social-login a:hover {
+                color: #fff;
+            }
+
+            .social-login a.facebook {
+                background: #3b5998;
+            }
+
+                .social-login a.facebook:hover {
+                    background: #344e86;
+                }
+
+            .social-login a.twitter {
+                background: #1da1f2;
+            }
+
+                .social-login a.twitter:hover {
+                    background: #0d95e8;
+                }
+
+            .social-login a.google {
+                background: #ea4335;
+            }
+
+                .social-login a.google:hover {
+                    background: #e82e1e;
+                }
+
+        .control {
+            display: block;
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+            .control .caption {
+                position: relative;
+                top: .2rem;
+                color: #888;
+            }
+
+            .control input {
+                position: absolute;
+                z-index: -1;
+                opacity: 0;
+            }
+
+        .control__indicator {
+            position: absolute;
+            top: 2px;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background: #e6e6e6;
+            border-radius: 4px;
+        }
+
+        .control--radio .control__indicator {
+            border-radius: 50%;
+        }
+
+        .control:hover input ~ .control__indicator, .control input:focus ~ .control__indicator {
+            background: #ccc;
+        }
+
+        .control input:checked ~ .control__indicator {
+            background: #38d39f;
+        }
+
+        .control:hover input:not([disabled]):checked ~ .control__indicator, .control input:checked:focus ~ .control__indicator {
+            background: #4dd8a9;
+        }
+
+        .control input:disabled ~ .control__indicator {
+            background: #e6e6e6;
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        .control__indicator:after {
+            font-family: 'icomoon';
+            content: '\e5ca';
+            position: absolute;
+            display: none;
+            font-size: 16px;
+            -webkit-transition: .3s all ease;
+            -o-transition: .3s all ease;
+            transition: .3s all ease;
+        }
+
+        .control input:checked ~ .control__indicator:after {
+            display: block;
+            color: #fff;
+        }
+
+        .control--checkbox .control__indicator:after {
+            top: 50%;
+            left: 50%;
+            margin-top: -1px;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .control--checkbox input:disabled ~ .control__indicator:after {
+            border-color: #7b7b7b;
+        }
+
+        .control--checkbox input:disabled:checked ~ .control__indicator {
+            background-color: #7e0cf5;
+            opacity: .2;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            height: calc(1.5em + 0.75rem + 2px);
+        }
+
+        .input-group-text {
+            border: unset;
+            border: 1px solid #cecdcd;
+            border-radius: 2px;
+            background-color: #fff;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        }
+
+            .input-group-text:hover {
+                border-color: #333;
+            }
+
+            .input-group-text:focus-within {
+                border-color: var(--utl-common-green);
+            }
+
+        .invalid-feedback {
+            display: block;
+            text-align: left;
+        }
+
+        .was-validated .form-control:valid {
+            background: none;
+        }
+
+        .logo-view .logo {
+            height: 200px;
+        }
+    </style>
+
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js")"></script>
+</body>
+</html>

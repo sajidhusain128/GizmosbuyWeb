@@ -1,0 +1,130 @@
+﻿@using Gizmosbuy.Core.Interfaces
+@using Gizmosbuy.Core.Models
+@model Gizmosbuy.Core.Models.SummaryModel
+
+<div class="page-header">
+    <div class="header-title">Summary Data</div>
+</div>
+<div class="page-content">
+    <div class="page-title">
+        <h3></h3>
+    </div>
+    <div class="page-body">
+
+        <div class="form-group">
+
+            <div class="col-md-12 mb-2">
+                <div class="row align-items-center">
+                    <div class="col-md-2">
+                        <label for="ddlLoaction" class="col-form-label">Store:</label>
+                    </div>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(Model => Model.LocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlLoaction", @class = "form-select" })
+                    </div>
+                    <div class="col-auto">
+                        <span class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-2">
+                <div class="row align-items-center">
+                    <div class="col-md-2">
+                        <label for="ddlStatus" class="col-form-label">Stock Year:</label>
+                    </div>
+                    <div class="col-md-4">
+                        @{
+                            var list = new List<SelectListItem>
+                        {
+                        new SelectListItem{ Text="Sold", Value = "Sold" ,Selected = true},
+                        new SelectListItem{ Text="Pending", Value = "Pending" },
+                        };
+                        }
+                        
+                        @Html.DropDownListFor(Model => Model.Status, list, null, new { id = "ddlStatus", @class = "form-select" })
+                    </div>
+                    <div class="col-auto">
+                        <span class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-2">
+                <div class="row align-items-center">
+                    <div class="col-md-2">
+                        <label for="txtSellYear" class="col-form-label">Sell Year:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="txtSellYear" class="form-control" placeholder="Year" maxlength="4" autocomplete="off" onkeydown="return false">
+                    </div>
+                    <div class="col-auto">
+                        <span class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-2">
+                <div class="row align-items-center">
+                    <div class="col-md-2">
+                        <label for="txtSellMonth" class="col-form-label">Sell Month:</label>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="txtSellMonth" class="form-control" placeholder="Month" maxlength="3" autocomplete="off" onkeydown="return false">
+                    </div>
+                    <div class="col-auto">
+                        <span class="field-validation-error"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-2">
+                <div class="row align-items-center">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-custom " id="btnSearchSummary"><i class="fas fa-search"></i> Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Styles {
+    @* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"> *@
+    <link href="@Url.Content("~/lib/select2/css/select2.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/custom-css/custom-select2.css")" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="@Url.Content("~/lib/select2/js/select2.min.js")"></script>
+    <script src="@Url.Content("~/js/scripts.js")" asp-append-version="true"></script>
+
+    <script>
+        $(document).ready( function () {
+            $('#txtSellYear').datepicker({
+                format: "yyyy",
+                viewMode: "years",
+                minViewMode: "years",
+                autoclose: true,
+                todayHighlight: true,
+                clearBtn: true
+            });
+
+            $('#txtSellMonth').datepicker({
+                format: "MM",
+                viewMode: "months",
+                minViewMode: "months",
+                autoclose: true,
+                todayHighlight: true,
+                clearBtn: true
+            });
+
+            $('#ddlLoaction,#ddlStatus').select2();
+
+            $('#txtSellYear').val(new Date().getFullYear());
+            $('#txtSellMonth').val(geMonthFromDate(new Date()));
+        });
+    </script>
+}

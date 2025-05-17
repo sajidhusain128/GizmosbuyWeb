@@ -1,0 +1,129 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="page-header">
+    <div class="header-title">Raw Data List</div>
+</div>
+<div class="page-content">
+    <div class="page-title">
+        <h3></h3>
+    </div>
+    <div class="page-body">
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-5 mb-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <label for="txtStartDate" class="col-form-label">Start Date:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <input type="text" id="txtStartDate" class="form-control" placeholder="dd/mm/yyyy" maxlength="10" pattern="\d{1,2}/\d{1,2}/\d{4}" onkeyup="dateAutoFormatter(event)" autocomplete="off">
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <span class="field-validation-error"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 mb-2">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <label for="txtEndDate" class="col-form-label">End Date:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <input type="text" id="txtEndDate" class="form-control" placeholder="dd/mm/yyyy" maxlength="10" pattern="\d{1,2}/\d{1,2}/\d{4}" onkeyup="dateAutoFormatter(event)" autocomplete="off">
+                                <span class="input-group-text" id="basic-addon1">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <span class="field-validation-error"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 mb-2 text-right">
+                    <button type="button" class="btn btn-custom " id="btnSearchRawData"><i class="fas fa-search"></i> Search</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
+            <table id="tblRawData" class="">
+                <thead>
+                    <tr>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="@Url.Content("~/lib/moment.js/moment.min.js")"></script>
+    <script src="@Url.Content("~/js/scripts.js")" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready( function () {
+           
+            var curDateMonth = new Date();
+            $('#txtEndDate').val(localDateFormat(curDateMonth, 'dd/mm/yyyy'));
+
+            var prvDateMonth = new Date(curDateMonth.getFullYear(), curDateMonth.getMonth() - 1, curDateMonth.getDate());
+            debugger;
+            $('#txtStartDate').val(localDateFormat(prvDateMonth, 'dd/mm/yyyy'));
+
+            $('#txtStartDate').datepicker({
+                format: 'dd/mm/yyyy',
+                endDate: '+1d',
+                maxDate: 'today',
+                autoclose: true,
+                todayHighlight: true,
+                todayBtn: true,
+                clearBtn: true
+            }).on('changeDate', function(e) {
+                // Dynamically set the start date based on the selected date
+                $('#txtEndDate').datepicker('setStartDate', e.date);
+            });
+
+
+            $('#txtEndDate').datepicker({
+                format: 'dd/mm/yyyy',
+                endDate: '+1d',
+                maxDate: 'today',
+                autoclose: true,
+                todayHighlight: true,
+                todayBtn: true,
+                clearBtn: true
+            }).on('changeDate', function(e) {
+                // Dynamically set the start date based on the selected date
+                $('#txtStartDate').datepicker('setEndDate', e.date);
+            });
+
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                  return new bootstrap.Tooltip(tooltipTriggerEl)
+                })
+
+            callRawData()  
+        }); 
+    </script>
+}

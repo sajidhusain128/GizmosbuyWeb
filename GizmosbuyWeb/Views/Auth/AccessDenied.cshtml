@@ -1,0 +1,127 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+@* <p>You don't have to correct permissons to do this.</p>
+ *@
+<div class="body">
+    <h3> Access Denied.</h3>
+    <div class="lock"></div>
+    <div class="message">
+        <h1>You dont have permission to view this page.</h1>
+        <p>You tried to access a page you did not have prior authorization for.</p>
+    </div>
+</div>
+
+
+<style type="text/css">
+    @@import url('https://fonts.googleapis.com/css?family=Lato');
+
+
+    * {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Lato', sans-serif;
+    }
+
+    .body {
+        height: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      /* background: linear-gradient(to bottom right, #EEE, #AAA); */
+        background-color: rgb(248 183 57 / 50%);
+    }
+
+        .body h3{
+            color:red;
+            font-size:60px;
+            margin-bottom: 35px;
+        }
+
+    h1 {
+      margin: 40px 0 20px;
+    }
+
+    .lock {
+      border-radius: 5px;
+      width: 55px;
+      height: 45px;
+      background-color: #333;
+      animation: dip 1s;
+      animation-delay: 1.5s ;
+
+      
+    }
+
+        .lock:before,
+        .lock:after {
+        content: '';
+        position: absolute;
+        border-left: 5px solid #333;
+        height: 20px;
+        width: 25px;
+        left: calc(50% - 12.5px);
+    }
+
+        .lock:before {
+        top: -25px;
+        border: 5px solid #333;
+        border-bottom-color: transparent;
+        border-radius: 15px 15px 0 0;
+        height: 30px;
+        animation: lock 2s, spin 2s;
+    }
+
+        .lock:after {
+        top: -14px;
+        border-right: 5px solid transparent;
+        animation: spin 2s;
+    }
+
+    .message{
+        text-align:center;
+    }
+
+    @@keyframes lock {
+      0% {
+        top: -40px;
+      }
+      65% {
+        top: -40px;
+      }
+      100% {
+        top: -25px;
+      }
+    }
+
+    @@keyframes spin {
+      0% {
+        transform: scaleX(-1);
+        left: calc(50% - 30px);
+      }
+      65% {
+        transform: scaleX(1);
+        left: calc(50% - 12.5px);
+      }
+    }
+
+    @@keyframes dip {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(10px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+</style>

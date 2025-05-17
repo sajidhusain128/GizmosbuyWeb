@@ -1,0 +1,219 @@
+﻿/*Bootstrap Calendar*/
+.datepicker {
+    border-radius: 0;
+    padding: 0;
+}
+
+.datepicker-days table thead, 
+.datepicker-days table tbody, 
+.datepicker-days table tfoot {
+    padding: 10px;
+    display: list-item;
+}
+
+.datepicker-months table thead,
+.datepicker-months table tbody,
+.datepicker-months table tfoot {
+    padding: 10px;
+    display: list-item;
+}
+
+.datepicker-months table thead {
+    display: block;
+}
+
+    .datepicker-months table thead tr,
+    .datepicker-years table thead tr,
+    .datepicker-decades table thead tr,
+    .datepicker-centuries table thead tr {
+        width: 100%;
+        display: table;
+    }
+
+.datepicker-years table thead,
+.datepicker-years table tbody,
+.datepicker-years table tfoot {
+    padding: 10px;
+    display: list-item;
+}
+
+.datepicker-decades table thead,
+.datepicker-decades table tbody,
+.datepicker-decades table tfoot {
+    padding: 10px;
+    display: list-item;
+}
+
+.datepicker-centuries table thead,
+.datepicker-centuries table tbody,
+.datepicker-centuries table tfoot {
+    padding: 10px;
+    display: list-item;
+}
+
+    .datepicker-days table thead, .datepicker-months table thead, .datepicker-years table thead, .datepicker-decades table thead, .datepicker-centuries table thead {
+        background: #3546b3;
+        color: #ffffff;
+        border-radius: 0;
+    }
+
+    .datepicker-days table thead tr:nth-child(2n+0) td, .datepicker-days table thead tr:nth-child(2n+0) th {
+        border-radius: 3px;
+    }
+
+    .datepicker-days table thead tr:nth-child(3n+0) {
+        text-transform: uppercase;
+        font-weight: 300 !important;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+.datepicker-days .table-condensed > tbody > tr > td,
+.datepicker-days .table-condensed > tbody > tr > th,
+.datepicker-days .table-condensed > tfoot > tr > td,
+.datepicker-days .table-condensed > tfoot > tr > th,
+.datepicker-days .table-condensed > thead > tr > td,
+.datepicker-days .table-condensed > thead > tr > th {
+    padding: 5px 15px
+}
+
+.datepicker-months .table-condensed > tfoot > tr > th,
+.datepicker-years .table-condensed > tfoot > tr > th,
+.datepicker-decades .table-condensed > tfoot > tr > th,
+.datepicker-centuries .table-condensed > tfoot > tr > th {
+    padding: 5px 15px
+}
+
+    .datepicker-months table thead td, .datepicker-months table thead th, .datepicker-years table thead td, .datepicker-years table thead th, .datepicker-decades table thead td, .datepicker-decades table thead th, .datepicker-centuries table thead td, .datepicker-centuries table thead th {
+        border-radius: 0;
+    }
+
+.datepicker-days .datepicker td,
+.datepicker-days .datepicker th {
+    border-radius: 50%;
+    padding: 0 12px;
+}
+
+.datepicker-days table thead, .datepicker-months table thead, .datepicker-years table thead, .datepicker-decades table thead, .datepicker-centuries table thead {
+    background: #3546b3;
+    color: #ffffff;
+    border-radius: 0;
+}
+
+.datepicker table tr td.active, .datepicker table tr td.active:hover, .datepicker table tr td.active.disabled, .datepicker table tr td.active.disabled:hover {
+    background-image: none;
+}
+
+.datepicker .prev, .datepicker .next {
+    color: rgba(255, 255, 255, 0.5);
+    transition: 0.3s;
+    width: 37px;
+    height: 37px;
+}
+
+    .datepicker .prev:hover, .datepicker .next:hover {
+        background: transparent;
+        color: rgba(255, 255, 255, 0.99);
+        font-size: 21px;
+    }
+
+.datepicker .datepicker-switch {
+    font-size: 24px;
+    font-weight: 400;
+    transition: 0.3s;
+}
+
+    .datepicker .datepicker-switch:hover {
+        color: rgba(255, 255, 255, 0.7);
+        background: transparent;
+    }
+
+.datepicker table tr td span {
+    border-radius: 2px;
+    margin: 3%;
+    width: 27%;
+}
+
+    .datepicker table tr td span.active, .datepicker table tr td span.active:hover, .datepicker table tr td span.active.disabled, .datepicker table tr td span.active.disabled:hover {
+        background-color: #3546b3;
+        background-image: none;
+    }
+
+.dropdown-menu {
+    border: 1px solid rgba(0,0,0,.1);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+.datepicker-dropdown.datepicker-orient-top:before {
+    border-top: 7px solid rgba(0,0,0,.1);
+}
+
+
+.datepicker table tr td, .datepicker table tr th {
+    width: unset !important;
+    border-radius: 0px;
+    
+}
+    .datepicker-days table thead, .datepicker-months table thead, .datepicker-years table thead, .datepicker-decades table thead, .datepicker-centuries table thead {
+        background-color: #08a321;
+    }
+
+.datepicker table tr td.active.active.focus, .datepicker table tr td.active.active:focus, .datepicker table tr td.active.active:hover, .datepicker table tr td.active.highlighted.active.focus, .datepicker table tr td.active.highlighted.active:focus, .datepicker table tr td.active.highlighted.active:hover, .datepicker table tr td.active.highlighted:active.focus, .datepicker table tr td.active.highlighted:active:focus, .datepicker table tr td.active.highlighted:active:hover, .datepicker table tr td.active:active.focus, .datepicker table tr td.active:active:focus, .datepicker table tr td.active:active:hover {
+    background-color: #08a321;
+    
+}
+
+.datepicker table tr td.active.active, .datepicker table tr td.active.highlighted.active, .datepicker table tr td.active.highlighted:active, .datepicker table tr td.active:active {
+    background-color: #08a321;
+}
+
+.datepicker-dropdown:before {
+    border-bottom: 7px solid #08a321;
+    z-index: inherit;
+}
+
+.datepicker-months,
+.datepicker-years,
+.datepicker-decades,
+.datepicker-centuries {
+    width: 300px
+}
+    .datepicker-months table,
+    .datepicker-years table,
+    .datepicker-decades table,
+    .datepicker-centuries table {
+        width: 100%
+    }
+
+.datepicker-days table tfoot,
+.datepicker-months table tfoot,
+.datepicker-years table tfoot,
+.datepicker-decades table tfoot,
+.datepicker-centuries table tfoot {
+    display: flex;
+    justify-content: space-between;
+}
+
+    .datepicker-days table tfoot .today,
+    .datepicker-months table tfoot .today,
+    .datepicker-years table tfoot .today,
+    .datepicker-decades table tfoot .today,
+    .datepicker-centuries table tfoot .today {
+        background-color: #f8b739;
+    }
+
+    .datepicker-days table tfoot .clear,
+    .datepicker-months table tfoot .clear,
+    .datepicker-years table tfoot .clear,
+    .datepicker-decades table tfoot .clear,
+    .datepicker-centuries table tfoot .clear {
+        background-color: #08a321;
+        color: #ffffff;
+    }
+        .datepicker-days table tfoot .clear:hover,
+        .datepicker-months table tfoot .clear:hover,
+        .datepicker-years table tfoot .clear:hover,
+        .datepicker-decades table tfoot .clear:hover,
+        .datepicker-centuries table tfoot .clear:hover {
+            color: #000000;
+        }
