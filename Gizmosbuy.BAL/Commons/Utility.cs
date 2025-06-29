@@ -45,7 +45,7 @@ namespace Gizmosbuy.BAL.Commons
         {
             try
             {
-                httpContext.Session.TryGetValue("UserName", out byte[] values);
+                httpContext.Session.TryGetValue(key, out byte[] values);
                 string stringData = Encoding.UTF8.GetString(values);
 
                 return stringData;
@@ -53,6 +53,74 @@ namespace Gizmosbuy.BAL.Commons
             catch (Exception)
             {
                 return null;
+            }
+        }
+
+        public static string GetPrefixByLocation(string Location)
+        {
+            try
+            {
+                switch (Location)
+                {
+                    case "Jogeshwari":
+                        return "JGS";
+
+                    case "Nalasopara":
+                        return "NSP";
+
+                    case "Chhapi":
+                        return "CHP";
+
+                    case "Ahmedabad":
+                        return "AMD";
+
+                    default:
+                        return "JGS";
+                }
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+        public static string GenerateBillNo(string prefixValue, string value)
+        {
+            try
+            {
+                string output = "";
+                string prefix = string.IsNullOrWhiteSpace(prefixValue) ? "" : prefixValue;
+
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return prefix + "0001";
+                }
+                else
+                {
+                    string stringNumber = value.Replace(prefix, "");
+                    int num = Convert.ToInt32(stringNumber);
+
+                    switch (stringNumber.Length)
+                    {
+                        case 4:
+                            output = (++num).ToString("0000");
+                            break;
+                        case 5:
+                            output = (++num).ToString("00000");
+                            break;
+                        default:
+                            output = (++num).ToString();
+                            break;
+                    }
+                }
+
+                output = prefix + output;
+
+                return output;
+            }
+            catch (Exception)
+            {
+                return "";
             }
         }
     }

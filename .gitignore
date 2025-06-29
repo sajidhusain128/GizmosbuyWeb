@@ -100,3 +100,13 @@
 /GizmosbuyWeb/obj/Gizmosbuy.Web.csproj.nuget.dgspec.json
 /GizmosbuyWeb/obj/project.assets.json
 /.vs/GizmosbuyWeb/config/applicationhost.config
+
+
+
+.bin
+.dll
+.pdb
+.cache
+.props
+.v2
+.editorconfig

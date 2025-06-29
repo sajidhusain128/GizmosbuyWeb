@@ -65,6 +65,7 @@
                     "data": { __RequestVerificationToken: token },
                 },
                 "columns":[
+                    {"data": "salesID","title":"Sr.No."},
                     {"data": "serialNo","title":"Serial No"},
                     {"data": "categoryName","title":"Category"},
                     {"data": "brandName","title":"Brand"},
@@ -85,7 +86,7 @@
                     {"data": "customerName","title":"Customer Name"},
                     {"data": "contactNo","title":"Contact No"},
                     
-                    {"data": "locationName","title":"Location"},
+                    {"data": "location","title":"Location"},
                     {"data": "billNo","title":"Bill No"},
                     {"data": "sellingLead","title":"Selling Lead"},
                     {"data": "salesID","title":"Action",render:function (data, type, row){
@@ -100,16 +101,17 @@
                     { targets: 2,className: 'text-nowrap'},
                     { targets: 3,className: 'text-nowrap'},
                     { targets: 4,className: 'text-nowrap'},
-                    { targets: 5,className: 'text-nowrap text-right'},
-                    { targets: 6,className: 'text-nowrap'},
-                    { targets: 7,className: 'text-nowrap text-right'},
-                    { targets: 8,className: 'text-nowrap'},
+                    { targets: 5,className: 'text-nowrap'},
+                    { targets: 6,className: 'text-nowrap text-right'},
+                    { targets: 7,className: 'text-nowrap'},
+                    { targets: 8,className: 'text-nowrap text-right'},
                     { targets: 9,className: 'text-nowrap'},
                     { targets: 10,className: 'text-nowrap'},
                     { targets: 11,className: 'text-nowrap'},
                     { targets: 12,className: 'text-nowrap'},
                     { targets: 13,className: 'text-nowrap'},
-                    { targets: 14,className: 'text-nowrap text-center'}
+                    { targets: 14,className: 'text-nowrap'},
+                    { targets: 15,className: 'text-nowrap text-center'}
                 ]
             });
         });

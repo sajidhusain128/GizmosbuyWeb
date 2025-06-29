@@ -20,5 +20,7 @@ namespace Gizmosbuy.Core.Interfaces
         public string UserRole { get; set; }
 
         public string Location { get; set; }
+
+        public int locationId { get; set; }
     }
 }

@@ -100,19 +100,38 @@ function WarningToast(message) {
 function localDateFormat(value, format) {
     try {
 
-        if (typeof value === 'string' && value.includes('/')) {
-            var date = value.split('/')[0];
-            var month = value.split('/')[1];
-            var year = value.split('/')[2];
+        if (value.length > 10) {
+            value = value.substring(0, 10);
+        }
 
-            var dt = new Date(year, month, date);
+        if (typeof value === 'string' && value.includes('/')) {
+
+            if (value.split('/')[0].length == 4) {
+                var year = value.split('/')[0];
+                var month = value.split('/')[1];
+                var date = value.split('/')[2];
+            }
+            else {
+                var date = value.split('/')[0];
+                var month = value.split('/')[1];
+                var year = value.split('/')[2];
+            }
+
+            var dt = new Date(year, month - 1, date);
         }
         else if (typeof value === 'string' && value.includes('-')) {
-            var date = value.split('-')[0];
-            var month = value.split('-')[1];
-            var year = value.split('-')[2];
+            if (value.split('-')[0].length == 4) {
+                var year = value.split('-')[0];
+                var month = value.split('-')[1];
+                var date = value.split('-')[2];
+            }
+            else {
+                var date = value.split('-')[0];
+                var month = value.split('-')[1];
+                var year = value.split('-')[2];
+            }
 
-            var dt = new Date(year, month, date);
+            var dt = new Date(year, month - 1, date);
         }
         else {
             var dt = new Date(value);
@@ -171,4 +190,24 @@ function geMonthFromDate(value) {
     } catch (e) {
         console.log(e);
     }
+}
+
+function getMonthNumber(monthName) {
+    const months = {
+        January: 1, Jan: 1,
+        February: 2, Feb: 2,
+        March: 3, Mar: 3,
+        April: 4, Apr: 4,
+        May: 5,
+        June: 6, Jun: 6,
+        July: 7, Jul: 7,
+        August: 8, Aug: 8,
+        September: 9, Sep: 9,
+        October: 10, Oct: 10,
+        November: 11, Nov: 11,
+        December: 12, Dec: 12
+    };
+
+    const normalized = monthName.trim().charAt(0).toUpperCase() + monthName.trim().slice(1).toLowerCase();
+    return months[normalized] || -1; // returns -1 if not found
 }

@@ -12,4 +12,6 @@ public partial class LocationMaster
     public string LocationName { get; set; }
 
     public bool? IsActive { get; set; }
+
+    public virtual ICollection<UserMaster> UserMasters { get; set; } = new List<UserMaster>();
 }

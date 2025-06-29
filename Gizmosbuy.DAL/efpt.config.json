@@ -43,6 +43,10 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[TempSales]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[UserMaster]",
          "ObjectType": 0
       },
@@ -55,6 +59,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[spGetPurchaseSummaryData]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[spGetRawData]",
          "ObjectType": 1
       },
@@ -64,6 +72,18 @@
       },
       {
          "Name": "[dbo].[spGetSalesList]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetSalesSummaryData]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetTempSalesByID]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetTempSalesList]",
          "ObjectType": 1
       },
       {

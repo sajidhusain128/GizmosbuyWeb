@@ -21,19 +21,23 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (userMasterResponse != null && userMasterResponse.Count > 0)
                 {
+                    int userId = userMasterResponse.FirstOrDefault().UserID;
                     string userName = userMasterResponse.FirstOrDefault().UserName;
                     string firstName = userMasterResponse.FirstOrDefault().FirstName;
                     string userRole = userMasterResponse.FirstOrDefault().UserRole;
+                    int locationId = userMasterResponse.FirstOrDefault().LocationID.GetValueOrDefault();
                     string location = userMasterResponse.FirstOrDefault().Location;
                     string email = userMasterResponse.FirstOrDefault().Email;
 
                     response = new UserModel
                     {
+                        UserId = userId,
                         UserName = userName,
                         Email = email,
                         FirstName = firstName,
                         UserRole = userRole,
-                        Location = location
+                        Location = location,
+                        locationId = locationId
                     };
                 }
 

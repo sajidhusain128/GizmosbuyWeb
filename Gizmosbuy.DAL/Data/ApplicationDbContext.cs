@@ -28,6 +28,8 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<SalesJournal> SalesJournals { get; set; }
 
+    public virtual DbSet<TempSale> TempSales { get; set; }
+
     public virtual DbSet<UserMaster> UserMasters { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -94,15 +96,9 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
-            entity.Property(e => e.CreatedBy)
-                .HasMaxLength(100)
-                .IsUnicode(false);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.Model)
                 .HasMaxLength(50)
-                .IsUnicode(false);
-            entity.Property(e => e.ModifiedBy)
-                .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.PaymentModeId).HasColumnName("PaymentModeID");
@@ -126,15 +122,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.BillNo)
                 .HasMaxLength(50)
                 .IsUnicode(false);
-            entity.Property(e => e.CreatedBy)
-                .HasMaxLength(100)
-                .IsUnicode(false);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.CustomerName)
                 .HasMaxLength(100)
                 .IsUnicode(false);
-            entity.Property(e => e.LocationId).HasColumnName("LocationID");
-            entity.Property(e => e.ModifiedBy)
+            entity.Property(e => e.Location)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
@@ -159,9 +151,6 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("SalesJournal");
 
             entity.Property(e => e.SalesJournal1).HasColumnName("SalesJournal");
-            entity.Property(e => e.CreatedBy)
-                .HasMaxLength(100)
-                .IsUnicode(false);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.SalesId).HasColumnName("SalesID");
 
@@ -169,6 +158,37 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.SalesId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__SalesJour__Sales__662B2B3B");
+        });
+
+        modelBuilder.Entity<TempSale>(entity =>
+        {
+            entity.HasKey(e => e.TempSalesId).HasName("PK__TempSale__C508D4FF54F286A8");
+
+            entity.Property(e => e.TempSalesId).HasColumnName("TempSalesID");
+            entity.Property(e => e.BillNo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CustomerName)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Location)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.PaymentModeId).HasColumnName("PaymentModeID");
+            entity.Property(e => e.PurchaseId).HasColumnName("PurchaseID");
+            entity.Property(e => e.SellingDate).HasColumnType("datetime");
+            entity.Property(e => e.SellingLead)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.SellingPrice).HasColumnType("money");
+            entity.Property(e => e.UserId).HasColumnName("UserID");
+
+            entity.HasOne(d => d.Purchase).WithMany(p => p.TempSales)
+                .HasForeignKey(d => d.PurchaseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__TempSales__Purch__0880433F");
         });
 
         modelBuilder.Entity<UserMaster>(entity =>
@@ -179,21 +199,26 @@ public partial class ApplicationDbContext : DbContext
 
             entity.Property(e => e.UserId).HasColumnName("UserID");
             entity.Property(e => e.Email)
-                .HasMaxLength(500)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.FirstName)
-                .HasMaxLength(100)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.LocationId).HasColumnName("LocationID");
             entity.Property(e => e.Password)
-                .HasMaxLength(500)
-                .IsUnicode(false);
-            entity.Property(e => e.UserName)
                 .HasMaxLength(100)
+                .IsUnicode(false)
+                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+            entity.Property(e => e.UserName)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.UserRole)
-                .HasMaxLength(100)
+                .HasMaxLength(20)
                 .IsUnicode(false);
+
+            entity.HasOne(d => d.Location).WithMany(p => p.UserMasters)
+                .HasForeignKey(d => d.LocationId)
+                .HasConstraintName("FK_LocationMaster_LocationID");
         });
 
         OnModelCreatingPartial(modelBuilder);

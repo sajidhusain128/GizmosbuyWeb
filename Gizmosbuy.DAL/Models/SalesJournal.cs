@@ -15,7 +15,7 @@ public partial class SalesJournal
 
     public int? SellingQuantity { get; set; }
 
-    public string CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 

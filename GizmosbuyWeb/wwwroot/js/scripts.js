@@ -31,11 +31,33 @@ $(document).ready(function () {
         $(this).val(total);
     })
 
-    $('#btnSalesSave,#btnSalesUpdate').click(function (e) {
+    $('#btnSalesSave').click(function (e) {
+        e.stopPropagation();
+
+        if ($("#tblSalesTemp").DataTable().data().count() > 0) {
+            saveSales();
+        }
+        else {
+            WarningToast("Sale entry not added in temporary list.");
+        }
+    });
+
+    $('#btnSalesUpdate').click(function (e) {
         e.stopPropagation();
 
         if ($('#txtQuantity').val() == "" || $('#txtQuantity').val() > 0) {
-            saveSales();
+            updateSales();
+        }
+        else {
+            WarningToast("Purchase quatity not available.");
+        }
+    });
+
+    $('#btnAddTempSales').click(function (e) {
+        e.stopPropagation();
+
+        if ($('#txtQuantity').val() == "" || $('#txtQuantity').val() > 0) {
+            saveTempSales();
         }
         else {
             WarningToast("Purchase quatity not available.");
@@ -58,12 +80,68 @@ $(document).ready(function () {
             WarningToast("Please select date range to search data..");
         }
     });
+
+    $('#ddlCategory').change(function () {
+        try {
+            var category = $(this).select2('data')[0];
+            if (category.text == "Adjustment") {
+                $('#txtSrNo').val("NA");    
+                $('#ddlBrand').select2('val', "0");
+                $('#ddlBrand').prop("disabled", true);
+                $('#txtModel').attr("readonly", "readonly");
+                $('#txtModel').val("");
+                $('#txtUpgrade').attr("readonly", "readonly");
+                $('#txtUpgrade').val("");
+                $('#ddlPayMode').select2('val', "0");
+                $('#ddlPayMode').prop("disabled", true);
+                $('#txtBuyLead').attr("readonly", "readonly");
+                $('#txtBuyLead').val("");
+            }
+            else {
+                $('#txtSrNo').val("");   
+                $('#ddlBrand').prop("disabled", false);
+                $('#txtModel').removeAttr("readonly");
+                $('#txtUpgrade').removeAttr("readonly");
+                $('#ddlPayMode').prop("disabled", false);
+                $('#txtBuyLead').removeAttr("readonly", "readonly");
+            }
+
+            if (category.text == "Accessories") {
+                $('#txtSrNo').val("NA");
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
+    });
+    //btnSearchSummary
+
+    $('#btnSearchSummary').click(function (e) {
+        e.stopPropagation();
+
+        var year = $('#txtSellYear').val();
+        var month = $('#txtSellMonth').val();
+
+        var ddlLocationValue = $('#ddlLoaction').select2('val');
+        var ddlTypeValue = $('#ddlStatus').select2('val');
+
+        getSalesSummary(ddlTypeValue, ddlLocationValue, month, year);
+       
+    });
 });
 
 function validatePuchaseForm() {
     try {
 
         var errorCount = 0
+
+        var categoryText = "";
+
+        var category = $('#ddlCategory').select2('data')[0];
+
+        if (category != undefined && category != null && category.text != undefined) {
+            categoryText = category.text;
+        }
 
         if ($('#txtSrNo').val() == "") {
             errorCount++;
@@ -89,7 +167,7 @@ function validatePuchaseForm() {
             $('#ddlCategory').parents('.row').find('.field-validation-error').text("");
         }
 
-        if ($('#ddlBrand').select2('val') == "0") {
+        if (categoryText != "Adjustment" && $('#ddlBrand').select2('val') == "0") {
             errorCount++;
             $('#ddlBrand').parents('.row').find('.field-validation-error').text("Brand is required.");
         }
@@ -97,7 +175,7 @@ function validatePuchaseForm() {
             $('#ddlBrand').parents('.row').find('.field-validation-error').text("");
         }
 
-        if ($('#txtModel').val() == "") {
+        if (categoryText != "Adjustment" && $('#txtModel').val() == "") {
             errorCount++;
             $('#txtModel').parents('.row').find('.field-validation-error').text("Model is required.");
         }
@@ -105,7 +183,7 @@ function validatePuchaseForm() {
             $('#txtModel').parents('.row').find('.field-validation-error').text("");
         }
 
-        if ($('#txtSpecs').val() == "") {
+        if (categoryText != "Adjustment" && $('#txtSpecs').val() == "") {
             errorCount++;
             $('#txtSpecs').parents('.row').find('.field-validation-error').text("Specifications is required.");
         }
@@ -137,7 +215,7 @@ function validatePuchaseForm() {
         //    $('#txtUpgrade').parents('.row').find('.field-validation-error').text("");
         //}
 
-        if ($('#txtPurcRepair').val() == "" || $('#txtPurcRepair').val() == "0") {
+        if (categoryText != "Adjustment" && $('#txtPurcRepair').val() == "" || $('#txtPurcRepair').val() == "0") {
             errorCount++;
             $('#txtPurcRepair').parents('.row').find('.field-validation-error').text("Purhase & Repair Price is required, and should be greater than 0.");
         }
@@ -145,7 +223,7 @@ function validatePuchaseForm() {
             $('#txtPurcRepair').parents('.row').find('.field-validation-error').text("");
         }
 
-        if ($('#ddlPayMode').select2('val') == "0") {
+        if (categoryText != "Adjustment" && $('#ddlPayMode').select2('val') == "0") {
             errorCount++;
             $('#ddlPayMode').parents('.row').find('.field-validation-error').text("Payment Mode is required.");
         }
@@ -153,7 +231,7 @@ function validatePuchaseForm() {
             $('#ddlPayMode').parents('.row').find('.field-validation-error').text("");
         }
 
-        if ($('#txtBuyLead').val() == "") {
+        if (categoryText != "Adjustment" && $('#txtBuyLead').val() == "") {
             errorCount++;
             $('#txtBuyLead').parents('.row').find('.field-validation-error').text("Buying Lead is required.");
         }
@@ -224,7 +302,7 @@ function savePurchase() {
                     success: function (response) {
 
                         if (response == "Success") {
-                            SuccessToast("Purchase created successfully.");
+                            location.href = "/Purchase/Index";
                             clearPurchaseForm();
                         }
                         else if (response == "Failed") {
@@ -290,7 +368,28 @@ function clearPurchaseForm() {
         $('#ddlPayMode').select2('val',"0");
         $('#txtBuyLead').val("");
     } catch (e) {
+        console.log(e);
+    }
+}
 
+function clearSalesForm() {
+    try {
+        $('#txtSrNo').val("");
+        $('#txtCategory').val("");
+        $('#txtBrand').val("");
+        $('#txtModel').val("");
+        $('#txtSpecs').val("");
+        $('#txtQuantity').val("");
+        $('#txtSellDate').val("");
+        $('#txtSellingPrice').val("");
+        $('#txtSellQuantity').val("");
+        $('#ddlPayMode').select2('val', "0");
+        $('#txtSellLead').val("");
+        $('#txtCustomerName').val("");
+        $('#txtContactNo').val("");
+        $('#txtLoaction').val("");
+    } catch (e) {
+        console.log(e);
     }
 }
 
@@ -407,7 +506,7 @@ function validateSalesForm() {
             $('#txtContactNo').parents('.row').find('.field-validation-error').text("");
         }
 
-        if ($('#ddlLoaction').select2('val') == "0") {
+        if ($('#ddlLoaction').val() == "") {
             errorCount++;
             $('#ddlLoaction').parents('.row').find('.field-validation-error').text("Loaction is required.");
         }
@@ -438,6 +537,45 @@ function validateSalesForm() {
 function saveSales() {
     try {
 
+        var hdnSalesId = $('#hdnSalesId').val();
+
+
+        var form = $("#frmSales");
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        if (hdnSalesId == undefined) {
+
+            $.ajax({
+                type: "POST",
+                url: '/Sales/SaveSales',
+                data: { __RequestVerificationToken: token },
+                dataType: "json",
+                //async: true,
+                success: function (response) {
+
+                    if (response == "Success") {
+                        SuccessToast("Sales created successfully.");
+                        setTimeout(function () {
+                            location.href = "/Sales/Index";
+                        }, 2000);
+                    }
+                    else if (response == "Failed") {
+                        ErrorToast("Error in saving sales.");
+                    }
+                },
+                error: function (e) {
+                    ErrorToast("Something wen wrong!");
+                }
+            });
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function updateSales() {
+    try {
+
         if (!validateSalesForm()) {
             return false;
         }
@@ -451,7 +589,7 @@ function saveSales() {
             var sellingLead = $('#txtSellLead').val();
             var customerName = $('#txtCustomerName').val();
             var contactNo = $('#txtContactNo').val();
-            var locationId = parseInt($('#ddlLoaction').select2('val'));
+            var locationName = $('#txtLoaction').val();
             var billNo = $('#txtBillNo').val();
 
             var hdnSalesId = $('#hdnSalesId').val();
@@ -466,37 +604,14 @@ function saveSales() {
                 sellingLead: sellingLead,
                 customerName: customerName,
                 contactNo: contactNo,
-                locationId: locationId,
+                locationName: locationName,
                 billNo: billNo
             }
 
             var form = $("#frmSales");
             var token = $('input[name="__RequestVerificationToken"]', form).val();
 
-            if (hdnSalesId == undefined) {
-
-                $.ajax({
-                    type: "POST",
-                    url: '/Sales/SaveSales',
-                    data: { __RequestVerificationToken: token, salesModel: model },
-                    dataType: "json",
-                    //async: true,
-                    success: function (response) {
-
-                        if (response == "Success") {
-                            SuccessToast("Sales created successfully.");
-                            clearPurchaseForm();
-                        }
-                        else if (response == "Failed") {
-                            ErrorToast("Error in saving sales.");
-                        }
-                    },
-                    error: function (e) {
-                        ErrorToast("Something wen wrong!");
-                    }
-                });
-            }
-            else if (hdnSalesId != undefined && hdnSalesId > 0) {
+            if (hdnSalesId != undefined && hdnSalesId > 0) {
 
                 model.salesId = hdnSalesId;
                 model.purchaseId = null;
@@ -532,6 +647,222 @@ function saveSales() {
     }
 }
 
+function saveTempSales() {
+    try {
+
+        if (!validateSalesForm()) {
+            return false;
+        }
+        else {
+            var hdnPurchaseId = $('#hdnPurchaseId').val();
+            var serialNo = $('#txtSrNo').val();
+            var sellingDate = $('#txtSellDate').val();
+            var sellingPrice = parseFloat($('#txtSellingPrice').val());
+            var sellingQuantity = parseInt($('#txtSellQuantity').val());
+            var paymentModeId = parseInt($('#ddlPayMode').select2('val'));
+            var sellingLead = $('#txtSellLead').val();
+            var customerName = $('#txtCustomerName').val();
+            var contactNo = $('#txtContactNo').val();
+            var locationName = $('#txtLoaction').val();
+            var billNo = $('#txtBillNo').val();
+
+            var hdnSalesId = $('#hdnSalesId').val();
+
+            var model = {
+                purchaseId: hdnPurchaseId,
+                serialNo: serialNo,
+                sellingDate: sellingDate,
+                sellingPrice: sellingPrice,
+                sellingQuantity: sellingQuantity,
+                paymentModeId: paymentModeId,
+                sellingLead: sellingLead,
+                customerName: customerName,
+                contactNo: contactNo,
+                location: locationName,
+                billNo: billNo
+            }
+
+            var form = $("#frmSales");
+            var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+            if (hdnSalesId == undefined) {
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Sales/SaveTempSales',
+                    data: { __RequestVerificationToken: token, tempSalesModel: model },
+                    dataType: "json",
+                    //async: true,
+                    success: function (response) {
+
+                        if (response == "Success") {
+                            SuccessToast("Sales temporory entry added.");
+                            clearSalesForm();
+                            location.reload();
+                        }
+                        else if (response == "Failed") {
+                            ErrorToast("Error in adding temporory sales.");
+                        }
+                    },
+                    error: function (e) {
+                        ErrorToast("Something wen wrong!");
+                    }
+                });
+            }
+            else if (hdnSalesId != undefined && hdnSalesId > 0) {
+
+                model.salesId = hdnSalesId;
+                model.purchaseId = null;
+                model.sellingQuantity = null;
+
+                $.ajax({
+                    type: "POST",
+                    url: '/Sales/UpdateTempSales',
+                    data: { __RequestVerificationToken: token, tempSalesModel: model },
+                    dataType: "json",
+                    success: function (response) {
+
+                        if (response == "Success") {
+                            SuccessToast("Sales temporory entry updated.");
+                            clearSalesForm();
+                            location.reload();
+
+                        }
+                        else if (response == "Failed") {
+                            ErrorToast("Error in saving sales.");
+                        }
+                    },
+                    error: function (e) {
+                        ErrorToast("Something wen wrong!");
+                    }
+                });
+            }
+        }
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function EditTempSales(id) {
+    try {
+
+        var form = $("#frmSales");
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        $.ajax({
+            type: "GET",
+            url: '/Sales/GetTempSalesEdit',
+            data: { __RequestVerificationToken: token, Id: id },
+            dataType: "json",
+            success: function (response) {
+                if (response != null) {
+
+                    var modal = new bootstrap.Modal('#tempSalesEditModel', {
+                        backdrop: 'static',
+                        keyboard: false
+                    })
+                    modal.show();
+
+                    $('#txtSrNoTemp').val(response.serialNo);
+                    $('#txtPurchaseDateTemp').val(response.purchaseDate);
+                    $('#txtCategoryTemp').val(response.categoryName);
+                    $('#txtBrandTemp').val(response.brandName);
+                    $('#txtModelTemp').val(response.model);
+                    $('#txtSpecsTemp').val(response.specifications);
+                    $('#txtQuantityTemp').val(response.quantity);
+                    $('#txtSellDateTemp').val(localDateFormat(response.sellingDate,"dd/mm/yyyy"));
+                    $('#txtSellingPriceTemp').val(response.sellingPrice);
+                    $('#txtSellQuantityTemp').val(response.sellingQuantity);
+                    $('#ddlPayModeTemp').select2('val', response.paymentModeId.toString());
+                    $('#txtSellLeadTemp').val(response.sellingLead);
+                    $('#txtCustomerNameTemp').val(response.customerName);
+                    $('#txtContactNoTemp').val(response.contactNo);
+                    $('#txtLoactionTemp').val(response.location);
+                    $('#txtBillNoTemp').val(response.billNo);
+                    $('#hdnPurchaseIdTemp').val(response.purchaseId);
+                    getPurchaseRecordInTempSales(response.purchaseId);
+
+                    $('#txtSellDateTemp').datepicker({
+                        format: 'dd/mm/yyyy',
+                        endDate: '+1d',
+                        maxDate: 'today',
+                        autoclose: true,
+                        todayHighlight: true,
+                        todayBtn: true,
+                        clearBtn: true
+                    });
+                }
+            },
+            error: function (e) {
+                ErrorToast("Something wen wrong!");
+            }
+        });
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function getPurchaseRecordInTempSales(purchaseId) {
+    try {
+
+        var form = $("#frmTempSales");
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        $.ajax({
+            type: "GET",
+            url: '/Purchase/GetPurchaseById',
+            data: { __RequestVerificationToken: token, purchaseId: purchaseId },
+            dataType: "json",
+            success: function (response) {
+                if (response != null) {
+                    $('#txtSrNoTemp').val(response.serialNo);
+                    $('#txtCategoryTemp').val(response.categoryName);
+                    $('#txtBrandTemp').val(response.brandName);
+                    $('#txtModelTemp').val(response.model);
+                    $('#txtSpecsTemp').val(response.specifications);
+                    $('#txtQuantityTemp').val(response.quantity);
+                }
+            },
+            error: function (e) {
+                ErrorToast("Something wen wrong!");
+            }
+        });
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function DeleteTempSales(id) {
+    try {
+
+        var form = $("#frmTempSales");
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        $.ajax({
+            type: "POST",
+            url: '/Sales/TempSalesDelete',
+            data: { __RequestVerificationToken: token, Id: id },
+            dataType: "json",
+            success: function (response) {
+                if (response != null) {
+
+                    $('#tempSalesEditModel').modal("hide");
+
+                    location.href = "/Sales/Create";
+                }
+            },
+            error: function (e) {
+                ErrorToast("Something wen wrong!");
+            }
+        });
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 function callRawData() {
     try {
 
@@ -547,6 +878,7 @@ function callRawData() {
             $('#tblRawData').DataTable().destroy();
         }
 
+        $('#tblRawData thead tr').css("height","40px")
         table = $('#tblRawData').DataTable({
             scrollX: true,
             scrollY: 360,
@@ -555,16 +887,22 @@ function callRawData() {
             processing: true,
             serverSide: true,
             pageLength: 10,
-            "paging": true,
-            "ajax": {
+            paging: true,
+            ajax: {
                 "url": "/Inventory/GetRawData",
-                "data": {
-                    dateRange: dateRange
+                "data": function (d) {
+                    d.dateRange = dateRange,
+                        $('.column-search').each(function (index) {
+                        var input = $(this);
+                        if (input.length) {
+                            d.columns[index].search.value = input.val();
+                        }
+                    })
                 },
                 "type": "POST",
                 "datatype": "json"
             },
-            "columns": [
+            columns: [
                 { "data": "serialNo", "title": "Serial No" },
                 {
                     "data": "purchaseDate", "title": "Purchase Date", render: function (data, type, row) {
@@ -722,7 +1060,7 @@ function callRawData() {
                 { targets: 25, className: 'text-nowrap' },
                 { targets: 26, className: 'text-nowrap' }
             ],
-            "fnRowCallback": function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                 if (aData["sellingQuantity"] > 0) {
                     for (let i = 13; i <= 27; i++) {
                         $(nRow.children[i]).addClass('bg-sales');
@@ -734,9 +1072,38 @@ function callRawData() {
                 } else if (aData["loss"] > 0) {
                     $(nRow.children[17]).addClass('bg-loss');
                 }
+
             }
         });
 
+        // Apply the search
+      
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function getSalesSummary(transactionType, locationId, month, year) {
+    try {
+
+        var form = $("#frmSummery");
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        $.ajax({
+            type: "POST",
+            url: '/Inventory/GetSummayData',
+            data: { __RequestVerificationToken: token, TransactionType: transactionType, locationId: locationId, month: getMonthNumber(month), year: year },
+            //dataType: "html",
+            success: function (response) {
+                if (response != null) {
+                    $('#divSummaryData').html(response);
+                }
+            },
+            error: function (e) {
+                ErrorToast("Something wen wrong!");
+            }
+        });
     } catch (e) {
         console.log(e);
     }

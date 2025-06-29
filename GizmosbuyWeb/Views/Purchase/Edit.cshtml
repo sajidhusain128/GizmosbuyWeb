@@ -19,8 +19,7 @@
     <div class="page-body">
         @using (Html.BeginForm("Create", "Purchase", FormMethod.Post, new { id = "frmPurchase" }))
         {
-            @Html.AntiForgeryToken()
-            ;
+            @Html.AntiForgeryToken();
             <input type="hidden" asp-for="PurchaseId" id="hdnPurchaseId" />
 
             <div class="form-group">
@@ -258,6 +257,22 @@
             });
 
             $('#ddlCategory,#ddlBrand,#ddlPayMode').select2();
+
+
+            var category = $('#ddlCategory').select2('data')[0];
+            if (category.text == "Adjustment") {
+                $('#ddlBrand').select2('val', "0");
+                $('#ddlBrand').prop("disabled", true);
+                $('#txtModel').attr("readonly", "readonly");
+                $('#txtModel').val("");
+                $('#txtUpgrade').attr("readonly", "readonly");
+                $('#txtUpgrade').val("");
+                $('#ddlPayMode').select2('val', "0");
+                $('#ddlPayMode').prop("disabled", true);
+                $('#txtBuyLead').attr("readonly", "readonly");
+                $('#txtBuyLead').val("");
+            }
+
         });
     </script>
 }

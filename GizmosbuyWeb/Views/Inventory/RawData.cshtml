@@ -64,7 +64,18 @@
                     <tr>
                         <th></th>
                     </tr>
+                    
                 </thead>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                    </tr>
+                </tfoot>
+               @*  <thead class="filter-head">
+                    <tr >
+                        <th></th>
+                    </tr>
+                </thead> *@
                 <tbody>
                     <tr>
                         <td></td>
@@ -88,7 +99,7 @@
             $('#txtEndDate').val(localDateFormat(curDateMonth, 'dd/mm/yyyy'));
 
             var prvDateMonth = new Date(curDateMonth.getFullYear(), curDateMonth.getMonth() - 1, curDateMonth.getDate());
-            debugger;
+        
             $('#txtStartDate').val(localDateFormat(prvDateMonth, 'dd/mm/yyyy'));
 
             $('#txtStartDate').datepicker({

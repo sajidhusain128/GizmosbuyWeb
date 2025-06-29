@@ -217,3 +217,10 @@
         .datepicker-centuries table tfoot .clear:hover {
             color: #000000;
         }
+
+        .datepicker-months table tbody tr td span.month.active,
+        .datepicker-months table tbody tr td span.month.active:hover
+        .datepicker-years table tbody tr td span.year.active,
+        .datepicker-years table tbody tr td span.year.active:hover {
+            background-color: #047716 !important;
+        }

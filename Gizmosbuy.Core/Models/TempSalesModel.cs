@@ -2,13 +2,16 @@
 
 namespace Gizmosbuy.Core.Models
 {
-    public class SalesModel : PurchaseModel, ISalesModel
+    public class TempSalesModel : PurchaseModel, ITempSalesModel
     {
-        public int SalesId { get; set; }
+        public int TempSalesId { get; set; }
+
+        public new int PurchaseId { get; set; }
 
         public DateTime? SellingDate { get; set; }
 
         public decimal? SellingPrice { get; set; }
+
         public int? SellingQuantity { get; set; }
 
         public new int? PaymentModeId { get; set; }
@@ -19,10 +22,18 @@ namespace Gizmosbuy.Core.Models
 
         public long? ContactNo { get; set; }
 
-        public int? LocationId { get; set; }
-
-        public string LocationName { get; set; }
+        public string Location { get; set; }
 
         public string BillNo { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        public string ModifiedBy { get; set; }
+
+        public DateTime? ModifiedDate { get; set; }
+
+        public int? UserId { get; set; }
     }
 }

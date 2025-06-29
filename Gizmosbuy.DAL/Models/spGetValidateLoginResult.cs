@@ -8,14 +8,16 @@ namespace Gizmosbuy.DAL.Models
 {
     public partial class spGetValidateLoginResult
     {
-        [StringLength(100)]
+        public int UserID { get; set; }
+        [StringLength(50)]
         public string UserName { get; set; }
-        [StringLength(500)]
+        [StringLength(50)]
         public string Email { get; set; }
-        [StringLength(100)]
+        [StringLength(50)]
         public string FirstName { get; set; }
-        [StringLength(100)]
+        [StringLength(20)]
         public string UserRole { get; set; }
+        public int? LocationID { get; set; }
         [StringLength(100)]
         public string Location { get; set; }
     }

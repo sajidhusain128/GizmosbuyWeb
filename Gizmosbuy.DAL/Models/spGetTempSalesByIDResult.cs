@@ -6,9 +6,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Gizmosbuy.DAL.Models
 {
-    public partial class spGetSalesByIDResult
+    public partial class spGetTempSalesByIDResult
     {
-        public int SalesID { get; set; }
+        public int TempSalesID { get; set; }
         [StringLength(100)]
         public string SerialNo { get; set; }
         public int? CategoryID { get; set; }
@@ -21,7 +21,6 @@ namespace Gizmosbuy.DAL.Models
         public string Model { get; set; }
         [StringLength(1000)]
         public string Specifications { get; set; }
-        public int? Quantity { get; set; }
         public int? SellingQuantity { get; set; }
         public DateTime? SellingDate { get; set; }
         [Column("SellingPrice", TypeName = "money")]
@@ -38,5 +37,6 @@ namespace Gizmosbuy.DAL.Models
         public string BillNo { get; set; }
         [StringLength(100)]
         public string SellingLead { get; set; }
+        public int PurchaseID { get; set; }
     }
 }

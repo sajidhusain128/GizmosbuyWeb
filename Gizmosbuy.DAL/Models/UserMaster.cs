@@ -20,4 +20,6 @@ public partial class UserMaster
     public string UserRole { get; set; }
 
     public int? LocationId { get; set; }
+
+    public virtual LocationMaster Location { get; set; }
 }

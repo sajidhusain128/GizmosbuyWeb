@@ -1,0 +1,40 @@
+﻿@using Gizmosbuy.Core.Interfaces
+@using Gizmosbuy.Core.Models
+@model List<Gizmosbuy.Core.Interfaces.IPurchaseSummaryModel>
+@{
+    ViewBag.Title = "_PurchaseSummaryPartial";
+}
+
+<h6 style="font-weight:bold">Inventory Report</h6>
+<div class="custom-table table table-bordered table-responsive table-sm table-striped">
+    <table id="lblSummery" class="">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Purchase Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                    var str = item.CategoryName.Contains("Total") ? "font-weight:bold" : "";
+
+                    <tr style="@str">
+                        <td>@item.CategoryName</td>
+                        <td align="right">@item.Quantity</td>
+                        <td align="right">@Math.Round(item.PurchaseAmount,2)</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" align="center"> Record not found</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

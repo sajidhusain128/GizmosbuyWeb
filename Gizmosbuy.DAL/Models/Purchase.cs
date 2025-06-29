@@ -33,13 +33,15 @@ public partial class Purchase
 
     public string BuyingLead { get; set; }
 
-    public string CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 
-    public string ModifiedBy { get; set; }
+    public int? ModifiedBy { get; set; }
 
     public DateTime? ModifiedDate { get; set; }
 
     public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
+
+    public virtual ICollection<TempSale> TempSales { get; set; } = new List<TempSale>();
 }

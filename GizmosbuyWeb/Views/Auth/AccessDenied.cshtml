@@ -36,7 +36,7 @@
       justify-content: center;
       align-items: center;
       /* background: linear-gradient(to bottom right, #EEE, #AAA); */
-        background-color: rgb(248 183 57 / 50%);
+       /*  background-color: rgb(248 183 57 / 50%); */
     }
 
         .body h3{
@@ -125,3 +125,27 @@
     }
 
 </style>
+
+@section Scripts {
+
+    <script src="@Url.Content("~/js/scripts.js")" asp-append-version="true"></script>
+
+    <script>
+        $(document).ready( function () {
+            var interval = 0;
+            //$('.body h3').css("text-shadow","0px 0px 10px rgba(240,160,0,1)");
+            setInterval(function(){
+                if(interval == 0){
+                    $('.body h3').css("text-shadow","0px 0px 10px rgba(240,160,0,1)");
+                    interval = 1;
+                }
+                else{
+                    $('.body h3').css("text-shadow","");
+                    interval = 0;
+                }
+
+            },500)
+
+        });
+    </script>
+}

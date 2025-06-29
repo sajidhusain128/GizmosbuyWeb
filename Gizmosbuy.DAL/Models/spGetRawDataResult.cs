@@ -47,7 +47,7 @@ namespace Gizmosbuy.DAL.Models
         public string SellingLead { get; set; }
         [StringLength(100)]
         public string CustomerName { get; set; }
-        public int? ContactNo { get; set; }
+        public long? ContactNo { get; set; }
         [StringLength(100)]
         public string Location { get; set; }
         [StringLength(50)]
@@ -55,5 +55,6 @@ namespace Gizmosbuy.DAL.Models
         [StringLength(3)]
         public string SellMonth { get; set; }
         public int? SellYear { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }

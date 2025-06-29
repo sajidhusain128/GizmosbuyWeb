@@ -48,27 +48,46 @@ namespace Gizmosbuy.Web.Controllers
             catch (Exception)
             {
                 throw;
-            }   
+            }
         }
 
 
         [CustomAuthorize]
         public async Task<IActionResult> Summary()
         {
-            List<ILocationModel> locationModel = await _commonBL.GetAllLocations();
-
-            if (locationModel != null && locationModel.Count > 0)
+            try
             {
-                locationModel.Insert(0, new LocationModel { LocationId = 0, LocationName = "Select Payment Mode" });
-                ViewBag.LocationModel = locationModel;
-            }
-            else
-            {
-                locationModel = new List<ILocationModel> { new LocationModel { LocationId = 0, LocationName = "Select Payment Mode" } };
-                ViewBag.LocationModel = locationModel;
-            }
+                string RoleName = HttpContext.Session.GetString("Role");
 
-            return View();
+                List<ILocationModel> locationModel = await _commonBL.GetAllLocations();
+
+                if (locationModel != null && locationModel.Count > 0)
+                {
+                    //locationModel.Insert(0, new LocationModel { LocationId = 0, LocationName = "Select Location" });
+                    ViewBag.LocationModel = locationModel;
+                }
+                else
+                {
+                    //locationModel = new List<ILocationModel> { new LocationModel { LocationId = 0, LocationName = "Select Location" } };
+                    ViewBag.LocationModel = locationModel;
+                }
+
+                if (RoleName == "Admin")
+                {
+                    string location = HttpContext.Session.GetString("Location");
+                    ViewBag.defaultLocationValue = location;
+
+                    int locationId = Convert.ToInt32(HttpContext.Session.GetString("LocationId"));
+                    ViewBag.defaultLocationId= locationId.ToString();
+                }
+
+                return View();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
 
         //[HttpPost]
@@ -89,6 +108,45 @@ namespace Gizmosbuy.Web.Controllers
         public IActionResult PurchaseEntry()
         {
             return View();
+        }
+
+        [HttpPost]
+        [CustomAuthorize]
+        public async Task<IActionResult> GetSummayData(string transactionType, int locationId, int month, int year)
+        {
+            try
+            {
+                
+
+                if (transactionType == "Sales")
+                {
+                    var result = await _inventoryBL.GetSalesSummaryData(locationId, month, year);
+
+                    if (result == null)
+                    {
+                        result = new List<ISalesSummaryModel>();
+                    }
+
+                    return PartialView("_SalesSummaryPartial", result);
+                }
+                else if (transactionType == "Purchase")
+                {
+                    var result = await _inventoryBL.GetPurchaseSummaryData(locationId, month, year);
+
+                    if (result == null)
+                    {
+                        result = new List<IPurchaseSummaryModel>();
+                    }
+
+                    return PartialView("_PurchaseSummaryPartial", result);
+                }
+
+                return PartialView(null, null);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

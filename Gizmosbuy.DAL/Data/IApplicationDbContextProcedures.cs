@@ -14,11 +14,15 @@ namespace Gizmosbuy.DAL.Data
     public partial interface IApplicationDbContextProcedures
     {
         Task<List<spGetPurchaseByIDResult>> spGetPurchaseByIDAsync(int? purchaseID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<spGetPurchaseListResult>> spGetPurchaseListAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<spGetRawDataResult>> spGetRawDataAsync(DateOnly? startDate, DateOnly? endDate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<spGetPurchaseListResult>> spGetPurchaseListAsync(int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<spGetPurchaseSummaryDataResult>> spGetPurchaseSummaryDataAsync(int? locationId, int? month, int? year, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<spGetRawDataResult>> spGetRawDataAsync(string startDate, string endDate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetSalesByIDResult>> spGetSalesByIDAsync(int? salesID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetSalesListResult>> spGetSalesListAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<spGetSalesSummaryDataResult>> spGetSalesSummaryDataAsync(int? locationId, int? month, int? year, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<spGetTempSalesByIDResult>> spGetTempSalesByIDAsync(int? tempSalesID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<spGetTempSalesListResult>> spGetTempSalesListAsync(int? userId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetValidateLoginResult>> spGetValidateLoginAsync(string userName, string password, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<int> spSaveSalesAsync(int? salesID, int? purchaseID, DateTime? sellingDate, decimal? sellingPrice, int? sellingQuantity, int? paymentModeID, string sellingLead, string customerName, int? contactNo, int? locationID, string billNo, string createdBy, DateTime? createdDate, string modifiedBy, DateTime? modifiedDate, string actionType, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<int> spSaveSalesAsync(int? salesID, int? purchaseID, DateTime? sellingDate, decimal? sellingPrice, int? sellingQuantity, int? paymentModeID, string sellingLead, string customerName, long? contactNo, string location, string billNo, int? createdBy, DateTime? createdDate, int? modifiedBy, DateTime? modifiedDate, string actionType, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
     }
 }

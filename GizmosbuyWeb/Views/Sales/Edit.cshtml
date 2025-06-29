@@ -226,10 +226,10 @@
                 <div class="col-md-12 mb-2">
                     <div class="row align-items-center">
                         <div class="col-md-2">
-                            <label for="ddlLoaction" class="col-form-label">Location:</label>
+                            <label for="txtLoaction" class="col-form-label">Location:</label>
                         </div>
                         <div class="col-md-4">
-                            @Html.DropDownListFor(Model => Model.LocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlLoaction", @class = "form-select" })
+                            <input type="text" id="txtLoaction" class="form-control" asp-for="LocationName" autocomplete="off">
                         </div>
                         <div class="col-auto">
                             <span class="field-validation-error"></span>
@@ -284,7 +284,7 @@
                 clearBtn: true
             });
 
-            $('#ddlCategory,#ddlBrand,#ddlPayMode,#ddlLoaction').select2();
+            $('#ddlCategory,#ddlBrand,#ddlPayMode').select2();
 
             // $("#txtSrNo").devbridgeAutocomplete({
             //     serviceUrl: "/Purchase/GetAutoCompleteSerialNo",

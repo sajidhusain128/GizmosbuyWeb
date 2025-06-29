@@ -10,83 +10,96 @@
         <h3></h3>
     </div>
     <div class="page-body">
+        @using (Html.BeginForm("Summary", "Inventory", FormMethod.Post, new { id = "frmSummery" }))
+        {
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <h6 class="col-md-12" style="font-weight:bold">Search Report :</h6>
+                        <div class="form-group">
+                            <div class="col-md-12 mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <label for="ddlLoaction" class="col-form-label">Store:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        @{ 
+                                            //var isDisabled = ViewBag.defaultValue != null ? "disabled" : "";
+                                        }
+                                        @Html.DropDownListFor(Model => Model.LocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlLoaction", @class = "form-select" })
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="field-validation-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <label for="ddlStatus" class="col-form-label">Stock Year:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        @{
+                                            var list = new List<SelectListItem>
+                                            {
+                                            new SelectListItem{ Text="Sold", Value = "Sales" ,Selected = true},
+                                            new SelectListItem{ Text="Pending", Value = "Purchase" },
+                                            };
+                                        }
 
-        <div class="form-group">
-
-            <div class="col-md-12 mb-2">
-                <div class="row align-items-center">
-                    <div class="col-md-2">
-                        <label for="ddlLoaction" class="col-form-label">Store:</label>
+                                        @Html.DropDownListFor(Model => Model.Status, list, null, new { id = "ddlStatus", @class = "form-select" })
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="field-validation-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <label for="txtSellYear" class="col-form-label">Sell Year:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" id="txtSellYear" class="form-control" placeholder="Year" maxlength="4" autocomplete="off" onkeydown="return false">
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="field-validation-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                        <label for="txtSellMonth" class="col-form-label">Sell Month:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" id="txtSellMonth" class="form-control" placeholder="Month" maxlength="3" autocomplete="off" onkeydown="return false">
+                                    </div>
+                                    <div class="col-auto">
+                                        <span class="field-validation-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn btn-custom " id="btnSearchSummary"><i class="fas fa-search"></i> Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        @Html.DropDownListFor(Model => Model.LocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlLoaction", @class = "form-select" })
-                    </div>
-                    <div class="col-auto">
-                        <span class="field-validation-error"></span>
+                    <div class="col-md-6 col-sm-12">
+                        <div class="row">
+                            <div id="divSummaryData">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-12 mb-2">
-                <div class="row align-items-center">
-                    <div class="col-md-2">
-                        <label for="ddlStatus" class="col-form-label">Stock Year:</label>
-                    </div>
-                    <div class="col-md-4">
-                        @{
-                            var list = new List<SelectListItem>
-                        {
-                        new SelectListItem{ Text="Sold", Value = "Sold" ,Selected = true},
-                        new SelectListItem{ Text="Pending", Value = "Pending" },
-                        };
-                        }
-                        
-                        @Html.DropDownListFor(Model => Model.Status, list, null, new { id = "ddlStatus", @class = "form-select" })
-                    </div>
-                    <div class="col-auto">
-                        <span class="field-validation-error"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-12 mb-2">
-                <div class="row align-items-center">
-                    <div class="col-md-2">
-                        <label for="txtSellYear" class="col-form-label">Sell Year:</label>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="text" id="txtSellYear" class="form-control" placeholder="Year" maxlength="4" autocomplete="off" onkeydown="return false">
-                    </div>
-                    <div class="col-auto">
-                        <span class="field-validation-error"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-12 mb-2">
-                <div class="row align-items-center">
-                    <div class="col-md-2">
-                        <label for="txtSellMonth" class="col-form-label">Sell Month:</label>
-                    </div>
-                    <div class="col-md-4">
-                        <input type="text" id="txtSellMonth" class="form-control" placeholder="Month" maxlength="3" autocomplete="off" onkeydown="return false">
-                    </div>
-                    <div class="col-auto">
-                        <span class="field-validation-error"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-12 mb-2">
-                <div class="row align-items-center">
-                    <div class="col-md-2">
-                    </div>
-                    <div class="col-md-4">
-                        <button type="button" class="btn btn-custom " id="btnSearchSummary"><i class="fas fa-search"></i> Search</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        }
     </div>
 </div>
 
@@ -110,7 +123,11 @@
                 autoclose: true,
                 todayHighlight: true,
                 clearBtn: true
-            });
+            }).datepicker("setDate",geMonthFromDate(new Date().getFullYear()));
+
+            // var today = new Date();
+            // var currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            // console.log(currentMonth);
 
             $('#txtSellMonth').datepicker({
                 format: "MM",
@@ -119,12 +136,26 @@
                 autoclose: true,
                 todayHighlight: true,
                 clearBtn: true
-            });
+            }).datepicker("setDate",geMonthFromDate(new Date()));
 
             $('#ddlLoaction,#ddlStatus').select2();
 
-            $('#txtSellYear').val(new Date().getFullYear());
-            $('#txtSellMonth').val(geMonthFromDate(new Date()));
+            var ddlVal = '@ViewBag.defaultLocationId';
+      
+            if(ddlVal != null && ddlVal != ""){
+                $('#ddlLoaction').select2('val', ddlVal);
+                $("#ddlLoaction").prop("disabled", true);
+            }
+            else{
+                $("#ddlLoaction").prop("disabled", false);
+            }
+            // setTimeout(function(){
+            //     $('#txtSellYear').val(new Date().getFullYear());
+            //     $('#txtSellMonth').val(geMonthFromDate(new Date()));
+            // },200);
+
+
+
         });
     </script>
 }

@@ -86,6 +86,15 @@ body {
 
 }
 
+@media (max-width: 991.98px) {
+    .navbar-collapse ul.nav {
+        box-shadow: rgba(0, 0, 0, 0.24) 0px -1px 8px;
+        background-color: #08a321;
+        position: relative;
+        top: 12px;
+    }
+}
+
 @media (min-width: 768px) {
     html {
     font-size: 16px;
@@ -192,6 +201,9 @@ body {
             top:unset;
             right:unset;
         }
+
+
+
 }
 
 @media (min-width: 992px) {
@@ -508,6 +520,10 @@ body {
 .color-info {
     color: #17a2b8;
 }
+
+.color-danger {
+    color: red;
+}
 .custom-link-btn:hover i {
     color: #f8b739;
 }
@@ -554,4 +570,36 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.btn.disabled {
+    filter: opacity(0.7);
+    border-color:transparent;
+}
+
+/* Model styles */
+
+.modal .modal-dialog .modal-content,
+.modal .modal-dialog .modal-content .modal-header {
+    border-radius: 0px;
+}
+
+.modal .modal-dialog .modal-content .modal-header {
+    background-color: #08a321;
+}
+
+    .modal .modal-dialog .modal-content .modal-header .modal-title {
+        color: white;
+        font-weight:bold;
+    }
+
+.custom-table table{
+    width:100%
+}
+
+.custom-table table thead th {
+    border-bottom: 2px solid #047716;
+    background-color: #08a321;
+    color: #ffffff;
+    padding: 10px;
 }

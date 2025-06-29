@@ -52,10 +52,12 @@ namespace GizmosbuyWeb.Controllers
         private void SetSession(IUserModel user, string token)
         {
             HttpContext.Session.SetString("JWToken", token);
+            HttpContext.Session.SetString("UserId", user.UserId.ToString());
             HttpContext.Session.SetString("UserName", user.UserName);
             HttpContext.Session.SetString("Email", user.Email);
             HttpContext.Session.SetString("Role", user.UserRole);
             HttpContext.Session.SetString("Location", user.Location);
+            HttpContext.Session.SetString("LocationId", user.locationId.ToString());
         }
 
         // Generate JWT Token

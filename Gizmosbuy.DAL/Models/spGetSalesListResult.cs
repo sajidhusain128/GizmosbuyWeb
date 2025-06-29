@@ -27,9 +27,9 @@ namespace Gizmosbuy.DAL.Models
         public string PaymentModeName { get; set; }
         [StringLength(100)]
         public string CustomerName { get; set; }
-        public int? ContactNo { get; set; }
+        public long? ContactNo { get; set; }
         [StringLength(100)]
-        public string LocationName { get; set; }
+        public string Location { get; set; }
         [StringLength(50)]
         public string BillNo { get; set; }
         [StringLength(100)]

@@ -213,11 +213,11 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [CustomAuthorize]
-        public async Task<IActionResult> GetAutoCompleteSerialNo(string serailNo)
+        public async Task<IActionResult> GetAutoCompleteSerialNo(string searchValue)
         {
             try
             {
-                var result = await _purchaseBL.GetSerialNoList(serailNo);
+                var result = await _purchaseBL.GetSerialNoList(searchValue);
 
                 return Json(result);
             }

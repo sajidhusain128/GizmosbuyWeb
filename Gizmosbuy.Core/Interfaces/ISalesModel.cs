@@ -15,7 +15,7 @@
 
         public string CustomerName { get; set; }
 
-        public int? ContactNo { get; set; }
+        public long? ContactNo { get; set; }
 
         public int? LocationId { get; set; }
 

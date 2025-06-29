@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace Gizmosbuy.DAL.Models;
 
-public partial class Sale
+public partial class TempSale
 {
-    public int SalesId { get; set; }
+    public int TempSalesId { get; set; }
 
     public int PurchaseId { get; set; }
 
@@ -37,7 +37,7 @@ public partial class Sale
 
     public DateTime? ModifiedDate { get; set; }
 
-    public virtual Purchase Purchase { get; set; }
+    public int? UserId { get; set; }
 
-    public virtual ICollection<SalesJournal> SalesJournals { get; set; } = new List<SalesJournal>();
+    public virtual Purchase Purchase { get; set; }
 }

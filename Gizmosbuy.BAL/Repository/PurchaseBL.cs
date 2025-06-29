@@ -24,7 +24,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserName = Utility.GetSessionValue("UserName", _httpContextAccessor.HttpContext);
+                string sessionUserId = Utility.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
 
                 Purchase purchaseMaster = new Purchase
                 {
@@ -40,7 +40,7 @@ namespace Gizmosbuy.BAL.Repository
                     TotalPrice = purchaseModel.TotalPrice,
                     PaymentModeId = purchaseModel.PaymentModeId,
                     BuyingLead = purchaseModel.BuyingLead,
-                    CreatedBy = sessionUserName,
+                    CreatedBy = Convert.ToInt32(sessionUserId),
                     CreatedDate = DateTime.Now
                 };
 
@@ -59,7 +59,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                var purcahseList = await _applicationDbContext.Procedures.spGetPurchaseListAsync();
+                string sessionUserId = Utility.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+
+                var purcahseList = await _applicationDbContext.Procedures.spGetPurchaseListAsync(Convert.ToInt32(sessionUserId));
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
@@ -149,7 +151,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserName = Utility.GetSessionValue("UserName", _httpContextAccessor.HttpContext);
+                string sessionUserId = Utility.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
 
                 Purchase purchase = await _applicationDbContext.Purchases.FirstAsync(x => x.PurchaseId == purchaseModel.PurchaseId);
 
@@ -166,10 +168,10 @@ namespace Gizmosbuy.BAL.Repository
                     purchase.TotalPrice = purchaseModel.TotalPrice;
                     purchase.PaymentModeId = purchaseModel.PaymentModeId;
                     purchase.BuyingLead = purchaseModel.BuyingLead;
-                    purchase.ModifiedBy = sessionUserName;
+                    purchase.ModifiedBy = Convert.ToInt32(sessionUserId);
                     purchase.ModifiedDate = DateTime.Now;
 
-                    _applicationDbContext.Purchases.Entry(purchase).State = EntityState.Modified;
+                    _applicationDbContext.Purchases.Update(purchase);
                 }
 
                 var i = await _applicationDbContext.SaveChangesAsync();
@@ -182,34 +184,39 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<List<IPurchaseModel>> GetSerialNoList(string serailNo)
+        public async Task<List<IAutoCompleteModel>> GetSerialNoList(string searchValue)
         {
             try
             {
-                List<IPurchaseModel> purchaseModelist = null;
+                List<IAutoCompleteModel> autoCompleteModelList = null;
 
-                var purcahseList = await _applicationDbContext.Purchases.Where(x => x.SerialNo.Contains(serailNo)).ToListAsync();
+                var purcahseList = await _applicationDbContext.Purchases
+                    .Join(_applicationDbContext.CategoryMasters, P => P.CategoryId, CM => CM.CategoryId, (P, CM) => new { P, CM })
+                    .Where(x => x.P.SerialNo.Contains(searchValue)
+                            || x.P.Specifications.Contains(searchValue)
+                            || x.CM.CategoryName.Contains(searchValue))
+                    .ToListAsync();
 
                 if (purcahseList == null || purcahseList.Count == 0)
                 {
-                    return await Task.FromResult(new List<IPurchaseModel>());
+                    return await Task.FromResult(new List<IAutoCompleteModel>());
                 }
 
                 if (purcahseList != null && purcahseList.Count > 0)
                 {
-                    purchaseModelist = new List<IPurchaseModel>();
+                    autoCompleteModelList = new List<IAutoCompleteModel>();
 
                     foreach (var item in purcahseList)
                     {
-                        purchaseModelist.Add(new PurchaseModel()
+                        autoCompleteModelList.Add(new AutoCompleteModel()
                         {
-                            PurchaseId = item.PurchaseId,
-                            SerialNo = item.SerialNo,
+                            ValueId = item.P.PurchaseId,
+                            Description = string.Format("[{0}] - {1} - {2}", item.P.SerialNo, item.CM.CategoryName, item.P.Specifications)
                         });
                     }
                 }
 
-                return await Task.FromResult(purchaseModelist);
+                return await Task.FromResult(autoCompleteModelList);
             }
             catch (Exception)
             {

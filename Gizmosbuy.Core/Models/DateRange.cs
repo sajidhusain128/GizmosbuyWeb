@@ -4,7 +4,7 @@ namespace Gizmosbuy.Core.Models
 {
     public class DateRange : IDateRange
     {
-        public DateOnly StartDate { get; set; }
-        public DateOnly EndDate { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
     }
 }
