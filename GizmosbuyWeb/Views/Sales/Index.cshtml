@@ -94,6 +94,11 @@
 
                         return '<a href="/Sales/Edit/' + data + '" class="custom-link-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="fas fa-edit fa-lg color-info"></i></a>';
                     }},
+                    {"data": "billNo","title":"Download",render:function (data, type, row){
+                        if(data === null) return "";
+
+                        return '<a href="/Sales/DownloadSalesReport?invoiceNo=' + data + '" class="custom-link-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="fas fa-download fa-lg color-info"></i></a>';
+                    }}
                 ],
                 columnDefs: [
                     { targets: 0,className: 'text-nowrap'},
@@ -111,7 +116,8 @@
                     { targets: 12,className: 'text-nowrap'},
                     { targets: 13,className: 'text-nowrap'},
                     { targets: 14,className: 'text-nowrap'},
-                    { targets: 15,className: 'text-nowrap text-center'}
+                    { targets: 15,className: 'text-nowrap text-center'},
+                    { targets: 16,className: 'text-nowrap text-center'}
                 ]
             });
         });

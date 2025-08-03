@@ -5,7 +5,7 @@ namespace Gizmosbuy.BAL.Interfaces
 {
     public interface ISalesBL
     {
-        Task<int> CreateSales();
+        Task<Tuple<int, string>> CreateSales();
         Task<object> GetSalesList(IPager pager);
         Task<ISalesModel> GetSalesByID(int id);
         Task<int> UpdateSales(ISalesModel salesModel);
@@ -15,5 +15,6 @@ namespace Gizmosbuy.BAL.Interfaces
         Task<ITempSalesModel> GetTempSalesByID(int id);
         Task<int> TempSalesDelete(int id);
         Task<int> UpdateTempSales(TempSalesModel tempSalesModel);
+        Task<Tuple<List<SalesDataModel>, List<SalesHeaderModel>>> GetSalesReportData(string invoiceNo);
     }
 }

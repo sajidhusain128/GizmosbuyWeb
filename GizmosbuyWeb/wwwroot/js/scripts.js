@@ -98,7 +98,7 @@ $(document).ready(function () {
                 $('#txtBuyLead').val("");
             }
             else {
-                $('#txtSrNo').val("");   
+                //$('#txtSrNo').val("");   
                 $('#ddlBrand').prop("disabled", false);
                 $('#txtModel').removeAttr("readonly");
                 $('#txtUpgrade').removeAttr("readonly");
@@ -302,8 +302,11 @@ function savePurchase() {
                     success: function (response) {
 
                         if (response == "Success") {
-                            location.href = "/Purchase/Index";
+                            SuccessToast("Purchase saved successfully.");
                             clearPurchaseForm();
+                            setTimeout(function () {
+                                location.href = "/Purchase/Index";
+                            }, 2000);
                         }
                         else if (response == "Failed") {
                             ErrorToast("Error in saving purchase.");
@@ -328,6 +331,7 @@ function savePurchase() {
 
                         if (response == "Success") {
                             SuccessToast("Purchase updated successfully.");
+                            clearPurchaseForm();
                             setTimeout(function () {
                                 location.href = "/Purchase/Index";
                             }, 2000);
@@ -553,13 +557,14 @@ function saveSales() {
                 //async: true,
                 success: function (response) {
 
-                    if (response == "Success") {
+                    if (response.item1 > 0) {
                         SuccessToast("Sales created successfully.");
+                        downloadReport(response.item2);
                         setTimeout(function () {
                             location.href = "/Sales/Index";
                         }, 2000);
                     }
-                    else if (response == "Failed") {
+                    else if (response.item1 == 0) {
                         ErrorToast("Error in saving sales.");
                     }
                 },
@@ -1104,6 +1109,36 @@ function getSalesSummary(transactionType, locationId, month, year) {
                 ErrorToast("Something wen wrong!");
             }
         });
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function downloadReport(invoiceNo) {
+    try {
+
+        $.ajax({
+            type: "GET",
+            url: '/Sales/DownloadSalesReport?invoiceNo=' + invoiceNo,
+            xhrFields: {
+                responseType: 'blob' // This tells jQuery to treat the response as a Blob
+            },
+            //async: true,
+            success: function (response) {
+
+                const url = window.URL.createObjectURL(response);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'SalesReport_' + invoiceNo + "_" + formatCustomDate(new Date(), "_");
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            },
+            error: function (e) {
+                ErrorToast("Something wen wrong!");
+            }
+        });
+
     } catch (e) {
         console.log(e);
     }

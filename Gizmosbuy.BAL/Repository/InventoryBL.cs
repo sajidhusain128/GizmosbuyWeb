@@ -29,7 +29,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (searchValue != "")
                 {
-                    mainData = rawDataResults.Where(Utility.GetSearchValue<spGetRawDataResult>(searchValue)).ToList();
+                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetRawDataResult>(searchValue)).ToList();
                 }
                 else
                 {

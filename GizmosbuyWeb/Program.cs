@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using FastReport;
+using FastReport.Export.PdfSimple;
+using FastReport.Export.PdfSimple.PdfCore;
 
 namespace GizmosbuyWeb
 {
@@ -116,6 +119,7 @@ namespace GizmosbuyWeb
                     });
             });
             builder.Services.AddMvc();
+            builder.Services.AddFastReport();
 
             //builder.Services.AddSwaggerGen(options =>
             //{
@@ -176,6 +180,25 @@ namespace GizmosbuyWeb
             //        options.RoutePrefix = "api/swagger"; // Set the Swagger UI at the root URL
             //    });
             //}
+
+            app.MapGet("/report", async context =>
+            {
+                var report = new Report();
+                report.Load("Reports/SalesReport.frx");
+                report.Prepare();
+
+                using var pdfStream = new MemoryStream();
+                var pdfExport = new PDFSimpleExport();
+                report.Export(pdfExport, pdfStream);
+                pdfStream.Position = 0;
+
+                context.Response.ContentType = "application/pdf";
+                context.Response.Headers.ContentDisposition = "attachment; filename=report.pdf";
+                await context.Response.Body.WriteAsync(pdfStream.ToArray());
+            });
+
+
+            app.UseFastReport();
 
             app.MapControllerRoute(
                 name: "default",

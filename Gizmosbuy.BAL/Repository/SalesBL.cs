@@ -20,13 +20,13 @@ namespace Gizmosbuy.BAL.Repository
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<int> CreateSales()
+        public async Task<Tuple<int, string>> CreateSales()
         {
             try
             {
                 int response = 0;
-
-                string sessionUserId = Utility.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                string invoiceNo = null;
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
 
                 var salesModels = await _applicationDbContext.TempSales.Where(x => x.UserId == Convert.ToInt32(sessionUserId)).ToListAsync();
 
@@ -34,6 +34,11 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (salesModels != null && salesModels.Count > 0)
                 {
+                    if (invoiceNo == null)
+                    {
+                        invoiceNo = salesModels.FirstOrDefault().BillNo;
+                    }
+
                     foreach (var salesModel in salesModels)
                     {
                         Sale saleMaster = new Sale
@@ -77,7 +82,7 @@ namespace Gizmosbuy.BAL.Repository
                     response = await _applicationDbContext.SaveChangesAsync();
                 }
 
-                return response;
+                return new Tuple<int, string>(response,invoiceNo);
             }
             catch (Exception)
             {
@@ -99,7 +104,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (searchValue != "")
                 {
-                    mainData = salesList.Where(Utility.GetSearchValue<spGetSalesListResult>(searchValue)).ToList();
+                    mainData = salesList.Where(Utilities.GetSearchValue<spGetSalesListResult>(searchValue)).ToList();
                 }
                 else
                 {
@@ -183,7 +188,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utility.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
 
                 Sale saleMaster = new Sale
                 {
@@ -232,7 +237,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utility.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
 
                 var salesList = await _applicationDbContext.Procedures.spGetTempSalesListAsync(Convert.ToInt32(sessionUserId));
 
@@ -242,7 +247,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (searchValue != "")
                 {
-                    mainData = salesList.Where(Utility.GetSearchValue<spGetTempSalesListResult>(searchValue)).ToList();
+                    mainData = salesList.Where(Utilities.GetSearchValue<spGetTempSalesListResult>(searchValue)).ToList();
                 }
                 else
                 {
@@ -272,8 +277,8 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionLocation = Utility.GetSessionValue("Location", _httpContextAccessor.HttpContext);
-                string prefix = Utility.GetPrefixByLocation(sessionLocation);
+                string sessionLocation = Utilities.GetSessionValue("Location", _httpContextAccessor.HttpContext);
+                string prefix = Utilities.GetPrefixByLocation(sessionLocation);
 
                 string billNo = string.Empty;
 
@@ -281,11 +286,11 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (sales != null)
                 {
-                    billNo = Utility.GenerateBillNo(prefix, sales.BillNo);
+                    billNo = Utilities.GenerateBillNo(prefix, sales.BillNo);
                 }
                 else
                 {
-                    billNo = Utility.GenerateBillNo(prefix, "");
+                    billNo = Utilities.GenerateBillNo(prefix, "");
                 }
 
                 return await Task.FromResult(billNo);
@@ -300,7 +305,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utility.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
 
                 TempSale saleTemp = new TempSale
                 {
@@ -404,7 +409,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utility.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
 
                 int response = 0;
 
@@ -430,6 +435,67 @@ namespace Gizmosbuy.BAL.Repository
                 }
 
                 return response;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<Tuple<List<SalesDataModel>, List<SalesHeaderModel>>> GetSalesReportData(string invoiceNo)
+        {
+            try
+            {
+                string TotalPriceInWord = null;
+                List<SalesDataModel> salesDatas = null;
+                var response = await _applicationDbContext.Procedures.spGetSalesReportDataAsync(invoiceNo);
+
+                if(response != null && response.Count > 0)
+                {
+                    salesDatas = new List<SalesDataModel>();
+                    foreach (var item in response)
+                    {
+                        salesDatas.Add(new SalesDataModel
+                        {
+                            RowNum = item.RowNum,
+                            SalesID = item.SalesID,
+                            CategoryName = item.CategoryName,
+                            BrandName = item.BrandName,
+                            Model = item.Model,
+                            SerialNo = item.SerialNo,
+                            Specifications = item.Specifications,
+                            SellingQuantity = item.SellingQuantity,
+                            SellingPrice = item.SellingPrice
+                        });
+                    }
+
+                    Decimal total = salesDatas.Sum(s => s.SellingPrice.Value);
+                    TotalPriceInWord = Utilities.ConvertToIndianCurrencyWords(total);
+                }
+
+                List<SalesHeaderModel> salesHeader = null;
+                var response2 = await _applicationDbContext.Procedures.spGetSalesReportHeaderAsync(invoiceNo);
+
+                if (response2 != null && response2.Count > 0)
+                {
+                    salesHeader = new List<SalesHeaderModel>();
+                    foreach (var item in response2)
+                    {
+                        salesHeader.Add(new SalesHeaderModel
+                        {
+                            CustomerName = item.CustomerName,
+                            ContactNo = item.ContactNo,
+                            Location = item.Location,
+                            InvoiceNo = item.InvoiceNo,
+                            SellingDate = item.SellingDate,
+                            SellingLead = item.SellingLead,
+                            PaymentModeName = item.PaymentModeName,
+                            TotalPriceInWord = TotalPriceInWord
+                        });
+                    }
+                }
+
+                return new Tuple<List<SalesDataModel>, List<SalesHeaderModel>>(salesDatas, salesHeader);
             }
             catch (Exception)
             {

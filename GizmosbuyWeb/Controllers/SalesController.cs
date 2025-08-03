@@ -1,19 +1,30 @@
-﻿using Gizmosbuy.BAL.Interfaces;
+﻿using System.Data;
+using FastReport.Data;
+using FastReport.Export.PdfSimple;
+using FastReport.Utils;
+using FastReport.Web;
+using Gizmosbuy.BAL.Commons;
+using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.BAL.Repository;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using GizmosbuyWeb.Filters;
 using Microsoft.AspNetCore.Mvc;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+
 
 namespace Gizmosbuy.Web.Controllers
 {
     public class SalesController : Controller
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
+
         private readonly ISalesBL _salesBL;
         private readonly ICommonBL _commonBL;
-        public SalesController(ISalesBL salesBL, ICommonBL commonBL)
+        public SalesController(IHostingEnvironment hostingEnvironment, ISalesBL salesBL, ICommonBL commonBL)
         {
+            _hostingEnvironment = hostingEnvironment;
             _salesBL = salesBL;
             _commonBL = commonBL;
         }
@@ -24,7 +35,7 @@ namespace Gizmosbuy.Web.Controllers
             return View();
         }
 
-        
+
         [HttpPost]
         [CustomAuthorize(Role.User)]
         public async Task<IActionResult> GetSalesList()
@@ -85,14 +96,14 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                int i =  await _salesBL.CreateSales();
+                var response = await _salesBL.CreateSales();
 
-                if (i > 0)
-                {
-                    return Json("Success");
-                }
+                //if (response.Item1 > 0)
+                //{
+                //    return Json("Success");
+                //}
 
-                return Json("Failed");
+                return Json(response);
             }
             catch (Exception)
             {
@@ -289,5 +300,79 @@ namespace Gizmosbuy.Web.Controllers
             }
         }
 
+        [HttpGet]
+        [CustomAuthorize]
+        public async Task<IActionResult> LoadSalesReport(string invoiceNo)
+        {
+            try
+            {
+                var response = await _salesBL.GetSalesReportData(invoiceNo);
+
+                var webReport = new WebReport();
+                webReport = GetReport(response);
+
+                return View(webReport);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        [HttpGet]
+        [CustomAuthorize]
+        public async Task<IActionResult> DownloadSalesReport(string invoiceNo)
+        {
+            try
+            {
+                var response = await _salesBL.GetSalesReportData(invoiceNo);
+
+                var webReport = new WebReport();
+                webReport = GetReport(response);
+
+                using var ms = new MemoryStream();
+                var pdfExport = new PDFSimpleExport();
+                webReport.Report.Export(pdfExport, ms);
+                ms.Position = 0;
+
+                string fileName = $"SalesReport_{invoiceNo}_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.pdf";
+
+                return File(ms.ToArray(), "application/pdf", fileName);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public WebReport GetReport(Tuple<List<SalesDataModel>, List<SalesHeaderModel>> DataEntities)
+        {
+            try
+            {
+                DataSet set = new DataSet();
+                DataTable dataTable = Utilities.CreateDataTable(DataEntities.Item1, "SalesData");
+                DataTable dataTable2 = Utilities.CreateDataTable(DataEntities.Item2, "SalesHeader");
+
+                RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
+
+                string webRootPath = _hostingEnvironment.ContentRootPath;
+                var webReport = new WebReport();
+
+                webReport.Report.RegisterData(dataTable, "SalesData");
+                webReport.Report.RegisterData(dataTable2, "SalesHeader");
+                webReport.Report.Load(Directory.GetCurrentDirectory() + "/Reports/SalesReport.frx");
+
+                webReport.Report.Prepare();
+                bool isPrepared = webReport.Report.IsPrepared;
+
+                return webReport;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

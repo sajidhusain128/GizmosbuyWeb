@@ -75,6 +75,14 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[spGetSalesReportData]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetSalesReportHeader]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[spGetSalesSummaryData]",
          "ObjectType": 1
       },

@@ -3,97 +3,118 @@
 });
 
 function numberOnly(event) {
-    var evt = event || window.event;
+    try {
+        var evt = event || window.event;
 
-    // Handle paste
-    if (evt.type === 'paste') {
-        key = event.clipboardData.getData('text/plain');
-    } else {
-        // Handle key press
-        var key = evt.keyCode || evt.which;
-        key = String.fromCharCode(key);
-    }
-    var regex = /[0-9]/;
-    if (!regex.test(key)) {
-        evt.returnValue = false;
-        if (evt.preventDefault)
-            evt.preventDefault();
-    }
+        // Handle paste
+        if (evt.type === 'paste') {
+            key = event.clipboardData.getData('text/plain');
+        } else {
+            // Handle key press
+            var key = evt.keyCode || evt.which;
+            key = String.fromCharCode(key);
+        }
+        var regex = /[0-9]/;
+        if (!regex.test(key)) {
+            evt.returnValue = false;
+            if (evt.preventDefault)
+                evt.preventDefault();
+        }
+    } catch (e) {
+        console.error(e);
+    } 
 }
 
 function isNumberDecimal(_this, event) {
-    var evt = event || window.event;
+    try {
+        var evt = event || window.event;
 
-    var charCode = 0;
-    // Handle paste
-    if (evt.type === 'paste') {
-        charCode = event.clipboardData.getData('text/plain');
-    } else {
-        // Handle key press
-        charCode = (event.which) ? event.which : event.keyCode;
-    }
-
-    evt.returnValue = true;
-    //var charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode == 46) {
-        //Check if the text already contains the . character
-        if (_this.value.indexOf('.') === -1) {
-            evt.returnValue = true;;
+        var charCode = 0;
+        // Handle paste
+        if (evt.type === 'paste') {
+            charCode = event.clipboardData.getData('text/plain');
         } else {
-            evt.returnValue = false;;
+            // Handle key press
+            charCode = (event.which) ? event.which : event.keyCode;
         }
-    } else {
-        if (charCode > 31 &&
-            (charCode < 48 || charCode > 57))
-            evt.returnValue = false;;
-    }
 
-    if (evt.preventDefault == false)
-        evt.preventDefault();
+        evt.returnValue = true;
+        //var charCode = (event.which) ? event.which : event.keyCode;
+        if (charCode == 46) {
+            //Check if the text already contains the . character
+            if (_this.value.indexOf('.') === -1) {
+                evt.returnValue = true;;
+            } else {
+                evt.returnValue = false;;
+            }
+        } else {
+            if (charCode > 31 &&
+                (charCode < 48 || charCode > 57))
+                evt.returnValue = false;;
+        }
+
+        if (evt.preventDefault == false)
+            evt.preventDefault();
+    } catch (e) {
+        console.error(e);
+    }
+    
 }
 
 function SuccessToast(message) {
-    var toastElList = [].slice.call(document.querySelectorAll('#toastSuccess'))
-    var toastList = toastElList.map(function (toastEl) {
-        $(toastEl).find('.toast-body').find('.body-text').text(message);
-        // Creates an array of toasts (it only initializes them)
-        return new bootstrap.Toast(toastEl, {
-            animation: true,
-            delay: 4000
-        }) // No need for options; use the default options
-    });
-    toastList.forEach(toast => toast.show()); // This show them
-    console.log(toastList); // Testing to see if it works
+    try {
+        var toastElList = [].slice.call(document.querySelectorAll('#toastSuccess'))
+        var toastList = toastElList.map(function (toastEl) {
+            $(toastEl).find('.toast-body').find('.body-text').text(message);
+            // Creates an array of toasts (it only initializes them)
+            return new bootstrap.Toast(toastEl, {
+                animation: true,
+                delay: 4000
+            }) // No need for options; use the default options
+        });
+        toastList.forEach(toast => toast.show()); // This show them
+        console.log(toastList); // Testing to see if it works
+    } catch (e) {
+        console.error(e);
+    }  
 }
 
 function ErrorToast(message) {
-    var toastElList = [].slice.call(document.querySelectorAll('#toastError'))
-    var toastList = toastElList.map(function (toastEl) {
-        $(toastEl).find('.toast-body').find('.body-text').text(message);
-        // Creates an array of toasts (it only initializes them)
-        return new bootstrap.Toast(toastEl, {
-            animation: true,
-            autohide: true,
-            delay: 3000,
-        }) // No need for options; use the default options
-    });
-    toastList.forEach(toast => toast.show()); // This show them
-    console.log(toastList); // Testing to see if it works
+    try {
+        var toastElList = [].slice.call(document.querySelectorAll('#toastError'))
+        var toastList = toastElList.map(function (toastEl) {
+            $(toastEl).find('.toast-body').find('.body-text').text(message);
+            // Creates an array of toasts (it only initializes them)
+            return new bootstrap.Toast(toastEl, {
+                animation: true,
+                autohide: true,
+                delay: 3000,
+            }) // No need for options; use the default options
+        });
+        toastList.forEach(toast => toast.show()); // This show them
+        console.log(toastList); // Testing to see if it works
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 function WarningToast(message) {
-    var toastElList = [].slice.call(document.querySelectorAll('#toastWarning'))
-    var toastList = toastElList.map(function (toastEl) {
-        $(toastEl).find('.toast-body').find('.body-text').text(message);
-        // Creates an array of toasts (it only initializes them)
-        return new bootstrap.Toast(toastEl, {
-            animation: true,
-            autohide: true,
-            delay: 3000,
-        }) // No need for options; use the default options
-    });
-    toastList.forEach(toast => toast.show()); // This show them
-    console.log(toastList); // Testing to see if it works
+    try {
+        var toastElList = [].slice.call(document.querySelectorAll('#toastWarning'))
+        var toastList = toastElList.map(function (toastEl) {
+            $(toastEl).find('.toast-body').find('.body-text').text(message);
+            // Creates an array of toasts (it only initializes them)
+            return new bootstrap.Toast(toastEl, {
+                animation: true,
+                autohide: true,
+                delay: 3000,
+            }) // No need for options; use the default options
+        });
+        toastList.forEach(toast => toast.show()); // This show them
+        console.log(toastList); // Testing to see if it works
+    } catch (e) {
+        console.error(e);
+    }
 }
 
 
@@ -155,7 +176,8 @@ function localDateFormat(value, format) {
         }
 
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        return '';
     }
 }
 
@@ -175,7 +197,7 @@ function dateAutoFormatter(event) {
             event.target.value = out;
         }
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
 }
 
@@ -188,26 +210,52 @@ function geMonthFromDate(value) {
         return months[date.getMonth()];
 
     } catch (e) {
-        console.log(e);
+        console.error(e);
+        return '';
     }
 }
 
 function getMonthNumber(monthName) {
-    const months = {
-        January: 1, Jan: 1,
-        February: 2, Feb: 2,
-        March: 3, Mar: 3,
-        April: 4, Apr: 4,
-        May: 5,
-        June: 6, Jun: 6,
-        July: 7, Jul: 7,
-        August: 8, Aug: 8,
-        September: 9, Sep: 9,
-        October: 10, Oct: 10,
-        November: 11, Nov: 11,
-        December: 12, Dec: 12
-    };
+    try {
+        const months = {
+            January: 1, Jan: 1,
+            February: 2, Feb: 2,
+            March: 3, Mar: 3,
+            April: 4, Apr: 4,
+            May: 5,
+            June: 6, Jun: 6,
+            July: 7, Jul: 7,
+            August: 8, Aug: 8,
+            September: 9, Sep: 9,
+            October: 10, Oct: 10,
+            November: 11, Nov: 11,
+            December: 12, Dec: 12
+        };
 
-    const normalized = monthName.trim().charAt(0).toUpperCase() + monthName.trim().slice(1).toLowerCase();
-    return months[normalized] || -1; // returns -1 if not found
+        const normalized = monthName.trim().charAt(0).toUpperCase() + monthName.trim().slice(1).toLowerCase();
+        return months[normalized] || -1; // returns -1 if not found
+    } catch (e) {
+        console.error(e);
+        return -1;
+    }
+    
+}
+
+function formatCustomDate(date, delimiter) {
+    try {
+        const pad = (n) => n.toString().padStart(2, '0');
+
+        const dd = pad(date.getDate());
+        const MM = pad(date.getMonth() + 1); // Months are zero-based
+        const yy = pad(date.getFullYear() % 100); // Get last two digits of year
+        const HH = pad(date.getHours());
+        const mm = pad(date.getMinutes());
+        const ss = pad(date.getSeconds());
+
+        return `${dd}${delimiter}${MM}${delimiter}${yy}${delimiter}${HH}${delimiter}${mm}${delimiter}${ss}`;
+    } catch (e) {
+        console.WarningToast(e);
+        return '';
+    }
+    
 }

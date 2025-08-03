@@ -19,6 +19,8 @@ namespace Gizmosbuy.DAL.Data
         Task<List<spGetRawDataResult>> spGetRawDataAsync(string startDate, string endDate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetSalesByIDResult>> spGetSalesByIDAsync(int? salesID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetSalesListResult>> spGetSalesListAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<spGetSalesReportDataResult>> spGetSalesReportDataAsync(string invoiceNo, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<spGetSalesReportHeaderResult>> spGetSalesReportHeaderAsync(string invoiceNo, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetSalesSummaryDataResult>> spGetSalesSummaryDataAsync(int? locationId, int? month, int? year, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetTempSalesByIDResult>> spGetTempSalesByIDAsync(int? tempSalesID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetTempSalesListResult>> spGetTempSalesListAsync(int? userId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);

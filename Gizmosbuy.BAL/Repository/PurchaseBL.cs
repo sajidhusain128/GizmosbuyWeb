@@ -24,7 +24,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utility.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
 
                 Purchase purchaseMaster = new Purchase
                 {
@@ -59,7 +59,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utility.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
 
                 var purcahseList = await _applicationDbContext.Procedures.spGetPurchaseListAsync(Convert.ToInt32(sessionUserId));
 
@@ -71,7 +71,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (searchValue != "")
                 {
-                    mainData = purcahseList.Where(Utility.GetSearchValue<spGetPurchaseListResult>(searchValue)).ToList();
+                    mainData = purcahseList.Where(Utilities.GetSearchValue<spGetPurchaseListResult>(searchValue)).ToList();
                 }
                 else
                 {
@@ -151,7 +151,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utility.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
 
                 Purchase purchase = await _applicationDbContext.Purchases.FirstAsync(x => x.PurchaseId == purchaseModel.PurchaseId);
 
