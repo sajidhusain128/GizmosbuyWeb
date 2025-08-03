@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\Gizmosbuy.Web.props" />
-</Project>
