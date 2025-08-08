@@ -25,7 +25,7 @@
         <div id="toastSuccess" class="toast text-bg-success" role="alert" data-bs-delay="3000" data-bs-autohide="true" aria-live="assertive" aria-atomic="true">
             <div class="toast-body">
                 <div class="d-flex gap-4">
-                    <span><i class="fa-solid fa-circle-exclamation fa-lg"></i></span>
+                    <span><i class="fa-solid fa-circle-check fa-lg"></i></span>
                     <div class="d-flex flex-grow-1 align-items-center">
                         <span class="font-weight-bold body-text">Welcome to the room</span>
                         <button type="button"
@@ -36,11 +36,24 @@
                 </div>
             </div>
         </div>
-
+        <div id="toastWarning" class="toast fade text-bg-warning" role="alert">
+            <div class="toast-body">
+                <div class="d-flex gap-4">
+                    <span><i class="fa-solid fa-circle-exclamation fa-lg"></i></span>
+                    <div class="d-flex flex-grow-1 align-items-center">
+                        <span class="font-weight-bold body-text">Trying again...</span>
+                        <button type="button"
+                                class="btn-close btn-close-white btn-close-sm ms-auto"
+                                data-bs-dismiss="toast"
+                                aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="toastError" class="toast fade text-bg-danger" role="alert">
             <div class="toast-body">
                 <div class="d-flex gap-4">
-                    <span><i class="fa-solid fa-circle-check fa-lg"></i></span>
+                    <span><i class="fa-solid fa-triangle-exclamation fa-lg"></i></span>
                     <div class="d-flex flex-grow-1 align-items-center">
                         <span class="font-weight-bold body-text">We are having issues</span>
                         <button type="button"
@@ -50,22 +63,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div id="toastWarning" class="toast fade text-bg-warning" role="alert">
-            <div class="toast-body">
-                <div class="d-flex gap-4">
-                    <span><i class="fa-solid fa-triangle-exclamation fa-lg"></i></span>
-                    <div class="d-flex flex-grow-1 align-items-center">
-                        <span class="font-weight-bold body-text">Trying again...</span>
-                        <button type="button"
-                        class="btn-close btn-close-white btn-close-sm ms-auto"
-                        data-bs-dismiss="toast"
-                        aria-label="Close"></button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </div>  
     </div>
 
     <div class="wrapper d-flex align-items-stretch">

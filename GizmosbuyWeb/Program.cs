@@ -1,17 +1,20 @@
+using System.Reflection;
 using System.Text;
-using Gizmosbuy.BAL.Repository;
+using FastReport;
+using FastReport.Export.PdfSimple;
 using Gizmosbuy.BAL.Interfaces;
+using Gizmosbuy.BAL.Repository;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
+using Gizmosbuy.Web.Middlewares;
+using log4net.Config;
+using log4net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using FastReport;
-using FastReport.Export.PdfSimple;
-using FastReport.Export.PdfSimple.PdfCore;
 
 namespace GizmosbuyWeb
 {
@@ -20,6 +23,10 @@ namespace GizmosbuyWeb
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            // Load log4net config
+            var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
+            XmlConfigurator.Configure(logRepository, new FileInfo("log4net.config"));
 
             IWebConfiguration? webConfiguration = builder.Configuration.GetSection("AppSettings").Get<WebConfiguration>();
 
@@ -197,6 +204,8 @@ namespace GizmosbuyWeb
                 await context.Response.Body.WriteAsync(pdfStream.ToArray());
             });
 
+            // Register your custom middleware early in the pipeline
+            app.UseMiddleware<ExceptionLoggingMiddleware>();
 
             app.UseFastReport();
 
