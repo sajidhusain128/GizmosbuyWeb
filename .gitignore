@@ -189,3 +189,4 @@
 /GizmosbuyWeb/bin/Debug/net8.0/Gizmosbuy.Web.deps.json
 /GizmosbuyWeb/bin/Debug/net8.0/Gizmosbuy.Web.runtimeconfig.json
 /GizmosbuyWeb/bin/Debug/net8.0/libman.json
+*.log
