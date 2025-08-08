@@ -13,7 +13,7 @@
 <div class="page-content">
     <div class="page-title">
         <h3></h3>
-        <a href="@Url.Action("Index","Sales")" class="btn btn-primary btn-sm"><i class="fas fa-arrow-left"></i> Back to list</a>
+        <a href="@Url.Action("Index","Sales")" class="btn btn-primary btn-sm" title="Back to Sales List"><i class="fas fa-arrow-left"></i> Back to list</a>
     </div>
     <div class="page-body">
         @await Html.PartialAsync("_TempSalesCreatePartial.cshtml")
@@ -122,7 +122,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <input type="text" id="txtSellDate" class="form-control" asp-for="SellingDate" placeholder="dd/mm/yyyy" maxlength="10" pattern="[0-9/]*" onkeyup="dateAutoFormatter(event)" autocomplete="off">
+                                    <input type="text" id="txtSellDate" class="form-control" asp-for="SellingDate" placeholder="DD/MM/YYYY" maxlength="10" pattern="[0-9/]*" onkeyup="dateAutoFormatter(event)" autocomplete="off">
                                     <span class="input-group-text" id="basic-addon1">
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>
@@ -249,7 +249,7 @@
                             <div class="col-md-2">
                             </div>
                             <div class="col-md-4">
-                                <button type="button" class="btn btn-custom" id="btnAddTempSales"><i class="fas fa-plus"></i> Add Save</button>
+                                <button type="button" class="btn btn-custom" id="btnAddTempSales" title="Add Sales Entry to Above List"><i class="fas fa-plus"></i> Add Entry</button>
                             </div>
                         </div>
                     </div>
@@ -265,12 +265,10 @@
     <link href="@Url.Content("~/css/custom-css/autocomplete.css")" rel="stylesheet" />
 }
 
-
-
 @section Scripts {
-    <script src="@Url.Content("~/lib/moment.js/moment.min.js")"></script>
-    <script src="@Url.Content("~/lib/select2/js/select2.min.js")"></script>
-    <script src="@Url.Content("~/lib/autocomplete/jquery.autocomplete.js")"></script>
+    <script src="@Url.Content("~/lib/moment.js/moment.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/select2/js/select2.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/autocomplete/jquery.autocomplete.js")" asp-append-version="true"></script>
     <script src="@Url.Content("~/js/scripts.js")" asp-append-version="true"></script>
 
     <script>
@@ -398,8 +396,8 @@
                     {"data": "sellingLead","title":"Selling Lead"},
                     {"data": "tempSalesID","title":"Action",render:function (data, type, row){
                         if(data === null) return "";
-                        var strData = '<a onclick="EditTempSales(' + data + ')" class="custom-link-btn mr-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit"><i class="fas fa-edit fa-lg color-info"></i></a>'
-                        strData = strData + '<a onclick="DeleteTempSales(' + data + ')" class="custom-link-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete"><i class="fas fa-trash fa-lg color-danger"></i></a>'
+                        var strData = '<a onclick="EditTempSales(' + data + ')" class="custom-link-btn mr-2" title="Edit Temporory Sales Entry"><i class="fas fa-edit fa-lg color-info"></i></a>'
+                        strData = strData + '<a onclick="showDeleteTempSalesModel(' + data + ')" class="custom-link-btn" title="Delete Temporory Sales Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>'
                         return strData;
                     }},
                 ],
@@ -427,6 +425,9 @@
                     } else {
                         $('#btnSalesSave').removeClass("disabled");
                     }
+                },
+                initComplete: function () {
+                    $('*[title]').tooltip();
                 }
             });
 

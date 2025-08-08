@@ -1,18 +1,14 @@
-﻿//const { Toast } = require("bootstrap");
-var table;
+﻿
+var tblRawData;
 
 $(document).ready(function () {
 
-    
+    $('*[title]').tooltip();
 
     $('#btnPurchaseSave,#btnPurchaseUpdate').click(function (e) {
         e.stopPropagation();
         savePurchase();
     });
-
-    //$("#frmPurchase").submit(function (e) {
-    //    return true;
-    //});
 
     $('#txtPurcRepair').focus(function () {
         var purcPrice = parseFloat($('#txtPurchasePrice').val());
@@ -45,7 +41,7 @@ $(document).ready(function () {
     $('#btnSalesUpdate').click(function (e) {
         e.stopPropagation();
 
-        if ($('#txtQuantity').val() == "" || $('#txtQuantity').val() > 0) {
+        if ($('#txtQuantity').val() != "" || $('#txtQuantity').val() > 0) {
             updateSales();
         }
         else {
@@ -56,8 +52,19 @@ $(document).ready(function () {
     $('#btnAddTempSales').click(function (e) {
         e.stopPropagation();
 
-        if ($('#txtQuantity').val() == "" || $('#txtQuantity').val() > 0) {
+        if ($('#txtSellQuantity').val() != "" || $('#txtSellQuantity').val() > 0) {
             saveTempSales();
+        }
+        else {
+            WarningToast("Purchase quatity not available.");
+        }
+    });
+
+    $('#btnUpdateTempSales').click(function (e) {
+        e.stopPropagation();
+
+        if ($('#txtSellQuantityTemp').val() != "" || $('#txtSellQuantityTemp').val() > 0) {
+            updateTempSales();
         }
         else {
             WarningToast("Purchase quatity not available.");
@@ -114,20 +121,35 @@ $(document).ready(function () {
             console.log(e);
         }
     });
-    //btnSearchSummary
 
     $('#btnSearchSummary').click(function (e) {
-        e.stopPropagation();
+        try {
+            e.stopPropagation();
 
-        var year = $('#txtSellYear').val();
-        var month = $('#txtSellMonth').val();
+            var year = $('#txtSellYear').val();
+            var month = $('#txtSellMonth').val();
 
-        var ddlLocationValue = $('#ddlLoaction').select2('val');
-        var ddlTypeValue = $('#ddlStatus').select2('val');
+            var ddlLocationValue = $('#ddlLoaction').select2('val');
+            var ddlTypeValue = $('#ddlStatus').select2('val');
 
-        getSalesSummary(ddlTypeValue, ddlLocationValue, month, year);
-       
+            getSalesSummary(ddlTypeValue, ddlLocationValue, month, year);
+        } catch (e) {
+            console.log(e);
+        }
     });
+
+    $("#btnExportRawData").click(function () {
+        location.href = "/Inventory/RawDateExportExcel?FromDate=" + $("#txtStartDate").val() + "&ToDate=" + $("#txtEndDate").val() + "&Search=" + tblRawData.search();
+    })
+
+    $("#btnDeleteTempSales").click(function () {
+        try {
+            var id = $('#hdnTempDeleteId').val();
+            DeleteTempSales(id)
+        } catch (e) {
+            console.log(e);
+        }
+    })
 });
 
 function validatePuchaseForm() {
@@ -206,14 +228,6 @@ function validatePuchaseForm() {
         else {
             $('#txtQuantity').parents('.row').find('.field-validation-error').text("");
         }
-
-        //if ($('#txtUpgrade').val() == "" || $('#txtUpgrade').val() == "0") {
-        //    errorCount++;
-        //    $('#txtUpgrade').parents('.row').find('.field-validation-error').text("Repair or Upgrade Price is required, and should be greater than 0.");
-        //}
-        //else {
-        //    $('#txtUpgrade').parents('.row').find('.field-validation-error').text("");
-        //}
 
         if (categoryText != "Adjustment" && $('#txtPurcRepair').val() == "" || $('#txtPurcRepair').val() == "0") {
             errorCount++;
@@ -397,6 +411,28 @@ function clearSalesForm() {
     }
 }
 
+function clearTempSalesForm() {
+    try {
+        $('#txtSrNoTemp').val("");
+        $('#txtCategoryTemp').val("");
+        $('#txtBrandTemp').val("");
+        $('#txtModelTemp').val("");
+        $('#txtSpecsTemp').val("");
+        $('#txtQuantityTemp').val("");
+        $('#txtSellDateTemp').val("");
+        $('#txtSellingPriceTemp').val("");
+        $('#txtSellQuantityTemp').val("");
+        $('#ddlPayModeTemp').select2('val', "0");
+        $('#txtSellLeadTemp').val("");
+        $('#txtCustomerNameTemp').val("");
+        $('#txtContactNoTemp').val("");
+        $('#txtLoactionTemp').val("");
+        $('#txtBillNoTemp').val("");
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 function getPurchaseRecordInSales(purchaseId) {
     try {
 
@@ -476,7 +512,6 @@ function validateSalesForm() {
                 $('#txtSellQuantity').parents('.row').find('.field-validation-error').text("");
             }
         }
-
 
         if ($('#ddlPayMode').select2('val') == "0") {
             errorCount++;
@@ -652,6 +687,101 @@ function updateSales() {
     }
 }
 
+function validateTempSalesForm() {
+    try {
+
+        var errorCount = 0
+
+        if ($('#txtSrNoTemp').val() == "") {
+            errorCount++;
+            $('#txtSrNoTemp').parents('.row').find('.field-validation-error').text("Serial No. is required.");
+        }
+        else {
+            $('#txtSrNoTemp').parents('.row').find('.field-validation-error').text("");
+        }
+
+        if ($('#txtSellDateTemp').val() == "") {
+            errorCount++;
+            $('#txtSellDateTemp').parents('.row').find('.field-validation-error').text("Sell Date is required.");
+        }
+        else {
+            $('#txtSellDateTemp').parents('.row').find('.field-validation-error').text("");
+        }
+
+        if ($('#txtSellingPriceTemp').val() == "" || $('#txtSellingPriceTemp').val() == "0") {
+            errorCount++;
+            $('#txtSellingPriceTemp').parents('.row').find('.field-validation-error').text("Selling Price is required, and should be greater than 0.");
+        }
+        else {
+            $('#txtSellingPriceTemp').parents('.row').find('.field-validation-error').text("");
+        }
+
+        if ($('#txtSellQuantityTemp').val() == "" || $('#txtSellQuantityTemp').val() == "0") {
+            errorCount++;
+            $('#txtSellQuantityTemp').parents('.row').find('.field-validation-error').text("Selling Quantity is required, and should be greater than 0.");
+        }
+        else {
+            if ($('#txtSellQuantityTemp').val() != "" && parseInt($('#txtSellQuantityTemp').val()) > parseInt($('#txtQuantity').val())) {
+                errorCount++;
+                $('#txtSellQuantityTemp').parents('.row').find('.field-validation-error').text("Selling Quantity should not be greater than Purchase Quantity.");
+            }
+            else {
+                $('#txtSellQuantityTemp').parents('.row').find('.field-validation-error').text("");
+            }
+        }
+
+        if ($('#ddlPayModeTemp').select2('val') == "0") {
+            errorCount++;
+            $('#ddlPayModeTemp').parents('.row').find('.field-validation-error').text("Payment Mode is required.");
+        }
+        else {
+            $('#ddlPayModeTemp').parents('.row').find('.field-validation-error').text("");
+        }
+
+        if ($('#txtSellLeadTemp').val() == "") {
+            errorCount++;
+            $('#txtSellLeadTemp').parents('.row').find('.field-validation-error').text("Selling Lead is required.");
+        }
+        else {
+            $('#txtSellLeadTemp').parents('.row').find('.field-validation-error').text("");
+        }
+
+        if ($('#txtCustomerNameTemp').val() == "") {
+            errorCount++;
+            $('#txtCustomerNameTemp').parents('.row').find('.field-validation-error').text("Customer Name is required.");
+        }
+        else {
+            $('#txtCustomerNameTemp').parents('.row').find('.field-validation-error').text("");
+        }
+
+        if ($('#txtContactNoTemp').val() == "") {
+            errorCount++;
+            $('#txtContactNoTemp').parents('.row').find('.field-validation-error').text("Contact No is required.");
+        }
+        else {
+            $('#txtContactNoTemp').parents('.row').find('.field-validation-error').text("");
+        }
+
+        if ($('#txtLoactionTemp').val() == "") {
+            errorCount++;
+            $('#txtLoactionTemp').parents('.row').find('.field-validation-error').text("Loaction is required.");
+        }
+        else {
+            $('#txtLoactionTemp').parents('.row').find('.field-validation-error').text("");
+        }
+
+        if (errorCount > 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 function saveTempSales() {
     try {
 
@@ -703,7 +833,9 @@ function saveTempSales() {
                         if (response == "Success") {
                             SuccessToast("Sales temporory entry added.");
                             clearSalesForm();
-                            location.reload();
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000);
                         }
                         else if (response == "Failed") {
                             ErrorToast("Error in adding temporory sales.");
@@ -714,14 +846,56 @@ function saveTempSales() {
                     }
                 });
             }
-            else if (hdnSalesId != undefined && hdnSalesId > 0) {
+        }
 
-                model.salesId = hdnSalesId;
-                model.purchaseId = null;
-                model.sellingQuantity = null;
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function updateTempSales() {
+    try {
+        if (!validateTempSalesForm()) {
+            return false;
+        }
+        else {
+
+            var hdnTempSalesId = $('#hdnTempSalesId').val();
+
+            if (hdnTempSalesId > 0) {
+
+                var hdnPurchaseId = $('#hdnTempPurchaseId').val();
+                var serialNo = $('#txtSrNoTemp').val();
+                var sellingDate = $('#txtSellDateTemp').val();
+                var sellingPrice = parseFloat($('#txtSellingPriceTemp').val());
+                var sellingQuantity = parseInt($('#txtSellQuantityTemp').val());
+                var paymentModeId = parseInt($('#ddlPayModeTemp').select2('val'));
+                var sellingLead = $('#txtSellLeadTemp').val();
+                var customerName = $('#txtCustomerNameTemp').val();
+                var contactNo = $('#txtContactNoTemp').val();
+                var locationName = $('#txtLoactionTemp').val();
+                var billNo = $('#txtBillNoTemp').val();
+
+                var model = {
+                    tempSalesId: hdnTempSalesId,
+                    purchaseId: hdnPurchaseId,
+                    serialNo: serialNo,
+                    sellingDate: sellingDate,
+                    sellingPrice: sellingPrice,
+                    sellingQuantity: sellingQuantity,
+                    paymentModeId: paymentModeId,
+                    sellingLead: sellingLead,
+                    customerName: customerName,
+                    contactNo: contactNo,
+                    location: locationName,
+                    billNo: billNo
+                }
+
+                var form = $("#frmTempSales");
+                var token = $('input[name="__RequestVerificationToken"]', form).val();
 
                 $.ajax({
-                    type: "POST",
+                    type: "PUT",
                     url: '/Sales/UpdateTempSales',
                     data: { __RequestVerificationToken: token, tempSalesModel: model },
                     dataType: "json",
@@ -729,9 +903,13 @@ function saveTempSales() {
 
                         if (response == "Success") {
                             SuccessToast("Sales temporory entry updated.");
-                            clearSalesForm();
-                            location.reload();
+                            clearTempSalesForm();
 
+                            $('#tempSalesEditModel').modal("hide");
+
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000);
                         }
                         else if (response == "Failed") {
                             ErrorToast("Error in saving sales.");
@@ -743,7 +921,6 @@ function saveTempSales() {
                 });
             }
         }
-
     } catch (e) {
         console.log(e);
     }
@@ -769,6 +946,7 @@ function EditTempSales(id) {
                     })
                     modal.show();
 
+                    $('#hdnTempSalesId').val(response.tempSalesId);
                     $('#txtSrNoTemp').val(response.serialNo);
                     $('#txtPurchaseDateTemp').val(response.purchaseDate);
                     $('#txtCategoryTemp').val(response.categoryName);
@@ -785,7 +963,7 @@ function EditTempSales(id) {
                     $('#txtContactNoTemp').val(response.contactNo);
                     $('#txtLoactionTemp').val(response.location);
                     $('#txtBillNoTemp').val(response.billNo);
-                    $('#hdnPurchaseIdTemp').val(response.purchaseId);
+                    $('#hdnTempPurchaseId').val(response.purchaseId);
                     getPurchaseRecordInTempSales(response.purchaseId);
 
                     $('#txtSellDateTemp').datepicker({
@@ -839,6 +1017,21 @@ function getPurchaseRecordInTempSales(purchaseId) {
     }
 }
 
+function showDeleteTempSalesModel(id) {
+    try {
+
+        $('#hdnTempDeleteId').val(id);
+
+        var modal = new bootstrap.Modal('#tempSalesDeleteModel', {
+            backdrop: 'static',
+            keyboard: false
+        })
+        modal.show();
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 function DeleteTempSales(id) {
     try {
 
@@ -852,10 +1045,12 @@ function DeleteTempSales(id) {
             dataType: "json",
             success: function (response) {
                 if (response != null) {
+                    SuccessToast("Sales temporory entry deleted.");
+                    $('#tempSalesDeleteModel').modal("hide");
 
-                    $('#tempSalesEditModel').modal("hide");
-
-                    location.href = "/Sales/Create";
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
                 }
             },
             error: function (e) {
@@ -883,8 +1078,8 @@ function callRawData() {
             $('#tblRawData').DataTable().destroy();
         }
 
-        $('#tblRawData thead tr').css("height","40px")
-        table = $('#tblRawData').DataTable({
+        //$('#tblRawData thead tr').css("height","40px")
+        tblRawData = $('#tblRawData').DataTable({
             scrollX: true,
             scrollY: 360,
             scrollCollapse: true,
@@ -907,7 +1102,34 @@ function callRawData() {
                 "type": "POST",
                 "datatype": "json"
             },
+            stateSave: true,
+            //destroy: true,
+            //bSortCellsTop: true,          
+            //initComplete: function () {
+            //    const api = this.api();
+
+            //    const headerRow = $('<tr>');
+
+            //    api.columns().every(function () {
+            //        const th = $('<th>');
+            //        const input = $('<input type="text" placeholder="Search" />')
+            //        .off()
+            //            .on('keyup change', function () {
+            //                if (this.value !== this.lastValue) {
+            //                    this.lastValue = this.value;
+            //                    api.column(this.columnIndex).search(this.value).draw();
+            //                }
+            //            });
+            //        input[0].columnIndex = this.index(); // Store column index
+            //        th.append(input);
+            //        headerRow.append(th);
+
+            //    });
+
+            //    $('#tblRawData thead').append(headerRow);
+            //},
             columns: [
+                { "data": "srNo", "title": "#" },
                 { "data": "serialNo", "title": "Serial No" },
                 {
                     "data": "purchaseDate", "title": "Purchase Date", render: function (data, type, row) {
@@ -1036,26 +1258,26 @@ function callRawData() {
                 },
             ],
             columnDefs: [
-                { targets: 0, className: 'text-nowrap bg-purchase' },
+                { targets: 0, className: 'text-nowrap bg-purchase text-center' },
                 { targets: 1, className: 'text-nowrap bg-purchase' },
                 { targets: 2, className: 'text-nowrap bg-purchase' },
                 { targets: 3, className: 'text-nowrap bg-purchase' },
                 { targets: 4, className: 'text-nowrap bg-purchase' },
-                { targets: 5, className: ' bg-purchase'},
-                { targets: 6, className: 'text-nowrap bg-purchase text-right' },
+                { targets: 5, className: 'text-nowrap bg-purchase' },
+                { targets: 6, className: ' bg-purchase'},
                 { targets: 7, className: 'text-nowrap bg-purchase text-right' },
                 { targets: 8, className: 'text-nowrap bg-purchase text-right' },
-                { targets: 9, className: 'text-nowrap bg-purchase' },
-                { targets: 10, className: 'text-nowrap bg-purchase' },
+                { targets: 9, className: 'text-nowrap bg-purchase text-right' },
+                { targets: 10, className: 'text-nowrap bg-purchase text-right' },
                 { targets: 11, className: 'text-nowrap bg-purchase' },
-                { targets: 12, className: 'text-nowrap' },
-
+                { targets: 12, className: 'text-nowrap bg-purchase' },
                 { targets: 13, className: 'text-nowrap' },
-                { targets: 14, className: 'text-nowrap text-center' },
-                { targets: 15, className: 'text-nowrap' },
-                { targets: 16, className: 'text-nowrap text-center' },
-                { targets: 17, className: 'text-nowrap text-center' },
-                { targets: 18, className: 'text-nowrap' },
+
+                { targets: 14, className: 'text-nowrap' },
+                { targets: 15, className: 'text-nowrap text-right' },
+                { targets: 16, className: 'text-nowrap' },
+                { targets: 17, className: 'text-nowrap text-right' },
+                { targets: 18, className: 'text-nowrap text-right' },
                 { targets: 19, className: 'text-nowrap' },
                 { targets: 20, className: 'text-nowrap' },
                 { targets: 21, className: 'text-nowrap' },
@@ -1063,27 +1285,35 @@ function callRawData() {
                 { targets: 23, className: 'text-nowrap' },
                 { targets: 24, className: 'text-nowrap' },
                 { targets: 25, className: 'text-nowrap' },
-                { targets: 26, className: 'text-nowrap' }
+                { targets: 26, className: 'text-nowrap' },
+                { targets: 27, className: 'text-nowrap' }
             ],
             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                 if (aData["sellingQuantity"] > 0) {
-                    for (let i = 13; i <= 27; i++) {
+                    for (let i = 14; i <= 27; i++) {
                         $(nRow.children[i]).addClass('bg-sales');
                     }
                 }
 
                 if (aData["profit"] > 0) {
-                    $(nRow.children[16]).addClass('bg-profit');
+                    $(nRow.children[17]).addClass('bg-profit');
                 } else if (aData["loss"] > 0) {
-                    $(nRow.children[17]).addClass('bg-loss');
+                    $(nRow.children[18]).addClass('bg-loss');
                 }
-
+            },
+            drawCallback: function (settings) {
+                if (settings.aoData.length == 0) {
+                    $("#btnExportRawData").addClass("disabled");
+                } else {
+                    $("#btnExportRawData").removeClass("disabled");
+                }
             }
         });
-
-        // Apply the search
+        
+        //$('#tblRawData thead tr:first th').each(function (i) {
+        //    $('#tblRawData thead tr:last th').eq(i).css('width', $(this).width());
+        //});
       
-
     } catch (e) {
         console.log(e);
     }

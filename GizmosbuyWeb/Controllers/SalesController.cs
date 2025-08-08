@@ -59,7 +59,7 @@ namespace Gizmosbuy.Web.Controllers
             }
         }
 
-        [CustomAuthorize]
+        [CustomAuthorize(Role.User)]
         public async Task<IActionResult> Create()
         {
             try
@@ -91,7 +91,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.User)]
         public async Task<IActionResult> SaveSales()
         {
             try
@@ -159,7 +159,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.User)]
         public async Task<IActionResult> UpdateSales(SalesModel salesModel)
         {
             try
@@ -204,7 +204,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.User)]
         public async Task<IActionResult> SaveTempSales(TempSalesModel tempSalesModel)
         {
             try
@@ -224,9 +224,9 @@ namespace Gizmosbuy.Web.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPut]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.User)]
         public async Task<IActionResult> UpdateTempSales(TempSalesModel tempSalesModel)
         {
             try
@@ -240,7 +240,7 @@ namespace Gizmosbuy.Web.Controllers
 
                 return Json("Failed");
             }
-            catch (Exception)
+            catch (Exception)   
             {
                 throw;
             }
@@ -248,7 +248,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpGet]
         //[ValidateAntiForgeryToken]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.User)]
         public async Task<IActionResult> GetTempSalesEdit(int Id)
         {
             try
@@ -285,7 +285,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.User)]
         public async Task<IActionResult> TempSalesDelete(int Id)
         {
             try
@@ -301,7 +301,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpGet]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.User)]
         public async Task<IActionResult> LoadSalesReport(string invoiceNo)
         {
             try
@@ -321,7 +321,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpGet]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.User)]
         public async Task<IActionResult> DownloadSalesReport(string invoiceNo)
         {
             try

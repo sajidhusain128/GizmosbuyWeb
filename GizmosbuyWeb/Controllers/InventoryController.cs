@@ -1,4 +1,7 @@
-﻿using Gizmosbuy.BAL.Interfaces;
+﻿using System.Data;
+using ClosedXML.Excel;
+using Gizmosbuy.BAL.Commons;
+using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.BAL.Repository;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
@@ -25,7 +28,9 @@ namespace Gizmosbuy.Web.Controllers
         [CustomAuthorize]
         public IActionResult RawData()
         {
-            return View();
+            DateRange dateRange = new DateRange();
+
+            return View(dateRange);
         }
 
         [HttpPost]
@@ -78,7 +83,7 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.defaultLocationValue = location;
 
                     int locationId = Convert.ToInt32(HttpContext.Session.GetString("LocationId"));
-                    ViewBag.defaultLocationId= locationId.ToString();
+                    ViewBag.defaultLocationId = locationId.ToString();
                 }
 
                 return View();
@@ -87,23 +92,8 @@ namespace Gizmosbuy.Web.Controllers
             {
                 throw;
             }
-            
-        }
 
-        //[HttpPost]
-        //[CustomAuthorize]
-        //public async Task<IActionResult> Summery()
-        //{
-        //    try
-        //    {
-        //        //var result = await _inventoryBL.GetRawData(new DateRange(), new Pager());
-        //        return Json("result");
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
+        }
 
         public IActionResult PurchaseEntry()
         {
@@ -116,7 +106,7 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                
+
 
                 if (transactionType == "Sales")
                 {
@@ -148,5 +138,59 @@ namespace Gizmosbuy.Web.Controllers
                 throw;
             }
         }
+
+        [HttpGet]
+        [CustomAuthorize]
+        public async Task<IActionResult> RawDateExportExcel(string FromDate, string ToDate, string Search)
+        {
+            try
+            {
+                DateRange dateRange = new DateRange
+                {
+                    StartDate = FromDate,
+                    EndDate = ToDate
+                };
+
+                IPager pager = new Pager();
+
+                pager.SearchValue = Search ?? "";
+
+                var result = await _inventoryBL.GetRawDataExport(dateRange, pager);
+
+                if (result != null && result.Count > 0)
+                {
+
+                    DataTable dt = Utilities.CreateDataTable(result); // Fetch your data
+
+                    if (dt.Columns.IndexOf("CreatedDate") > -1)
+                    {
+                        dt.Columns.Remove("CreatedDate");
+                    }
+
+                    string fileName = $"InventoryReport_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        wb.Worksheets.Add(dt, "Sheet1");
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            wb.SaveAs(stream);
+                            return File(stream.ToArray(),
+                                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                        fileName);
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("RawData");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

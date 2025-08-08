@@ -8,6 +8,7 @@ namespace Gizmosbuy.DAL.Models
 {
     public partial class spGetRawDataResult
     {
+        public long? SrNo { get; set; }
         [StringLength(100)]
         public string SerialNo { get; set; }
         public DateTime? PurchaseDate { get; set; }

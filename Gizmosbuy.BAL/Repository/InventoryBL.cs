@@ -112,7 +112,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                List<IPurchaseSummaryModel>purchaseSummaryModelList = null;
+                List<IPurchaseSummaryModel> purchaseSummaryModelList = null;
                 var purchaseDataList = await _applicationDbContext.Procedures.spGetPurchaseSummaryDataAsync(locationId, month, year);
 
                 if (purchaseDataList != null && purchaseDataList.Count > 0)
@@ -131,6 +131,32 @@ namespace Gizmosbuy.BAL.Repository
                     }
                 }
                 return purchaseSummaryModelList;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<spGetRawDataResult>> GetRawDataExport(IDateRange dateRange, IPager pager)
+        {
+            try
+            {
+                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate.ToString(), dateRange.EndDate.ToString());
+                string searchValue = pager.SearchValue ?? "";
+
+                List<spGetRawDataResult> mainData = null;
+
+                if (searchValue != "")
+                {
+                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetRawDataResult>(searchValue)).ToList();
+                }
+                else
+                {
+                    mainData = rawDataResults;
+                }
+
+                return mainData;
             }
             catch (Exception)
             {

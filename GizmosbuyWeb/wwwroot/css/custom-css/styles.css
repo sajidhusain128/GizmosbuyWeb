@@ -105,10 +105,11 @@ body {
 }
     .form-control:focus,
     .form-select:focus {
-        outline: 1px solid #198754;
+/*        outline: 1px solid #198754;*/
         box-shadow: none !important;
-        border-color: inherit !important;
+        border: 1px solid #198754;
     }
+
 /*.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     outline: 1px solid #198754;
     box-shadow: none !important;
@@ -276,6 +277,7 @@ body {
     .main-section .page-header .header-title {
         font-size: 20px;
         font-weight: 600;
+        color: #191919;
     }
 
 .page-content {

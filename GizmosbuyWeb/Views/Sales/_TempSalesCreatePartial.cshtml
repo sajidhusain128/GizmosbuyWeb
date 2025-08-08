@@ -23,18 +23,18 @@
 <div class="col-md-12 mb-2">
     <div class="row">
         <div class="text-right">
-            <button type="button" class="btn btn-custom" id="btnSalesSave"><i class="fas fa-save"></i> Save</button>
+            <button type="button" class="btn btn-custom" id="btnSalesSave" title="Save Final Added Entries"><i class="fas fa-save"></i> Save</button>
         </div>
     </div>
 </div>
-
+@await Html.PartialAsync("_PartialDeleteConfirmPopup.cshtml")
 
 <div class="modal fade" id="tempSalesEditModel" tabindex="-1" aria-labelledby="tempSalesEditModelLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="tempSalesEditModelLabel">Edit Temporory Sales Entry</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Close Form"></button>
             </div>
             <div class="modal-body">
                 <div>
@@ -42,6 +42,7 @@
                     {
                         @Html.AntiForgeryToken()
 
+                        <input type="hidden" id="hdnTempSalesId" value="" />
                         <input type="hidden" id="hdnTempPurchaseId" value="" />
 
                         <div class="form-group">
@@ -141,7 +142,7 @@
                                     </div>
                                     <div class="col-md-5">
                                         <div class="input-group">
-                                            <input type="text" id="txtSellDateTemp" class="form-control" asp-for="SellingDate" placeholder="dd/mm/yyyy" maxlength="10"  onkeyup="dateAutoFormatter(event)" autocomplete="off">
+                                            <input type="text" id="txtSellDateTemp" class="form-control" asp-for="SellingDate" placeholder="DD/MM/YYYY" maxlength="10" onkeyup="dateAutoFormatter(event)" autocomplete="off">
                                             <span class="input-group-text" id="basic-addon1">
                                                 <i class="fas fa-calendar-alt"></i>
                                             </span>
@@ -191,7 +192,7 @@
                                         <label for="ddlPayModeTemp" class="col-form-label">Payment Mode:</label>
                                     </div>
                                     <div class="col-md-5">
-                                        @Html.DropDownListFor(Model => Model.PaymentModeId, new SelectList(((List<IPaymentModeModel>)ViewBag.PaymentModes).Select(x => new { Value = x.PaymentModeId, Text = x.PaymentModeName }), "Value", "Text"), null, new { id = "ddlPayModeTemp", @class = "form-select" })
+                                        @Html.DropDownListFor(Model => Model.PaymentModeId, new SelectList(((List<IPaymentModeModel>)ViewBag.PaymentModes).Select(x => new { Value = x.PaymentModeId, Text = x.PaymentModeName }), "Value", "Text"), null, new { id = "ddlPayModeTemp", @class = "form-select", @style="width: 100%" })
                                     </div>
                                     <div class="col-auto">
                                         <span class="field-validation-error"></span>
@@ -268,8 +269,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-xmark"></i> Close</button>
-                <button type="button" class="btn btn-primary" id="btnUpdateTempSales"><i class="fas fa-pen-to-square"></i> Update</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Close Form"><i class="fas fa-xmark"></i> Close</button>
+                <button type="button" class="btn btn-primary" id="btnUpdateTempSales" title="Update Temporory Sales Entry"><i class="fas fa-pen-to-square"></i> Update</button>
             </div>
         </div>
     </div>
