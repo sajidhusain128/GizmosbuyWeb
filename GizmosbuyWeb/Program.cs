@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
 
 namespace GizmosbuyWeb
 {
@@ -23,6 +24,10 @@ namespace GizmosbuyWeb
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            var cultureInfo = new CultureInfo("en-IN");
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
             // Load log4net config
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
@@ -188,7 +193,7 @@ namespace GizmosbuyWeb
             //    });
             //}
 
-            app.MapGet("/report", async context =>
+            app.MapGet("/downloadreport", async context =>
             {
                 var report = new Report();
                 report.Load("Reports/SalesReport.frx");

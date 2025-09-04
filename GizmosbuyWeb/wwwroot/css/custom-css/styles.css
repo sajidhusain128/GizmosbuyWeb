@@ -512,13 +512,23 @@ body {
     background-color: red !important;
 }
 
+.toast{
+    max-width:500px !important;
+    width:auto !important;
+}
+
+.toast .btn-close{
+    margin-left:10px !important;
+}
+
 .btn-edit {
     color: #047716 !important;
 }
 
-    .btn-edit:hover {
-        color: #f8b739 !important;
-    }
+.btn-edit:hover {
+    color: #f8b739 !important;
+}
+
 .color-info {
     color: #17a2b8;
 }
@@ -604,4 +614,8 @@ body {
     background-color: #08a321;
     color: #ffffff;
     padding: 10px;
+}
+
+.toast-container {
+    --bs-toast-zindex: 1093;
 }

@@ -305,6 +305,33 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
+        public virtual async Task<List<spGetSerialNoListResult>> spGetSerialNoListAsync(string searchValue, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "SearchValue",
+                    Size = 50,
+                    Value = searchValue ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<spGetSerialNoListResult>("EXEC @returnValue = [dbo].[spGetSerialNoList] @SearchValue = @SearchValue", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
         public virtual async Task<List<spGetTempSalesByIDResult>> spGetTempSalesByIDAsync(int? tempSalesID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
@@ -391,7 +418,136 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<int> spSaveSalesAsync(int? salesID, int? purchaseID, DateTime? sellingDate, decimal? sellingPrice, int? sellingQuantity, int? paymentModeID, string sellingLead, string customerName, long? contactNo, string location, string billNo, int? createdBy, DateTime? createdDate, int? modifiedBy, DateTime? modifiedDate, string actionType, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<int> spSavePurchaseAsync(int? purchaseID, string serialNo, DateTime? purchaseDate, int? categoryID, int? brandID, string model, string specifications, decimal? purchasePrice, int? quantity, decimal? upgradePrice, decimal? totalPrice, int? paymentModeID, string buyingLead, int? transactionBy, DateTime? transactionDate, OutputParameter<int?> result, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterresult = new SqlParameter
+            {
+                ParameterName = "result",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = result?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "PurchaseID",
+                    Value = purchaseID ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SerialNo",
+                    Size = 100,
+                    Value = serialNo ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PurchaseDate",
+                    Value = purchaseDate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.DateTime,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "CategoryID",
+                    Value = categoryID ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "BrandID",
+                    Value = brandID ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Model",
+                    Size = 50,
+                    Value = model ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Specifications",
+                    Size = 1000,
+                    Value = specifications ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PurchasePrice",
+                    Precision = 19,
+                    Scale = 4,
+                    Value = purchasePrice ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Money,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Quantity",
+                    Value = quantity ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "UpgradePrice",
+                    Precision = 19,
+                    Scale = 4,
+                    Value = upgradePrice ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Money,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "TotalPrice",
+                    Precision = 19,
+                    Scale = 4,
+                    Value = totalPrice ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Money,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PaymentModeID",
+                    Value = paymentModeID ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "BuyingLead",
+                    Size = 100,
+                    Value = buyingLead ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "TransactionBy",
+                    Value = transactionBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "TransactionDate",
+                    Value = transactionDate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.DateTime,
+                },
+                parameterresult,
+                parameterreturnValue,
+            };
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[spSavePurchase] @PurchaseID = @PurchaseID, @SerialNo = @SerialNo, @PurchaseDate = @PurchaseDate, @CategoryID = @CategoryID, @BrandID = @BrandID, @Model = @Model, @Specifications = @Specifications, @PurchasePrice = @PurchasePrice, @Quantity = @Quantity, @UpgradePrice = @UpgradePrice, @TotalPrice = @TotalPrice, @PaymentModeID = @PaymentModeID, @BuyingLead = @BuyingLead, @TransactionBy = @TransactionBy, @TransactionDate = @TransactionDate, @result = @result OUTPUT", sqlParameters, cancellationToken);
+
+            result?.SetValue(parameterresult.Value);
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<int> spSaveSalesAsync(int? salesID, int? purchaseID, DateTime? sellingDate, decimal? sellingPrice, int? sellingQuantity, string paymentMode, string sellingLead, string customerName, long? contactNo, string location, string billNo, int? createdBy, DateTime? createdDate, int? modifiedBy, DateTime? modifiedDate, string actionType, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -436,9 +592,10 @@ namespace Gizmosbuy.DAL.Data
                 },
                 new SqlParameter
                 {
-                    ParameterName = "PaymentModeID",
-                    Value = paymentModeID ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.Int,
+                    ParameterName = "PaymentMode",
+                    Size = 100,
+                    Value = paymentMode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
                 },
                 new SqlParameter
                 {
@@ -507,7 +664,137 @@ namespace Gizmosbuy.DAL.Data
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[spSaveSales] @SalesID = @SalesID, @PurchaseID = @PurchaseID, @SellingDate = @SellingDate, @SellingPrice = @SellingPrice, @SellingQuantity = @SellingQuantity, @PaymentModeID = @PaymentModeID, @SellingLead = @SellingLead, @CustomerName = @CustomerName, @ContactNo = @ContactNo, @Location = @Location, @BillNo = @BillNo, @CreatedBy = @CreatedBy, @CreatedDate = @CreatedDate, @ModifiedBy = @ModifiedBy, @ModifiedDate = @ModifiedDate, @ActionType = @ActionType", sqlParameters, cancellationToken);
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[spSaveSales] @SalesID = @SalesID, @PurchaseID = @PurchaseID, @SellingDate = @SellingDate, @SellingPrice = @SellingPrice, @SellingQuantity = @SellingQuantity, @PaymentMode = @PaymentMode, @SellingLead = @SellingLead, @CustomerName = @CustomerName, @ContactNo = @ContactNo, @Location = @Location, @BillNo = @BillNo, @CreatedBy = @CreatedBy, @CreatedDate = @CreatedDate, @ModifiedBy = @ModifiedBy, @ModifiedDate = @ModifiedDate, @ActionType = @ActionType", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<int> spSaveTempSalesAsync(int? tempSalesId, int? purchaseID, DateTime? sellingDate, decimal? sellingPrice, int? purchaseQuantity, int? sellingQuantity, string paymentMode, string sellingLead, string customerName, long? contactNo, string location, string billNo, int? createdBy, DateTime? createdDate, int? modifiedBy, DateTime? modifiedDate, string actionType, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "TempSalesId",
+                    Value = tempSalesId ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PurchaseID",
+                    Value = purchaseID ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SellingDate",
+                    Value = sellingDate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.DateTime,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SellingPrice",
+                    Precision = 19,
+                    Scale = 4,
+                    Value = sellingPrice ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Money,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PurchaseQuantity",
+                    Value = purchaseQuantity ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SellingQuantity",
+                    Value = sellingQuantity ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PaymentMode",
+                    Size = 100,
+                    Value = paymentMode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SellingLead",
+                    Size = 100,
+                    Value = sellingLead ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "CustomerName",
+                    Size = 100,
+                    Value = customerName ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "ContactNo",
+                    Value = contactNo ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.BigInt,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Location",
+                    Size = 100,
+                    Value = location ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "BillNo",
+                    Size = 50,
+                    Value = billNo ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "CreatedBy",
+                    Value = createdBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "CreatedDate",
+                    Value = createdDate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.DateTime,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "ModifiedBy",
+                    Value = modifiedBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "ModifiedDate",
+                    Value = modifiedDate ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.DateTime,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "ActionType",
+                    Size = 50,
+                    Value = actionType ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[spSaveTempSales] @TempSalesId = @TempSalesId, @PurchaseID = @PurchaseID, @SellingDate = @SellingDate, @SellingPrice = @SellingPrice, @PurchaseQuantity = @PurchaseQuantity, @SellingQuantity = @SellingQuantity, @PaymentMode = @PaymentMode, @SellingLead = @SellingLead, @CustomerName = @CustomerName, @ContactNo = @ContactNo, @Location = @Location, @BillNo = @BillNo, @CreatedBy = @CreatedBy, @CreatedDate = @CreatedDate, @ModifiedBy = @ModifiedBy, @ModifiedDate = @ModifiedDate, @ActionType = @ActionType", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

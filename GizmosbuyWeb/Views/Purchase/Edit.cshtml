@@ -247,6 +247,13 @@
 
     <script>
         $(document).ready( function () {
+
+            $('#txtUpgrade').blur(function(){
+                if($(this).val() == ""){
+                    $(this).val("0");
+                }
+            });
+
             $('#txtPurchaseDate').datepicker({
                 format: 'dd/mm/yyyy',
                 endDate: '+0d',

@@ -17,7 +17,7 @@ public partial class TempSale
 
     public int? SellingQuantity { get; set; }
 
-    public int? PaymentModeId { get; set; }
+    public string PaymentMode { get; set; }
 
     public string SellingLead { get; set; }
 

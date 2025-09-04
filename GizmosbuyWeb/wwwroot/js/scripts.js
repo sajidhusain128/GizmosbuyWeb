@@ -152,6 +152,14 @@ $(document).ready(function () {
     })
 });
 
+function showLoader() {
+    $('.Loader-Container').show();
+}
+
+function hideLoader() {
+    $('.Loader-Container').hide();
+}
+
 function validatePuchaseForm() {
     try {
 
@@ -215,7 +223,7 @@ function validatePuchaseForm() {
 
         if ($('#txtPurchasePrice').val() == "" || $('#txtPurchasePrice').val() == "0") {
             errorCount++;
-            $('#txtPurchasePrice').parents('.row').find('.field-validation-error').text("Purchase Price is required, and should be greater than 0.");
+            $('#txtPurchasePrice').parents('.row').find('.field-validation-error').text("Purchase Price is required, and should be more than 0.");
         }
         else {
             $('#txtPurchasePrice').parents('.row').find('.field-validation-error').text("");
@@ -223,7 +231,7 @@ function validatePuchaseForm() {
 
         if ($('#txtQuantity').val() == "" || $('#txtQuantity').val() == "0") {
             errorCount++;
-            $('#txtQuantity').parents('.row').find('.field-validation-error').text("Quantity is required, and should be greater than 0.");
+            $('#txtQuantity').parents('.row').find('.field-validation-error').text("Quantity is required, and should be more than 0.");
         }
         else {
             $('#txtQuantity').parents('.row').find('.field-validation-error').text("");
@@ -231,7 +239,7 @@ function validatePuchaseForm() {
 
         if (categoryText != "Adjustment" && $('#txtPurcRepair').val() == "" || $('#txtPurcRepair').val() == "0") {
             errorCount++;
-            $('#txtPurcRepair').parents('.row').find('.field-validation-error').text("Purhase & Repair Price is required, and should be greater than 0.");
+            $('#txtPurcRepair').parents('.row').find('.field-validation-error').text("Purhase & Repair Price is required, and should be more than 0.");
         }
         else {
             $('#txtPurcRepair').parents('.row').find('.field-validation-error').text("");
@@ -327,7 +335,7 @@ function savePurchase() {
                         }
                     },
                     error: function (e) {
-                        ErrorToast("Something wen wrong!");
+                        ErrorToast("Something went wrong!");
                     }
                 });
             }
@@ -356,7 +364,7 @@ function savePurchase() {
                         }
                     },
                     error: function (e) {
-                        ErrorToast("Something wen wrong!");
+                        ErrorToast("Something went wrong!");
                     }
                 });
             }
@@ -401,7 +409,7 @@ function clearSalesForm() {
         $('#txtSellDate').val("");
         $('#txtSellingPrice').val("");
         $('#txtSellQuantity').val("");
-        $('#ddlPayMode').select2('val', "0");
+        $('#txtPayMode').val("");
         $('#txtSellLead').val("");
         $('#txtCustomerName').val("");
         $('#txtContactNo').val("");
@@ -422,7 +430,7 @@ function clearTempSalesForm() {
         $('#txtSellDateTemp').val("");
         $('#txtSellingPriceTemp').val("");
         $('#txtSellQuantityTemp').val("");
-        $('#ddlPayModeTemp').select2('val', "0");
+        $('#txtPayModeTemp').val("");
         $('#txtSellLeadTemp').val("");
         $('#txtCustomerNameTemp').val("");
         $('#txtContactNoTemp').val("");
@@ -462,7 +470,7 @@ function getPurchaseRecordInSales(purchaseId) {
                 }
             },
             error: function (e) {
-                ErrorToast("Something wen wrong!");
+                ErrorToast("Something went wrong!");
             }
         });
     } catch (e) {
@@ -493,7 +501,7 @@ function validateSalesForm() {
 
         if ($('#txtSellingPrice').val() == "" || $('#txtSellingPrice').val() == "0") {
             errorCount++;
-            $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("Selling Price is required, and should be greater than 0.");
+            $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("Selling Price is required, and should be more than 0.");
         }
         else {
             $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("");
@@ -501,24 +509,24 @@ function validateSalesForm() {
 
         if ($('#txtSellQuantity').val() == "" || $('#txtSellQuantity').val() == "0") {
             errorCount++;
-            $('#txtSellQuantity').parents('.row').find('.field-validation-error').text("Selling Quantity is required, and should be greater than 0.");
+            $('#txtSellQuantity').parents('.row').find('.field-validation-error').text("Selling Quantity is required, and should be more than 0.");
         }
         else {
             if ($('#txtQuantity').val() != "" && parseInt($('#txtSellQuantity').val()) > parseInt($('#txtQuantity').val())) {
                 errorCount++;
-                $('#txtSellQuantity').parents('.row').find('.field-validation-error').text("Selling Quantity should not be greater than Purchase Quantity.");
+                $('#txtSellQuantity').parents('.row').find('.field-validation-error').text("Selling Quantity should not be more than Purchase Quantity.");
             }
             else {
                 $('#txtSellQuantity').parents('.row').find('.field-validation-error').text("");
             }
         }
 
-        if ($('#ddlPayMode').select2('val') == "0") {
+        if ($('#txtPayMode').val() == "") {
             errorCount++;
-            $('#ddlPayMode').parents('.row').find('.field-validation-error').text("Payment Mode is required.");
+            $('#txtPayMode').parents('.row').find('.field-validation-error').text("Payment Mode is required.");
         }
         else {
-            $('#ddlPayMode').parents('.row').find('.field-validation-error').text("");
+            $('#txtPayMode').parents('.row').find('.field-validation-error').text("");
         }
 
         if ($('#txtSellLead').val() == "") {
@@ -595,16 +603,14 @@ function saveSales() {
                     if (response.item1 > 0) {
                         SuccessToast("Sales created successfully.");
                         downloadReport(response.item2);
-                        setTimeout(function () {
-                            location.href = "/Sales/Index";
-                        }, 2000);
+                        
                     }
                     else if (response.item1 == 0) {
                         ErrorToast("Error in saving sales.");
                     }
                 },
                 error: function (e) {
-                    ErrorToast("Something wen wrong!");
+                    ErrorToast("Something went wrong!");
                 }
             });
         }
@@ -625,7 +631,7 @@ function updateSales() {
             var sellingDate = $('#txtSellDate').val();
             var sellingPrice = parseFloat($('#txtSellingPrice').val());
             var sellingQuantity = parseInt($('#txtSellQuantity').val());
-            var paymentModeId = parseInt($('#ddlPayMode').select2('val'));
+            var paymentMode = $('#txtPayMode').val();
             var sellingLead = $('#txtSellLead').val();
             var customerName = $('#txtCustomerName').val();
             var contactNo = $('#txtContactNo').val();
@@ -640,7 +646,7 @@ function updateSales() {
                 sellingDate: sellingDate,
                 sellingPrice: sellingPrice,
                 sellingQuantity: sellingQuantity,
-                paymentModeId: paymentModeId,
+                paymentModeName: paymentMode,
                 sellingLead: sellingLead,
                 customerName: customerName,
                 contactNo: contactNo,
@@ -676,7 +682,7 @@ function updateSales() {
                         }
                     },
                     error: function (e) {
-                        ErrorToast("Something wen wrong!");
+                        ErrorToast("Something went wrong!");
                     }
                 });
             }
@@ -710,7 +716,7 @@ function validateTempSalesForm() {
 
         if ($('#txtSellingPriceTemp').val() == "" || $('#txtSellingPriceTemp').val() == "0") {
             errorCount++;
-            $('#txtSellingPriceTemp').parents('.row').find('.field-validation-error').text("Selling Price is required, and should be greater than 0.");
+            $('#txtSellingPriceTemp').parents('.row').find('.field-validation-error').text("Selling Price is required, and should be more than 0.");
         }
         else {
             $('#txtSellingPriceTemp').parents('.row').find('.field-validation-error').text("");
@@ -718,24 +724,24 @@ function validateTempSalesForm() {
 
         if ($('#txtSellQuantityTemp').val() == "" || $('#txtSellQuantityTemp').val() == "0") {
             errorCount++;
-            $('#txtSellQuantityTemp').parents('.row').find('.field-validation-error').text("Selling Quantity is required, and should be greater than 0.");
+            $('#txtSellQuantityTemp').parents('.row').find('.field-validation-error').text("Selling Quantity is required, and should be more than 0.");
         }
         else {
             if ($('#txtSellQuantityTemp').val() != "" && parseInt($('#txtSellQuantityTemp').val()) > parseInt($('#txtQuantity').val())) {
                 errorCount++;
-                $('#txtSellQuantityTemp').parents('.row').find('.field-validation-error').text("Selling Quantity should not be greater than Purchase Quantity.");
+                $('#txtSellQuantityTemp').parents('.row').find('.field-validation-error').text("Selling Quantity should not be more than Purchase Quantity.");
             }
             else {
                 $('#txtSellQuantityTemp').parents('.row').find('.field-validation-error').text("");
             }
         }
 
-        if ($('#ddlPayModeTemp').select2('val') == "0") {
+        if ($('#txtPayModeTemp').val() == "") {
             errorCount++;
-            $('#ddlPayModeTemp').parents('.row').find('.field-validation-error').text("Payment Mode is required.");
+            $('#txtPayModeTemp').parents('.row').find('.field-validation-error').text("Payment Mode is required.");
         }
         else {
-            $('#ddlPayModeTemp').parents('.row').find('.field-validation-error').text("");
+            $('#txtPayModeTemp').parents('.row').find('.field-validation-error').text("");
         }
 
         if ($('#txtSellLeadTemp').val() == "") {
@@ -793,8 +799,9 @@ function saveTempSales() {
             var serialNo = $('#txtSrNo').val();
             var sellingDate = $('#txtSellDate').val();
             var sellingPrice = parseFloat($('#txtSellingPrice').val());
+            var purchaseQuantity = parseInt($('#txtQuantity').val());
             var sellingQuantity = parseInt($('#txtSellQuantity').val());
-            var paymentModeId = parseInt($('#ddlPayMode').select2('val'));
+            var paymentMode = $('#txtPayMode').val();
             var sellingLead = $('#txtSellLead').val();
             var customerName = $('#txtCustomerName').val();
             var contactNo = $('#txtContactNo').val();
@@ -808,8 +815,9 @@ function saveTempSales() {
                 serialNo: serialNo,
                 sellingDate: sellingDate,
                 sellingPrice: sellingPrice,
+                quantity: purchaseQuantity,
                 sellingQuantity: sellingQuantity,
-                paymentModeId: paymentModeId,
+                paymentModeName: paymentMode,
                 sellingLead: sellingLead,
                 customerName: customerName,
                 contactNo: contactNo,
@@ -837,12 +845,15 @@ function saveTempSales() {
                                 location.reload();
                             }, 2000);
                         }
+                        else if (response == "Exist") {
+                            WarningToast("This record already exist in temporary list.")
+                        }
                         else if (response == "Failed") {
                             ErrorToast("Error in adding temporory sales.");
                         }
                     },
                     error: function (e) {
-                        ErrorToast("Something wen wrong!");
+                        ErrorToast("Something went wrong!");
                     }
                 });
             }
@@ -868,8 +879,9 @@ function updateTempSales() {
                 var serialNo = $('#txtSrNoTemp').val();
                 var sellingDate = $('#txtSellDateTemp').val();
                 var sellingPrice = parseFloat($('#txtSellingPriceTemp').val());
+                var purchaseQuantity = 0;
                 var sellingQuantity = parseInt($('#txtSellQuantityTemp').val());
-                var paymentModeId = parseInt($('#ddlPayModeTemp').select2('val'));
+                var paymentMode = $('#txtPayModeTemp').val();
                 var sellingLead = $('#txtSellLeadTemp').val();
                 var customerName = $('#txtCustomerNameTemp').val();
                 var contactNo = $('#txtContactNoTemp').val();
@@ -882,8 +894,9 @@ function updateTempSales() {
                     serialNo: serialNo,
                     sellingDate: sellingDate,
                     sellingPrice: sellingPrice,
+                    quantity: purchaseQuantity,
                     sellingQuantity: sellingQuantity,
-                    paymentModeId: paymentModeId,
+                    paymentModeName: paymentMode,
                     sellingLead: sellingLead,
                     customerName: customerName,
                     contactNo: contactNo,
@@ -916,7 +929,7 @@ function updateTempSales() {
                         }
                     },
                     error: function (e) {
-                        ErrorToast("Something wen wrong!");
+                        ErrorToast("Something went wrong!");
                     }
                 });
             }
@@ -957,7 +970,7 @@ function EditTempSales(id) {
                     $('#txtSellDateTemp').val(localDateFormat(response.sellingDate,"dd/mm/yyyy"));
                     $('#txtSellingPriceTemp').val(response.sellingPrice);
                     $('#txtSellQuantityTemp').val(response.sellingQuantity);
-                    $('#ddlPayModeTemp').select2('val', response.paymentModeId.toString());
+                    $('#txtPayModeTemp').val(response.paymentModeName);
                     $('#txtSellLeadTemp').val(response.sellingLead);
                     $('#txtCustomerNameTemp').val(response.customerName);
                     $('#txtContactNoTemp').val(response.contactNo);
@@ -978,7 +991,7 @@ function EditTempSales(id) {
                 }
             },
             error: function (e) {
-                ErrorToast("Something wen wrong!");
+                ErrorToast("Something went wrong!");
             }
         });
 
@@ -1009,7 +1022,7 @@ function getPurchaseRecordInTempSales(purchaseId) {
                 }
             },
             error: function (e) {
-                ErrorToast("Something wen wrong!");
+                ErrorToast("Something went wrong!");
             }
         });
     } catch (e) {
@@ -1054,7 +1067,7 @@ function DeleteTempSales(id) {
                 }
             },
             error: function (e) {
-                ErrorToast("Something wen wrong!");
+                ErrorToast("Something went wrong!");
             }
         });
 
@@ -1336,7 +1349,7 @@ function getSalesSummary(transactionType, locationId, month, year) {
                 }
             },
             error: function (e) {
-                ErrorToast("Something wen wrong!");
+                ErrorToast("Something went wrong!");
             }
         });
     } catch (e) {
@@ -1346,6 +1359,7 @@ function getSalesSummary(transactionType, locationId, month, year) {
 
 function downloadReport(invoiceNo) {
     try {
+        showLoader();
 
         $.ajax({
             type: "GET",
@@ -1363,9 +1377,13 @@ function downloadReport(invoiceNo) {
                 document.body.appendChild(a);
                 a.click();
                 a.remove();
+                hideLoader();
+                setTimeout(function () {
+                    location.href = "/Sales/Index";
+                }, 2000);
             },
             error: function (e) {
-                ErrorToast("Something wen wrong!");
+                ErrorToast("Something went wrong!");
             }
         });
 

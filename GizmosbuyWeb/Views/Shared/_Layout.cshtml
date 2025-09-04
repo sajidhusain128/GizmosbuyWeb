@@ -17,11 +17,12 @@
     <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css")" />
     <link rel="stylesheet" href="@Url.Content("~/css/custom-css/custom-datepicker.css")" />
     <link rel="stylesheet" href="@Url.Content("~/css/custom-css/styles.css")" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/css/custom-css/custom-loader.css")" asp-append-version="true" />
 
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
-    <div class="toast-container position-fixed top-0 end-0 mt-5 p-3">
+    <div class="toast-container position-fixed top-0 end-0 mt-5 mr-2 p-3">
         <div id="toastSuccess" class="toast text-bg-success" role="alert" data-bs-delay="3000" data-bs-autohide="true" aria-live="assertive" aria-atomic="true">
             <div class="toast-body">
                 <div class="d-flex gap-4">
@@ -76,7 +77,7 @@
             </a>
             <div class="p-3">
                 <ul class="list-unstyled components mb-5">
-                    <li class="active">
+                    <li>
 
                         <a href="@Url.Action("Index","Home")">
                             <i class="fas fa-dashboard"></i>
@@ -196,6 +197,8 @@
             </footer>
         </section>
     </div>
+
+    @await Html.PartialAsync("_Loader")
 
     <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")" asp-append-version="true"></script>
     <script src="@Url.Content("~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js")" asp-append-version="true"></script>

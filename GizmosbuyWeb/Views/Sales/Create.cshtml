@@ -169,10 +169,10 @@
                     <div class="col-md-12 mb-2">
                         <div class="row align-items-center">
                             <div class="col-md-2">
-                                <label for="ddlPayMode" class="col-form-label">Payment Mode:</label>
+                                <label for="txtPayMode" class="col-form-label">Payment Mode:</label>
                             </div>
                             <div class="col-md-4">
-                                @Html.DropDownListFor(Model => Model.PaymentModeId, new SelectList(((List<IPaymentModeModel>)ViewBag.PaymentModes).Select(x => new { Value = x.PaymentModeId, Text = x.PaymentModeName }), "Value", "Text"), null, new { id = "ddlPayMode", @class = "form-select" })
+                                <input type="text" id="txtPayMode" class="form-control" asp-for="PaymentModeName" autocomplete="off">
                             </div>
                             <div class="col-auto">
                                 <span class="field-validation-error"></span>
@@ -285,7 +285,7 @@
 
             
 
-            $('#ddlCategory,#ddlBrand,#ddlPayMode,#ddlPayModeTemp').select2();
+            $('#ddlCategory,#ddlBrand').select2();
 
             $("#txtSrNo").devbridgeAutocomplete({
                 serviceUrl: "/Purchase/GetAutoCompleteSerialNo",
@@ -387,7 +387,7 @@
 
                         return "&#8377;"+ data;
                     }},
-                    {"data": "paymentModeName","title":"Payment Mode"},
+                    {"data": "paymentMode","title":"Payment Mode"},
                     {"data": "customerName","title":"Customer Name"},
                     {"data": "contactNo","title":"Contact No"},
 
@@ -453,7 +453,7 @@
                         
                     },
                     error: function (e) {
-                        ErrorToast("Something wen wrong!");
+                        ErrorToast("Something went wrong!");
                     }
                 });
         }

@@ -26,17 +26,16 @@
                 <div class="col-md-12 mb-2">
                     <div class="row align-items-center">
                         <div class="col-md-2">
-                            <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
+                            @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                 &nbsp;
-                            </div>
+                            </div> *@
                             <label for="txtSrNo" class="col-form-label">Serial No:</label>
                         </div>
                         <div class="col-md-4">
-                            <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
+                            @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                 Type <strong>Serial No.</strong> in below input to fetch purchase record.
-                            </div>
+                            </div> *@
                             <input type="text" id="txtSrNo" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off" readonly>
-
                         </div>
                         <div class="col-auto">
                             <span class="field-validation-error"></span>
@@ -174,10 +173,10 @@
                 <div class="col-md-12 mb-2">
                     <div class="row align-items-center">
                         <div class="col-md-2">
-                            <label for="ddlPayMode" class="col-form-label">Payment Mode:</label>
+                            <label for="txtPayMode" class="col-form-label">Payment Mode:</label>
                         </div>
                         <div class="col-md-4">
-                            @Html.DropDownListFor(Model => Model.PaymentModeId, new SelectList(((List<IPaymentModeModel>)ViewBag.PaymentModes).Select(x => new { Value = x.PaymentModeId, Text = x.PaymentModeName }), "Value", "Text"), null, new { id = "ddlPayMode", @class = "form-select" })
+                            <input type="text" id="txtPayMode" class="form-control" asp-for="PaymentModeName" autocomplete="off">
                         </div>
                         <div class="col-auto">
                             <span class="field-validation-error"></span>
@@ -284,7 +283,7 @@
                 clearBtn: true
             });
 
-            $('#ddlCategory,#ddlBrand,#ddlPayMode').select2();
+            $('#ddlCategory,#ddlBrand').select2();
 
             // $("#txtSrNo").devbridgeAutocomplete({
             //     serviceUrl: "/Purchase/GetAutoCompleteSerialNo",
@@ -334,7 +333,7 @@
             //     //                 $("#txtSrNo").removeClass("loader-value-circle");
             //     //             },
             //     //             error: function (response) {
-            //     //                 ErrorToast("Something wen wrong!");
+            //     //                 ErrorToast("Something went wrong!");
             //     //             },
             //     //             failure: function (response) {
             //     //                 ErrorToast("Failure to load data.");

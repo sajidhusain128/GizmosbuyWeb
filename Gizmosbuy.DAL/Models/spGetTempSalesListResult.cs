@@ -23,8 +23,8 @@ namespace Gizmosbuy.DAL.Models
         public DateTime? SellingDate { get; set; }
         [Column("SellingPrice", TypeName = "money")]
         public decimal? SellingPrice { get; set; }
-        [StringLength(50)]
-        public string PaymentModeName { get; set; }
+        [StringLength(100)]
+        public string PaymentMode { get; set; }
         [StringLength(100)]
         public string CustomerName { get; set; }
         public long? ContactNo { get; set; }

@@ -112,7 +112,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [CustomAuthorize]
-        public async Task<IActionResult> Edit(int Id)
+        public async Task<IActionResult> Edit([FromQuery] int Id)
         {
             try
             {
@@ -214,6 +214,10 @@ namespace Gizmosbuy.Web.Controllers
                 if (i > 0)
                 {
                     return Json("Success");
+                }
+                else if (i == -1)
+                {
+                    return Json("Exist");
                 }
 
                 return Json("Failed");

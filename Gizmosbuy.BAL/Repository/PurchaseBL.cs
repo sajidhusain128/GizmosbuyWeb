@@ -19,35 +19,32 @@ namespace Gizmosbuy.BAL.Repository
             _httpContextAccessor = httpContextAccessor;
         }
 
-
         public async Task<int> CreatePurchase(IPurchaseModel purchaseModel)
         {
             try
             {
                 string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                var parameterreturnValue = new OutputParameter<int?>();
+                var i = await _applicationDbContext.Procedures.spSavePurchaseAsync(
+                    purchaseModel.PurchaseId,
+                    purchaseModel.SerialNo,
+                    purchaseModel.PurchaseDate,
+                    purchaseModel.CategoryId,
+                    purchaseModel.BrandId,
+                    purchaseModel.Model,
+                    purchaseModel.Specifications,
+                    purchaseModel.PurchasePrice,
+                    purchaseModel.Quantity,
+                    purchaseModel.UpgradePrice,
+                    purchaseModel.TotalPrice,
+                    purchaseModel.PaymentModeId,
+                    purchaseModel.BuyingLead,
+                    Convert.ToInt32(sessionUserId),
+                    DateTime.Now,
+                    parameterreturnValue
+                );
 
-                Purchase purchaseMaster = new Purchase
-                {
-                    SerialNo = purchaseModel.SerialNo,
-                    PurchaseDate = purchaseModel.PurchaseDate,
-                    CategoryId = purchaseModel.CategoryId,
-                    BrandId = purchaseModel.BrandId,
-                    Model = purchaseModel.Model,
-                    Specifications = purchaseModel.Specifications,
-                    PurchasePrice = purchaseModel.PurchasePrice,
-                    Quantity = purchaseModel.Quantity,
-                    UpgradePrice = purchaseModel.UpgradePrice,
-                    TotalPrice = purchaseModel.TotalPrice,
-                    PaymentModeId = purchaseModel.PaymentModeId,
-                    BuyingLead = purchaseModel.BuyingLead,
-                    CreatedBy = Convert.ToInt32(sessionUserId),
-                    CreatedDate = DateTime.Now
-                };
-
-                await _applicationDbContext.Purchases.AddAsync(purchaseMaster);
-                var i = await _applicationDbContext.SaveChangesAsync();
-
-                return await Task.FromResult(i);
+                return await Task.FromResult(parameterreturnValue.Value.GetValueOrDefault());
             }
             catch (Exception)
             {
@@ -152,31 +149,27 @@ namespace Gizmosbuy.BAL.Repository
             try
             {
                 string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                var parameterreturnValue = new OutputParameter<int?>();
+                var i = await _applicationDbContext.Procedures.spSavePurchaseAsync(
+                    purchaseModel.PurchaseId,
+                    purchaseModel.SerialNo,
+                    purchaseModel.PurchaseDate,
+                    purchaseModel.CategoryId,
+                    purchaseModel.BrandId,
+                    purchaseModel.Model,
+                    purchaseModel.Specifications,
+                    purchaseModel.PurchasePrice,
+                    purchaseModel.Quantity,
+                    purchaseModel.UpgradePrice,
+                    purchaseModel.TotalPrice,
+                    purchaseModel.PaymentModeId,
+                    purchaseModel.BuyingLead,
+                    Convert.ToInt32(sessionUserId),
+                    DateTime.Now,
+                    parameterreturnValue
+                );
 
-                Purchase purchase = await _applicationDbContext.Purchases.FirstAsync(x => x.PurchaseId == purchaseModel.PurchaseId);
-
-                if (purchase != null)
-                {
-                    purchase.SerialNo = purchaseModel.SerialNo;
-                    purchase.PurchaseDate = purchaseModel.PurchaseDate;
-                    purchase.CategoryId = purchaseModel.CategoryId;
-                    purchase.BrandId = purchaseModel.BrandId;
-                    purchase.Model = purchaseModel.Model;
-                    purchase.Specifications = purchaseModel.Specifications;
-                    purchase.PurchasePrice = purchaseModel.PurchasePrice;
-                    purchase.UpgradePrice = purchaseModel.UpgradePrice;
-                    purchase.TotalPrice = purchaseModel.TotalPrice;
-                    purchase.PaymentModeId = purchaseModel.PaymentModeId;
-                    purchase.BuyingLead = purchaseModel.BuyingLead;
-                    purchase.ModifiedBy = Convert.ToInt32(sessionUserId);
-                    purchase.ModifiedDate = DateTime.Now;
-
-                    _applicationDbContext.Purchases.Update(purchase);
-                }
-
-                var i = await _applicationDbContext.SaveChangesAsync();
-
-                return await Task.FromResult(i);
+                return await Task.FromResult(parameterreturnValue.Value.GetValueOrDefault());
             }
             catch (Exception)
             {
@@ -190,12 +183,14 @@ namespace Gizmosbuy.BAL.Repository
             {
                 List<IAutoCompleteModel> autoCompleteModelList = null;
 
-                var purcahseList = await _applicationDbContext.Purchases
-                    .Join(_applicationDbContext.CategoryMasters, P => P.CategoryId, CM => CM.CategoryId, (P, CM) => new { P, CM })
-                    .Where(x => x.P.SerialNo.Contains(searchValue)
-                            || x.P.Specifications.Contains(searchValue)
-                            || x.CM.CategoryName.Contains(searchValue))
-                    .ToListAsync();
+                //var purcahseList = await _applicationDbContext.Purchases
+                //    .Join(_applicationDbContext.CategoryMasters, P => P.CategoryId, CM => CM.CategoryId, (P, CM) => new { P, CM })
+                //    .Where(x => x.P.SerialNo.Contains(searchValue)
+                //            || x.P.Specifications.Contains(searchValue)
+                //            || x.CM.CategoryName.Contains(searchValue))
+                //    .ToListAsync();
+
+                var purcahseList = await _applicationDbContext.Procedures.spGetSerialNoListAsync(searchValue);
 
                 if (purcahseList == null || purcahseList.Count == 0)
                 {
@@ -210,8 +205,8 @@ namespace Gizmosbuy.BAL.Repository
                     {
                         autoCompleteModelList.Add(new AutoCompleteModel()
                         {
-                            ValueId = item.P.PurchaseId,
-                            Description = string.Format("[{0}] - {1} - {2}", item.P.SerialNo, item.CM.CategoryName, item.P.Specifications)
+                            ValueId = item.PurchaseId,
+                            Description = item.Description
                         });
                     }
                 }

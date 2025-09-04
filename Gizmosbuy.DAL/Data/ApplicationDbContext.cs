@@ -130,7 +130,9 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-            entity.Property(e => e.PaymentModeId).HasColumnName("PaymentModeID");
+            entity.Property(e => e.PaymentMode)
+                .HasMaxLength(100)
+                .IsUnicode(false);
             entity.Property(e => e.PurchaseId).HasColumnName("PurchaseID");
             entity.Property(e => e.SellingDate).HasColumnType("datetime");
             entity.Property(e => e.SellingLead)
@@ -176,7 +178,9 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-            entity.Property(e => e.PaymentModeId).HasColumnName("PaymentModeID");
+            entity.Property(e => e.PaymentMode)
+                .HasMaxLength(100)
+                .IsUnicode(false);
             entity.Property(e => e.PurchaseId).HasColumnName("PurchaseID");
             entity.Property(e => e.SellingDate).HasColumnType("datetime");
             entity.Property(e => e.SellingLead)

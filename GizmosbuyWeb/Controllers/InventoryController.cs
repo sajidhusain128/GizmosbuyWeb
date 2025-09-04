@@ -167,7 +167,7 @@ namespace Gizmosbuy.Web.Controllers
                         dt.Columns.Remove("CreatedDate");
                     }
 
-                    string fileName = $"InventoryReport_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
+                    string fileName = $"RawData_Report_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
 
                     using (XLWorkbook wb = new XLWorkbook())
                     {

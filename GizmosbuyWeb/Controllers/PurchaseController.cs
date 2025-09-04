@@ -131,7 +131,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [CustomAuthorize]
-        public async Task<IActionResult> Edit(int Id)
+        public async Task<IActionResult> Edit([FromQuery] int Id)
         {
             try
             {

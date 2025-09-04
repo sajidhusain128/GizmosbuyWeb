@@ -224,3 +224,7 @@
         .datepicker-years table tbody tr td span.year.active:hover {
             background-color: #047716 !important;
         }
+
+.datepicker table tr td span.active.active {
+    background-color: #047716;
+}

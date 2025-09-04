@@ -16,7 +16,7 @@ namespace Gizmosbuy.DAL.Models
         [StringLength(50)]
         public string InvoiceNo { get; set; }
         public DateTime? SellingDate { get; set; }
-        [StringLength(50)]
+        [StringLength(100)]
         public string PaymentModeName { get; set; }
         [StringLength(100)]
         public string SellingLead { get; set; }

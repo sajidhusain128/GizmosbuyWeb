@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-
+    setActiveMenu();
 });
 
 function numberOnly(event) {
@@ -258,4 +258,60 @@ function formatCustomDate(date, delimiter) {
         return '';
     }
     
+}
+
+function setActiveMenu() {
+    try {
+        var pathName = location.pathname;
+
+        const trimmedPath = getBasePath(pathName)
+
+        $('#sidebar div ul.list-unstyled').children('li').removeAttr("class");
+
+        var getActivePath = "";
+
+        switch (trimmedPath) {
+            case "/Purchase/Index":
+            case "/Purchase/Create":
+            case "/Purchase/Edit":
+                getActivePath = "/Purchase/Index";
+                break;
+
+            case "/Sales/Index":
+            case "/Sales/Create":
+            case "/Sales/Edit":
+                getActivePath = "/Sales/Index";
+                break;
+
+            case "/Inventory/RawData":
+                getActivePath = "/Inventory/RawData";
+                break;
+
+            case "/Inventory/Summary":
+                getActivePath = "/Inventory/Summary";
+                break;
+
+            default:
+                getActivePath = "/Home/Index";
+                break;
+        }
+
+        //$('#sidebar div ul.list-unstyled').children('li a.href="' + getActivePath + '"').attr("class", "active");
+
+        $('#sidebar div ul.list-unstyled').children('li').each(function (row, index) {
+            if ($(this).find('a')[0].href.includes(getActivePath)) {
+                $(this).attr("class", "active");
+            }
+        })
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function getBasePath(url) {
+    // Remove query string and hash if present
+    const cleanUrl = url.split('?')[0].split('#')[0];
+
+    return cleanUrl;
 }

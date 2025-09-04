@@ -87,6 +87,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[spGetSerialNoList]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[spGetTempSalesByID]",
          "ObjectType": 1
       },
@@ -99,7 +103,15 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[spSavePurchase]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[spSaveSales]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spSaveTempSales]",
          "ObjectType": 1
       }
    ],

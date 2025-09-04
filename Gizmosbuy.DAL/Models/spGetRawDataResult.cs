@@ -42,7 +42,7 @@ namespace Gizmosbuy.DAL.Models
         [Column("Loss", TypeName = "money")]
         public decimal? Loss { get; set; }
         public int? RemainingQuantity { get; set; }
-        [StringLength(50)]
+        [StringLength(100)]
         public string SalesPaymentMode { get; set; }
         [StringLength(100)]
         public string SellingLead { get; set; }

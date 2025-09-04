@@ -75,7 +75,7 @@
 
                         return "&#8377;"+ data;
                     }},
-                    {"data": "paymentModeName","title":"Payment Mode"},
+                    {"data": "paymentMode","title":"Payment Mode"},
                     {"data": "customerName","title":"Customer Name"},
                     {"data": "contactNo","title":"Contact No"},
                     
@@ -85,7 +85,7 @@
                     {"data": "salesID","title":"Action",render:function (data, type, row){
                         if(data === null) return "";
 
-                        return '<a href="/Sales/Edit/' + data + '" class="custom-link-btn" title="Edit Sales Entry"><i class="fas fa-edit fa-lg color-info"></i></a>';
+                        return '<a href="/Sales/Edit?Id=' + data + '" class="custom-link-btn" title="Edit Sales Entry"><i class="fas fa-edit fa-lg color-info"></i></a>';
                     }},
                     {"data": "billNo","title":"Download",render:function (data, type, row){
                         if(data === null) return "";
