@@ -1,7 +1,8 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http;
+@{
     ViewBag.Title = "Index";
+    string userRole = Context.Session.GetString("Role");
 }
-
 
 <div class="page-header">
     <div class="header-title">Sales List</div>
@@ -9,7 +10,24 @@
 <div class="page-content">
     <div class="page-title">
         <h3></h3>
-        <a href="@Url.Action("Create","Sales")" class="btn btn-custom" title="Create Sales Entry"><i class="fas fa-save"></i> Create Entry</a>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="row">
+                        <a href="@Url.Action("Create","Sales")" class="btn btn-custom" title="Create Sales Entry"><i class="fas fa-save"></i> Create Entry</a>
+                    </div>
+
+                </div>
+                @if (userRole == "SuperAdmin" || userRole == "Admin")
+                {
+                    <div class="col-md-6 col-sm-12">
+                        <div class="row float-end">
+                            <button id="btnRefundSalesModal" class="btn btn-custom" title="Refund Sold Items"><i class="fa-solid fa-money-bill"></i> Refund</button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
     <div class="page-body">
         <div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
@@ -29,6 +47,7 @@
     </div>
 </div>
 
+@await Html.PartialAsync("_PartialRefundSoldItems.cshtml")
 
 @section Scripts
 {
@@ -38,7 +57,7 @@
     <script type="text/javascript">
 
         $(document).ready( function () {
-                
+
             var form = $("#frmSales");
             var token = $('input[name="__RequestVerificationToken"]', form).val();
 
@@ -78,11 +97,11 @@
                     {"data": "paymentMode","title":"Payment Mode"},
                     {"data": "customerName","title":"Customer Name"},
                     {"data": "contactNo","title":"Contact No"},
-                    
+
                     {"data": "location","title":"Location"},
                     {"data": "billNo","title":"Bill No"},
                     {"data": "sellingLead","title":"Selling Lead"},
-                    {"data": "salesID","title":"Action",render:function (data, type, row){
+                    {"data": "salesID","title":"Edit",render:function (data, type, row){
                         if(data === null) return "";
 
                         return '<a href="/Sales/Edit?Id=' + data + '" class="custom-link-btn" title="Edit Sales Entry"><i class="fas fa-edit fa-lg color-info"></i></a>';

@@ -20,5 +20,8 @@ namespace Gizmosbuy.DAL.Models
         public string PaymentModeName { get; set; }
         [StringLength(100)]
         public string SellingLead { get; set; }
+        [StringLength(1000)]
+        public string StoreAddress { get; set; }
+        public long? StoreContactNo { get; set; }
     }
 }

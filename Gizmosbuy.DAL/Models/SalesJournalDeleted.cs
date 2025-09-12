@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Gizmosbuy.DAL.Models;
 
-public partial class SalesJournal
+public partial class SalesJournalDeleted
 {
     public int SalesJournalId { get; set; }
 
@@ -19,5 +19,5 @@ public partial class SalesJournal
 
     public DateTime? CreatedDate { get; set; }
 
-    public virtual Sale Sales { get; set; }
+    public virtual SalesDeleted Sales { get; set; }
 }

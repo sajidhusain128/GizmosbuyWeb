@@ -1,5 +1,4 @@
-﻿using Azure;
-using Gizmosbuy.BAL.Commons;
+﻿using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
@@ -94,7 +93,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                var salesList = await _applicationDbContext.Procedures.spGetSalesListAsync();
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+
+                var salesList = await _applicationDbContext.Procedures.spGetSalesListAsync(Convert.ToInt32(sessionUserId));
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
@@ -277,7 +278,10 @@ namespace Gizmosbuy.BAL.Repository
             try
             {
                 string sessionLocation = Utilities.GetSessionValue("Location", _httpContextAccessor.HttpContext);
-                string prefix = Utilities.GetPrefixByLocation(sessionLocation);
+
+                var prefix = _applicationDbContext.LocationMasters.Where(x => x.LocationName == sessionLocation).FirstOrDefault().LocationCode;
+
+                prefix = string.IsNullOrWhiteSpace(prefix) ? "JGS" : prefix;
 
                 string billNo = string.Empty;
 
@@ -449,6 +453,8 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+
                 string TotalPriceInWord = null;
                 List<SalesDataModel> salesDatas = null;
                 var response = await _applicationDbContext.Procedures.spGetSalesReportDataAsync(invoiceNo);
@@ -477,7 +483,7 @@ namespace Gizmosbuy.BAL.Repository
                 }
 
                 List<SalesHeaderModel> salesHeader = null;
-                var response2 = await _applicationDbContext.Procedures.spGetSalesReportHeaderAsync(invoiceNo);
+                var response2 = await _applicationDbContext.Procedures.spGetSalesReportHeaderAsync(invoiceNo, Convert.ToInt32(sessionUserId));
 
                 if (response2 != null && response2.Count > 0)
                 {
@@ -493,12 +499,67 @@ namespace Gizmosbuy.BAL.Repository
                             SellingDate = item.SellingDate,
                             SellingLead = item.SellingLead,
                             PaymentModeName = item.PaymentModeName,
-                            TotalPriceInWord = TotalPriceInWord
+                            TotalPriceInWord = TotalPriceInWord,
+                            StoreAddress = item.StoreAddress,
+                            StoreContactNo = item.StoreContactNo
                         });
                     }
                 }
 
                 return new Tuple<List<SalesDataModel>, List<SalesHeaderModel>>(salesDatas, salesHeader);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<ISalesModel>> GetInvoiceDetails(string invoiceNo)
+        {
+            try
+            {
+                List<ISalesModel> salesModelList = null;
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+
+                var response = await _applicationDbContext.Procedures.spGetInvoiceDetailsAsync(invoiceNo, Convert.ToInt32(sessionUserId));
+
+                if (response.Any())
+                {
+                    salesModelList = new List<ISalesModel>();
+
+                    foreach (var item in response)
+                    {
+                        salesModelList.Add(new SalesModel
+                        {
+                            BillNo = item.BillNo,
+                            SerialNo = item.SerialNo,
+                            Model = item.Model,
+                            SellingPrice = item.SellingPrice,
+                            CustomerName = item.CustomerName,
+                            ContactNo = item.ContactNo
+                        });
+                    }
+                }
+
+                return await Task.FromResult(salesModelList);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<int> DeleteSalesByInvoice(string invoiceNo)
+        {
+            try
+            {
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+
+                OutputParameter<int> outputParameter = new OutputParameter<int>();
+                var i = await _applicationDbContext.Procedures.spDeleteSalesByInvoiceAsync(invoiceNo, Convert.ToInt32(sessionUserId), outputParameter);
+
+                return await Task.FromResult(outputParameter.Value);
             }
             catch (Exception)
             {

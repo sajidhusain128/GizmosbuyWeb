@@ -5,7 +5,6 @@ using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
 using Gizmosbuy.DAL.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 
 namespace Gizmosbuy.BAL.Repository
 {
@@ -183,13 +182,6 @@ namespace Gizmosbuy.BAL.Repository
             {
                 List<IAutoCompleteModel> autoCompleteModelList = null;
 
-                //var purcahseList = await _applicationDbContext.Purchases
-                //    .Join(_applicationDbContext.CategoryMasters, P => P.CategoryId, CM => CM.CategoryId, (P, CM) => new { P, CM })
-                //    .Where(x => x.P.SerialNo.Contains(searchValue)
-                //            || x.P.Specifications.Contains(searchValue)
-                //            || x.CM.CategoryName.Contains(searchValue))
-                //    .ToListAsync();
-
                 var purcahseList = await _applicationDbContext.Procedures.spGetSerialNoListAsync(searchValue);
 
                 if (purcahseList == null || purcahseList.Count == 0)
@@ -212,6 +204,43 @@ namespace Gizmosbuy.BAL.Repository
                 }
 
                 return await Task.FromResult(autoCompleteModelList);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<int> PurchaseDelete(int id)
+        {
+            try
+            {
+                int response = 0;
+
+                var result = _applicationDbContext.Purchases
+                            .Where(p => p.PurchaseId == id)
+                            .Join(_applicationDbContext.Sales,p => p.PurchaseId,s => s.PurchaseId,(p, s) => new { p, s })
+                            .Join(_applicationDbContext.SalesJournals,ps => ps.s.SalesId,sj => sj.SalesId,(ps, sj) => ps.p)
+                            .Any();
+
+                if (result)
+                {
+                    response = -1;
+                    return await Task.FromResult(response);
+                }
+                else
+                {
+
+                    var tempPurchase = await _applicationDbContext.Purchases.FindAsync(id);
+
+                    if (tempPurchase != null)
+                    {
+                        _applicationDbContext.Purchases.Remove(tempPurchase);
+                        response = await _applicationDbContext.SaveChangesAsync();
+                    }
+
+                    return await Task.FromResult(response);
+                }
             }
             catch (Exception)
             {

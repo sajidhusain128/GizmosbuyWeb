@@ -16,5 +16,7 @@ namespace Gizmosbuy.BAL.Interfaces
         Task<int> TempSalesDelete(int id);
         Task<int> UpdateTempSales(TempSalesModel tempSalesModel);
         Task<Tuple<List<SalesDataModel>, List<SalesHeaderModel>>> GetSalesReportData(string invoiceNo);
+        Task<List<ISalesModel>> GetInvoiceDetails(string invoiceNo);
+        Task<int> DeleteSalesByInvoice(string invoiceNo);
     }
 }

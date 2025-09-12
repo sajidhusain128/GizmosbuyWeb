@@ -22,4 +22,6 @@ public partial class UserMaster
     public int? LocationId { get; set; }
 
     public virtual LocationMaster Location { get; set; }
+
+    public virtual ICollection<UserLocationMapping> UserLocationMappings { get; set; } = new List<UserLocationMapping>();
 }

@@ -43,6 +43,72 @@ namespace Gizmosbuy.DAL.Data
             _context = context;
         }
 
+        public virtual async Task<int> spDeleteSalesByInvoiceAsync(string invoiceNo, int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "InvoiceNo",
+                    Size = 50,
+                    Value = invoiceNo ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "CreatedBy",
+                    Value = createdBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[spDeleteSalesByInvoice] @InvoiceNo = @InvoiceNo, @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<spGetInvoiceDetailsResult>> spGetInvoiceDetailsAsync(string invoiceNo, int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "InvoiceNo",
+                    Size = 50,
+                    Value = invoiceNo ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "CreatedBy",
+                    Value = createdBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<spGetInvoiceDetailsResult>("EXEC @returnValue = [dbo].[spGetInvoiceDetails] @InvoiceNo = @InvoiceNo, @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
         public virtual async Task<List<spGetPurchaseByIDResult>> spGetPurchaseByIDAsync(int? purchaseID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
@@ -133,7 +199,7 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<List<spGetRawDataResult>> spGetRawDataAsync(string startDate, string endDate, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetRawDataResult>> spGetRawDataAsync(string startDate, string endDate, int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -158,9 +224,15 @@ namespace Gizmosbuy.DAL.Data
                     Value = endDate ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.VarChar,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "CreatedBy",
+                    Value = createdBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetRawDataResult>("EXEC @returnValue = [dbo].[spGetRawData] @StartDate = @StartDate, @EndDate = @EndDate", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetRawDataResult>("EXEC @returnValue = [dbo].[spGetRawData] @StartDate = @StartDate, @EndDate = @EndDate, @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
@@ -193,7 +265,7 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<List<spGetSalesListResult>> spGetSalesListAsync(OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetSalesListResult>> spGetSalesListAsync(int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -204,9 +276,15 @@ namespace Gizmosbuy.DAL.Data
 
             var sqlParameters = new []
             {
+                new SqlParameter
+                {
+                    ParameterName = "CreatedBy",
+                    Value = createdBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetSalesListResult>("EXEC @returnValue = [dbo].[spGetSalesList]", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetSalesListResult>("EXEC @returnValue = [dbo].[spGetSalesList] @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
@@ -240,7 +318,7 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<List<spGetSalesReportHeaderResult>> spGetSalesReportHeaderAsync(string invoiceNo, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetSalesReportHeaderResult>> spGetSalesReportHeaderAsync(string invoiceNo, int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -258,9 +336,15 @@ namespace Gizmosbuy.DAL.Data
                     Value = invoiceNo ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.VarChar,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "CreatedBy",
+                    Value = createdBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetSalesReportHeaderResult>("EXEC @returnValue = [dbo].[spGetSalesReportHeader] @InvoiceNo = @InvoiceNo", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetSalesReportHeaderResult>("EXEC @returnValue = [dbo].[spGetSalesReportHeader] @InvoiceNo = @InvoiceNo, @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
@@ -412,6 +496,33 @@ namespace Gizmosbuy.DAL.Data
                 parameterreturnValue,
             };
             var _ = await _context.SqlQueryAsync<spGetValidateLoginResult>("EXEC @returnValue = [dbo].[spGetValidateLogin] @UserName = @UserName, @Password = @Password", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<int> spInsertSalesDeletedAsync(string invoiceNo, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "InvoiceNo",
+                    Size = 50,
+                    Value = invoiceNo ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[spInsertSalesDeleted] @InvoiceNo = @InvoiceNo", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

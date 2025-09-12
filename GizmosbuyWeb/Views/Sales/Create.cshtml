@@ -17,7 +17,7 @@
     </div>
     <div class="page-body">
         @await Html.PartialAsync("_TempSalesCreatePartial.cshtml")
-        
+
         <div>
             @using (Html.BeginForm("Create", "Sales", FormMethod.Post, new { id = "frmSales" }))
             {
@@ -283,7 +283,7 @@
                 clearBtn: true
             });
 
-            
+
 
             $('#ddlCategory,#ddlBrand').select2();
 
@@ -292,7 +292,7 @@
                 type: "POST",
                 paramName:"searchValue",
                 transformResult: function(result, query){
- 
+
                     suggestions = $.map(JSON.parse(result), function (value, key) {
                         if(value.valueId > 0){
                             return {
@@ -323,7 +323,7 @@
                 type: "POST",
                 paramName:"searchValue",
                 transformResult: function(result, query){
- 
+
                     suggestions = $.map(JSON.parse(result), function (value, key) {
                         if(value.valueId > 0){
                             return {
@@ -396,8 +396,8 @@
                     {"data": "sellingLead","title":"Selling Lead"},
                     {"data": "tempSalesID","title":"Action",render:function (data, type, row){
                         if(data === null) return "";
-                        var strData = '<a onclick="EditTempSales(' + data + ')" class="custom-link-btn mr-2" title="Edit Temporory Sales Entry"><i class="fas fa-edit fa-lg color-info"></i></a>'
-                        strData = strData + '<a onclick="showDeleteTempSalesModel(' + data + ')" class="custom-link-btn" title="Delete Temporory Sales Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>'
+                        var strData = '<a href="javascript:void(0)" onclick="EditTempSales(' + data + ')" class="custom-link-btn mr-2" title="Edit Temporory Sales Entry"><i class="fas fa-edit fa-lg color-info"></i></a>'
+                        strData = strData + '<a href="javascript:void(0)" onclick="showDeleteTempSalesModel(' + data + ')" class="custom-link-btn" title="Delete Temporory Sales Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>'
                         return strData;
                     }},
                 ],
@@ -431,7 +431,7 @@
                 }
             });
 
-             
+
         });
 
         function divRenderTempSales(){
@@ -450,7 +450,7 @@
                         if (response != "") {
                             $('#divRenderTempSales').htmt(response);
                         }
-                        
+
                     },
                     error: function (e) {
                         ErrorToast("Something went wrong!");

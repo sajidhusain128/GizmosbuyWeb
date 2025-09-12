@@ -29,7 +29,7 @@
         </div>
     </div>
 </div>
-
+@await Html.PartialAsync("_PartialPurchaseDeletePopup.cshtml")
 
 @section Scripts
 {
@@ -86,11 +86,16 @@
                     }},
                     {"data": "paymentModeName","title":"Payment Mode"},
                     {"data": "buyingLead","title":"BuyingLead"},
-                    {"data": "purchaseID","title":"Action",render:function (data, type, row){
+                    {"data": "purchaseID","title":"Edit",render:function (data, type, row){
                         if(data === null) return "";
 
                         return '<a href="/Purchase/Edit?Id=' + data + '" class="custom-link-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Purchase Entry"><i class="fas fa-edit fa-lg color-info"></i></a>';
                     }},
+                    {"data": "purchaseID","title":"Delete",render:function (data, type, row){
+                        if(data === null) return "";
+
+                        return '<a href="javascript:void(0)" onclick="showDeletePurchaseModel(' + data + ')" class="custom-link-btn '+ (row.canDelete == 0 ? "disabled" : "") +'" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Purchase Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>';
+                    }}
                 ],
                 columnDefs: [
                     { targets: 0,className: 'text-nowrap'},
@@ -105,7 +110,8 @@
                     { targets: 9,className: 'text-nowrap text-right'},
                     { targets: 10,className: 'text-nowrap'},
                     { targets: 11,className: 'text-nowrap'},
-                    { targets: 12,className: 'text-nowrap text-center'}
+                    { targets: 12,className: 'text-nowrap text-center'},
+                    { targets: 13,className: 'text-nowrap text-center'}
                 ],
                 initComplete: function () {
                     $('*[title]').tooltip();

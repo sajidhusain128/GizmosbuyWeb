@@ -39,7 +39,15 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[Sales_Deleted]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[SalesJournal]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[SalesJournal_Deleted]",
          "ObjectType": 0
       },
       {
@@ -47,8 +55,20 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[UserLocationMapping]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[UserMaster]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[spDeleteSalesByInvoice]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetInvoiceDetails]",
+         "ObjectType": 1
       },
       {
          "Name": "[dbo].[spGetPurchaseByID]",
@@ -100,6 +120,10 @@
       },
       {
          "Name": "[dbo].[spGetValidateLogin]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spInsertSalesDeleted]",
          "ObjectType": 1
       },
       {

@@ -5,13 +5,12 @@ using FastReport.Utils;
 using FastReport.Web;
 using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
-using Gizmosbuy.BAL.Repository;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using GizmosbuyWeb.Filters;
 using Microsoft.AspNetCore.Mvc;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IWebHostEnvironment;
 
 
 namespace Gizmosbuy.Web.Controllers
@@ -244,7 +243,7 @@ namespace Gizmosbuy.Web.Controllers
 
                 return Json("Failed");
             }
-            catch (Exception)   
+            catch (Exception)
             {
                 throw;
             }
@@ -372,6 +371,55 @@ namespace Gizmosbuy.Web.Controllers
                 bool isPrepared = webReport.Report.IsPrepared;
 
                 return webReport;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [CustomAuthorize(Role.User)]
+        public async Task<IActionResult> GetInvoiceDetails(string invoiceNo)
+        {
+            try
+            {
+                List<ISalesModel> response = await _salesBL.GetInvoiceDetails(invoiceNo);
+
+                if (response != null)
+                {
+                    return PartialView("_PartialRefundInvoiceDetailsList", response);
+                }
+                else
+                {
+                    return PartialView("_PartialRefundInvoiceDetailsList", null);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [CustomAuthorize(Role.User)]
+        public async Task<IActionResult> DeleteSalesByInvoice(string invoiceNo)
+        {
+            try
+            {
+                var response = await _salesBL.DeleteSalesByInvoice(invoiceNo);
+
+                if (response > 0)
+                {
+                    return Json("Success");
+                }
+                else if (response == -1)
+                {
+                    return Json("Invalid");
+                }
+
+                return Json("Failed");
             }
             catch (Exception)
             {

@@ -9,5 +9,6 @@ namespace Gizmosbuy.BAL.Interfaces
         Task<IPurchaseModel> GetPurchaseByID(int id);
         Task<int> UpdatePurchase(IPurchaseModel purchaseModel);
         Task<List<IAutoCompleteModel>> GetSerialNoList(string serailNo);
+        Task<int> PurchaseDelete(int id);
     }
 }

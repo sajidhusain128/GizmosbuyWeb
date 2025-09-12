@@ -31,5 +31,6 @@ namespace Gizmosbuy.DAL.Models
         public string PaymentModeName { get; set; }
         [StringLength(100)]
         public string BuyingLead { get; set; }
+        public int? CanDelete { get; set; }
     }
 }

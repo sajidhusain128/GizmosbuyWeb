@@ -10,5 +10,7 @@
         public string PaymentModeName { get; set; }
         public string SellingLead { get; set; }
         public string TotalPriceInWord  { get; set; }
+        public string StoreAddress { get; set; }
+        public long? StoreContactNo { get; set; }
     }
 }

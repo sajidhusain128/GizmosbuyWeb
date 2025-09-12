@@ -2,7 +2,6 @@
 using ClosedXML.Excel;
 using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
-using Gizmosbuy.BAL.Repository;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using GizmosbuyWeb.Filters;
@@ -167,7 +166,7 @@ namespace Gizmosbuy.Web.Controllers
                         dt.Columns.Remove("CreatedDate");
                     }
 
-                    string fileName = $"RawData_Report_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.xlsx";
+                    string fileName = $"RawData_Report_{DateTime.Now.ToString("dd_MM_yy_HH_mm_ss")}.xlsx";
 
                     using (XLWorkbook wb = new XLWorkbook())
                     {

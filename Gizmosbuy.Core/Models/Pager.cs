@@ -1,6 +1,8 @@
-﻿namespace Gizmosbuy.BAL.Interfaces
+﻿using Gizmosbuy.Core.Interfaces;
+
+namespace Gizmosbuy.Core.Models
 {
-    public interface IPager
+    public class Pager : IPager
     {
         public int PageStart { get; set; }
         public int PageLength { get; set; }

@@ -1,5 +1,4 @@
-﻿using Gizmosbuy.BAL.Repository;
-using Gizmosbuy.BAL.Interfaces;
+﻿using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using GizmosbuyWeb.Filters;
@@ -236,6 +235,30 @@ namespace Gizmosbuy.Web.Controllers
                 IPurchaseModel purchaseModel = await _purchaseBL.GetPurchaseByID(purchaseId);
 
                 return Json(purchaseModel);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PurchaseDelete(int Id)
+        {
+            try
+            {
+                var response = await _purchaseBL.PurchaseDelete(Id);
+
+                if (response > 0)
+                {
+                    return Json("Success");
+                }
+                else if (response == -1)
+                {
+                    return Json("Exist");
+                }
+
+                return Json("Failed");
             }
             catch (Exception)
             {

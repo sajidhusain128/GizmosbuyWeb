@@ -41,34 +41,19 @@ $(document).ready(function () {
     $('#btnSalesUpdate').click(function (e) {
         e.stopPropagation();
 
-        if ($('#txtQuantity').val() != "" || $('#txtQuantity').val() > 0) {
-            updateSales();
-        }
-        else {
-            WarningToast("Purchase quatity not available.");
-        }
+        updateSales();
     });
 
     $('#btnAddTempSales').click(function (e) {
         e.stopPropagation();
 
-        if ($('#txtSellQuantity').val() != "" || $('#txtSellQuantity').val() > 0) {
-            saveTempSales();
-        }
-        else {
-            WarningToast("Purchase quatity not available.");
-        }
+        saveTempSales();
     });
 
     $('#btnUpdateTempSales').click(function (e) {
         e.stopPropagation();
 
-        if ($('#txtSellQuantityTemp').val() != "" || $('#txtSellQuantityTemp').val() > 0) {
-            updateTempSales();
-        }
-        else {
-            WarningToast("Purchase quatity not available.");
-        }
+        updateTempSales();
     });
 
     $('#btnSearchRawData').click(function (e) {
@@ -92,7 +77,7 @@ $(document).ready(function () {
         try {
             var category = $(this).select2('data')[0];
             if (category.text == "Adjustment") {
-                $('#txtSrNo').val("NA");    
+                $('#txtSrNo').val("NA");
                 $('#ddlBrand').select2('val', "0");
                 $('#ddlBrand').prop("disabled", true);
                 $('#txtModel').attr("readonly", "readonly");
@@ -150,7 +135,126 @@ $(document).ready(function () {
             console.log(e);
         }
     })
+
+    $("#btnRefundSalesModal").click(function () {
+        try {
+            $('#btnClearInvoiceDetails').attr("disabled", true);
+            $('#btnRefundSalesItemsSave').attr("disabled", true);
+
+            var modal = new bootstrap.Modal('#tempRefundSoldItemsModel', {
+                backdrop: 'static',
+                keyboard: false
+            })
+            modal.show();
+        } catch (e) {
+            console.log(e);
+        }
+    })
+
+    $("#btnFetchInvoiceDetails").click(function () {
+        try {
+
+            var errorCount = 0
+
+            if ($('#txtInvoiceNo').val() == "") {
+                errorCount++;
+                $('#spnInvoiceNoError').text("Invoice No. is required.");
+            }
+            else {
+                $('#spnInvoiceNoError').text("");
+            }
+
+            if (errorCount > 0) {
+                return false;
+            }
+            else {
+                getInvoiceDetailsForSalesRefund();
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
+    })
+
+    $("#btnClearInvoiceDetails").click(function () {
+        try {
+            resetRefundForm();
+
+        } catch (e) {
+            console.log(e);
+        }
+    })
+
+    $("#btnRefundSalesItemsSave").click(function () {
+        try {
+            if ($('#txtInvoiceNo').val() !== "") {
+                if ($('#hdnIvoiceNo').val() === $('#txtInvoiceNo').val()) {
+
+                    $('#spnInvoiceNoError').text("");
+
+                    var modal = new bootstrap.Modal('#salesDeleteRefundModel', {
+                        backdrop: 'static',
+                        keyboard: false
+                    })
+                    modal.show();
+                }
+                else {
+                    WarningToast("Fetched details and entered bill no. does not matched. So please enter correct.")
+                }
+            }
+            else {
+                $('#spnInvoiceNoError').text("Invoice No. is required.");
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
+    })
+
+    $("#btnRefundSalesItemsClose").click(function () {
+        try {
+            resetRefundForm();
+            $('#tempRefundSoldItemsModel').modal("hide");
+        } catch (e) {
+            console.log(e);
+        }
+    })
+
+    $("#btnDeleteSalesRefund").click(function () {
+        try {
+            deleteSalesRefundEntry();
+        } catch (e) {
+            console.log(e);
+        }
+    })
+
+    $('#tempRefundSoldItemsModel').on('hidden.bs.modal', function (e) {
+        try {
+            resetRefundForm();
+        } catch (e) {
+            console.log(e);
+        }
+    });
+
+    $("#btnDeletePurchase").click(function () {
+        try {
+            var id = $('#hdnTempPurchaseDeleteId').val();
+            DeletePurchase(id)
+        } catch (e) {
+            console.log(e);
+        }
+    })
 });
+
+function resetRefundForm() {
+    $('#hdnIvoiceNo').val("");
+    $('#txtInvoiceNo').val("");
+    $('#spnInvoiceNoError').text("");
+    $('#divInvoiceDetails').html("");
+    $('#btnFetchInvoiceDetails').attr("disabled", false);
+    $('#btnClearInvoiceDetails').attr("disabled", true);
+    $('#btnRefundSalesItemsSave').attr("disabled", true);
+}
 
 function showLoader() {
     $('.Loader-Container').show();
@@ -280,6 +384,7 @@ function savePurchase() {
             return false;
         }
         else {
+            showLoader();
 
             var serialNo = $('#txtSrNo').val();
             var purchaseDate = $('#txtPurchaseDate').val();
@@ -322,19 +427,22 @@ function savePurchase() {
                     data: { __RequestVerificationToken: token, purchaseModel: model },
                     dataType: "json",
                     success: function (response) {
-
                         if (response == "Success") {
                             SuccessToast("Purchase saved successfully.");
                             clearPurchaseForm();
+                            hideLoader();
+
                             setTimeout(function () {
                                 location.href = "/Purchase/Index";
                             }, 2000);
                         }
                         else if (response == "Failed") {
-                            ErrorToast("Error in saving purchase.");
+                            hideLoader();
+                            ErrorToast("Error occurred while saving purchase record(s).");
                         }
                     },
                     error: function (e) {
+                        hideLoader();
                         ErrorToast("Something went wrong!");
                     }
                 });
@@ -350,20 +458,22 @@ function savePurchase() {
                     data: { __RequestVerificationToken: token, purchaseModel: model },
                     dataType: "json",
                     success: function (response) {
-
                         if (response == "Success") {
                             SuccessToast("Purchase updated successfully.");
                             clearPurchaseForm();
+                            hideLoader();
+
                             setTimeout(function () {
                                 location.href = "/Purchase/Index";
                             }, 2000);
-
                         }
                         else if (response == "Failed") {
-                            ErrorToast("Error in saving purchase.");
+                            hideLoader();
+                            ErrorToast("Error occurred while updating purchase record(s).");
                         }
                     },
                     error: function (e) {
+                        hideLoader();
                         ErrorToast("Something went wrong!");
                     }
                 });
@@ -383,15 +493,15 @@ function clearPurchaseForm() {
     try {
         $('#txtSrNo').val("");
         $('#txtPurchaseDate').val("");
-        $('#ddlCategory').select2('val',"0");
-        $('#ddlBrand').select2('val',"0");
+        $('#ddlCategory').select2('val', "0");
+        $('#ddlBrand').select2('val', "0");
         $('#txtModel').val("");
         $('#txtSpecs').val("");
         $('#txtPurchasePrice').val("");
         $('#txtQuantity').val("");
         $('#txtUpgrade').val("");
         $('#txtPurcRepair').val("");
-        $('#ddlPayMode').select2('val',"0");
+        $('#ddlPayMode').select2('val', "0");
         $('#txtBuyLead').val("");
     } catch (e) {
         console.log(e);
@@ -443,6 +553,7 @@ function clearTempSalesForm() {
 
 function getPurchaseRecordInSales(purchaseId) {
     try {
+        showLoader();
 
         var form = $("#frmSales");
         var token = $('input[name="__RequestVerificationToken"]', form).val();
@@ -467,9 +578,26 @@ function getPurchaseRecordInSales(purchaseId) {
                     //$('#ddlPayMode').select2('val', response.paymentModeId);
                     //$('#txtBuyLead').val(response.buyingLead);
                     //$('#hdnPurchaseId').val(response.purchaseId);
+
+                    if (response.categoryName != null && response.categoryName == "Accessories") {
+                        $('#txtSellingPrice').val(0);
+                    }
+
+                    if ($('#tblSalesTemp').DataTable().rows().any()) {
+                        var rowData = $('#tblSalesTemp').DataTable().data();
+                        if (rowData.length > 0) {
+                            $('#txtPayMode').val(rowData[0].paymentMode);
+                            $('#txtSellLead').val(rowData[0].sellingLead);
+                            $('#txtCustomerName').val(rowData[0].customerName);
+                            $('#txtContactNo').val(rowData[0].contactNo);
+                            $('#txtLoaction').val(rowData[0].location);
+                        }
+                    }
                 }
+                hideLoader();
             },
             error: function (e) {
+                hideLoader();
                 ErrorToast("Something went wrong!");
             }
         });
@@ -499,12 +627,31 @@ function validateSalesForm() {
             $('#txtSellDate').parents('.row').find('.field-validation-error').text("");
         }
 
-        if ($('#txtSellingPrice').val() == "" || $('#txtSellingPrice').val() == "0") {
+        if ($('#txtQuantity').val() == "" || $('#txtQuantity').val() == "0") {
             errorCount++;
-            $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("Selling Price is required, and should be more than 0.");
+            $('#txtQuantity').parents('.row').find('.field-validation-error').text("Purchase quatity not available.");
         }
         else {
-            $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("");
+            $('#txtQuantity').parents('.row').find('.field-validation-error').text("");
+        }
+
+        if ($('#txtCategory').val() != "Accessories") {
+            if ($('#txtSellingPrice').val() == "" || $('#txtSellingPrice').val() == "0") {
+                errorCount++;
+                $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("Selling Price is required, and should be more than 0.");
+            }
+            else {
+                $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("");
+            }
+        }
+        else if ($('#txtCategory').val() == "Accessories") {
+            if ($('#txtSellingPrice').val() == "") {
+                errorCount++;
+                $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("If it's accessories then enter alteast 0.");
+            }
+            else {
+                $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("");
+            }
         }
 
         if ($('#txtSellQuantity').val() == "" || $('#txtSellQuantity').val() == "0") {
@@ -583,9 +730,9 @@ function validateSalesForm() {
 
 function saveSales() {
     try {
+        showLoader();
 
         var hdnSalesId = $('#hdnSalesId').val();
-
 
         var form = $("#frmSales");
         var token = $('input[name="__RequestVerificationToken"]', form).val();
@@ -602,14 +749,16 @@ function saveSales() {
 
                     if (response.item1 > 0) {
                         SuccessToast("Sales created successfully.");
+                        hideLoader();
                         downloadReport(response.item2);
-                        
                     }
                     else if (response.item1 == 0) {
-                        ErrorToast("Error in saving sales.");
+                        hideLoader();
+                        ErrorToast("Error occurred while saving sales record(s).");
                     }
                 },
                 error: function (e) {
+                    hideLoader();
                     ErrorToast("Something went wrong!");
                 }
             });
@@ -626,6 +775,8 @@ function updateSales() {
             return false;
         }
         else {
+            showLoader();
+
             var hdnPurchaseId = $('#hdnPurchaseId').val();
             var serialNo = $('#txtSrNo').val();
             var sellingDate = $('#txtSellDate').val();
@@ -669,19 +820,21 @@ function updateSales() {
                     data: { __RequestVerificationToken: token, salesModel: model },
                     dataType: "json",
                     success: function (response) {
-
                         if (response == "Success") {
                             SuccessToast("Sales updated successfully.");
+                            hideLoader();
+
                             setTimeout(function () {
                                 location.href = "/Sales/Index";
                             }, 2000);
-
                         }
                         else if (response == "Failed") {
-                            ErrorToast("Error in saving sales.");
+                            hideLoader();
+                            ErrorToast("Error occurred while updating sales recor(s).");
                         }
                     },
                     error: function (e) {
+                        hideLoader();
                         ErrorToast("Something went wrong!");
                     }
                 });
@@ -714,12 +867,23 @@ function validateTempSalesForm() {
             $('#txtSellDateTemp').parents('.row').find('.field-validation-error').text("");
         }
 
-        if ($('#txtSellingPriceTemp').val() == "" || $('#txtSellingPriceTemp').val() == "0") {
-            errorCount++;
-            $('#txtSellingPriceTemp').parents('.row').find('.field-validation-error').text("Selling Price is required, and should be more than 0.");
+        if ($('#txtCategoryTemp').val() != "Accessories") {
+            if ($('#txtSellingPriceTemp').val() == "" || $('#txtSellingPriceTemp').val() == "0") {
+                errorCount++;
+                $('#txtSellingPriceTemp').parents('.row').find('.field-validation-error').text("Selling Price is required, and should be more than 0.");
+            }
+            else {
+                $('#txtSellingPriceTemp').parents('.row').find('.field-validation-error').text("");
+            }
         }
-        else {
-            $('#txtSellingPriceTemp').parents('.row').find('.field-validation-error').text("");
+        else if ($('#txtCategoryTemp').val() == "Accessories") {
+            if ($('#txtSellingPriceTemp').val() == "") {
+                errorCount++;
+                $('#txtSellingPriceTemp').parents('.row').find('.field-validation-error').text("If it's accessories then enter alteast 0.");
+            }
+            else {
+                $('#txtSellingPriceTemp').parents('.row').find('.field-validation-error').text("");
+            }
         }
 
         if ($('#txtSellQuantityTemp').val() == "" || $('#txtSellQuantityTemp').val() == "0") {
@@ -795,6 +959,8 @@ function saveTempSales() {
             return false;
         }
         else {
+            showLoader();
+
             var hdnPurchaseId = $('#hdnPurchaseId').val();
             var serialNo = $('#txtSrNo').val();
             var sellingDate = $('#txtSellDate').val();
@@ -837,22 +1003,26 @@ function saveTempSales() {
                     dataType: "json",
                     //async: true,
                     success: function (response) {
-
                         if (response == "Success") {
                             SuccessToast("Sales temporory entry added.");
                             clearSalesForm();
+                            hideLoader();
+
                             setTimeout(function () {
                                 location.reload();
                             }, 2000);
                         }
                         else if (response == "Exist") {
+                            hideLoader();
                             WarningToast("This record already exist in temporary list.")
                         }
                         else if (response == "Failed") {
-                            ErrorToast("Error in adding temporory sales.");
+                            hideLoader();
+                            ErrorToast("Error occurred while adding temporory sales.");
                         }
                     },
                     error: function (e) {
+                        hideLoader();
                         ErrorToast("Something went wrong!");
                     }
                 });
@@ -870,7 +1040,7 @@ function updateTempSales() {
             return false;
         }
         else {
-
+            showLoader();
             var hdnTempSalesId = $('#hdnTempSalesId').val();
 
             if (hdnTempSalesId > 0) {
@@ -917,18 +1087,20 @@ function updateTempSales() {
                         if (response == "Success") {
                             SuccessToast("Sales temporory entry updated.");
                             clearTempSalesForm();
-
                             $('#tempSalesEditModel').modal("hide");
+                            hideLoader();
 
                             setTimeout(function () {
                                 location.reload();
                             }, 2000);
                         }
                         else if (response == "Failed") {
-                            ErrorToast("Error in saving sales.");
+                            hideLoader();
+                            ErrorToast("Error occurred while updating in temporory sales record(s).");
                         }
                     },
                     error: function (e) {
+                        hideLoader();
                         ErrorToast("Something went wrong!");
                     }
                 });
@@ -941,7 +1113,7 @@ function updateTempSales() {
 
 function EditTempSales(id) {
     try {
-
+        showLoader();
         var form = $("#frmSales");
         var token = $('input[name="__RequestVerificationToken"]', form).val();
 
@@ -967,7 +1139,7 @@ function EditTempSales(id) {
                     $('#txtModelTemp').val(response.model);
                     $('#txtSpecsTemp').val(response.specifications);
                     $('#txtQuantityTemp').val(response.quantity);
-                    $('#txtSellDateTemp').val(localDateFormat(response.sellingDate,"dd/mm/yyyy"));
+                    $('#txtSellDateTemp').val(localDateFormat(response.sellingDate, "dd/mm/yyyy"));
                     $('#txtSellingPriceTemp').val(response.sellingPrice);
                     $('#txtSellQuantityTemp').val(response.sellingQuantity);
                     $('#txtPayModeTemp').val(response.paymentModeName);
@@ -987,10 +1159,12 @@ function EditTempSales(id) {
                         todayHighlight: true,
                         todayBtn: true,
                         clearBtn: true
-                    });
+                    });   
                 }
+                hideLoader();
             },
             error: function (e) {
+                hideLoader();
                 ErrorToast("Something went wrong!");
             }
         });
@@ -1002,6 +1176,7 @@ function EditTempSales(id) {
 
 function getPurchaseRecordInTempSales(purchaseId) {
     try {
+        showLoader();
 
         var form = $("#frmTempSales");
         var token = $('input[name="__RequestVerificationToken"]', form).val();
@@ -1020,8 +1195,10 @@ function getPurchaseRecordInTempSales(purchaseId) {
                     $('#txtSpecsTemp').val(response.specifications);
                     $('#txtQuantityTemp').val(response.quantity);
                 }
+                hideLoader();
             },
             error: function (e) {
+                hideLoader();
                 ErrorToast("Something went wrong!");
             }
         });
@@ -1047,7 +1224,8 @@ function showDeleteTempSalesModel(id) {
 
 function DeleteTempSales(id) {
     try {
-
+        $('#tempSalesDeleteModel').modal("hide");
+        showLoader();
         var form = $("#frmTempSales");
         var token = $('input[name="__RequestVerificationToken"]', form).val();
 
@@ -1059,7 +1237,7 @@ function DeleteTempSales(id) {
             success: function (response) {
                 if (response != null) {
                     SuccessToast("Sales temporory entry deleted.");
-                    $('#tempSalesDeleteModel').modal("hide");
+                    hideLoader();
 
                     setTimeout(function () {
                         location.reload();
@@ -1067,6 +1245,7 @@ function DeleteTempSales(id) {
                 }
             },
             error: function (e) {
+                hideLoader();
                 ErrorToast("Something went wrong!");
             }
         });
@@ -1106,11 +1285,11 @@ function callRawData() {
                 "data": function (d) {
                     d.dateRange = dateRange,
                         $('.column-search').each(function (index) {
-                        var input = $(this);
-                        if (input.length) {
-                            d.columns[index].search.value = input.val();
-                        }
-                    })
+                            var input = $(this);
+                            if (input.length) {
+                                d.columns[index].search.value = input.val();
+                            }
+                        })
                 },
                 "type": "POST",
                 "datatype": "json"
@@ -1277,7 +1456,7 @@ function callRawData() {
                 { targets: 3, className: 'text-nowrap bg-purchase' },
                 { targets: 4, className: 'text-nowrap bg-purchase' },
                 { targets: 5, className: 'text-nowrap bg-purchase' },
-                { targets: 6, className: ' bg-purchase'},
+                { targets: 6, className: ' bg-purchase' },
                 { targets: 7, className: 'text-nowrap bg-purchase text-right' },
                 { targets: 8, className: 'text-nowrap bg-purchase text-right' },
                 { targets: 9, className: 'text-nowrap bg-purchase text-right' },
@@ -1322,11 +1501,11 @@ function callRawData() {
                 }
             }
         });
-        
+
         //$('#tblRawData thead tr:first th').each(function (i) {
         //    $('#tblRawData thead tr:last th').eq(i).css('width', $(this).width());
         //});
-      
+
     } catch (e) {
         console.log(e);
     }
@@ -1334,6 +1513,7 @@ function callRawData() {
 
 function getSalesSummary(transactionType, locationId, month, year) {
     try {
+        showLoader();
 
         var form = $("#frmSummery");
         var token = $('input[name="__RequestVerificationToken"]', form).val();
@@ -1347,8 +1527,10 @@ function getSalesSummary(transactionType, locationId, month, year) {
                 if (response != null) {
                     $('#divSummaryData').html(response);
                 }
+                hideLoader();
             },
             error: function (e) {
+                hideLoader();
                 ErrorToast("Something went wrong!");
             }
         });
@@ -1378,11 +1560,152 @@ function downloadReport(invoiceNo) {
                 a.click();
                 a.remove();
                 hideLoader();
+
                 setTimeout(function () {
                     location.href = "/Sales/Index";
                 }, 2000);
             },
             error: function (e) {
+                hideLoader();
+                ErrorToast("Something went wrong!");
+            }
+        });
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function getInvoiceDetailsForSalesRefund() {
+    try {
+        showLoader();
+        var invoiceNo = $("#txtInvoiceNo").val();
+
+        $.ajax({
+            type: "GET",
+            url: '/Sales/GetInvoiceDetails',
+            data: { invoiceNo: invoiceNo },
+            //dataType: "html",
+            success: function (response) {
+                if (response !== null && response.trim() !== '') {
+                    $('#divInvoiceDetails').html(response);
+                    $('#btnFetchInvoiceDetails').attr("disabled", true);
+                    $('#btnClearInvoiceDetails').attr("disabled", false);
+                    $('#btnRefundSalesItemsSave').attr("disabled", false);
+                }
+                else {
+                    $('#divInvoiceDetails').html("");
+                    $('#btnFetchInvoiceDetails').attr("disabled", false);
+                    WarningToast("Entered invoice details not found.")
+                }
+                hideLoader();
+            },
+            error: function (e) {
+                hideLoader();
+                ErrorToast("Something went wrong!");
+            }
+        });
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function deleteSalesRefundEntry() {
+    try {
+        $('#salesDeleteRefundModel').modal("hide");
+        showLoader();
+        var invoiceNo = $("#txtInvoiceNo").val();
+
+        var form = $("#frmSalesRefund");
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        $.ajax({
+            type: "POST",
+            url: '/Sales/DeleteSalesByInvoice',
+            data: { __RequestVerificationToken: token, invoiceNo: invoiceNo },
+            dataType: "json",
+            success: function (response) {
+                if (response != null) {
+                    if (response == "Success") {
+                        SuccessToast("Sales entry deleted successfully.");
+                        $('#tempRefundSoldItemsModel').modal("hide");
+                        hideLoader();
+
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    }
+                    else if (response == "Invalid") {
+                        hideLoader();
+                        WarningToast("Not found or Invalid bill no.");
+                    }
+                    else if (response == "Failed") {
+                        hideLoader();
+                        ErrorToast("Error occurred while deleting sales record(s).");
+                    }
+                }
+            },
+            error: function (e) {
+                hideLoader();
+                ErrorToast("Something went wrong!");
+            }
+        });
+
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function showDeletePurchaseModel(id) {
+    try {
+
+        $('#hdnTempPurchaseDeleteId').val(id);
+
+        var modal = new bootstrap.Modal('#purchaseDeleteModel', {
+            backdrop: 'static',
+            keyboard: false
+        })
+        modal.show();
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function DeletePurchase(id) {
+    try {
+        $('#purchaseDeleteModel').modal("hide");
+        showLoader();
+        var form = $("#frmTempSales");
+        var token = $('input[name="__RequestVerificationToken"]', form).val();
+
+        $.ajax({
+            type: "POST",
+            url: '/Purchase/PurchaseDelete',
+            data: { __RequestVerificationToken: token, Id: id },
+            dataType: "json",
+            success: function (response) {
+                if (response != null) {
+                    if (response == "Success") {
+                        SuccessToast("Purchase entry deleted.");
+                        hideLoader();
+
+                        setTimeout(function () {                          
+                            location.reload();
+                        }, 2000);
+                    }
+                    else if (response == "Exist") {
+                        hideLoader();
+                        WarningToast("Alreay sales this item can't delete it.")
+                    }
+                    else if (response == "Failed") {
+                        hideLoader();
+                        ErrorToast("Error occurred while deleting purchase record(s).");
+                    }
+                }
+            },
+            error: function (e) {
+                hideLoader();
                 ErrorToast("Something went wrong!");
             }
         });

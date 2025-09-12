@@ -42,6 +42,10 @@ html {
   font-size: 14px;
 }
 
+body * {
+    font-family: 'Nunito';
+}
+
 body {
     font-family: 'Nunito';
     font-style: normal;
@@ -618,4 +622,36 @@ body {
 
 .toast-container {
     --bs-toast-zindex: 1093;
+}
+
+.toast .btn-close {
+    opacity:1 !important;
+}
+
+.tooltip {
+    z-index: 1093;
+}
+
+.modal-dialog .btn-close {
+    background-color: red;
+    opacity: 1;
+    border-radius: 0;
+    opacity: 1;
+    margin: 0px !important;
+    --bs-btn-close-bg: none;
+}
+
+    .modal-dialog .btn-close:hover {
+        opacity: 0.75;
+    }
+
+    .modal-dialog .btn-close .fa {
+        color: #fff;
+        vertical-align: super;
+        padding-top: 7px;
+    }
+
+a.disabled {
+    pointer-events: none;
+    opacity: 0.2;
 }

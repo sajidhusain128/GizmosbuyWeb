@@ -26,9 +26,15 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<Sale> Sales { get; set; }
 
+    public virtual DbSet<SalesDeleted> SalesDeleteds { get; set; }
+
     public virtual DbSet<SalesJournal> SalesJournals { get; set; }
 
+    public virtual DbSet<SalesJournalDeleted> SalesJournalDeleteds { get; set; }
+
     public virtual DbSet<TempSale> TempSales { get; set; }
+
+    public virtual DbSet<UserLocationMapping> UserLocationMappings { get; set; }
 
     public virtual DbSet<UserMaster> UserMasters { get; set; }
 
@@ -67,7 +73,13 @@ public partial class ApplicationDbContext : DbContext
             entity.ToTable("LocationMaster");
 
             entity.Property(e => e.LocationId).HasColumnName("LocationID");
+            entity.Property(e => e.Address)
+                .HasMaxLength(1000)
+                .IsUnicode(false);
             entity.Property(e => e.IsActive).HasDefaultValue(false);
+            entity.Property(e => e.LocationCode)
+                .HasMaxLength(20)
+                .IsUnicode(false);
             entity.Property(e => e.LocationName)
                 .HasMaxLength(100)
                 .IsUnicode(false);
@@ -146,13 +158,41 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("FK__Sales__PurchaseI__625A9A57");
         });
 
+        modelBuilder.Entity<SalesDeleted>(entity =>
+        {
+            entity.HasKey(e => e.SalesId).HasName("PK__Sales_De__C952FB120906A4E2");
+
+            entity.ToTable("Sales_Deleted");
+
+            entity.Property(e => e.SalesId).HasColumnName("SalesID");
+            entity.Property(e => e.BillNo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CustomerName)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.Location)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.PaymentMode)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.PurchaseId).HasColumnName("PurchaseID");
+            entity.Property(e => e.SellingDate).HasColumnType("datetime");
+            entity.Property(e => e.SellingLead)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.SellingPrice).HasColumnType("money");
+        });
+
         modelBuilder.Entity<SalesJournal>(entity =>
         {
-            entity.HasKey(e => e.SalesJournal1).HasName("PK__SalesJou__4F0AA0A12BFE71EB");
+            entity.HasKey(e => e.SalesJournalId).HasName("PK__SalesJou__4F0AA0A12BFE71EB");
 
             entity.ToTable("SalesJournal");
 
-            entity.Property(e => e.SalesJournal1).HasColumnName("SalesJournal");
+            entity.Property(e => e.SalesJournalId).HasColumnName("SalesJournalID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.SalesId).HasColumnName("SalesID");
 
@@ -160,6 +200,22 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.SalesId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__SalesJour__Sales__662B2B3B");
+        });
+
+        modelBuilder.Entity<SalesJournalDeleted>(entity =>
+        {
+            entity.HasKey(e => e.SalesJournalId).HasName("PK__SalesJou__295F7548F0519562");
+
+            entity.ToTable("SalesJournal_Deleted");
+
+            entity.Property(e => e.SalesJournalId).HasColumnName("SalesJournalID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.SalesId).HasColumnName("SalesID");
+
+            entity.HasOne(d => d.Sales).WithMany(p => p.SalesJournalDeleteds)
+                .HasForeignKey(d => d.SalesId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__SalesJour__Sales__15702A09");
         });
 
         modelBuilder.Entity<TempSale>(entity =>
@@ -193,6 +249,25 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.PurchaseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__TempSales__Purch__0880433F");
+        });
+
+        modelBuilder.Entity<UserLocationMapping>(entity =>
+        {
+            entity.HasKey(e => e.UserLocationMappingId).HasName("PK__UserLoca__DA68405D35755DCA");
+
+            entity.ToTable("UserLocationMapping");
+
+            entity.Property(e => e.UserLocationMappingId).HasColumnName("UserLocationMappingID");
+            entity.Property(e => e.LocationId).HasColumnName("LocationID");
+            entity.Property(e => e.UserId).HasColumnName("UserID");
+
+            entity.HasOne(d => d.Location).WithMany(p => p.UserLocationMappings)
+                .HasForeignKey(d => d.LocationId)
+                .HasConstraintName("UserLocationMapping_LocationID_FK");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserLocationMappings)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("UserLocationMapping_UserID_FK");
         });
 
         modelBuilder.Entity<UserMaster>(entity =>

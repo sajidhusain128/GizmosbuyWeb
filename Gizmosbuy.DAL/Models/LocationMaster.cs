@@ -13,5 +13,13 @@ public partial class LocationMaster
 
     public bool? IsActive { get; set; }
 
+    public string Address { get; set; }
+
+    public long? ContactNo { get; set; }
+
+    public string LocationCode { get; set; }
+
+    public virtual ICollection<UserLocationMapping> UserLocationMappings { get; set; } = new List<UserLocationMapping>();
+
     public virtual ICollection<UserMaster> UserMasters { get; set; } = new List<UserMaster>();
 }

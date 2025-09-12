@@ -4,22 +4,27 @@ using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
 using Gizmosbuy.DAL.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Gizmosbuy.BAL.Repository
 {
     public class InventoryBL : IInventoryBL
     {
         private readonly ApplicationDbContext _applicationDbContext;
-        public InventoryBL(ApplicationDbContext applicationDbContext)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public InventoryBL(ApplicationDbContext applicationDbContext, IHttpContextAccessor httpContextAccessor)
         {
             _applicationDbContext = applicationDbContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Object> GetRawData(IDateRange dateRange, IPager pager)
         {
             try
             {
-                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate.ToString(), dateRange.EndDate.ToString());
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+
+                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate.ToString(), dateRange.EndDate.ToString(), Convert.ToInt32(sessionUserId));
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
@@ -142,7 +147,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate.ToString(), dateRange.EndDate.ToString());
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+
+                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate.ToString(), dateRange.EndDate.ToString(), Convert.ToInt32(sessionUserId));
                 string searchValue = pager.SearchValue ?? "";
 
                 List<spGetRawDataResult> mainData = null;
