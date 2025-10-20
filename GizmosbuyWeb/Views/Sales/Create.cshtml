@@ -122,7 +122,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group">
-                                    <input type="text" id="txtSellDate" class="form-control" asp-for="SellingDate" placeholder="DD/MM/YYYY" maxlength="10" pattern="[0-9/]*" onkeyup="dateAutoFormatter(event)" autocomplete="off">
+                                    <input type="text" id="txtSellDate" class="form-control" asp-for="SellingDate" placeholder="DD/MM/YYYY" maxlength="10" pattern="[0-9/]*" onkeypress="return false;" onKeyDown="preventBackspace();" onpaste="return false;" autocomplete="off">
                                     <span class="input-group-text" id="basic-addon1">
                                         <i class="fas fa-calendar-alt"></i>
                                     </span>

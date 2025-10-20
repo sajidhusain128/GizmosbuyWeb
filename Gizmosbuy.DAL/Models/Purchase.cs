@@ -29,7 +29,7 @@ public partial class Purchase
 
     public decimal? TotalPrice { get; set; }
 
-    public int? PaymentModeId { get; set; }
+    public string PaymentMode { get; set; }
 
     public string BuyingLead { get; set; }
 

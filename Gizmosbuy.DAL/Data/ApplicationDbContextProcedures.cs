@@ -161,7 +161,7 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<List<spGetPurchaseSummaryDataResult>> spGetPurchaseSummaryDataAsync(int? locationId, int? month, int? year, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetPurchaseSummaryDataResult>> spGetPurchaseSummaryDataAsync(int? locationId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -178,21 +178,9 @@ namespace Gizmosbuy.DAL.Data
                     Value = locationId ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
-                new SqlParameter
-                {
-                    ParameterName = "Month",
-                    Value = month ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.Int,
-                },
-                new SqlParameter
-                {
-                    ParameterName = "Year",
-                    Value = year ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.Int,
-                },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetPurchaseSummaryDataResult>("EXEC @returnValue = [dbo].[spGetPurchaseSummaryData] @LocationId = @LocationId, @Month = @Month, @Year = @Year", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetPurchaseSummaryDataResult>("EXEC @returnValue = [dbo].[spGetPurchaseSummaryData] @LocationId = @LocationId", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
@@ -389,7 +377,7 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<List<spGetSerialNoListResult>> spGetSerialNoListAsync(string searchValue, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetSerialNoListResult>> spGetSerialNoListAsync(string searchValue, int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -407,9 +395,15 @@ namespace Gizmosbuy.DAL.Data
                     Value = searchValue ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.VarChar,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "CreatedBy",
+                    Value = createdBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetSerialNoListResult>("EXEC @returnValue = [dbo].[spGetSerialNoList] @SearchValue = @SearchValue", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetSerialNoListResult>("EXEC @returnValue = [dbo].[spGetSerialNoList] @SearchValue = @SearchValue, @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
@@ -529,7 +523,7 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<int> spSavePurchaseAsync(int? purchaseID, string serialNo, DateTime? purchaseDate, int? categoryID, int? brandID, string model, string specifications, decimal? purchasePrice, int? quantity, decimal? upgradePrice, decimal? totalPrice, int? paymentModeID, string buyingLead, int? transactionBy, DateTime? transactionDate, OutputParameter<int?> result, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<int> spSavePurchaseAsync(int? purchaseID, string serialNo, DateTime? purchaseDate, int? categoryID, int? brandID, string model, string specifications, decimal? purchasePrice, int? quantity, decimal? upgradePrice, decimal? totalPrice, string paymentMode, string buyingLead, int? transactionBy, DateTime? transactionDate, OutputParameter<int?> result, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterresult = new SqlParameter
             {
@@ -624,9 +618,10 @@ namespace Gizmosbuy.DAL.Data
                 },
                 new SqlParameter
                 {
-                    ParameterName = "PaymentModeID",
-                    Value = paymentModeID ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.Int,
+                    ParameterName = "PaymentMode",
+                    Size = 100,
+                    Value = paymentMode ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
                 },
                 new SqlParameter
                 {
@@ -650,7 +645,7 @@ namespace Gizmosbuy.DAL.Data
                 parameterresult,
                 parameterreturnValue,
             };
-            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[spSavePurchase] @PurchaseID = @PurchaseID, @SerialNo = @SerialNo, @PurchaseDate = @PurchaseDate, @CategoryID = @CategoryID, @BrandID = @BrandID, @Model = @Model, @Specifications = @Specifications, @PurchasePrice = @PurchasePrice, @Quantity = @Quantity, @UpgradePrice = @UpgradePrice, @TotalPrice = @TotalPrice, @PaymentModeID = @PaymentModeID, @BuyingLead = @BuyingLead, @TransactionBy = @TransactionBy, @TransactionDate = @TransactionDate, @result = @result OUTPUT", sqlParameters, cancellationToken);
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[spSavePurchase] @PurchaseID = @PurchaseID, @SerialNo = @SerialNo, @PurchaseDate = @PurchaseDate, @CategoryID = @CategoryID, @BrandID = @BrandID, @Model = @Model, @Specifications = @Specifications, @PurchasePrice = @PurchasePrice, @Quantity = @Quantity, @UpgradePrice = @UpgradePrice, @TotalPrice = @TotalPrice, @PaymentMode = @PaymentMode, @BuyingLead = @BuyingLead, @TransactionBy = @TransactionBy, @TransactionDate = @TransactionDate, @result = @result OUTPUT", sqlParameters, cancellationToken);
 
             result?.SetValue(parameterresult.Value);
             returnValue?.SetValue(parameterreturnValue.Value);

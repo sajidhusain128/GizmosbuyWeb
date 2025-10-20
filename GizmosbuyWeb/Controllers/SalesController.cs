@@ -8,22 +8,22 @@ using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
+using Gizmosbuy.Web.Filters;
 using GizmosbuyWeb.Filters;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IWebHostEnvironment;
 
-
 namespace Gizmosbuy.Web.Controllers
 {
+    [NoCache]
+    [EnableCors(Constant.MyPolicy)]
     public class SalesController : Controller
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
-
         private readonly ISalesBL _salesBL;
         private readonly ICommonBL _commonBL;
-        public SalesController(IHostingEnvironment hostingEnvironment, ISalesBL salesBL, ICommonBL commonBL)
+        public SalesController(ISalesBL salesBL, ICommonBL commonBL)
         {
-            _hostingEnvironment = hostingEnvironment;
             _salesBL = salesBL;
             _commonBL = commonBL;
         }
@@ -360,7 +360,6 @@ namespace Gizmosbuy.Web.Controllers
 
                 RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 
-                string webRootPath = _hostingEnvironment.ContentRootPath;
                 var webReport = new WebReport();
 
                 webReport.Report.RegisterData(dataTable, "SalesData");

@@ -315,3 +315,17 @@ function getBasePath(url) {
 
     return cleanUrl;
 }
+
+function preventBackspace(e) {
+    var evt = e || window.event;
+    if (evt) {
+        var keyCode = evt.charCode || evt.keyCode;
+        if (keyCode === 8) {
+            if (evt.preventDefault) {
+                evt.preventDefault();
+            } else {
+                evt.returnValue = false;
+            }
+        }
+    }
+}

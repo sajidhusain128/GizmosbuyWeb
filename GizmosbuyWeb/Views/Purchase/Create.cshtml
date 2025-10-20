@@ -42,7 +42,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="input-group">
-                                <input type="text" id="txtPurchaseDate" class="form-control" asp-for="PurchaseDate" placeholder="DD/MM/YYYY" maxlength="10" pattern="[0-9/]*" onkeyup="dateAutoFormatter(event)" autocomplete="off">
+                                <input type="text" id="txtPurchaseDate" class="form-control" asp-for="PurchaseDate" placeholder="DD/MM/YYYY" maxlength="10" pattern="[0-9/]*" onkeypress="return false;" onKeyDown="preventBackspace();" onpaste="return false;" autocomplete="off">
                                 <span class="input-group-text" id="basic-addon1">
                                     <i class="fas fa-calendar-alt"></i>
                                 </span>
@@ -59,7 +59,7 @@
                             <label for="ddlCategory" class="col-form-label">Category:</label>
                         </div>
                         <div class="col-md-4">
-                            @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select" })
+                            @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @style="width:100% !important" })
                         </div>
                         <div class="col-auto">
                             <span class="field-validation-error"></span>
@@ -72,7 +72,7 @@
                             <label for="ddlBrand" class="col-form-label">Brand:</label>
                         </div>
                         <div class="col-md-4">
-                            @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select" })
+                            @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @style = "width:100% !important" })
                         </div>
                         <div class="col-auto">
                             <span class="field-validation-error"></span>
@@ -181,10 +181,11 @@
                 <div class="col-md-12 mb-2">
                     <div class="row align-items-center">
                         <div class="col-md-2">
-                            <label for="ddlPayMode" class="col-form-label">Payment Mode:</label>
+                            <label for="txtPayMode" class="col-form-label">Payment Mode:</label>
                         </div>
                         <div class="col-md-4">
-                            @Html.DropDownListFor(Model => Model.PaymentModeId, new SelectList(((List<IPaymentModeModel>)ViewBag.PaymentModes).Select(x => new { Value = x.PaymentModeId, Text = x.PaymentModeName }), "Value", "Text"), null, new { id = "ddlPayMode", @class = "form-select" })
+                            <input type="text" id="txtPayMode" class="form-control" asp-for="PaymentModeName" autocomplete="off">
+                            @* @Html.DropDownListFor(Model => Model.PaymentModeId, new SelectList(((List<IPaymentModeModel>)ViewBag.PaymentModes).Select(x => new { Value = x.PaymentModeId, Text = x.PaymentModeName }), "Value", "Text"), null, new { id = "ddlPayMode", @class = "form-select", @style = "width:100% !important" }) *@
                         </div>
                         <div class="col-auto">
                             <span class="field-validation-error"></span>
@@ -247,7 +248,7 @@
                 clearBtn: true
             });
 
-            $('#ddlCategory,#ddlBrand,#ddlPayMode').select2();
+            $('#ddlCategory,#ddlBrand').select2();
         });
     </script>
 }

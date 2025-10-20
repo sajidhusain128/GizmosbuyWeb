@@ -1,15 +1,19 @@
 ﻿using System.Data;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
+using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
+using Gizmosbuy.Web.Filters;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace GizmosbuyWeb.Controllers
 {
+    [NoCache]
+    [EnableCors(Constant.MyPolicy)]
     public class BaseController : Controller
     {
         public readonly IWebConfiguration _webConfiguration;
@@ -18,22 +22,22 @@ namespace GizmosbuyWeb.Controllers
             _webConfiguration = webConfiguration.Value;
         }
 
-        public Task CreateAuthenticationTicket(IUserModel user)
-        {
-            var key = Encoding.ASCII.GetBytes(_webConfiguration.SecretKey);
-            var JWToken = new JwtSecurityToken(
-                issuer: _webConfiguration.Issuer,
-                audience: _webConfiguration.Issuer,
-                claims: GetUserClaims(user),
-                notBefore: new DateTimeOffset(DateTime.Now).DateTime,
-                expires: new DateTimeOffset(DateTime.Now.AddMinutes(_webConfiguration.SesssionTimeoutMinutes)).DateTime,
-                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            );
+        //public async Task<JwtSecurityToken> CreateAuthenticationTicket(IUserModel user)
+        //{
+        //    var key = Encoding.ASCII.GetBytes(_webConfiguration.SecretKey);
+        //    var JWToken = new JwtSecurityToken(
+        //        issuer: _webConfiguration.Issuer,
+        //        audience: _webConfiguration.Issuer,
+        //        claims: GetUserClaims(user),
+        //        notBefore: new DateTimeOffset(DateTime.Now).DateTime,
+        //        expires: new DateTimeOffset(DateTime.Now.AddMinutes(_webConfiguration.SesssionTimeoutMinutes)).DateTime,
+        //        signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        //    );
 
-            var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
-            SetSession(user, token);
-            return Task.CompletedTask;
-        }
+        //    var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
+        //    SetSession(user, token);
+        //    return await Task.FromResult(JWToken);
+        //}
 
         private IEnumerable<Claim> GetUserClaims(IUserModel user)
         {
@@ -51,13 +55,42 @@ namespace GizmosbuyWeb.Controllers
 
         private void SetSession(IUserModel user, string token)
         {
-            HttpContext.Session.SetString("JWToken", token);
+            //HttpContext.Session.SetString("JWToken", token);
             HttpContext.Session.SetString("UserId", user.UserId.ToString());
             HttpContext.Session.SetString("UserName", user.UserName);
             HttpContext.Session.SetString("Email", user.Email);
             HttpContext.Session.SetString("Role", user.UserRole);
             HttpContext.Session.SetString("Location", user.Location);
             HttpContext.Session.SetString("LocationId", user.locationId.ToString());
+        }
+
+        public async Task CreateSignIn(IUserModel user)
+        {
+            SetSession(user, null);
+            var claimsIdentity = new ClaimsIdentity(GetUserClaims(user), IdentityConstants.ApplicationScheme);
+
+            await HttpContext.SignInAsync(
+                IdentityConstants.ApplicationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                new AuthenticationProperties
+                {
+                    IsPersistent = true, // Keeps cookie across browser sessions
+                    ExpiresUtc = DateTime.UtcNow.AddMinutes(_webConfiguration.SesssionTimeoutMinutes) // Optional override
+                });
+        }
+
+        public async Task CreateSignOut()
+        {
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+        }
+
+        public void ClearAllCookies()
+        {
+            // Delete all cookies
+            foreach (var cookie in Request.Cookies.Keys)
+            {
+                Response.Cookies.Delete(cookie);
+            }
         }
 
         // Generate JWT Token

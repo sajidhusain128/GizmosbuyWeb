@@ -1,7 +1,23 @@
 ﻿
 var tblRawData;
+var categoryList = ["Accessories", "Service", "Adjustment"];
+
+function preventBack() {
+    window.history.forward();
+}
+setTimeout("preventBack()", 0);
+window.onunload = function () {
+    null;
+};
+
+$(document).ajaxError(function (xhr, props) {
+    if (props.status === 401) {
+        window.location.href = '/Auth/Login?timeout=true';
+    }
+});
 
 $(document).ready(function () {
+
 
     $('*[title]').tooltip();
 
@@ -10,21 +26,16 @@ $(document).ready(function () {
         savePurchase();
     });
 
+    $('#txtPurchasePrice,#txtQuantity,#txtUpgrade').blur(function () {
+        UpdatePurchasePrice();
+    });
+
     $('#txtPurcRepair').focus(function () {
-        var purcPrice = parseFloat($('#txtPurchasePrice').val());
-        var qty = parseInt($('#txtQuantity').val());
-        var upgradePrice = parseFloat($('#txtUpgrade').val());
+        UpdatePurchasePrice();
+    })
 
-        var total = "";
-
-        if (!isNaN(purcPrice) && !isNaN(qty) && !isNaN(upgradePrice)) {
-            total = (purcPrice * qty) + upgradePrice;
-        }
-        else if (!isNaN(purcPrice) && !isNaN(qty) && isNaN(upgradePrice)) {
-            total = (purcPrice * qty);
-        }
-
-        $(this).val(total);
+    $('#txtSellingPrice').focus(function () {
+        $(this).val(0);
     })
 
     $('#btnSalesSave').click(function (e) {
@@ -77,15 +88,15 @@ $(document).ready(function () {
         try {
             var category = $(this).select2('data')[0];
             if (category.text == "Adjustment") {
-                $('#txtSrNo').val("NA");
+                //$('#txtSrNo').val("NA");
                 $('#ddlBrand').select2('val', "0");
                 $('#ddlBrand').prop("disabled", true);
                 $('#txtModel').attr("readonly", "readonly");
                 $('#txtModel').val("");
                 $('#txtUpgrade').attr("readonly", "readonly");
                 $('#txtUpgrade').val("");
-                $('#ddlPayMode').select2('val', "0");
-                $('#ddlPayMode').prop("disabled", true);
+                $('#txtPayMode').val("");
+                $('#txtPayMode').attr("readonly", "readonly");
                 $('#txtBuyLead').attr("readonly", "readonly");
                 $('#txtBuyLead').val("");
             }
@@ -94,13 +105,13 @@ $(document).ready(function () {
                 $('#ddlBrand').prop("disabled", false);
                 $('#txtModel').removeAttr("readonly");
                 $('#txtUpgrade').removeAttr("readonly");
-                $('#ddlPayMode').prop("disabled", false);
+                $('#txtPayMode').removeAttr("readonly");
                 $('#txtBuyLead').removeAttr("readonly", "readonly");
             }
 
-            if (category.text == "Accessories") {
-                $('#txtSrNo').val("NA");
-            }
+            //if (category.text == "Accessories") {
+            //    $('#txtSrNo').val("NA");
+            //}
 
         } catch (e) {
             console.log(e);
@@ -244,7 +255,50 @@ $(document).ready(function () {
             console.log(e);
         }
     })
+
+    $('#ddlStatus').change(function () {
+        try {
+            var status = $(this).select2('data')[0];
+            if (status.text == "Pending") {
+                $('#divSellYear').hide();
+                $('#divSellMonth').hide();
+                $('#txtSellYear').val("");
+                $('#txtSellMonth').val("");
+                $('#divSummaryData').html("");
+            }
+            else {
+                $('#divSellYear').show();
+                $('#divSellMonth').show();
+                $('#txtSellYear').val(new Date().getFullYear())
+                $('#divSummaryData').html("");
+            }
+
+        } catch (e) {
+            console.log(e);
+        }
+    });
 });
+
+function UpdatePurchasePrice() {
+    try {
+        var purcPrice = parseFloat($('#txtPurchasePrice').val());
+        var qty = parseInt($('#txtQuantity').val());
+        var upgradePrice = parseFloat($('#txtUpgrade').val());
+
+        var total = "";
+
+        if (!isNaN(purcPrice) && !isNaN(qty) && !isNaN(upgradePrice)) {
+            total = (purcPrice * qty) + upgradePrice;
+        }
+        else if (!isNaN(purcPrice) && !isNaN(qty) && isNaN(upgradePrice)) {
+            total = (purcPrice * qty);
+        }
+
+        $('#txtPurcRepair').val(total);
+    } catch (e) {
+        console.log(e);
+    }
+}
 
 function resetRefundForm() {
     $('#hdnIvoiceNo').val("");
@@ -325,9 +379,14 @@ function validatePuchaseForm() {
             $('#txtSpecs').parents('.row').find('.field-validation-error').text("");
         }
 
-        if ($('#txtPurchasePrice').val() == "" || $('#txtPurchasePrice').val() == "0") {
-            errorCount++;
-            $('#txtPurchasePrice').parents('.row').find('.field-validation-error').text("Purchase Price is required, and should be more than 0.");
+        if (categoryText != "Service" && categoryText != "Adjustment") {
+            if ($('#txtPurchasePrice').val() == "" || $('#txtPurchasePrice').val() == "0") {
+                errorCount++;
+                $('#txtPurchasePrice').parents('.row').find('.field-validation-error').text("Purchase Price is required, and should be more than 0.");
+            }
+            else {
+                $('#txtPurchasePrice').parents('.row').find('.field-validation-error').text("");
+            }
         }
         else {
             $('#txtPurchasePrice').parents('.row').find('.field-validation-error').text("");
@@ -341,7 +400,7 @@ function validatePuchaseForm() {
             $('#txtQuantity').parents('.row').find('.field-validation-error').text("");
         }
 
-        if (categoryText != "Adjustment" && $('#txtPurcRepair').val() == "" || $('#txtPurcRepair').val() == "0") {
+        if (categoryText != "Service" && categoryText != "Adjustment" && ($('#txtPurcRepair').val() == "" || $('#txtPurcRepair').val() == "0")) {
             errorCount++;
             $('#txtPurcRepair').parents('.row').find('.field-validation-error').text("Purhase & Repair Price is required, and should be more than 0.");
         }
@@ -349,12 +408,12 @@ function validatePuchaseForm() {
             $('#txtPurcRepair').parents('.row').find('.field-validation-error').text("");
         }
 
-        if (categoryText != "Adjustment" && $('#ddlPayMode').select2('val') == "0") {
+        if (categoryText != "Adjustment" && $('#txtPayMode').val() == "") {
             errorCount++;
-            $('#ddlPayMode').parents('.row').find('.field-validation-error').text("Payment Mode is required.");
+            $('#txtPayMode').parents('.row').find('.field-validation-error').text("Payment Mode is required.");
         }
         else {
-            $('#ddlPayMode').parents('.row').find('.field-validation-error').text("");
+            $('#txtPayMode').parents('.row').find('.field-validation-error').text("");
         }
 
         if (categoryText != "Adjustment" && $('#txtBuyLead').val() == "") {
@@ -396,7 +455,7 @@ function savePurchase() {
             var quantity = parseInt($('#txtQuantity').val());
             var upgradePrice = parseFloat($('#txtUpgrade').val());
             var purcRepairPrice = parseFloat($('#txtPurcRepair').val());
-            var paymentModeId = parseInt($('#ddlPayMode').select2('val'));
+            var paymentMode = $('#txtPayMode').val();
             var buyingLead = $('#txtBuyLead').val();
 
             var hdnPurchaseId = $('#hdnPurchaseId').val();
@@ -412,7 +471,7 @@ function savePurchase() {
                 quantity: quantity,
                 upgradePrice: upgradePrice,
                 totalPrice: purcRepairPrice,
-                paymentModeId: paymentModeId,
+                paymentModeName: paymentMode,
                 buyingLead: buyingLead
             }
 
@@ -429,7 +488,6 @@ function savePurchase() {
                     success: function (response) {
                         if (response == "Success") {
                             SuccessToast("Purchase saved successfully.");
-                            clearPurchaseForm();
                             hideLoader();
 
                             setTimeout(function () {
@@ -450,7 +508,7 @@ function savePurchase() {
             else if (hdnPurchaseId != undefined && hdnPurchaseId > 0) {
 
                 model.purchaseId = hdnPurchaseId;
-                model.quantity = null;
+                //model.quantity = null;
 
                 $.ajax({
                     type: "POST",
@@ -501,7 +559,7 @@ function clearPurchaseForm() {
         $('#txtQuantity').val("");
         $('#txtUpgrade').val("");
         $('#txtPurcRepair').val("");
-        $('#ddlPayMode').select2('val', "0");
+        $('#txtPayMode').val("");
         $('#txtBuyLead').val("");
     } catch (e) {
         console.log(e);
@@ -579,7 +637,7 @@ function getPurchaseRecordInSales(purchaseId) {
                     //$('#txtBuyLead').val(response.buyingLead);
                     //$('#hdnPurchaseId').val(response.purchaseId);
 
-                    if (response.categoryName != null && response.categoryName == "Accessories") {
+                    if (response.categoryName != null && categoryList.indexOf(response.categoryName) >= 0) {
                         $('#txtSellingPrice').val(0);
                     }
 
@@ -635,24 +693,24 @@ function validateSalesForm() {
             $('#txtQuantity').parents('.row').find('.field-validation-error').text("");
         }
 
-        if ($('#txtCategory').val() != "Accessories") {
-            if ($('#txtSellingPrice').val() == "" || $('#txtSellingPrice').val() == "0") {
-                errorCount++;
-                $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("Selling Price is required, and should be more than 0.");
-            }
-            else {
-                $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("");
-            }
+        //if ($('#txtCategory').val() != "Accessories" && $('#txtCategory').val() != "Adjustment") {
+        //    if ($('#txtSellingPrice').val() == "" || $('#txtSellingPrice').val() == "0") {
+        //        errorCount++;
+        //        $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("Selling Price is required, and should be more than 0.");
+        //    }
+        //    else {
+        //        $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("");
+        //    }
+        //}
+        //else if ($('#txtCategory').val() == "Accessories" || $('#txtCategory').val() == "Adjustment") {
+        if ($('#txtSellingPrice').val() == "") {
+            errorCount++;
+            $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("Enter at least 0");
         }
-        else if ($('#txtCategory').val() == "Accessories") {
-            if ($('#txtSellingPrice').val() == "") {
-                errorCount++;
-                $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("If it's accessories then enter alteast 0.");
-            }
-            else {
-                $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("");
-            }
+        else {
+            $('#txtSellingPrice').parents('.row').find('.field-validation-error').text("");
         }
+        //}
 
         if ($('#txtSellQuantity').val() == "" || $('#txtSellQuantity').val() == "0") {
             errorCount++;
@@ -1159,7 +1217,7 @@ function EditTempSales(id) {
                         todayHighlight: true,
                         todayBtn: true,
                         clearBtn: true
-                    });   
+                    });
                 }
                 hideLoader();
             },
@@ -1273,7 +1331,7 @@ function callRawData() {
         //$('#tblRawData thead tr').css("height","40px")
         tblRawData = $('#tblRawData').DataTable({
             scrollX: true,
-            scrollY: 360,
+            scrollY: 406,
             scrollCollapse: true,
             fixedColumns: true,
             processing: true,
@@ -1690,7 +1748,7 @@ function DeletePurchase(id) {
                         SuccessToast("Purchase entry deleted.");
                         hideLoader();
 
-                        setTimeout(function () {                          
+                        setTimeout(function () {
                             location.reload();
                         }, 2000);
                     }

@@ -2,13 +2,18 @@
 using ClosedXML.Excel;
 using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
+using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
+using Gizmosbuy.Web.Filters;
 using GizmosbuyWeb.Filters;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gizmosbuy.Web.Controllers
 {
+    [NoCache]
+    [EnableCors(Constant.MyPolicy)]
     public class InventoryController : Controller
     {
         private readonly IInventoryBL _inventoryBL;
@@ -105,8 +110,6 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-
-
                 if (transactionType == "Sales")
                 {
                     var result = await _inventoryBL.GetSalesSummaryData(locationId, month, year);
@@ -120,7 +123,7 @@ namespace Gizmosbuy.Web.Controllers
                 }
                 else if (transactionType == "Purchase")
                 {
-                    var result = await _inventoryBL.GetPurchaseSummaryData(locationId, month, year);
+                    var result = await _inventoryBL.GetPurchaseSummaryData(locationId);
 
                     if (result == null)
                     {

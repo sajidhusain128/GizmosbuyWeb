@@ -1,18 +1,13 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Linq;
+using Gizmosbuy.Core.Constants;
 using GizmosbuyWeb.Configurations;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
-using System.Security.Principal;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace GizmosbuyWeb.Filters
 {
-    public class CustomAuthorizeAttribute : TypeFilterAttribute 
+    public class CustomAuthorizeAttribute : TypeFilterAttribute
     {
         public CustomAuthorizeAttribute(params string[] claim) : base(typeof(AuthorizeFilter))
         {
@@ -52,9 +47,9 @@ namespace GizmosbuyWeb.Filters
                             flagClaim = true;
                         }
                     }
-                    
+
                 }
-                else if(context.HttpContext.User.HasClaim("Role", Role.Admin) || context.HttpContext.User.HasClaim("Role",Role.SuperAdmin))
+                else if (context.HttpContext.User.HasClaim("Role", Role.Admin) || context.HttpContext.User.HasClaim("Role", Role.SuperAdmin))
                 {
                     flagClaim = true;
                 }
@@ -63,7 +58,7 @@ namespace GizmosbuyWeb.Filters
                 {
                     if (context.HttpContext.Request.IsAjaxRequest())
                     {
-                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden; //Set HTTP 401   
+                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden; //Set Response 401   
                         context.Result = new RedirectResult("~/Auth/AccessDenied");
                     }
                     else
@@ -77,11 +72,30 @@ namespace GizmosbuyWeb.Filters
             {
                 if (context.HttpContext.Request.IsAjaxRequest())
                 {
-                    context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden; //Set HTTP 403 -   
+                    context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized; //Set Response 401  
+                    context.Result = new UnauthorizedResult();
                 }
                 else
                 {
-                    context.Result = new RedirectResult("~/Auth/Login");
+                    if (context.HttpContext.Request.Cookies.Count > 0)
+                    {
+                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        var returnUrl = context.HttpContext.Request.Path + context.HttpContext.Request.QueryString;
+
+                        if (!string.IsNullOrEmpty(returnUrl))
+                        {
+                            context.Result = new RedirectResult($"~/Auth/Login?returnUrl={returnUrl}&timeout=true");
+                        }
+                        else
+                        {
+                            context.Result = new RedirectResult("~/Auth/Login?timeout=true");
+                        }
+                    }
+                    else
+                    {
+                        context.Result = new RedirectResult("~/Auth/Login");
+                    }
+                    
                 }
             }
             return;

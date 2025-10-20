@@ -36,7 +36,7 @@ namespace Gizmosbuy.BAL.Repository
                     purchaseModel.Quantity,
                     purchaseModel.UpgradePrice,
                     purchaseModel.TotalPrice,
-                    purchaseModel.PaymentModeId,
+                    purchaseModel.PaymentModeName,
                     purchaseModel.BuyingLead,
                     Convert.ToInt32(sessionUserId),
                     DateTime.Now,
@@ -129,8 +129,7 @@ namespace Gizmosbuy.BAL.Repository
                         Quantity = spGetPurchaseByIDResult.Quantity.GetValueOrDefault(),
                         UpgradePrice = spGetPurchaseByIDResult.UpgradePrice.GetValueOrDefault(),
                         TotalPrice = spGetPurchaseByIDResult.TotalPrice.GetValueOrDefault(),
-                        PaymentModeId = spGetPurchaseByIDResult.PaymentModeID.GetValueOrDefault(),
-                        PaymentModeName = spGetPurchaseByIDResult.PaymentModeName,
+                        PaymentModeName = spGetPurchaseByIDResult.PaymentMode,
                         BuyingLead = spGetPurchaseByIDResult.BuyingLead
                     };
                 }
@@ -161,7 +160,7 @@ namespace Gizmosbuy.BAL.Repository
                     purchaseModel.Quantity,
                     purchaseModel.UpgradePrice,
                     purchaseModel.TotalPrice,
-                    purchaseModel.PaymentModeId,
+                    purchaseModel.PaymentModeName,
                     purchaseModel.BuyingLead,
                     Convert.ToInt32(sessionUserId),
                     DateTime.Now,
@@ -182,7 +181,9 @@ namespace Gizmosbuy.BAL.Repository
             {
                 List<IAutoCompleteModel> autoCompleteModelList = null;
 
-                var purcahseList = await _applicationDbContext.Procedures.spGetSerialNoListAsync(searchValue);
+                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+
+                var purcahseList = await _applicationDbContext.Procedures.spGetSerialNoListAsync(searchValue, Convert.ToInt32(sessionUserId));
 
                 if (purcahseList == null || purcahseList.Count == 0)
                 {

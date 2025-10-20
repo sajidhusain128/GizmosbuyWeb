@@ -27,8 +27,8 @@ namespace Gizmosbuy.DAL.Models
         public decimal? UpgradePrice { get; set; }
         [Column("TotalPrice", TypeName = "money")]
         public decimal? TotalPrice { get; set; }
-        [StringLength(50)]
-        public string PaymentModeName { get; set; }
+        [StringLength(100)]
+        public string PaymentMode { get; set; }
         [StringLength(100)]
         public string BuyingLead { get; set; }
         public int? CanDelete { get; set; }

@@ -113,7 +113,9 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
-            entity.Property(e => e.PaymentModeId).HasColumnName("PaymentModeID");
+            entity.Property(e => e.PaymentMode)
+                .HasMaxLength(100)
+                .IsUnicode(false);
             entity.Property(e => e.PurchaseDate).HasColumnType("datetime");
             entity.Property(e => e.PurchasePrice).HasColumnType("money");
             entity.Property(e => e.SerialNo)

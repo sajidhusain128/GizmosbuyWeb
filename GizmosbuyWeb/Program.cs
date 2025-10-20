@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using FastReport;
@@ -8,14 +9,11 @@ using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
 using Gizmosbuy.Web.Middlewares;
-using log4net.Config;
 using log4net;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using log4net.Config;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Globalization;
 
 namespace GizmosbuyWeb
 {
@@ -80,41 +78,19 @@ namespace GizmosbuyWeb
                 builder.Services.AddSession(options =>
                 {
                     options.IdleTimeout = TimeSpan.FromMinutes(webConfiguration.SesssionTimeoutMinutes);
-                });
-
-                builder.Services.AddAuthentication(option =>
-                {
-                    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(options =>
-                {
-                    options.RequireHttpsMetadata = false;
-                    options.SaveToken = true;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = webConfiguration.Issuer,
-                        ValidAudience = webConfiguration.Issuer,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        RequireExpirationTime = true,
-                        ClockSkew = TimeSpan.Zero
-                    };
+                    options.Cookie.HttpOnly = true; // Make the session cookie inaccessible to client-side scripts
+                    options.Cookie.IsEssential = true; // Make the session cookie essential for the application
                 });
 
                 builder.Services.ConfigureApplicationCookie(options =>
                 {
-                    // Cookie settings
-                    options.Cookie.HttpOnly = true;
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(webConfiguration.SesssionTimeoutMinutes);
-
                     options.LoginPath = "/Auth/Login";
                     options.AccessDeniedPath = "/Auth/AccessDenied";
+                    options.ExpireTimeSpan = TimeSpan.FromMinutes(webConfiguration.SesssionTimeoutMinutes);
                     options.SlidingExpiration = true;
-                    options.Cookie.Expiration = TimeSpan.FromMinutes(webConfiguration.SesssionTimeoutMinutes);
+                    options.Cookie.IsEssential = true;
+                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                    options.Cookie.MaxAge = TimeSpan.FromMinutes(2);
                 });
 
                 builder.Services.AddAuthorization();
@@ -174,10 +150,17 @@ namespace GizmosbuyWeb
 
                 app.Use(async (context, next) =>
                 {
-                    var JWToken = context.Session.GetString("JWToken");
-                    if (!string.IsNullOrEmpty(JWToken))
+                    if (context.Request.Path == "/")
                     {
-                        context.Request.Headers.Append("Authorization", "Bearer " + JWToken);
+                        if (context.User.Identity.IsAuthenticated)
+                        {
+                            context.Response.Redirect("/Home/Index", permanent: true);
+                        }
+                        else
+                        {
+                            context.Response.Redirect("/Auth/Login", permanent: true);
+                        }
+                        return;
                     }
                     await next();
                 });

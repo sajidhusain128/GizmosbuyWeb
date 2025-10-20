@@ -1,12 +1,17 @@
 ﻿using Gizmosbuy.BAL.Interfaces;
+using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
+using Gizmosbuy.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
 namespace GizmosbuyWeb.Controllers
 {
+    [NoCache]
+    [EnableCors(Constant.MyPolicy)]
     public class AuthController : BaseController
     {
         private readonly IAuthenticationBL _authenticationBL;
@@ -20,17 +25,34 @@ namespace GizmosbuyWeb.Controllers
             return Ok("App is working!;");
         }
 
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult Login(string returnUrl = null, string timeout = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-
-            if (Url.IsLocalUrl(returnUrl))
+            try
             {
-                return Redirect(returnUrl);
-            }
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.ShowValidationSummary = true;
+                }
 
-            ViewBag.ErrorMessage = "";
-            return View();
+                if (timeout == "true")
+                {
+                    ViewBag.ErrorMessage = "Your session has expired due to inactivity. Please sign in again.";
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "";
+                }
+
+                ClearAllCookies();
+
+                ViewData["ReturnUrl"] = returnUrl;
+
+                return View();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         [HttpPost]
@@ -40,13 +62,6 @@ namespace GizmosbuyWeb.Controllers
         {
             try
             {
-                ViewData["ReturnUrl"] = returnUrl;
-
-                if (Url.IsLocalUrl(returnUrl))
-                {
-                    return Redirect(returnUrl);
-                }
-
                 if (ModelState.IsValid)
                 {
                     IUserModel userModel = new UserModel
@@ -59,9 +74,12 @@ namespace GizmosbuyWeb.Controllers
 
                     if (user != null)
                     {
-                        await CreateAuthenticationTicket(user);
+                        await CreateSignIn(user);
 
-                        return RedirectToAction("Index", "Home");
+                        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                            return Redirect(returnUrl);
+                        else
+                            return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -82,19 +100,37 @@ namespace GizmosbuyWeb.Controllers
         // Authenticate the user credentials
         private async Task<IUserModel?> AuthenticateUser(IUserModel UserModel)
         {
-            // In a real application, you would query the database for user credentials
-            var user = await _authenticationBL.ValidateUser(UserModel);
-            if (user == null)
+            try
             {
-                Console.WriteLine("User not found."); // Debug output
+                // In a real application, you would query the database for user credentials
+                var user = await _authenticationBL.ValidateUser(UserModel);
+                if (user == null)
+                {
+                    Console.WriteLine("User not found."); // Debug output
+                }
+                return user;
             }
-            return user;
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public IActionResult Logout()
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Login");
+            try
+            {
+                HttpContext.Session.Clear();
+                await CreateSignOut();
+                return Redirect("/Auth/Login");
+            }
+            catch (Exception)
+            {
+                throw;
+            } 
         }
 
         [Authorize]

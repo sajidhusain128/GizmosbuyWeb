@@ -1,24 +1,18 @@
 using System.Diagnostics;
-using GizmosbuyWeb.Configurations;
+using Gizmosbuy.Core.Constants;
+using Gizmosbuy.Web.Filters;
 using GizmosbuyWeb.Filters;
 using GizmosbuyWeb.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GizmosbuyWeb.Controllers
 {
-    [EnableCors("MyPolicy")]
+    [NoCache]
+    [EnableCors(Constant.MyPolicy)]
     [CustomAuthorize(Role.User)]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         [CustomAuthorize(Role.User)]
         public IActionResult Index()
         {

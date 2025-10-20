@@ -1,11 +1,16 @@
 ﻿using Gizmosbuy.BAL.Interfaces;
+using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
+using Gizmosbuy.Web.Filters;
 using GizmosbuyWeb.Filters;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Gizmosbuy.Web.Controllers
 {
+    [NoCache]
+    [EnableCors(Constant.MyPolicy)]
     public class PurchaseController : Controller
     {
         private readonly IPurchaseBL _purchaseBL;
@@ -110,11 +115,11 @@ namespace Gizmosbuy.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize]
-        public ActionResult SavePurchase(PurchaseModel purchaseModel)
+        public async Task<IActionResult> SavePurchase(PurchaseModel purchaseModel)
         {
             try
             {
-                int i = _purchaseBL.CreatePurchase(purchaseModel).Result;
+                int i = await _purchaseBL.CreatePurchase(purchaseModel);
 
                 if (i > 0)
                 {

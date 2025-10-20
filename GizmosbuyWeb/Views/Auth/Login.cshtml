@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - GizmosbuyWeb</title>
-    <link rel="stylesheet" href="@Url.Content("~/lib/twitter-bootstrap/css/bootstrap.min.css")" /> 
+    <link rel="stylesheet" href="@Url.Content("~/lib/twitter-bootstrap/css/bootstrap.min.css")" />
     <link rel="stylesheet" href="@Url.Content("~/lib/font-awesome/css/all.min.css")" />
     <link rel="stylesheet" href="@Url.Content("~/css/custom-css/styles.css")" asp-append-version="true" />
 </head>
@@ -30,8 +30,18 @@
                                 <div class="mb-4 text-center">
                                     <h3>Sign In</h3>
                                 </div>
-                                <form action="/Auth/Login" method="post" returnurl="@ViewData["ReturnUrl"]" class="needs-validation was-validated">
+                                <form action="/Auth/Login" method="post" class="needs-validation was-validated">
+                                    <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
+
                                     @if (Convert.ToString(ViewBag.ErrorMessage) != "")
+                                    {
+                                        <div class="alert alert-danger" role="alert">
+                                            <div class="text-center">
+                                                <i class="fa-solid fa-triangle-exclamation"></i> @ViewBag.ErrorMessage
+                                            </div>
+                                        </div>
+                                    }
+                                    @if (ViewBag.ShowValidationSummary == true)
                                     {
                                         <div class="alert alert-danger" role="alert">
                                             <div>
@@ -39,6 +49,7 @@
                                             </div>
                                         </div>
                                     }
+
                                     @Html.AntiForgeryToken()
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert" id="loginError" style="display:none;">
                                         <i class="fa-solid fa-triangle-exclamation"></i>

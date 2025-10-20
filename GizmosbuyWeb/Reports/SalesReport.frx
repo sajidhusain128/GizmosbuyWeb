@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="07/06/2025 23:13:36" ReportInfo.Modified="09/06/2025 21:55:02" ReportInfo.CreatorVersion="2021.1.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/06/2025 23:13:36" ReportInfo.Modified="09/13/2025 23:17:58" ReportInfo.CreatorVersion="2021.1.0.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace FastReport
 }
 </ScriptText>
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqzP/32u1QtzIsUJqKG+CmmrmNuDHT7oBRMr0z3pkCSb7GvmwRZ2uAT+4NEn+xtN0Dvgq1QEeJg/MmhO5XHpCk7VAvjAO/TSCa31xNocc+N0eJ+ri/kBBgxmShG/8YBZ/2KlHjYQLp+ubHsKSrEqOXLhxctcOtUY63LIcfobUGep1o6AlD+j3Nvhy81Pp8IQXNdUdHygKFGudnWEZtW+MHwwadJUguqoOGiUBUyM1lGhk=">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqzP/32u1QtzIsUJqKG+CmmrmNuDHT7oBRMr0z3pkCSb7GvmwRZ2uAT+4NEn+xtN0Dvgq1QEeJg/MmhO5XHpCk7VAvjAO/TSCa31xNocc+N0eJ+ri/kBBgxmShG/8YBZ/2KlHjYQLp+ubHsKSrEqOXLhxctcOtUY63LIcfobUGep1o6AlD+j3Nvhy81Pp8IQXNdUdHygKFGudnWEZtW+MHw3syLqirB0LC6RKZ9/fHVzc=">
       <TableDataSource Name="Table" Alias="SalesData" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;ROW_NUMBER() OVER(ORDER BY S.SalesID) AS RowNum,&#13;&#10;S.SalesID,&#13;&#10;CM.CategoryName,&#13;&#10;BM.BrandName,&#13;&#10;p.Model,&#13;&#10;p.SerialNo,&#13;&#10;P.Specifications,&#13;&#10;S.SellingQuantity,&#13;&#10;S.SellingPrice&#13;&#10;FROM Sales S WITH(NOLOCK)&#13;&#10;JOIN Purchases P WITH(NOLOCK) ON P.PurchaseID = S.PurchaseID&#13;&#10;JOIN CategoryMaster CM WITH(NOLOCK) ON CM.CategoryID = P.CategoryID&#13;&#10;JOIN BrandMaster BM WITH(NOLOCK) ON BM.BrandID = P.BrandID&#13;&#10;">
         <Column Name="BrandName" DataType="System.String"/>
         <Column Name="CategoryName" DataType="System.String"/>
@@ -41,7 +41,7 @@ namespace FastReport
         <CommandParameter Name="InvoiceNo" DataType="22" Size="100"/>
       </TableDataSource>
     </MsSqlDataConnection>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqzP/32u1QtzIsUJqKG+CmmrmNuDHT7oBRMr0z3pkCSb7GvmwRZ2uAT+4NEn+xtN0Dvgq1QEeJg/MmhO5XHpCk7VAvjAO/TSCa31xNocc+N0eJ+ri/kBBgxmShG/8YBZ/2KlHjYQLp+ubHsKSrEqOXLhxctcOtUY63LIcfobUGep1o6AlD+j3Nvhy81Pp8IQXNdUdHygKFGudnWEZtW+MHwziREd2hWzhg5Wlr2rKSMjk=">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqzP/32u1QtzIsUJqKG+CmmrmNuDHT7oBRMr0z3pkCSb7GvmwRZ2uAT+4NEn+xtN0Dvgq1QEeJg/MmhO5XHpCk7VAvjAO/TSCa31xNocc+N0eJ+ri/kBBgxmShG/8YBZ/2KlHjYQLp+ubHsKSrEqOXLhxctcOtUY63LIcfobUGep1o6AlD+j3Nvhy81Pp8IQXNdUdHygKFGudnWEZtW+MHwwJ0P6niqXWI+OFUf6uVNxI=">
       <TableDataSource Name="Table3" Alias="SalesHeader" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;S.CustomerName,&#13;&#10;S.ContactNo,&#13;&#10;S.[Location],&#13;&#10;S.BillNo as InvoiceNo,&#13;&#10;S.SellingDate,&#13;&#10;S.PaymentMode,&#13;&#10;S.SellingLead,&#13;&#10;'' as TotalPriceInWord,&#13;&#10;'' as StoreAddress,&#13;&#10;'' as StoreContactNo&#13;&#10;FROM Sales S WITH(NOLOCK)">
         <Column Name="CustomerName" DataType="System.String"/>
         <Column Name="ContactNo" DataType="System.Int64"/>
@@ -112,36 +112,33 @@ namespace FastReport
       </TableObject>
     </ReportTitleBand>
     <PageHeaderBand Name="PageHeader1" Top="344.7" Width="718.2" Height="28.35">
-      <TableObject Name="Table1" Width="718" Height="28.35">
-        <TableColumn Name="Column17" Width="42.5"/>
-        <TableColumn Name="Column18" Width="89.75"/>
-        <TableColumn Name="Column19" Width="89.75"/>
-        <TableColumn Name="Column20" Width="89.75"/>
-        <TableColumn Name="Column21" Width="146.45"/>
-        <TableColumn Name="Column22" Width="99.2"/>
-        <TableColumn Name="Column23" Width="70.85"/>
-        <TableColumn Name="Column24" Width="89.75"/>
+      <TableObject Name="Table1" Width="721.53" Height="28.35">
+        <TableColumn Name="Column17" Width="90.49"/>
+        <TableColumn Name="Column18" Width="89.74"/>
+        <TableColumn Name="Column19" Width="99.34"/>
+        <TableColumn Name="Column20" Width="156.94"/>
+        <TableColumn Name="Column21" Width="136.84"/>
+        <TableColumn Name="Column22" Width="51.19"/>
+        <TableColumn Name="Column23" Width="96.99"/>
         <TableRow Name="Row9" Height="28.35">
-          <TableCell Name="Cell62" Fill.Color="11, 135, 66" Text="#" HorzAlign="Center" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
-          <TableCell Name="Cell63" Fill.Color="11, 135, 66" Text="Category" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
-          <TableCell Name="Cell64" Fill.Color="11, 135, 66" Text="Brand" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
-          <TableCell Name="Cell65" Fill.Color="11, 135, 66" Text="Model" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
-          <TableCell Name="Cell66" Fill.Color="11, 135, 66" Text="Specs" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
-          <TableCell Name="Cell67" Fill.Color="11, 135, 66" Text="SerialNo" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
-          <TableCell Name="Cell68" Fill.Color="11, 135, 66" Text="Quantity" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
-          <TableCell Name="Cell69" Fill.Color="11, 135, 66" Text="Price" Padding="2, 1, 3, 1" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
+          <TableCell Name="Cell62" Fill.Color="11, 135, 66" Text="Category" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
+          <TableCell Name="Cell63" Fill.Color="11, 135, 66" Text="Brand" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
+          <TableCell Name="Cell64" Fill.Color="11, 135, 66" Text="Model" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
+          <TableCell Name="Cell65" Fill.Color="11, 135, 66" Text="Specs" Padding="5, 1, 2, 1" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
+          <TableCell Name="Cell66" Fill.Color="11, 135, 66" Text="SerialNo" Padding="6, 1, 2, 1" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
+          <TableCell Name="Cell67" Fill.Color="11, 135, 66" Text="Qty" Padding="4, 1, 2, 1" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
+          <TableCell Name="Cell68" Fill.Color="11, 135, 66" Text="Price" Padding="2, 1, 3, 1" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
         </TableRow>
       </TableObject>
     </PageHeaderBand>
     <DataBand Name="Data1" Top="377.05" Width="718.2" Height="47.25" CanGrow="true" CanShrink="true" BeforePrintEvent="Data1_BeforePrint" FirstRowStartsNewPage="true" DataSource="Table" IdColumn="SalesData.SalesID" ParentIdColumn="SalesHeader.InvoiceNo">
-      <TextObject Name="Text18" Top="9.45" Width="37.8" Height="28.35" Text="[SalesData.RowNum]" HorzAlign="Center" Font="Times New Roman, 11pt"/>
-      <TextObject Name="Text19" Left="37.8" Top="9.45" Width="94.5" Height="28.35" Text="[SalesData.CategoryName]" AutoWidth="true" Font="Times New Roman, 11pt"/>
-      <TextObject Name="Text20" Left="132.3" Top="9.45" Width="85.05" Height="28.35" Text="[SalesData.BrandName]" AutoWidth="true" Font="Times New Roman, 11pt"/>
-      <TextObject Name="Text21" Left="217.35" Top="9.45" Width="94.5" Height="28.35" Text="[SalesData.Model]" AutoWidth="true" Font="Times New Roman, 11pt"/>
-      <TextObject Name="Text22" Left="311.85" Top="9.45" Width="141.75" Height="28.35" CanGrow="true" CanShrink="true" Text="[SalesData.Specifications]" Font="Times New Roman, 11pt"/>
-      <TextObject Name="Text23" Left="453.6" Top="9.45" Width="103.95" Height="28.35" Text="[IIf([SalesData.SerialNo] == &quot;NA&quot;,&quot;&quot;,[SalesData.SerialNo])]" AutoWidth="true" Font="Times New Roman, 11pt"/>
-      <TextObject Name="Text24" Left="557.55" Top="9.45" Width="66.15" Height="28.35" Text="[SalesData.SellingQuantity]" HorzAlign="Right" Font="Times New Roman, 11pt"/>
-      <TextObject Name="Text25" Left="623.7" Top="9.45" Width="94.5" Height="28.35" Text="[SalesData.SellingPrice]" Padding="2, 0, 3, 0" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" WordWrap="false" Font="Times New Roman, 11pt"/>
+      <TextObject Name="Text19" Left="-0.6" Top="9.45" Width="94.5" Height="28.35" Text="[SalesData.CategoryName]" AutoWidth="true" Font="Times New Roman, 11pt"/>
+      <TextObject Name="Text20" Left="93.9" Top="9.45" Width="85.05" Height="28.35" Text="[SalesData.BrandName]" AutoWidth="true" Font="Times New Roman, 11pt"/>
+      <TextObject Name="Text21" Left="178.95" Top="9.45" Width="104.1" Height="28.35" CanGrow="true" CanShrink="true" Text="[SalesData.Model]" Font="Times New Roman, 11pt"/>
+      <TextObject Name="Text22" Left="283.05" Top="9.45" Width="160.95" Height="28.35" CanGrow="true" CanShrink="true" Text="[SalesData.Specifications]" Font="Times New Roman, 11pt"/>
+      <TextObject Name="Text23" Left="444" Top="9.45" Width="132.75" Height="28.35" Text="[IIf([SalesData.SerialNo] == &quot;NA&quot;,&quot;&quot;,[SalesData.SerialNo])]" Padding="0, 0, 2, 0" AutoWidth="true" Font="Times New Roman, 11pt"/>
+      <TextObject Name="Text24" Left="576.75" Top="9.45" Width="46.95" Height="28.35" Text="[SalesData.SellingQuantity]" HorzAlign="Right" Font="Times New Roman, 11pt"/>
+      <TextObject Name="Text25" Left="623.7" Top="9.45" Width="94.5" Height="28.35" Text="[SalesData.SellingPrice]" Padding="2, 0, 3, 0" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="0" HorzAlign="Right" WordWrap="false" Font="Times New Roman, 11pt"/>
     </DataBand>
     <PageFooterBand Name="PageFooter1" Top="428.3" Width="718.2" Height="256.65">
       <TextObject Name="Text12" Top="75.6" Width="368.55" Height="37.8" CanGrow="true" Text="[SalesHeader.TotalPriceInWord]" Font="Times New Roman, 11pt"/>
@@ -155,7 +152,7 @@ namespace FastReport
         <TableRow Name="Row7" Height="28.35">
           <TableCell Name="Cell31" Fill.Color="11, 135, 66" Text="Total" Padding="2, 2, 2, 2" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
           <TableCell Name="Cell32" Fill.Color="11, 135, 66" Padding="2, 2, 2, 2" Font="Arial, 10pt" TextFill.Color="White"/>
-          <TableCell Name="Cell33" Fill.Color="11, 135, 66" Text="[GrandTotal]" Padding="2, 2, 2, 2" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
+          <TableCell Name="Cell33" Fill.Color="11, 135, 66" Text="[GrandTotal]" Padding="2, 2, 2, 2" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="0" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold" TextFill.Color="White"/>
         </TableRow>
       </TableObject>
       <ContainerObject Name="Container4" Left="378" Top="85.05" Width="340.2" Height="1.89" Fill.Color="11, 135, 66"/>
@@ -179,7 +176,7 @@ namespace FastReport
           <TableCell Name="Cell82" Fill.Color="White" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold"/>
           <TableCell Name="Cell83" Fill.Color="White" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold"/>
           <TableCell Name="Cell84" Fill.Color="White" Text="[PageTotalQty]" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold"/>
-          <TableCell Name="Cell85" Fill.Color="White" Text="[PageTotal]" Padding="2, 1, 3, 1" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="2" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold"/>
+          <TableCell Name="Cell85" Fill.Color="White" Text="[PageTotal]" Padding="2, 1, 3, 1" Format="Currency" Format.UseLocale="true" Format.DecimalDigits="0" HorzAlign="Right" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold"/>
         </TableRow>
       </TableObject>
       <ContainerObject Name="Container2" Width="718.2" Height="1.89" Fill.Color="11, 135, 66"/>

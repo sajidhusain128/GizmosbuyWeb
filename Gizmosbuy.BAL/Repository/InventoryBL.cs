@@ -113,12 +113,12 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<List<IPurchaseSummaryModel>> GetPurchaseSummaryData(int locationId, int month, int year)
+        public async Task<List<IPurchaseSummaryModel>> GetPurchaseSummaryData(int locationId)
         {
             try
             {
                 List<IPurchaseSummaryModel> purchaseSummaryModelList = null;
-                var purchaseDataList = await _applicationDbContext.Procedures.spGetPurchaseSummaryDataAsync(locationId, month, year);
+                var purchaseDataList = await _applicationDbContext.Procedures.spGetPurchaseSummaryDataAsync(locationId);
 
                 if (purchaseDataList != null && purchaseDataList.Count > 0)
                 {

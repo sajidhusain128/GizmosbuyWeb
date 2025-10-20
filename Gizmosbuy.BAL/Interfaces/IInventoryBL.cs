@@ -8,7 +8,7 @@ namespace Gizmosbuy.BAL.Interfaces
     {
         Task<Object> GetRawData(IDateRange dateRange,IPager pager);
         Task<List<ISalesSummaryModel>> GetSalesSummaryData(int locationId, int month, int year);
-        Task<List<IPurchaseSummaryModel>> GetPurchaseSummaryData(int locationId, int month, int year);
+        Task<List<IPurchaseSummaryModel>> GetPurchaseSummaryData(int locationId);
         Task<List<spGetRawDataResult>> GetRawDataExport(IDateRange dateRange, IPager pager);
     }
 }

@@ -582,7 +582,7 @@ body {
 
 .text-ellises {
     width: 250px;
-    display: inline-block;
+    display: inline-grid;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

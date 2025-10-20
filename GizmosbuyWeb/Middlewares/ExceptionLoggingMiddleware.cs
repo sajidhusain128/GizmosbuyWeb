@@ -12,11 +12,22 @@ namespace Gizmosbuy.Web.Middlewares
             _next = next;
         }
 
-
         public async Task InvokeAsync(HttpContext context)
         {
             try
             {
+                if (context.Request.Path == "/Auth/Login")
+                {
+                    if (!context.User.Identity.IsAuthenticated)
+                    {
+                        context.Session.Clear();
+                    }
+                    else
+                    {
+                        context.Response.Redirect("/Home/Index", permanent: true);
+                    }
+                }
+
                 await _next(context); // Proceed to the next middleware
             }
             catch (Exception ex)
