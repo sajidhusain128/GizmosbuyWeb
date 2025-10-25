@@ -216,7 +216,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpPost]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.User)]
         public async Task<IActionResult> GetAutoCompleteSerialNo(string searchValue)
         {
             try
@@ -232,7 +232,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpGet]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.User)]
         public async Task<IActionResult> GetPurchaseById(int purchaseId)
         {
             try

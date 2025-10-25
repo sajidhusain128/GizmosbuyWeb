@@ -90,7 +90,7 @@ namespace GizmosbuyWeb
                     options.SlidingExpiration = true;
                     options.Cookie.IsEssential = true;
                     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                    options.Cookie.MaxAge = TimeSpan.FromMinutes(2);
+                    options.Cookie.MaxAge = TimeSpan.FromDays(7);
                 });
 
                 builder.Services.AddAuthorization();

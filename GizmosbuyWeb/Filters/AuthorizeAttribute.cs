@@ -17,7 +17,7 @@ namespace GizmosbuyWeb.Filters
 
     public class AuthorizeFilter : IAuthorizationFilter
     {
-        readonly string[] _claim;
+        private readonly string[] _claim;
 
         public AuthorizeFilter(params string[] claim)
         {
@@ -29,7 +29,6 @@ namespace GizmosbuyWeb.Filters
             var IsAuthenticated = context.HttpContext.User.Identity.IsAuthenticated;
             var claimsIndentity = context.HttpContext.User.Identity as ClaimsIdentity;
             var userSession = context.HttpContext.Session.GetString("Role");
-
 
             if (IsAuthenticated)
             {
@@ -95,7 +94,6 @@ namespace GizmosbuyWeb.Filters
                     {
                         context.Result = new RedirectResult("~/Auth/Login");
                     }
-                    
                 }
             }
             return;

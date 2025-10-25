@@ -43,8 +43,6 @@ namespace GizmosbuyWeb.Controllers
                     ViewBag.ErrorMessage = "";
                 }
 
-                ClearAllCookies();
-
                 ViewData["ReturnUrl"] = returnUrl;
 
                 return View();
@@ -125,12 +123,13 @@ namespace GizmosbuyWeb.Controllers
             {
                 HttpContext.Session.Clear();
                 await CreateSignOut();
-                return Redirect("/Auth/Login");
+                Response.Cookies.Delete(".AspNetCore.Cookies");
+                return RedirectToAction("Login", "Auth");
             }
             catch (Exception)
             {
                 throw;
-            } 
+            }
         }
 
         [Authorize]

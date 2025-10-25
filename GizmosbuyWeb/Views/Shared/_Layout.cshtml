@@ -174,8 +174,8 @@
                         <li class="nav-item dropdown">
                             <a aria-current="page" href="/dashboard#" class="active-link exact-active-link nav-link dropdown-toggle show" role="button" data-bs-toggle="dropdown" aria-expanded="true"> Hi, @Context.Session.GetString("UserName")</a>
                             <ul class="dropdown-menu" style="left: initial; right: 0px;" data-bs-popper="static">
-                                <li>
-                                    @using (Html.BeginForm("Logout", "Auth", HttpMethods.Post))
+                                <li>        
+                                    @using (Html.BeginForm("Logout", "Auth", new {returnUrl = "", Timeout = ""}, FormMethod.Post))
                                     {
                                         @Html.AntiForgeryToken()
                                         <button aria-current="page" type="submit" class="active-link exact-active-link dropdown-item">Logout</button>

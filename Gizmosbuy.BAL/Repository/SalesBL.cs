@@ -26,8 +26,22 @@ namespace Gizmosbuy.BAL.Repository
                 int response = 0;
                 string invoiceNo = null;
                 string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                string userRole = Utilities.GetSessionValue("Role", _httpContextAccessor.HttpContext);
+                int locationId = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
 
-                var salesModels = await _applicationDbContext.TempSales.Where(x => x.UserId == Convert.ToInt32(sessionUserId)).ToListAsync();
+                var salesModels = _applicationDbContext.TempSales
+                                    .Join(_applicationDbContext.Purchases,
+                                          sale => sale.PurchaseId,
+                                          purchase => purchase.PurchaseId,
+                                          (sale, purchase) => new { sale, purchase })
+                                    .Join(_applicationDbContext.UserLocationMappings,
+                                          sp => locationId,
+                                          ulm => ulm.LocationId,
+                                          (sp, ulm) => new { sp.sale, sp.purchase, ulm })
+                                    .Where(x => x.purchase.CreatedBy ==
+                                        ((userRole == "User" || userRole == "Admin") ? x.ulm.UserId : x.purchase.CreatedBy))
+                                    .Select(x => x.sale)
+                                    .ToList();
 
                 OutputParameter<int> outputParameter = new OutputParameter<int>();
 
@@ -75,9 +89,7 @@ namespace Gizmosbuy.BAL.Repository
                             outputParameter);
                     }
 
-                    var tempSaleslist = await _applicationDbContext.TempSales.Where(x => x.UserId == Convert.ToInt32(sessionUserId)).ToListAsync();
-
-                    _applicationDbContext.TempSales.RemoveRange(tempSaleslist);
+                    _applicationDbContext.TempSales.RemoveRange(salesModels);
                     response = await _applicationDbContext.SaveChangesAsync();
                 }
 
