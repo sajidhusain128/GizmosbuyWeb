@@ -41,7 +41,13 @@ public partial class Purchase
 
     public DateTime? ModifiedDate { get; set; }
 
+    public int? PurchaseLocationId { get; set; }
+
     public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
 
+    public virtual ICollection<StoreTransfer> StoreTransfers { get; set; } = new List<StoreTransfer>();
+
     public virtual ICollection<TempSale> TempSales { get; set; } = new List<TempSale>();
+
+    public virtual ICollection<TempStoreTransfer> TempStoreTransfers { get; set; } = new List<TempStoreTransfer>();
 }

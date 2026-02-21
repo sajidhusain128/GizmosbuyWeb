@@ -1,0 +1,151 @@
+﻿@using Gizmosbuy.Core.Interfaces
+@using Gizmosbuy.Core.Models
+@model Gizmosbuy.Core.Models.TransferPaymentModel
+@{
+    TempData["Title"] = "Edit Transfer Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="body-title">
+            <h1>Transfer Payment</h1>
+        </div>
+    </div>
+</div>
+<div class="container-block">
+    <div class="section-block">
+        <div class="page-header">
+            <div class="header-title">Transfer Payment Edit</div>
+        </div>
+        <div class="page-content">
+            <div class="page-title">
+                <h3></h3>
+                <a href="@Url.Action("TransferPayment", "Store")" class="btn btn-primary btn-sm" title="Back to Store Transfer Payment List"><i class="fas fa-arrow-left"></i> Back to list</a>
+            </div>
+            <div class="page-body">
+                @using (Html.BeginForm("EditTransferPayment", "Store", FormMethod.Post, new { id = "frmEditTransferPayment" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="TransferPaymentId" id="hdnTransferPaymentId" />
+
+                    <div class="form-group">
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtPaymentDate" class="col-form-label">Payment Date:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="text" id="txtPaymentDate" class="form-control" asp-for="PaymentDate" placeholder="DD/MM/YYYY" maxlength="10" onkeypress="numberOnly()" onKeyDown="dateAutoFormatter(event)" onpaste="return false;" autocomplete="off">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtTransferAmount" class="col-form-label">Amount:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="text" id="txtTransferAmount" class="form-control text-right" asp-for="Amount" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
+                                        <span class="input-group-text" id="txtTransferAmount-addon1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-rupee" viewBox="0 0 16 16">
+                                                <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtTransferMode" class="col-form-label">Model of Transfer:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtTransferMode" class="form-control" asp-for="TransferMode" autocomplete="off">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="ddlTransferStore" class="col-form-label">Transfer Store:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(Model => Model.ToLocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlTransferStore", @class = "form-select", @style = "width:100% !important" })
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtRemark" class="col-form-label">Remark:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtRemark" class="form-control" asp-for="Remark" autocomplete="off">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-custom" id="btnTransferPaymentUpdate" title="Save Transfer Payment Entry"><i class="fas fa-save"></i> Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="@Url.Content("~/lib/select2/css/select2.min.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/custom-css/custom-select2.css")" rel="stylesheet" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="@Url.Content("~/lib/select2/js/select2.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/store.js")" asp-append-version="true"></script>
+
+    <script>
+        $(document).ready( function () {
+
+            $('#ddlTransferStore').select2();
+
+            $('#txtPaymentDate').datepicker({
+                format: 'dd/mm/yyyy',
+                endDate: '+0d',
+                maxDate: 'today',
+                autoclose: true,
+                todayHighlight: true,
+                todayBtn: 'linked',
+                clearBtn: true
+            });
+        });
+    </script>
+}

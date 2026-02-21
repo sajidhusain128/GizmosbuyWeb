@@ -1,0 +1,136 @@
+﻿@using Gizmosbuy.Core.Constants
+@using Microsoft.AspNetCore.Http;
+@{
+    ViewBag.Title = "Store Transfer";
+    string userRole = ConstantsSessions.Role;
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="body-title">
+            <h1>Store Transfer</h1>
+        </div>
+    </div>
+</div>
+<div class="container-block">
+    <div class="section-block">
+        <div class="page-header">
+            <div class="header-title">Store Transfer List</div>
+        </div>
+        <div class="page-content">
+            <div class="page-title">
+                <h3></h3>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="row">
+                                <a href="@Url.Action("CreateTransfer", "Store")" class="btn btn-custom" title="Create Store Transfer Entry"><i class="fas fa-save"></i> Create Entry</a>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="row float-end">
+                                <button id="btnReturnStoreTransferModal" class="btn btn-custom" title="Return Transfer Items"><i class="fa-solid fa-person-walking-arrow-loop-left"></i> Return Item</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="page-body">
+                <div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
+                    <table id="tblStoreTransfers" class="">
+                        <thead>
+                            <tr>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_PartialReturnTransferItems.cshtml")
+
+@section Scripts
+{
+    <script src="@Url.Content("~/lib/moment.js/moment.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/store.js")" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready( function () {
+
+            $('#tblStoreTransfers').DataTable({
+                scrollX: true,
+                scrollY: 406,
+                scrollCollapse: true,
+                fixedColumns: true,
+                processing: true,
+                serverSide:true,
+                pageLength:10,
+                "paging":true,
+                "ajax":{
+                    "url": "/Store/GetStoreTransferList",
+                    "type": "POST",
+                    "datatype": "json",
+                    "data": {},
+                },
+                "columns":[
+                    {"data": "storeTransferID","title":"Sr.No."},
+                    {"data": "serialNo","title":"Serial No"},
+                    {"data": "categoryName","title":"Category"},
+                    {"data": "brandName","title":"Brand"},
+                    {"data": "model","title":"Model"},
+                    {"data": "specifications","title":"Specifications"},
+                    {"data": "transferDate","title":"Selling/Transfer Date",render:function (data, type, row){
+                        if(data === null) return "";
+
+                        return moment(data).format('DD/MM/YYYY');
+                    }},
+                    {"data": "sellingPrice","title":"Selling Price",render:function (data, type, row){
+                        if(data === null) return "";
+
+                        return "&#8377;"+ data;
+                    }},
+                    {"data": "sellingQuantity","title":"Selling Quantity"},
+                    {"data": "totalPrice","title":"Total Price",render:function (data, type, row){
+                        if(data === null) return "";
+
+                        return "&#8377;"+ data;
+                    }},
+
+                    {"data": "fromLocation","title":"From Location"},
+                    {"data": "toLocation","title":"To Location"},
+                    {"data": "billNo","title":"Bill No"},
+                    {"data": "returnedStatus","title":"Returned Status"}
+                ],
+                columnDefs: [
+                    { targets: 0,className: 'text-nowrap text-center'},
+                    { targets: 1,className: 'text-nowrap'},
+                    { targets: 2,className: 'text-nowrap'},
+                    { targets: 3,className: 'text-nowrap'},
+                    { targets: 4,className: 'text-nowrap'},
+                    { targets: 5,className: 'text-nowrap'},
+                    { targets: 6,className: 'text-nowrap'},
+                    { targets: 7,className: 'text-nowrap text-right'},
+                    { targets: 8,className: 'text-nowrap text-right'},
+                    { targets: 9,className: 'text-nowrap text-right'},
+                    { targets: 10,className: 'text-nowrap'},
+                    { targets: 11,className: 'text-nowrap'},
+                    { targets: 12,className: 'text-nowrap'},
+                    { targets: 13,className: 'text-nowrap'}
+                ],
+                initComplete: function () {
+                    $('*[title]').tooltip();
+                }
+            });
+        });
+    </script>
+}

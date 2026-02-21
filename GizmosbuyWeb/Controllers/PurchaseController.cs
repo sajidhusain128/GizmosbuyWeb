@@ -21,14 +21,14 @@ namespace Gizmosbuy.Web.Controllers
             _commonBL = commonBL;
         }
 
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin,Role.Admin)]
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public async Task<IActionResult> GetPurchaseList()
         {
             IPager pager = new Pager();
@@ -51,16 +51,17 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpGet]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public async Task<IActionResult> Create()
         {
             try
             {
-                List<ICategoryModel> categories = await _commonBL.GetAllCategories();
+                List<ICategoryModel> categories = await _commonBL.GetAllCategories("_categoryList");
 
                 if (categories != null && categories.Count > 0)
                 {
-                    categories.Insert(0, new CategoryModel { CategoryId = 0, CategoryName = "Select Category" });
+                    if(!categories.Any(c => c.CategoryId == 0))
+                        categories.Insert(0, new CategoryModel { CategoryId = 0, CategoryName = "Select Category" });
                     ViewBag.Categories = categories;
                 }
                 else
@@ -69,11 +70,12 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.Categories = categories;
                 }
 
-                List<IBrandModel> brands = await _commonBL.GetAllBrands();
+                List<IBrandModel> brands = await _commonBL.GetAllBrands("_brandList");
 
                 if (brands != null && brands.Count > 0)
                 {
-                    brands.Insert(0, new BrandModel { BrandId = 0, BrandName = "Select Brand" });
+                    if(!brands.Any(b => b.BrandId == 0))
+                        brands.Insert(0, new BrandModel { BrandId = 0, BrandName = "Select Brand" });
                     ViewBag.Brands = brands;
                 }
                 else
@@ -82,11 +84,12 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.Brands = brands;
                 }
 
-                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes();
+                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes("_paymentList");
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
-                    paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
+                    if(!paymentModes.Any(p => p.PaymentModeId == 0))
+                        paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
                     ViewBag.PaymentModes = paymentModes;
                 }
                 else
@@ -114,7 +117,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public async Task<IActionResult> SavePurchase(PurchaseModel purchaseModel)
         {
             try
@@ -134,16 +137,17 @@ namespace Gizmosbuy.Web.Controllers
             }
         }
 
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public async Task<IActionResult> Edit([FromQuery] int Id)
         {
             try
             {
-                List<ICategoryModel> categories = await _commonBL.GetAllCategories();
+                List<ICategoryModel> categories = await _commonBL.GetAllCategories("_categoryList");
 
                 if (categories != null && categories.Count > 0)
                 {
-                    categories.Insert(0, new CategoryModel { CategoryId = 0, CategoryName = "Select Category" });
+                    if(!categories.Any(c => c.CategoryId == 0))
+                        categories.Insert(0, new CategoryModel { CategoryId = 0, CategoryName = "Select Category" });
                     ViewBag.Categories = categories;
                 }
                 else
@@ -152,11 +156,12 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.Categories = categories;
                 }
 
-                List<IBrandModel> brands = await _commonBL.GetAllBrands();
+                List<IBrandModel> brands = await _commonBL.GetAllBrands("_brandList");
 
                 if (brands != null && brands.Count > 0)
                 {
-                    brands.Insert(0, new BrandModel { BrandId = 0, BrandName = "Select Brand" });
+                    if(!brands.Any(b => b.BrandId == 0))
+                        brands.Insert(0, new BrandModel { BrandId = 0, BrandName = "Select Brand" });
                     ViewBag.Brands = brands;
                 }
                 else
@@ -165,11 +170,12 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.Brands = brands;
                 }
 
-                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes();
+                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes("_paymentList");
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
-                    paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
+                    if(!paymentModes.Any(p => p.PaymentModeId == 0))
+                        paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
                     ViewBag.PaymentModes = paymentModes;
                 }
                 else
@@ -195,7 +201,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public async Task<IActionResult> UpdatePurchase(PurchaseModel purchaseModel)
         {
             try
@@ -216,7 +222,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpPost]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> GetAutoCompleteSerialNo(string searchValue)
         {
             try
@@ -232,7 +238,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpGet]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> GetPurchaseById(int purchaseId)
         {
             try
@@ -247,7 +253,8 @@ namespace Gizmosbuy.Web.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost()]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public async Task<IActionResult> PurchaseDelete(int Id)
         {
             try

@@ -10,18 +10,15 @@ namespace Gizmosbuy.Core.Models
         [Required(ErrorMessage = "UserName is Required")]
         public string UserName { get; set; }
 
-
         [Required(ErrorMessage = "Password is Required")]
         public string Password { get; set; }
-
-        public string Email { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string UserRole { get; set; }
-
-        public string Location { get; set; }
-
-        public int locationId { get; set; }
+        public string NewPassword { get; set; }
+        public string ConfirmPassword { get; set; }
+        public string Email { get; set; } = null;
+        public string FirstName { get; set; } = null;
+        public string UserRole { get; set; } = null;
+        public string Location { get; set; } = null;
+        public int locationId { get; set; } = 0;
+        public string SessionId { get; set; } = null;
     }
 }

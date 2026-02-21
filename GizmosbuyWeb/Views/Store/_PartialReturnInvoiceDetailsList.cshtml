@@ -1,0 +1,73 @@
+﻿@model List<Gizmosbuy.Core.Interfaces.IStoreTransferModel>
+
+@if (Model != null && Model.Count > 0)
+{
+    <input type="hidden" id="hdnIvoiceNo" value="@Model.FirstOrDefault().BillNo" />
+    <input type="hidden" id="hdnFromLocationId" value="@Model.FirstOrDefault().FromLocationId" />
+    <input type="hidden" id="hdnCurrentLocationId" value="@Model.FirstOrDefault().ToLocationId" />
+    <div class="float-end">
+        <span class="field-validation-error">Sign(*) :- Invalid Return Qty or Blank</span>
+    </div>
+    <div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
+        
+        <table id="tblInvoiceDetails" class="">
+            <thead>
+                <tr>
+                    <th style="text-align:center;">
+                        <div class="checkbox-wrapper-1">
+                            <div class="round">
+                                <input type="checkbox" id="check-all">
+                                <label for="check-all"></label>
+                            </div>
+                        </div>
+                    </th>
+                    <th>Bill No.</th>
+                    <th>Serial No.</th>
+                    <th>Model</th>
+                    <th>Brand</th>
+                    <th>Specifications</th>
+                    <th class="text-center">Current Qty</th>
+                    <th class="text-center">Return Qty</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="checkbox-wrapper-1">
+                                    <div class="round">
+                                        <input type="checkbox" class="row-check" id="checkbox-@item.SalesId" value="">
+                                        <label for="checkbox-@item.SalesId"></label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@item.BillNo</td>
+                            <td>@item.SerialNo</td>
+                            <td>@item.Model</td>
+                            <td>@item.BrandName</td>
+                            <td>@item.Specifications</td>
+                            <td>@item.SellingQuantity</td>
+                            <td>
+                                <input type="hidden" id="hdnTransferPurchaseID_@item.SalesId" class="hidden_TrfrPurchaseID" value="@item.TransferPurchaseID" />
+                                <div style="display:flex">
+                                    <input type="text" id="txtReturnQty_@item.SalesId" class="form-control row-input ReturnQty" style="width: 70px;text-align: center; margin:auto;height: 30px;" value="@item.SellingQuantity" onkeyup="validateReturnQtyForItems('tblInvoiceDetails',this)" autocomplete="off" disabled />
+                                <span class="field-validation-error"></span>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" align="center"> Record not found</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    
+}

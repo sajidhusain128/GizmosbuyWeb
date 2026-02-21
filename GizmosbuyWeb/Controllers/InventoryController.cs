@@ -9,6 +9,7 @@ using Gizmosbuy.Web.Filters;
 using GizmosbuyWeb.Filters;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Gizmosbuy.Web.Controllers
 {
@@ -29,7 +30,7 @@ namespace Gizmosbuy.Web.Controllers
             return View();
         }
 
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public IActionResult RawData()
         {
             DateRange dateRange = new DateRange();
@@ -38,7 +39,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpPost]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public async Task<IActionResult> GetRawData(DateRange dateRange)
         {
             try
@@ -61,14 +62,14 @@ namespace Gizmosbuy.Web.Controllers
         }
 
 
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public async Task<IActionResult> Summary()
         {
             try
             {
-                string RoleName = HttpContext.Session.GetString("Role");
+                string RoleName = ConstantsSessions.Role;
 
-                List<ILocationModel> locationModel = await _commonBL.GetAllLocations();
+                List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
 
                 if (locationModel != null && locationModel.Count > 0)
                 {
@@ -83,12 +84,30 @@ namespace Gizmosbuy.Web.Controllers
 
                 if (RoleName == "Admin")
                 {
-                    string location = HttpContext.Session.GetString("Location");
+                    string location = ConstantsSessions.Location;
                     ViewBag.defaultLocationValue = location;
 
-                    int locationId = Convert.ToInt32(HttpContext.Session.GetString("LocationId"));
+                    int locationId = ConstantsSessions.LocationId;
                     ViewBag.defaultLocationId = locationId.ToString();
                 }
+
+                List<string> stringValues = new List<string> { "January", "February", "March", "April", "May", "Jun", "July", "August", "September", "October", "November", "December" };
+                List<SelectListItem> selectListItems = new List<SelectListItem>();
+                int index = 0;
+
+                foreach (var item in stringValues)
+                {
+                    selectListItems.Add(new SelectListItem
+                    {
+                        Text = item,
+                        Value = item,
+                        Selected = (item == DateTime.Now.ToString("MMMM"))
+                    });
+                    index++; // Manually increment the index
+                }
+
+                ViewBag.Months = selectListItems;
+
 
                 return View();
             }
@@ -105,7 +124,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpPost]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public async Task<IActionResult> GetSummayData(string transactionType, int locationId, int month, int year)
         {
             try
@@ -142,7 +161,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpGet]
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]                                          
         public async Task<IActionResult> RawDateExportExcel(string FromDate, string ToDate, string Search)
         {
             try
@@ -194,5 +213,97 @@ namespace Gizmosbuy.Web.Controllers
             }
         }
 
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
+        public async Task<IActionResult> PaymentSummary()
+        {
+            try
+            {
+                string RoleName = ConstantsSessions.Role;
+
+                List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
+
+                if (locationModel != null && locationModel.Count > 0)
+                {
+                    locationModel.RemoveAll(r => r.LocationId == 1);
+                    if (!locationModel.Any(l => l.LocationId == 0))
+                        locationModel.Insert(0, new LocationModel { LocationId = 0, LocationName = "Select Store Location" });
+                    ViewBag.LocationModel = locationModel;
+                }
+                else
+                {
+                    locationModel = new List<ILocationModel> { new LocationModel { LocationId = 0, LocationName = "Select Store Location" } };
+                    ViewBag.LocationModel = locationModel;
+                }
+
+                //var result = await _inventoryBL.GetStoreTransferCalculation(0);
+
+                return View();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
+        public async Task<IActionResult> GetStoreTransferRawData(int searchLocationId)
+        {
+            try
+            {
+                IPager pager = new Pager();
+
+                pager.PageStart = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
+                pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
+                pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+                pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
+
+                var result = await _inventoryBL.GetStoreTransferRawData(searchLocationId, pager);
+
+                return Json(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
+        public async Task<IActionResult> GetStoreTransferPaymentSummary(int searchLocationId)
+        {
+            try
+            {
+                IPager pager = new Pager();
+
+                pager.PageStart = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
+                pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
+                pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+                pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
+
+                var result = await _inventoryBL.GetStoreTransferPaymentSummary(searchLocationId, pager);
+
+                return Json(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
+        public async Task<IActionResult> GetStoreTransferCalculation(int searchLocationId)
+        {
+            try
+            {
+                var result = await _inventoryBL.GetStoreTransferCalculation(searchLocationId);
+
+                return Json(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

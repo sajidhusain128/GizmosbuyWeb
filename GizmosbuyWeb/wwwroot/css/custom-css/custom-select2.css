@@ -8,7 +8,6 @@
 
 .select2-container--default .select2-selection--single {
     border: 1px solid #ccc !important;
-    border-radius: 2px !important;
 }
 
     .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -46,4 +45,8 @@
 
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
     background-color: #08a321;
+}
+
+.select2-container--default .select2-dropdown{
+    border-radius:0px !important;
 }

@@ -14,6 +14,8 @@ public partial class ApplicationDbContext : DbContext
     {
     }
 
+    public virtual DbSet<ApprovalStatus> ApprovalStatuses { get; set; }
+
     public virtual DbSet<BrandMaster> BrandMasters { get; set; }
 
     public virtual DbSet<CategoryMaster> CategoryMasters { get; set; }
@@ -32,7 +34,15 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<SalesJournalDeleted> SalesJournalDeleteds { get; set; }
 
+    public virtual DbSet<StoreReturnItemNotification> StoreReturnItemNotifications { get; set; }
+
+    public virtual DbSet<StoreTransfer> StoreTransfers { get; set; }
+
     public virtual DbSet<TempSale> TempSales { get; set; }
+
+    public virtual DbSet<TempStoreTransfer> TempStoreTransfers { get; set; }
+
+    public virtual DbSet<TransferPayment> TransferPayments { get; set; }
 
     public virtual DbSet<UserLocationMapping> UserLocationMappings { get; set; }
 
@@ -40,6 +50,20 @@ public partial class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<ApprovalStatus>(entity =>
+        {
+            entity.HasKey(e => e.ApprovalStatusId).HasName("PK__Approval__08E52618BFB6C76F");
+
+            entity.ToTable("ApprovalStatus");
+
+            entity.Property(e => e.ApprovalStatusId)
+                .ValueGeneratedNever()
+                .HasColumnName("ApprovalStatusID");
+            entity.Property(e => e.ApprovalStatusName)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+        });
+
         modelBuilder.Entity<BrandMaster>(entity =>
         {
             entity.HasKey(e => e.BrandId).HasName("PK__Brands__DAD4F3BEF9920761");
@@ -117,6 +141,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.PurchaseDate).HasColumnType("datetime");
+            entity.Property(e => e.PurchaseLocationId).HasColumnName("PurchaseLocationID");
             entity.Property(e => e.PurchasePrice).HasColumnType("money");
             entity.Property(e => e.SerialNo)
                 .HasMaxLength(100)
@@ -220,6 +245,53 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("FK__SalesJour__Sales__15702A09");
         });
 
+        modelBuilder.Entity<StoreReturnItemNotification>(entity =>
+        {
+            entity.HasKey(e => e.StoreReturnItemNotificationId).HasName("PK__StoreRet__12C6C6B008B4185F");
+
+            entity.ToTable("StoreReturnItemNotification");
+
+            entity.Property(e => e.StoreReturnItemNotificationId).HasColumnName("StoreReturnItemNotificationID");
+            entity.Property(e => e.ApprovalStatusId).HasColumnName("ApprovalStatusID");
+            entity.Property(e => e.BillNo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.FromLocationId).HasColumnName("FromLocationID");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.ToLocationId).HasColumnName("ToLocationID");
+            entity.Property(e => e.TransferPurchaseId).HasColumnName("TransferPurchaseID");
+
+            entity.HasOne(d => d.ApprovalStatus).WithMany(p => p.StoreReturnItemNotifications)
+                .HasForeignKey(d => d.ApprovalStatusId)
+                .HasConstraintName("FK_RetrunTransferApproval_ApprovalStatusID");
+        });
+
+        modelBuilder.Entity<StoreTransfer>(entity =>
+        {
+            entity.HasKey(e => e.StoreTransferId).HasName("PK__StoreTra__70452446291E27A2");
+
+            entity.ToTable("StoreTransfer");
+
+            entity.Property(e => e.StoreTransferId).HasColumnName("StoreTransferID");
+            entity.Property(e => e.BillNo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.FromLocationId).HasColumnName("FromLocationID");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.PurchaseId).HasColumnName("PurchaseID");
+            entity.Property(e => e.SellingPrice).HasColumnType("money");
+            entity.Property(e => e.ToLocationId).HasColumnName("ToLocationID");
+            entity.Property(e => e.TransferDate).HasColumnType("datetime");
+            entity.Property(e => e.TransferPurchaseId).HasColumnName("TransferPurchaseID");
+
+            entity.HasOne(d => d.Purchase).WithMany(p => p.StoreTransfers)
+                .HasForeignKey(d => d.PurchaseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_StoreTransfer_Purchase");
+        });
+
         modelBuilder.Entity<TempSale>(entity =>
         {
             entity.HasKey(e => e.TempSalesId).HasName("PK__TempSale__C508D4FF54F286A8");
@@ -251,6 +323,52 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.PurchaseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__TempSales__Purch__0880433F");
+        });
+
+        modelBuilder.Entity<TempStoreTransfer>(entity =>
+        {
+            entity.HasKey(e => e.TempStoreTransferId).HasName("PK__TempStor__881056733EFB2992");
+
+            entity.ToTable("TempStoreTransfer");
+
+            entity.Property(e => e.TempStoreTransferId).HasColumnName("TempStoreTransferID");
+            entity.Property(e => e.BillNo)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.FromLocationId).HasColumnName("FromLocationID");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.PurchaseId).HasColumnName("PurchaseID");
+            entity.Property(e => e.SellingPrice).HasColumnType("money");
+            entity.Property(e => e.ToLocationId).HasColumnName("ToLocationID");
+            entity.Property(e => e.TransferDate).HasColumnType("datetime");
+            entity.Property(e => e.UserId).HasColumnName("UserID");
+
+            entity.HasOne(d => d.Purchase).WithMany(p => p.TempStoreTransfers)
+                .HasForeignKey(d => d.PurchaseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TempStoreTransfer_Purchase");
+        });
+
+        modelBuilder.Entity<TransferPayment>(entity =>
+        {
+            entity.HasKey(e => e.TransferPaymentId).HasName("PK__Transfer__3923068B6B1C2081");
+
+            entity.ToTable("TransferPayment");
+
+            entity.Property(e => e.TransferPaymentId).HasColumnName("TransferPaymentID");
+            entity.Property(e => e.Amount).HasColumnType("money");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.FromLocationId).HasColumnName("FromLocationID");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.PaymentDate).HasColumnType("datetime");
+            entity.Property(e => e.Remark)
+                .HasMaxLength(200)
+                .IsUnicode(false);
+            entity.Property(e => e.ToLocationId).HasColumnName("ToLocationID");
+            entity.Property(e => e.TransferMode)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<UserLocationMapping>(entity =>

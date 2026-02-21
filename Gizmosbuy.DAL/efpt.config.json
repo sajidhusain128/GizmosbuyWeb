@@ -15,6 +15,10 @@
    "T4TemplatePath": null,
    "Tables": [
       {
+         "Name": "[dbo].[ApprovalStatus]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[BrandMaster]",
          "ObjectType": 0
       },
@@ -51,7 +55,23 @@
          "ObjectType": 0
       },
       {
+         "Name": "[dbo].[StoreReturnItemNotification]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[StoreTransfer]",
+         "ObjectType": 0
+      },
+      {
          "Name": "[dbo].[TempSales]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TempStoreTransfer]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[TransferPayment]",
          "ObjectType": 0
       },
       {
@@ -67,7 +87,15 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[spDeleteStoreTransferByPurchaseId]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[spGetInvoiceDetails]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetLastSalesBillNo]",
          "ObjectType": 1
       },
       {
@@ -111,11 +139,47 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[spGetStoreTransferInvoiceDetails]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetStoreTransferList]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetStoreTransferNotificationList]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetStoreTransferPaymentSummary]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetStoreTransferRawData]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[spGetTempSalesByID]",
          "ObjectType": 1
       },
       {
          "Name": "[dbo].[spGetTempSalesList]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetTempStoreTransferByID]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetTempStoreTransferList]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetTransferPaymentList]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spGetTransferPaymentNotificationsList]",
          "ObjectType": 1
       },
       {
@@ -127,6 +191,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[spInsertTransferSalesDeleted]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[spSavePurchase]",
          "ObjectType": 1
       },
@@ -135,7 +203,15 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[spSaveStoreTransfer]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[spSaveTempSales]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[spSaveTempStoreTransfer]",
          "ObjectType": 1
       }
    ],

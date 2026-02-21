@@ -1,6 +1,34 @@
-﻿$(document).ready(function () {
+﻿
+var categoryList = ["Accessories", "Service", "Adjustment"];
+
+$(document).ready(function () {
+    $('*[title]').tooltip();
+
     setActiveMenu();
+
+    $('.has-sub-list').click(function () {
+        if ($(this).children('.sub-list').length > 0) {
+            $(this).children('.sub-list').toggleClass("show");
+
+            if ($(this).children('.sub-list').hasClass('show')) {
+                $(this).children('a').children('.expander').removeClass("fa-square-plus");
+                $(this).children('a').children('.expander').addClass("fa-square-minus");
+            }
+            else {
+                $(this).children('a').children('.expander').removeClass("fa-square-minus");
+                $(this).children('a').children('.expander').addClass("fa-square-plus");
+            }
+        }
+    });
 });
+
+function showLoader() {
+    $('.Loader-Container').show();
+}
+
+function hideLoader() {
+    $('.Loader-Container').hide();
+}
 
 function numberOnly(event) {
     try {
@@ -69,7 +97,8 @@ function SuccessToast(message) {
             // Creates an array of toasts (it only initializes them)
             return new bootstrap.Toast(toastEl, {
                 animation: true,
-                delay: 4000
+                autohide: true,
+                delay: 3000
             }) // No need for options; use the default options
         });
         toastList.forEach(toast => toast.show()); // This show them
@@ -86,7 +115,7 @@ function ErrorToast(message) {
             $(toastEl).find('.toast-body').find('.body-text').text(message);
             // Creates an array of toasts (it only initializes them)
             return new bootstrap.Toast(toastEl, {
-                animation: true,
+                animation: false,
                 autohide: true,
                 delay: 3000,
             }) // No need for options; use the default options
@@ -105,7 +134,7 @@ function WarningToast(message) {
             $(toastEl).find('.toast-body').find('.body-text').text(message);
             // Creates an array of toasts (it only initializes them)
             return new bootstrap.Toast(toastEl, {
-                animation: true,
+                animation: false,
                 autohide: true,
                 delay: 3000,
             }) // No need for options; use the default options
@@ -194,11 +223,22 @@ function dateAutoFormatter(event) {
                 out = out.substring(0, 2) + '/' + out.substring(2, 4) + '/' + out.substring(4, len);
                 out = out.substring(0, 10)
             }
+
             event.target.value = out;
         }
     } catch (e) {
         console.error(e);
     }
+}
+
+function isValidDate(date) {
+    // Check if the input is actually a Date object
+    if (Object.prototype.toString.call(date) === "[object Date]") {
+        // Check if the date's getTime() method returns NaN, which indicates an invalid date
+        return !isNaN(date.getTime());
+    }
+    // If it's not a Date object, it's not a valid date
+    return false;
 }
 
 function geMonthFromDate(value) {
@@ -266,7 +306,7 @@ function setActiveMenu() {
 
         const trimmedPath = getBasePath(pathName)
 
-        $('#sidebar div ul.list-unstyled').children('li').removeAttr("class");
+        $('#sidebar div ul.list-unstyled').children('li').removeClass("active");
 
         var getActivePath = "";
 
@@ -283,12 +323,26 @@ function setActiveMenu() {
                 getActivePath = "/Sales/Index";
                 break;
 
+            case "/Store/Index":
+            case "/Store/CreateTransfer":
+                getActivePath = "/Store/Index";
+                break;
+
             case "/Inventory/RawData":
                 getActivePath = "/Inventory/RawData";
                 break;
 
             case "/Inventory/Summary":
                 getActivePath = "/Inventory/Summary";
+                break;
+
+            case "/Store/TransferPayment":
+            case "/Store/CreateTransferPayment":
+                getActivePath = "/Store/TransferPayment";
+                break;
+
+            case "/Inventory/PaymentSummary":
+                getActivePath = "/Inventory/PaymentSummary";
                 break;
 
             default:
@@ -299,8 +353,19 @@ function setActiveMenu() {
         //$('#sidebar div ul.list-unstyled').children('li a.href="' + getActivePath + '"').attr("class", "active");
 
         $('#sidebar div ul.list-unstyled').children('li').each(function (row, index) {
-            if ($(this).find('a')[0].href.includes(getActivePath)) {
-                $(this).attr("class", "active");
+
+            if ($(this).children('.sub-list').length > 0) {
+                $(this).children(".sub-list").children('li').each(function (row, index) {
+                    if ($(this).find('a')[0].href.includes(getActivePath)) {
+                        $(this).addClass("active");
+                        $(this).parent('.sub-list').addClass("show");
+                    }
+                });
+            }
+            else {
+                if ($(this).find('a')[0].href.includes(getActivePath)) {
+                    $(this).addClass("active");
+                }
             }
         })
 
@@ -327,5 +392,50 @@ function preventBackspace(e) {
                 evt.returnValue = false;
             }
         }
+    }
+}
+
+function showBoostrapModal(modalId, props) {
+    try {
+        if (props == undefined || props == {} || props == null || props == "") {
+            var modal = new bootstrap.Modal(modalId, {
+                backdrop: 'static',
+                keyboard: false
+            });
+        }
+        else {
+            var modal = new bootstrap.Modal(modalId, props);
+        }
+        modal.show();
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function hideBoostrapModal(modalId) {
+    try {
+        $(modalId).modal("hide");
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function toggleInputPasswordView(_this) {
+    try {
+        // Toggle the type attribute
+        const previousElement = _this.previousElementSibling;
+        const type = previousElement.getAttribute('type') === 'password' ? 'text' : 'password';
+        previousElement.setAttribute('type', type);
+        const eyeIcon = _this.children[0]; 
+        // Toggle the eye icon class
+        if (type === 'password') {
+            eyeIcon.classList.remove('fa-eye-slash');
+            eyeIcon.classList.add('fa-eye');
+        } else {
+            eyeIcon.classList.remove('fa-eye');
+            eyeIcon.classList.add('fa-eye-slash');
+        }
+    } catch (e) {
+        console.log(e);
     }
 }

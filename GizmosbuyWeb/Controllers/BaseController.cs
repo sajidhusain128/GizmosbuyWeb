@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
+using Gizmosbuy.Web.Configurations;
 using Gizmosbuy.Web.Filters;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Cors;
@@ -42,13 +43,9 @@ namespace GizmosbuyWeb.Controllers
         private IEnumerable<Claim> GetUserClaims(IUserModel user)
         {
             List<Claim> claims = new List<Claim>();
-            Claim _claim;
-            _claim = new Claim(ClaimTypes.Name, user.UserName);
-            claims.Add(_claim);
-            _claim = new Claim(ClaimTypes.Email, user.Email);
-            claims.Add(_claim);
-            _claim = new Claim("Role", user.UserRole);
-            claims.Add(_claim);
+            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+            claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            claims.Add(new Claim("Role", user.UserRole));
 
             return claims.AsEnumerable<Claim>();
         }
@@ -62,11 +59,14 @@ namespace GizmosbuyWeb.Controllers
             HttpContext.Session.SetString("Role", user.UserRole);
             HttpContext.Session.SetString("Location", user.Location);
             HttpContext.Session.SetString("LocationId", user.locationId.ToString());
+
+            Constants.SetSessionInstance(HttpContext);
         }
 
         public async Task CreateSignIn(IUserModel user)
         {
             SetSession(user, null);
+
             var claimsIdentity = new ClaimsIdentity(GetUserClaims(user), IdentityConstants.ApplicationScheme);
 
             await HttpContext.SignInAsync(

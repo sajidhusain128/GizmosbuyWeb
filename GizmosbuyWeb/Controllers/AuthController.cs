@@ -3,6 +3,7 @@ using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.Web.Filters;
+using GizmosbuyWeb.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +26,7 @@ namespace GizmosbuyWeb.Controllers
             return Ok("App is working!;");
         }
 
-        public IActionResult Login(string returnUrl = null, string timeout = null)
+        public IActionResult Login()
         {
             try
             {
@@ -33,19 +34,6 @@ namespace GizmosbuyWeb.Controllers
                 {
                     ViewBag.ShowValidationSummary = true;
                 }
-
-                if (timeout == "true")
-                {
-                    ViewBag.ErrorMessage = "Your session has expired due to inactivity. Please sign in again.";
-                }
-                else
-                {
-                    ViewBag.ErrorMessage = "";
-                }
-
-                ClearAllCookies();
-
-                ViewData["ReturnUrl"] = returnUrl;
 
                 return View();
             }
@@ -58,7 +46,7 @@ namespace GizmosbuyWeb.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(UserModel UserModel, string? returnUrl = null)
+        public async Task<IActionResult> Login(UserModel UserModel)
         {
             try
             {
@@ -75,11 +63,7 @@ namespace GizmosbuyWeb.Controllers
                     if (user != null)
                     {
                         await CreateSignIn(user);
-
-                        if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                            return Redirect(returnUrl);
-                        else
-                            return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -117,15 +101,15 @@ namespace GizmosbuyWeb.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             try
             {
-                HttpContext.Session.Clear();
                 await CreateSignOut();
-                return Redirect("/Auth/Login");
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login");
             }
             catch (Exception)
             {

@@ -12,7 +12,10 @@ using Gizmosbuy.Web.Filters;
 using GizmosbuyWeb.Filters;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IWebHostEnvironment;
+using Microsoft.Extensions.Options;
+using Twilio;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.Types;
 
 namespace Gizmosbuy.Web.Controllers
 {
@@ -22,13 +25,17 @@ namespace Gizmosbuy.Web.Controllers
     {
         private readonly ISalesBL _salesBL;
         private readonly ICommonBL _commonBL;
-        public SalesController(ISalesBL salesBL, ICommonBL commonBL)
+        public readonly IWebConfiguration _webConfiguration;
+        public readonly IWhatsAppSettings _whatsAppSettings;
+        public SalesController(ISalesBL salesBL, ICommonBL commonBL, IOptions<WebConfiguration> webConfiguration, IOptions<WhatsAppSettings> whatsAppSettings)
         {
             _salesBL = salesBL;
             _commonBL = commonBL;
+            _webConfiguration = webConfiguration.Value;
+            _whatsAppSettings = whatsAppSettings.Value;
         }
 
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public IActionResult Index()
         {
             return View();
@@ -36,7 +43,7 @@ namespace Gizmosbuy.Web.Controllers
 
 
         [HttpPost]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> GetSalesList()
         {
             IPager pager = new Pager();
@@ -58,16 +65,17 @@ namespace Gizmosbuy.Web.Controllers
             }
         }
 
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> Create()
         {
             try
             {
-                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes();
+                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes("_paymentList");
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
-                    paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
+                    if (!paymentModes.Any(p => p.PaymentModeId == 0))
+                        paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
                     ViewBag.PaymentModes = paymentModes;
                 }
                 else
@@ -90,7 +98,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> SaveSales()
         {
             try
@@ -110,16 +118,17 @@ namespace Gizmosbuy.Web.Controllers
             }
         }
 
-        [CustomAuthorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> Edit([FromQuery] int Id)
         {
             try
             {
-                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes();
+                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes("_paymentList");
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
-                    paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
+                    if (!paymentModes.Any(p => p.PaymentModeId == 0))
+                        paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
                     ViewBag.PaymentModes = paymentModes;
                 }
                 else
@@ -128,11 +137,12 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.PaymentModes = paymentModes;
                 }
 
-                List<ILocationModel> locationModel = await _commonBL.GetAllLocations();
+                List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
 
                 if (locationModel != null && locationModel.Count > 0)
                 {
-                    locationModel.Insert(0, new LocationModel { LocationId = 0, LocationName = "Select Payment Mode" });
+                    if (!locationModel.Any(l => l.LocationId == 0))
+                        locationModel.Insert(0, new LocationModel { LocationId = 0, LocationName = "Select Payment Mode" });
                     ViewBag.LocationModel = locationModel;
                 }
                 else
@@ -158,7 +168,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> UpdateSales(SalesModel salesModel)
         {
             try
@@ -179,7 +189,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpPost]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> GetTempSalesList()
         {
             IPager pager = new Pager();
@@ -203,7 +213,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> SaveTempSales(TempSalesModel tempSalesModel)
         {
             try
@@ -229,7 +239,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPut]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> UpdateTempSales(TempSalesModel tempSalesModel)
         {
             try
@@ -251,16 +261,17 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpGet]
         //[ValidateAntiForgeryToken]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> GetTempSalesEdit(int Id)
         {
             try
             {
-                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes();
+                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes("_paymentList");
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
-                    paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
+                    if (!paymentModes.Any(p => p.PaymentModeId == 0))
+                        paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
                     ViewBag.PaymentModes = paymentModes;
                 }
                 else
@@ -288,7 +299,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> TempSalesDelete(int Id)
         {
             try
@@ -304,7 +315,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpGet]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> LoadSalesReport(string invoiceNo)
         {
             try
@@ -324,30 +335,46 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpGet]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> DownloadSalesReport(string invoiceNo)
         {
             try
             {
                 var response = await _salesBL.GetSalesReportData(invoiceNo);
 
-                var webReport = new WebReport();
-                webReport = GetReport(response);
+                var items = GetWebReport(response, invoiceNo);
 
-                using var ms = new MemoryStream();
-                var pdfExport = new PDFSimpleExport();
-                webReport.Report.Export(pdfExport, ms);
-                ms.Position = 0;
+                string fileName = items.Item1;
 
-                string fileName = $"SalesReport_{invoiceNo}_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.pdf";
-
-                return File(ms.ToArray(), "application/pdf", fileName);
+                return File(items.Item2.ToArray(), "application/pdf", fileName);
             }
             catch (Exception)
             {
                 throw;
             }
 
+        }
+
+        [HttpGet]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
+        public async Task<IActionResult> SendWhatsAppSalesReport(string invoiceNo)
+        {
+            try
+            {
+                var response = await _salesBL.GetSalesReportData(invoiceNo);
+
+                var items = GetWebReport(response, invoiceNo);
+
+                var whatsAppResponse = await _commonBL.SendWhatsAppService(_webConfiguration, _whatsAppSettings, items, response.Item2.FirstOrDefault().ContactNo, response.Item2.FirstOrDefault().CustomerName);
+
+                Console.WriteLine($"Message SID: {whatsAppResponse.Sid}");
+
+                return Json(whatsAppResponse.Sid);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public WebReport GetReport(Tuple<List<SalesDataModel>, List<SalesHeaderModel>> DataEntities)
@@ -377,8 +404,30 @@ namespace Gizmosbuy.Web.Controllers
             }
         }
 
+        public Tuple<string, MemoryStream> GetWebReport(Tuple<List<SalesDataModel>, List<SalesHeaderModel>> response, string invoiceNo)
+        {
+            try
+            {
+                var webReport = new WebReport();
+                webReport = GetReport(response);
+
+                using var ms = new MemoryStream();
+                var pdfExport = new PDFSimpleExport();
+                webReport.Report.Export(pdfExport, ms);
+                ms.Position = 0;
+
+                string fileName = $"SalesReport_{invoiceNo}_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.pdf";
+
+                return new Tuple<string, MemoryStream>(fileName,ms);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         [HttpGet]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> GetInvoiceDetails(string invoiceNo)
         {
             try
@@ -402,7 +451,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [CustomAuthorize(Role.User)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> DeleteSalesByInvoice(string invoiceNo)
         {
             try

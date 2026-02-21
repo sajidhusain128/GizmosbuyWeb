@@ -14,6 +14,8 @@ using log4net.Config;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
+using Twilio;
 
 namespace GizmosbuyWeb
 {
@@ -38,6 +40,7 @@ namespace GizmosbuyWeb
                 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
                 IWebConfiguration? webConfiguration = builder.Configuration.GetSection("AppSettings").Get<WebConfiguration>();
+                IWhatsAppSettings? whatsAppSettings = builder.Configuration.GetSection("WhatsAppSettings").Get<WhatsAppSettings>();
 
                 if (webConfiguration == null)
                 {
@@ -57,13 +60,21 @@ namespace GizmosbuyWeb
 
                 builder.Services.AddControllers(options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
                 builder.Services.Configure<WebConfiguration>(builder.Configuration.GetSection("AppSettings"));
+                builder.Services.Configure<WhatsAppSettings>(builder.Configuration.GetSection("WhatsAppSettings"));
+                builder.Services.AddSingleton<ICacheService, CacheService>();
                 builder.Services.AddScoped<IAuthenticationBL, AuthenticationBL>();
                 builder.Services.AddScoped<ICommonBL, CommonBL>();
                 builder.Services.AddScoped<IPurchaseBL, PurchaseBL>();
                 builder.Services.AddScoped<ISalesBL, SalesBL>();
                 builder.Services.AddScoped<IInventoryBL, InventoryBL>();
+                builder.Services.AddScoped<IStoreTransferBL, StoreTransferBL>();
+                builder.Services.AddScoped<IMasterBL, MasterBL>();
                 builder.Services.AddScoped<IWebConfiguration, WebConfiguration>();
+                builder.Services.AddScoped<IWhatsAppSettings, WhatsAppSettings>();
                 builder.Services.AddHttpContextAccessor();
+                builder.Services.AddMemoryCache();
+
+                TwilioClient.Init(whatsAppSettings.AccountSid, whatsAppSettings.AuthToken);
 
                 //builder.Services.AddBALService(webConfiguration ?? new WebConfiguration());
 
@@ -84,13 +95,12 @@ namespace GizmosbuyWeb
 
                 builder.Services.ConfigureApplicationCookie(options =>
                 {
+                    options.Cookie.Name = "MyAppAuthCookie";
                     options.LoginPath = "/Auth/Login";
+                    options.LogoutPath = "/Auth/Logout";
                     options.AccessDeniedPath = "/Auth/AccessDenied";
                     options.ExpireTimeSpan = TimeSpan.FromMinutes(webConfiguration.SesssionTimeoutMinutes);
                     options.SlidingExpiration = true;
-                    options.Cookie.IsEssential = true;
-                    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-                    options.Cookie.MaxAge = TimeSpan.FromMinutes(2);
                 });
 
                 builder.Services.AddAuthorization();
@@ -148,22 +158,22 @@ namespace GizmosbuyWeb
                 app.UseSession();
                 app.UseCors("MyPolicy");
 
-                app.Use(async (context, next) =>
-                {
-                    if (context.Request.Path == "/")
-                    {
-                        if (context.User.Identity.IsAuthenticated)
-                        {
-                            context.Response.Redirect("/Home/Index", permanent: true);
-                        }
-                        else
-                        {
-                            context.Response.Redirect("/Auth/Login", permanent: true);
-                        }
-                        return;
-                    }
-                    await next();
-                });
+                //app.Use(async (context, next) =>
+                //{
+                //    if (context.Request.Path == "/")
+                //    {
+                //        if (context.User.Identity.IsAuthenticated)
+                //        {
+                //            context.Response.Redirect("/Home/Index", permanent: true);
+                //        }
+                //        else
+                //        {
+                //            context.Response.Redirect("/Auth/Login", permanent: true);
+                //        }
+                //        return;
+                //    }
+                //    await next();
+                //});
 
                 app.UseAuthentication();
                 app.UseAuthorization();

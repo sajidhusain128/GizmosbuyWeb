@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Web.Filters;
 using GizmosbuyWeb.Filters;
@@ -10,17 +11,23 @@ namespace GizmosbuyWeb.Controllers
 {
     [NoCache]
     [EnableCors(Constant.MyPolicy)]
-    [CustomAuthorize(Role.User)]
+    [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
     public class HomeController : Controller
     {
-        [CustomAuthorize(Role.User)]
+        private readonly ICacheService _cacheService;
+        public HomeController(ICacheService cacheService)
+        {
+            _cacheService = cacheService;
+        }
+
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public IActionResult Index()
         {
             ViewBag.Location = "";
 
-            if (HttpContext.Session.GetString("Location") != null)
+            if (ConstantsSessions.Location != null)
             {
-                ViewBag.Location = HttpContext.Session.GetString("Location");
+                ViewBag.Location = ConstantsSessions.Location;
             }
 
             return View();
@@ -35,6 +42,13 @@ namespace GizmosbuyWeb.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult ClearCache()
+        {
+            _cacheService.ClearAll();
+
+            return Content("Cleared all cache items.");
         }
     }
 }

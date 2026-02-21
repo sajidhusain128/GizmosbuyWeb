@@ -1,31 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    TempData["Title"] = "Purchase";
 }
 
-<div class="page-header">
-    <div class="header-title">Purchase List</div>
-</div>
-<div class="page-content">
-    <div class="page-title">
-        <h3></h3>
-        <a href="@Url.Action("Create","Purchase")" class="btn btn-custom" title="Create Purchase Entry"><i class="fas fa-save"></i> Create Entry</a>
+<div class="col-md-12">
+    <div class="row">
+        <div class="body-title">
+            <h1>Purchase</h1>
+        </div>
     </div>
-    <div class="page-body">
-        <div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
-            <table id="tblPurchase" class="">
-                <thead>
-                    <tr>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+</div>
+<div class="container-block">
+    <div class="section-block">
+        <div class="page-header">
+            <div class="header-title">Purchase List</div>
+        </div>
+        <div class="page-content">
+            <div class="page-title">
+                <h3></h3>
+                <a href="@Url.Action("Create", "Purchase")" class="btn btn-custom" title="Create Purchase Entry"><i class="fas fa-save"></i> Create Entry</a>
+            </div>
+            <div class="page-body">
+                <div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
+                    <table id="tblPurchase" class="">
+                        <thead>
+                            <tr>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

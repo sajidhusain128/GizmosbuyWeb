@@ -9,7 +9,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="wwwroot\js\master.js" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Include="efpt.config.json.user" />
+	  <None Include="wwwroot\TempFiles\SalesReport_JGS0004_07_02_2026_23_38_10.pdf" />
+	  <None Include="wwwroot\TempFiles\SalesReport_JGS0004_07_02_2026_23_50_01.pdf" />
+	  <None Include="wwwroot\TempFiles\SalesReport_JGS0004_07_02_2026_23_51_55.pdf" />
+	  <None Include="wwwroot\TempFiles\SalesReport_JGS0004_08_02_2026_00_13_44.pdf" />
+	  <None Include="wwwroot\TempFiles\SalesReport_JGS0004_08_02_2026_00_16_00.pdf" />
 	</ItemGroup>
 
 	<ItemGroup>				
@@ -35,6 +44,7 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Twilio" Version="7.14.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -43,8 +53,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="wwwroot\lib\datatables\css\" />
-	  <Folder Include="wwwroot\lib\datatables\js\" />
+	  <TypeScriptCompile Include="wwwroot\js\master.js" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -64,6 +73,10 @@
 	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
 	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\TempFiles\" />
 	</ItemGroup>
 
 </Project>

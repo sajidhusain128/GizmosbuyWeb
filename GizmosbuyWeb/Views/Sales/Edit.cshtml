@@ -3,262 +3,273 @@
 @using Gizmosbuy.Core.Models
 @model Gizmosbuy.Core.Interfaces.ISalesModel
 @{
-    ViewData["Title"] = "Edit";
+    TempData["Title"] = "Edit Sales";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="page-header">
-    <div class="header-title">Sales Edit</div>
-</div>
-<div class="page-content">
-    <div class="page-title">
-        <h3></h3>
-        <a href="@Url.Action("Index","Sales")" class="btn btn-primary btn-sm"><i class="fas fa-arrow-left"></i> Back to list</a>
+<div class="col-md-12">
+    <div class="row">
+        <div class="body-title">
+            <h1>Sales</h1>
+        </div>
     </div>
-    <div class="page-body">
-        @using (Html.BeginForm("Create", "Sales", FormMethod.Post, new { id = "frmSales" }))
-        {
-            @Html.AntiForgeryToken()
+</div>
+<div class="container-block">
+    <div class="section-block">
+        <div class="page-header">
+            <div class="header-title">Sales Edit</div>
+        </div>
+        <div class="page-content">
+            <div class="page-title">
+                <h3></h3>
+                <a href="@Url.Action("Index", "Sales")" class="btn btn-primary btn-sm"><i class="fas fa-arrow-left"></i> Back to list</a>
+            </div>
+            <div class="page-body">
+                @using (Html.BeginForm("Create", "Sales", FormMethod.Post, new { id = "frmSales" }))
+                {
+                    @Html.AntiForgeryToken()
 
-            <input type="hidden" id="hdnSalesId" asp-for="SalesId" />
+                    <input type="hidden" id="hdnSalesId" asp-for="SalesId" />
 
-            <div class="form-group">
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
+                    <div class="form-group">
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                 &nbsp;
                             </div> *@
-                            <label for="txtSrNo" class="col-form-label">Serial No:</label>
-                        </div>
-                        <div class="col-md-4">
-                            @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
+                                    <label for="txtSrNo" class="col-form-label">Serial No:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                 Type <strong>Serial No.</strong> in below input to fetch purchase record.
                             </div> *@
-                            <input type="text" id="txtSrNo" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off" readonly>
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="ddlCategory" class="col-form-label">Category:</label>
-                        </div>
-                        <div class="col-md-4">
-                            @* @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @disabled = "true" }) *@
-                            <input type="text" id="txtCategory" class="form-control" asp-for="CategoryName" placeholder="" autocomplete="off" readonly>
-                            <input type="hidden" id="hdnCategoryId" asp-for="CategoryId" />
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="ddlBrand" class="col-form-label">Brand:</label>
-                        </div>
-                        <div class="col-md-4">
-                            @* @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @disabled = "true" }) *@
-                            <input type="text" id="txtBrand" class="form-control" asp-for="BrandName" placeholder="" autocomplete="off" readonly>
-                            <input type="hidden" id="hdnBrandId" asp-for="BrandId" />
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="txtModel" class="col-form-label">Model:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" id="txtModel" class="form-control" asp-for="Model" autocomplete="off" readonly>
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="txtSpecs" class="col-form-label">Specifications:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" id="txtSpecs" class="form-control" asp-for="Specifications" autocomplete="off" readonly>
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="Quantity" class="col-form-label">Quantity:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" id="txtQuantity" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="txtSellDate" class="col-form-label">Sell Date:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                @{
-                                    var sellDate = Model.SellingDate.GetValueOrDefault().ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
-                                }
-                                <input type="text" id="txtSellDate" class="form-control" asp-for="@sellDate" placeholder="DD/MM/YYYY" maxlength="10" pattern="[0-9/]*" onkeypress="return false;" onKeyDown="preventBackspace();" onpaste="return false;" autocomplete="off">
-                                <span class="input-group-text" id="basic-addon1">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </span>
+                                    <input type="text" id="txtSrNo" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off" readonly>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="txtSellingPrice" class="col-form-label">Selling Price:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group">
-                                @{
-                                    var sellPrice = String.Format("{0:0.00}", Model.SellingPrice);
-                                }
-                                <input type="text" id="txtSellingPrice" class="form-control text-right" asp-for="@sellPrice" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
-                                <span class="input-group-text" id="txtSellingPrice-addon1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-rupee" viewBox="0 0 16 16">
-                                        <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z" />
-                                    </svg>
-                                </span>
+
+
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="ddlCategory" class="col-form-label">Category:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    @* @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @disabled = "true" }) *@
+                                    <input type="text" id="txtCategory" class="form-control" asp-for="CategoryName" placeholder="" autocomplete="off" readonly>
+                                    <input type="hidden" id="hdnCategoryId" asp-for="CategoryId" />
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="ddlBrand" class="col-form-label">Brand:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    @* @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @disabled = "true" }) *@
+                                    <input type="text" id="txtBrand" class="form-control" asp-for="BrandName" placeholder="" autocomplete="off" readonly>
+                                    <input type="hidden" id="hdnBrandId" asp-for="BrandId" />
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtModel" class="col-form-label">Model:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtModel" class="form-control" asp-for="Model" autocomplete="off" readonly>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtSpecs" class="col-form-label">Specifications:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtSpecs" class="form-control" asp-for="Specifications" autocomplete="off" readonly>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="Quantity" class="col-form-label">Quantity:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtQuantity" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtSellDate" class="col-form-label">Sell Date:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        @{
+                                            var sellDate = Model.SellingDate.GetValueOrDefault().ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                        }
+                                        <input type="text" id="txtSellDate" class="form-control" asp-for="@sellDate" placeholder="DD/MM/YYYY" maxlength="10" pattern="[0-9/]*" onkeypress="return false;" onKeyDown="preventBackspace();" onpaste="return false;" autocomplete="off">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtSellingPrice" class="col-form-label">Selling Price:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        @{
+                                            var sellPrice = String.Format("{0:0.00}", Model.SellingPrice);
+                                        }
+                                        <input type="text" id="txtSellingPrice" class="form-control text-right" asp-for="@sellPrice" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
+                                        <span class="input-group-text" id="txtSellingPrice-addon1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-rupee" viewBox="0 0 16 16">
+                                                <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtSellQuantity" class="col-form-label">Selling Quantity:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtSellQuantity" class="form-control" asp-for="SellingQuantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtPayMode" class="col-form-label">Payment Mode:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtPayMode" class="form-control" asp-for="PaymentModeName" autocomplete="off">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtSellLead" class="col-form-label">Selling Lead:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtSellLead" class="form-control" asp-for="SellingLead" autocomplete="off">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtCustomerName" class="col-form-label">Customer Name:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtCustomerName" class="form-control" asp-for="CustomerName" autocomplete="off">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtContactNo" class="col-form-label">Contact No:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtContactNo" class="form-control" asp-for="ContactNo" onkeypress="numberOnly(event)" maxlength="10" autocomplete="off">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtLoaction" class="col-form-label">Location:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtLoaction" class="form-control" asp-for="LocationName" autocomplete="off">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtBillNo" class="col-form-label">Bill No:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtBillNo" class="form-control" asp-for="BillNo" autocomplete="off" readonly>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-custom" id="btnSalesUpdate" title="Update Sales Entry"><i class="fas fa-pen-to-square"></i> Update</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="txtSellQuantity" class="col-form-label">Selling Quantity:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" id="txtSellQuantity" class="form-control" asp-for="SellingQuantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="txtPayMode" class="col-form-label">Payment Mode:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" id="txtPayMode" class="form-control" asp-for="PaymentModeName" autocomplete="off">
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="txtSellLead" class="col-form-label">Selling Lead:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" id="txtSellLead" class="form-control" asp-for="SellingLead" autocomplete="off">
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="txtCustomerName" class="col-form-label">Customer Name:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" id="txtCustomerName" class="form-control" asp-for="CustomerName" autocomplete="off">
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="txtContactNo" class="col-form-label">Contact No:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" id="txtContactNo" class="form-control" asp-for="ContactNo" onkeypress="numberOnly(event)" maxlength="10" autocomplete="off">
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="txtLoaction" class="col-form-label">Location:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" id="txtLoaction" class="form-control" asp-for="LocationName" autocomplete="off">
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <label for="txtBillNo" class="col-form-label">Bill No:</label>
-                        </div>
-                        <div class="col-md-4">
-                            <input type="text" id="txtBillNo" class="form-control" asp-for="BillNo" autocomplete="off">
-                        </div>
-                        <div class="col-auto">
-                            <span class="field-validation-error"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                        </div>
-                        <div class="col-md-4">
-                            <button type="button" class="btn btn-custom" id="btnSalesUpdate" title="Update Sales Entry"><i class="fas fa-pen-to-square"></i> Update</button>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
-        }
+        </div>
     </div>
 </div>
 
@@ -275,7 +286,7 @@
         $(document).ready( function () {
             $('#txtSellDate').datepicker({
                 format: 'dd/mm/yyyy',
-                endDate: '+1d',
+                endDate: '+0d',
                 maxDate: 'today',
                 autoclose: true,
                 todayHighlight: true,

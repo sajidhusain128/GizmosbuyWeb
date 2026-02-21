@@ -1,0 +1,68 @@
+﻿
+
+<div class="modal fade" id="tempReturnStoreTransferItemsModel" tabindex="-1" aria-labelledby="tempReturnStoreTransferItemsModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="tempReturnStoreTransferItemsModelLabel">Refund Sold Items</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Close Modal">
+                    <i class="fa fa-solid fa-lg fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    @using (Html.BeginForm("", "", FormMethod.Post, new { id = "frmStoreTransferReturn" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group">
+                            <div class="col-md-12 mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col-md-12">
+                                        <h6 style="font-weight: 600;">Please enter below detail for refund sold items.</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="col-auto offset-md-2">
+                                    <div class="row">
+                                        <span id="spnInvoiceNoError" class="field-validation-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2">
+                                        <label for="txtInvoiceNo" class="col-form-label">Invoice No.:</label>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" id="txtInvoiceNo" class="form-control" placeholder="" autocomplete="off">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-custom" id="btnFetchInvoiceDetails" title="Click here to fetch invoice details"><i class="fa-solid fa-circle-arrow-down"></i> Fetch</button>
+                                    </div>
+                                    <div class="col-md-3 text-right">
+                                        <button type="button" class="btn btn-info" id="btnClearInvoiceDetails" title="Clear invoice details"><i class="fa-solid fa-eraser"></i> Clear</button>
+                                    </div>
+                                    @* <div class="col-auto">
+                                        <span class="field-validation-error"></span>
+                                    </div> *@
+                                </div>
+                            </div>
+
+                            <div id="divInvoiceDetails">
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="btnReturnStoreTransferItemsClose" data-bs-dismiss="modal" title="Close Modal"><i class="fas fa-xmark"></i> Close</button>
+                <button type="button" class="btn btn-custom" id="btnReturnStoreTransferItemsSave" title="Submit to Return Store Transfered Item(s)"><i class="fas fa-save"></i> Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_PartialDeleteTransferConfirmModal.cshtml")

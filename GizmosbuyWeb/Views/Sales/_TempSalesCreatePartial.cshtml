@@ -29,250 +29,254 @@
 </div>
 @await Html.PartialAsync("_PartialDeleteConfirmPopup.cshtml")
 
-<div class="modal fade" id="tempSalesEditModel" tabindex="-1" aria-labelledby="tempSalesEditModelLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="tempSalesEditModelLabel">Edit Temporory Sales Entry</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Close Form">
-                    <i class="fa fa-solid fa-lg fa-xmark"></i>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    @using (Html.BeginForm("Create", "Sales", FormMethod.Post, new { id = "frmTempSales" }))
-                    {
-                        @Html.AntiForgeryToken()
+<div class="container-block">
+    <div class="section-block">
+        <div class="modal fade" id="tempSalesEditModel" tabindex="-1" aria-labelledby="tempSalesEditModelLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tempSalesEditModelLabel">Edit Temporory Sales Entry</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Close Form">
+                            <i class="fa fa-solid fa-lg fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            @using (Html.BeginForm("Create", "Sales", FormMethod.Post, new { id = "frmTempSales" }))
+                            {
+                                @Html.AntiForgeryToken()
 
-                        <input type="hidden" id="hdnTempSalesId" value="" />
-                        <input type="hidden" id="hdnTempPurchaseId" value="" />
+                                <input type="hidden" id="hdnTempSalesId" value="" />
+                                <input type="hidden" id="hdnTempPurchaseId" value="" />
 
-                        <div class="form-group">
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
+                                <div class="form-group">
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                             &nbsp;
                                         </div> *@
-                                        <label for="txtSrNoTemp" class="col-form-label">Serial No:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
+                                                <label for="txtSrNoTemp" class="col-form-label">Serial No:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                             Type <strong>Serial No.</strong> in below input to fetch purchase record.
                                         </div> *@
-                                        <input type="text" id="txtSrNoTemp" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off" disabled>
+                                                <input type="text" id="txtSrNoTemp" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off" disabled>
 
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtCategoryTemp" class="col-form-label">Category:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        @* @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @disabled = "true" }) *@
-                                        <input type="text" id="txtCategoryTemp" class="form-control" placeholder="" autocomplete="off" readonly>
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtBrandTemp" class="col-form-label">Brand:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        @* @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @disabled = "true" }) *@
-                                        <input type="text" id="txtBrandTemp" class="form-control" placeholder="" autocomplete="off" readonly>
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtModelTemp" class="col-form-label">Model:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <input type="text" id="txtModelTemp" class="form-control" asp-for="Model" autocomplete="off" readonly>
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtSpecsTemp" class="col-form-label">Specifications:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <input type="text" id="txtSpecsTemp" class="form-control" asp-for="Specifications" autocomplete="off" readonly>
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtQuantityTemp" class="col-form-label">Quantity:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <input type="text" id="txtQuantityTemp" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtSellDateTemp" class="col-form-label">Sell Date:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="input-group">
-                                            <input type="text" id="txtSellDateTemp" class="form-control" asp-for="SellingDate" placeholder="DD/MM/YYYY" maxlength="10" onkeypress="return false;" onKeyDown="preventBackspace();" onpaste="return false;" autocomplete="off">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                <i class="fas fa-calendar-alt"></i>
-                                            </span>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtSellingPriceTemp" class="col-form-label">Selling Price:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <div class="input-group">
-                                            <input type="text" id="txtSellingPriceTemp" class="form-control text-right" asp-for="SellingPrice" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
-                                            <span class="input-group-text" id="txtSellingPrice-addon1">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-rupee" viewBox="0 0 16 16">
-                                                    <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z" />
-                                                </svg>
-                                            </span>
+
+
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtCategoryTemp" class="col-form-label">Category:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                @* @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @disabled = "true" }) *@
+                                                <input type="text" id="txtCategoryTemp" class="form-control" placeholder="" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtBrandTemp" class="col-form-label">Brand:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                @* @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @disabled = "true" }) *@
+                                                <input type="text" id="txtBrandTemp" class="form-control" placeholder="" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtModelTemp" class="col-form-label">Model:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtModelTemp" class="form-control" asp-for="Model" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtSpecsTemp" class="col-form-label">Specifications:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtSpecsTemp" class="form-control" asp-for="Specifications" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtQuantityTemp" class="col-form-label">Quantity:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtQuantityTemp" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtSellDateTemp" class="col-form-label">Sell Date:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtSellDateTemp" class="form-control" asp-for="SellingDate" placeholder="DD/MM/YYYY" maxlength="10" onkeypress="return false;" onKeyDown="preventBackspace();" onpaste="return false;" autocomplete="off">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        <i class="fas fa-calendar-alt"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtSellingPriceTemp" class="col-form-label">Selling Price:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtSellingPriceTemp" class="form-control text-right" asp-for="SellingPrice" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
+                                                    <span class="input-group-text" id="txtSellingPrice-addon1">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-rupee" viewBox="0 0 16 16">
+                                                            <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z" />
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtSellQuantityTemp" class="col-form-label">Selling Quantity:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtSellQuantityTemp" class="form-control" asp-for="SellingQuantity" onkeypress="numberOnly(event)" autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtPayModeTemp" class="col-form-label">Payment Mode:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtPayModeTemp" class="form-control" asp-for="PaymentModeName" autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtSellLeadTemp" class="col-form-label">Selling Lead:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtSellLeadTemp" class="form-control" asp-for="SellingLead" autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtCustomerNameTemp" class="col-form-label">Customer Name:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtCustomerNameTemp" class="form-control" asp-for="CustomerName" autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtContactNoTemp" class="col-form-label">Contact No:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtContactNoTemp" class="form-control" asp-for="ContactNo" onkeypress="numberOnly(event)" maxlength="10" autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtLoactionTemp" class="col-form-label">Location:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtLoactionTemp" class="form-control" asp-for="Location" autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtBillNoTemp" class="col-form-label">Bill No:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtBillNoTemp" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtSellQuantityTemp" class="col-form-label">Selling Quantity:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <input type="text" id="txtSellQuantityTemp" class="form-control" asp-for="SellingQuantity" onkeypress="numberOnly(event)" autocomplete="off">
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtPayModeTemp" class="col-form-label">Payment Mode:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <input type="text" id="txtPayModeTemp" class="form-control" asp-for="PaymentModeName" autocomplete="off">
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtSellLeadTemp" class="col-form-label">Selling Lead:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <input type="text" id="txtSellLeadTemp" class="form-control" asp-for="SellingLead" autocomplete="off">
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtCustomerNameTemp" class="col-form-label">Customer Name:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <input type="text" id="txtCustomerNameTemp" class="form-control" asp-for="CustomerName" autocomplete="off">
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtContactNoTemp" class="col-form-label">Contact No:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <input type="text" id="txtContactNoTemp" class="form-control" asp-for="ContactNo" onkeypress="numberOnly(event)" maxlength="10" autocomplete="off">
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtLoactionTemp" class="col-form-label">Location:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <input type="text" id="txtLoactionTemp" class="form-control" asp-for="Location" autocomplete="off">
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtBillNoTemp" class="col-form-label">Bill No:</label>
-                                    </div>
-                                    <div class="col-md-5">
-                                        <input type="text" id="txtBillNoTemp" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" readonly>
-                                    </div>
-                                    <div class="col-auto">
-                                        <span class="field-validation-error"></span>
-                                    </div>
-                                </div>
-                            </div>
+                            }
                         </div>
-                    }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Close Form"><i class="fas fa-xmark"></i> Close</button>
+                        <button type="button" class="btn btn-primary" id="btnUpdateTempSales" title="Update Temporory Sales Entry"><i class="fas fa-pen-to-square"></i> Update</button>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Close Form"><i class="fas fa-xmark"></i> Close</button>
-                <button type="button" class="btn btn-primary" id="btnUpdateTempSales" title="Update Temporory Sales Entry"><i class="fas fa-pen-to-square"></i> Update</button>
             </div>
         </div>
     </div>

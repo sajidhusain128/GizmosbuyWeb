@@ -1,0 +1,232 @@
+﻿@using Gizmosbuy.Core.Interfaces
+@using Gizmosbuy.Core.Models
+@model Gizmosbuy.Core.Models.TempStoreTransferModel
+@{
+    ViewBag.Title = "_TempTransferCreatePartial";
+}
+
+
+<div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
+    <table id="tblTransferCreateTemp" class="">
+        <thead>
+            <tr>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="col-md-12 mb-2">
+    <div class="row">
+        <div class="text-right">
+            <button type="button" class="btn btn-custom" id="btnStoreTransferSave" title="Save Final Added Entries"><i class="fas fa-save"></i> Save</button>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_PartialTransferDeleteConfirmPopup.cshtml")
+
+<div class="container-block">
+    <div class="section-block">
+        <div class="modal fade" id="tempStoreTransferEditModel" tabindex="-1" aria-labelledby="tempStoreTransferEditModelLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="tempStoreTransferEditModelLabel">Edit Temporory Store Transfer Entry</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Close Form">
+                            <i class="fa fa-solid fa-lg fa-xmark"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            @using (Html.BeginForm("CreateTransfer", "Store", FormMethod.Post, new { id = "frmTempStoreTransfer" }))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden" id="hdnTempStoreTransferId" value="" />
+                                <input type="hidden" id="hdnTempPurchaseId" value="" />
+
+                                <div class="form-group">
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
+                                            &nbsp;
+                                        </div> *@
+                                                <label for="txtSrNoTemp" class="col-form-label">Serial No:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
+                                            Type <strong>Serial No.</strong> in below input to fetch purchase record.
+                                        </div> *@
+                                                <input type="text" id="txtSrNoTemp" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off" disabled>
+
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtCategoryTemp" class="col-form-label">Category:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                @* @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @disabled = "true" }) *@
+                                                <input type="text" id="txtCategoryTemp" class="form-control" placeholder="" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtBrandTemp" class="col-form-label">Brand:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                @* @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @disabled = "true" }) *@
+                                                <input type="text" id="txtBrandTemp" class="form-control" placeholder="" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtModelTemp" class="col-form-label">Model:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtModelTemp" class="form-control" asp-for="Model" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtSpecsTemp" class="col-form-label">Specifications:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtSpecsTemp" class="form-control" asp-for="Specifications" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtQuantityTemp" class="col-form-label">Quantity:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtQuantityTemp" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtTransferDateTemp" class="col-form-label">Transfer Date:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtTransferDateTemp" class="form-control" asp-for="TransferDate" placeholder="DD/MM/YYYY" maxlength="10" onkeypress="return false;" onKeyDown="preventBackspace();" onpaste="return false;" autocomplete="off">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        <i class="fas fa-calendar-alt"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtSellingPriceTemp" class="col-form-label">Selling Price:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="input-group">
+                                                    <input type="text" id="txtSellingPriceTemp" class="form-control text-right" asp-for="SellingPrice" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
+                                                    <span class="input-group-text" id="txtSellingPrice-addon1">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-rupee" viewBox="0 0 16 16">
+                                                            <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z" />
+                                                        </svg>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtSellQuantityTemp" class="col-form-label">Selling Quantity:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtSellQuantityTemp" class="form-control" asp-for="SellingQuantity" onkeypress="numberOnly(event)" autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="ddlSellingStoreTemp" class="col-form-label">Store Name:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                @* <input type="text" id="txtSellingStoreTemp" class="form-control" asp-for="SellingStore" autocomplete="off"> *@
+                                                @Html.DropDownListFor(Model => Model.ToLocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlSellingStoreTemp", @class = "form-select", @style = "width:100% !important" })
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtBillNoTemp" class="col-form-label">Bill No:</label>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <input type="text" id="txtBillNoTemp" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Close Form"><i class="fas fa-xmark"></i> Close</button>
+                        <button type="button" class="btn btn-primary" id="btnUpdateTempStoreTransfer" title="Update Temporory Store Transfer Entry"><i class="fas fa-pen-to-square"></i> Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

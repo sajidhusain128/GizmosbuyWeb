@@ -20,5 +20,9 @@ namespace Gizmosbuy.Core.Models
         public int PaymentModeId { get; set; }
         public string PaymentModeName { get; set; }
         public string BuyingLead { get; set; }
+        public int PurchaseLocationID { get; set; }
+
+        public List<string> SerialNos { get; set; }
+        public string PurchaseType { get; set; }
     }
 }

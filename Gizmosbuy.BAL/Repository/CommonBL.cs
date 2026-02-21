@@ -1,36 +1,51 @@
-﻿using Gizmosbuy.BAL.Interfaces;
+﻿using System.IO;
+using System.Text;
+using Azure;
+using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
 using Gizmosbuy.DAL.Models;
+using Microsoft.EntityFrameworkCore;
+using Twilio.Rest.Api.V2010.Account;
+using Twilio.TwiML.Voice;
+using Twilio.Types;
 
 namespace Gizmosbuy.BAL.Repository
 {
     public class CommonBL : ICommonBL
     {
         private readonly ApplicationDbContext _applicationDbContext;
-        public CommonBL(ApplicationDbContext applicationDbContext)
+        private readonly ICacheService _cacheService;
+        public CommonBL(ApplicationDbContext applicationDbContext, ICacheService cacheService)
         {
             _applicationDbContext = applicationDbContext;
+            _cacheService = cacheService;
         }
-        public async Task<List<ICategoryModel>> GetAllCategories()
+
+        public async Task<List<ICategoryModel>> GetAllCategories(string cacheKey)
         {
             try
             {
-                List<CategoryMaster> _categoryMasterList = _applicationDbContext.CategoryMasters.Where(x => x.IsActive == true).ToList();
-
-                List<ICategoryModel> categoryModelList = new List<ICategoryModel>();
-                foreach (var category in _categoryMasterList)
+                var value = await _cacheService.GetOrSetAsync(cacheKey, async entry =>
                 {
-                    categoryModelList.Add(new CategoryModel
-                    {
-                        CategoryId = category.CategoryId,
-                        CategoryName = category.CategoryName,
-                        IsActive = category.IsActive
-                    });
-                }
+                    List<CategoryMaster> _categoryMasterList = await _applicationDbContext.CategoryMasters.Where(x => x.IsActive == true).ToListAsync();
 
-                return await Task.FromResult(categoryModelList);
+                    List<ICategoryModel> categoryModelList = new List<ICategoryModel>();
+                    foreach (var category in _categoryMasterList)
+                    {
+                        categoryModelList.Add(new CategoryModel
+                        {
+                            CategoryId = category.CategoryId,
+                            CategoryName = category.CategoryName,
+                            IsActive = category.IsActive
+                        });
+                    }
+
+                    return categoryModelList;
+                });
+
+                return value;
             }
             catch (Exception)
             {
@@ -38,24 +53,29 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<List<IBrandModel>> GetAllBrands()
+        public async Task<List<IBrandModel>> GetAllBrands(string cacheKey)
         {
             try
             {
-                List<BrandMaster> brandMasters = _applicationDbContext.BrandMasters.Where(x => x.IsActive == true).ToList();
-
-                List<IBrandModel> brandModelList = new List<IBrandModel>();
-                foreach (var brand in brandMasters)
+                var value = await _cacheService.GetOrSetAsync(cacheKey, async entry =>
                 {
-                    brandModelList.Add(new BrandModel
-                    {
-                        BrandId = brand.BrandId,
-                        BrandName = brand.BrandName,
-                        IsActive = brand.IsActive
-                    });
-                }
+                    List<BrandMaster> brandMasters = await _applicationDbContext.BrandMasters.Where(x => x.IsActive == true).ToListAsync();
 
-                return await Task.FromResult(brandModelList);
+                    List<IBrandModel> brandModelList = new List<IBrandModel>();
+                    foreach (var brand in brandMasters)
+                    {
+                        brandModelList.Add(new BrandModel
+                        {
+                            BrandId = brand.BrandId,
+                            BrandName = brand.BrandName,
+                            IsActive = brand.IsActive
+                        });
+                    }
+
+                    return brandModelList;
+                });
+
+                return value;
             }
             catch (Exception)
             {
@@ -63,24 +83,29 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<List<IPaymentModeModel>> GetAllPaymentModes()
+        public async Task<List<IPaymentModeModel>> GetAllPaymentModes(string cacheKey)
         {
             try
             {
-                List<PaymentModeMaster> paymentModeMasters = _applicationDbContext.PaymentModeMasters.Where(x => x.IsActive == true).ToList();
-
-                List<IPaymentModeModel> paymentModeModelList = new List<IPaymentModeModel>();
-                foreach (var paymentMode in paymentModeMasters)
+                var value = await _cacheService.GetOrSetAsync(cacheKey, async entry =>
                 {
-                    paymentModeModelList.Add(new PaymentModeModel
-                    {
-                        PaymentModeId = paymentMode.PaymentModeId,
-                        PaymentModeName = paymentMode.PaymentModeName,
-                        IsActive = paymentMode.IsActive
-                    });
-                }
+                    List<PaymentModeMaster> paymentModeMasters = await _applicationDbContext.PaymentModeMasters.Where(x => x.IsActive == true).ToListAsync();
 
-                return await Task.FromResult(paymentModeModelList);
+                    List<IPaymentModeModel> paymentModeModelList = new List<IPaymentModeModel>();
+                    foreach (var paymentMode in paymentModeMasters)
+                    {
+                        paymentModeModelList.Add(new PaymentModeModel
+                        {
+                            PaymentModeId = paymentMode.PaymentModeId,
+                            PaymentModeName = paymentMode.PaymentModeName,
+                            IsActive = paymentMode.IsActive
+                        });
+                    }
+
+                    return paymentModeModelList;
+                });
+
+                return value;
             }
             catch (Exception)
             {
@@ -88,27 +113,104 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<List<ILocationModel>> GetAllLocations()
+        public async Task<List<ILocationModel>> GetAllLocations(string cacheKey)
         {
             try
             {
-                List<LocationMaster> paymentModeMasters = _applicationDbContext.LocationMasters.Where(x => x.IsActive == true).ToList();
-
-                List<ILocationModel> locationModelList = new List<ILocationModel>();
-                foreach (var paymentMode in paymentModeMasters)
+                var value = await _cacheService.GetOrSetAsync(cacheKey, async entry =>
                 {
-                    locationModelList.Add(new LocationModel
-                    {
-                        LocationId = paymentMode.LocationId,
-                        LocationName = paymentMode.LocationName,
-                        IsActive = paymentMode.IsActive
-                    });
-                }
+                    List<LocationMaster> paymentModeMasters = await _applicationDbContext.LocationMasters.Where(x => x.IsActive == true).ToListAsync();
 
-                return await Task.FromResult(locationModelList);
+                    List<ILocationModel> locationModelList = new List<ILocationModel>();
+                    foreach (var paymentMode in paymentModeMasters)
+                    {
+                        locationModelList.Add(new LocationModel
+                        {
+                            LocationId = paymentMode.LocationId,
+                            LocationName = paymentMode.LocationName,
+                            IsActive = paymentMode.IsActive
+                        });
+                    }
+
+                    return locationModelList;
+                });
+
+                return value;
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public async Task<MessageResource> SendWhatsAppService(IWebConfiguration webConfiguration, IWhatsAppSettings whatsAppSettings, Tuple<string, MemoryStream> webFile, long? contactNo, string CustomerName)
+        {
+            var filePath = "";
+
+            try
+            {
+                string bodyMessage = $"Dear *[@Customer]*,\n\nThank you for your recent purchase.\nPlease find attached the sales invoice for your records.\n\nBest regards,\n*Gizmosbuy*".Replace("[@Customer]", CustomerName).Replace("\n", Environment.NewLine);
+                string CustomerNumber = "";
+
+                if (!string.IsNullOrWhiteSpace(contactNo.ToString()))
+                {
+                    CustomerNumber = "+91" + contactNo.ToString().Trim();
+                }
+                else
+                {
+                    CustomerNumber = whatsAppSettings.ReceiverNumber;
+                }
+                var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "TempFiles");
+
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                var fileName = webFile.Item1;
+                filePath = Path.Combine(uploadPath, fileName);
+
+                // Reset position before writing (important!)
+                var memoryStreamTemp = webFile.Item2;
+                // Use MemoryStream to hold data in memory
+                using (var memoryStream = new MemoryStream(memoryStreamTemp.ToArray()))
+                {
+                    // Save the file to the physical path using a FileStream
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await memoryStream.CopyToAsync(fileStream);
+                    }
+                }
+                var url = Path.Combine(webConfiguration.Issuer, "TempFiles/", fileName);
+
+                var message = await MessageResource.CreateAsync(
+                    from: new PhoneNumber($"whatsapp:{whatsAppSettings.SenderNumber}"), // Twilio Sandbox number
+                    to: new PhoneNumber($"whatsapp:{CustomerNumber}"),  // Your verified WhatsApp number
+                    body: bodyMessage,
+                    mediaUrl: new List<Uri> {
+                        new Uri(url) // Publicly accessible PDF URL
+                    }
+                );
+
+                if (message.Sid != "")
+                {
+                    await System.Threading.Tasks.Task.Delay(2000);
+
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+                }
+
+                return message;
+            }
+            catch (Exception)
+            {
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+
                 throw;
             }
         }

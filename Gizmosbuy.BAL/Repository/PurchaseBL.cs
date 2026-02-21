@@ -1,5 +1,7 @@
-﻿using Gizmosbuy.BAL.Commons;
+﻿using System.Data;
+using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
+using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
@@ -22,11 +24,23 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
+                DataTable SearlNoDataTable = new DataTable();
+                SearlNoDataTable.Columns.Add("SerialNo", typeof(string));
+                if (purchaseModel.SerialNos != null && purchaseModel.SerialNos.Count > 0)
+                {
+                    foreach (var serialNo in purchaseModel.SerialNos)
+                    {
+                        SearlNoDataTable.Rows.Add(serialNo);
+                    }
+                }
+
+                int purchaseLocationID = ConstantsSessions.LocationId;
                 string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
                 var parameterreturnValue = new OutputParameter<int?>();
                 var i = await _applicationDbContext.Procedures.spSavePurchaseAsync(
                     purchaseModel.PurchaseId,
                     purchaseModel.SerialNo,
+                    SearlNoDataTable,
                     purchaseModel.PurchaseDate,
                     purchaseModel.CategoryId,
                     purchaseModel.BrandId,
@@ -38,9 +52,12 @@ namespace Gizmosbuy.BAL.Repository
                     purchaseModel.TotalPrice,
                     purchaseModel.PaymentModeName,
                     purchaseModel.BuyingLead,
+                    purchaseLocationID,
                     Convert.ToInt32(sessionUserId),
                     DateTime.Now,
-                    parameterreturnValue
+                    purchaseModel.PurchaseType,
+                    parameterreturnValue,
+                    null
                 );
 
                 return await Task.FromResult(parameterreturnValue.Value.GetValueOrDefault());
@@ -146,11 +163,15 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
+                DataTable SearlNoDataTable = new DataTable();
+                SearlNoDataTable.Columns.Add("SerialNo", typeof(string));
+
                 string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
                 var parameterreturnValue = new OutputParameter<int?>();
                 var i = await _applicationDbContext.Procedures.spSavePurchaseAsync(
                     purchaseModel.PurchaseId,
                     purchaseModel.SerialNo,
+                    SearlNoDataTable,
                     purchaseModel.PurchaseDate,
                     purchaseModel.CategoryId,
                     purchaseModel.BrandId,
@@ -162,9 +183,12 @@ namespace Gizmosbuy.BAL.Repository
                     purchaseModel.TotalPrice,
                     purchaseModel.PaymentModeName,
                     purchaseModel.BuyingLead,
+                    0,
                     Convert.ToInt32(sessionUserId),
                     DateTime.Now,
-                    parameterreturnValue
+                    "Single",
+                    parameterreturnValue,
+                    null
                 );
 
                 return await Task.FromResult(parameterreturnValue.Value.GetValueOrDefault());

@@ -8,12 +8,17 @@ namespace Gizmosbuy.DAL.Models
 {
     public partial class spGetInvoiceDetailsResult
     {
+        public int SalesID { get; set; }
         [StringLength(50)]
         public string BillNo { get; set; }
         [StringLength(100)]
         public string SerialNo { get; set; }
         [StringLength(50)]
         public string Model { get; set; }
+        [StringLength(100)]
+        public string BrandName { get; set; }
+        [StringLength(1000)]
+        public string Specifications { get; set; }
         [Column("SellingPrice", TypeName = "money")]
         public decimal? SellingPrice { get; set; }
         [StringLength(100)]

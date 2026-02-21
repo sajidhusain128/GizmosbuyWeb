@@ -11,7 +11,7 @@ namespace GizmosbuyWeb.Filters
     {
         public CustomAuthorizeAttribute(params string[] claim) : base(typeof(AuthorizeFilter))
         {
-            Arguments = new object[] { claim };
+            Arguments = [claim];
         }
     }
 
@@ -42,17 +42,17 @@ namespace GizmosbuyWeb.Filters
                         {
                             flagClaim = true;
                         }
-                        else if (userSession == Role.SuperAdmin || userSession == Role.Admin)
-                        {
-                            flagClaim = true;
-                        }
+                        //else if (userSession == Role.SuperAdmin || userSession == Role.Admin)
+                        //{
+                        //    flagClaim = true;
+                        //}
                     }
 
                 }
-                else if (context.HttpContext.User.HasClaim("Role", Role.Admin) || context.HttpContext.User.HasClaim("Role", Role.SuperAdmin))
-                {
-                    flagClaim = true;
-                }
+                //else if (context.HttpContext.User.HasClaim("Role", Role.Admin) || context.HttpContext.User.HasClaim("Role", Role.SuperAdmin))
+                //{
+                //    flagClaim = true;
+                //}
 
                 if (!flagClaim)
                 {
@@ -73,29 +73,12 @@ namespace GizmosbuyWeb.Filters
                 if (context.HttpContext.Request.IsAjaxRequest())
                 {
                     context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized; //Set Response 401  
-                    context.Result = new UnauthorizedResult();
+                    context.Result = new RedirectResult("~/Auth/Login");
                 }
                 else
                 {
-                    if (context.HttpContext.Request.Cookies.Count > 0)
-                    {
-                        context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                        var returnUrl = context.HttpContext.Request.Path + context.HttpContext.Request.QueryString;
-
-                        if (!string.IsNullOrEmpty(returnUrl))
-                        {
-                            context.Result = new RedirectResult($"~/Auth/Login?returnUrl={returnUrl}&timeout=true");
-                        }
-                        else
-                        {
-                            context.Result = new RedirectResult("~/Auth/Login?timeout=true");
-                        }
-                    }
-                    else
-                    {
-                        context.Result = new RedirectResult("~/Auth/Login");
-                    }
-                    
+                    context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    context.Result = new RedirectResult("~/Auth/Login");
                 }
             }
             return;

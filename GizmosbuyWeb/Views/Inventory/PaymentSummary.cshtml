@@ -1,0 +1,200 @@
+﻿@using Gizmosbuy.Core.Constants
+@using Gizmosbuy.Core.Interfaces
+@using Gizmosbuy.Core.Models
+@model Gizmosbuy.Core.Models.SummaryModel
+@{
+    TempData["Title"] = "Payment Summary";
+    string userRole = ConstantsSessions.Role;
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="body-title">
+            <h1>Summary</h1>
+        </div>
+    </div>
+</div>
+@if (userRole == "SuperAdmin")
+{
+    <div class="container-block">
+        <div class="section-block">
+            @* <div class="page-header">
+            <div class="header-title">Summary Data</div>
+        </div> *@
+            <div class="page-content">
+                @*                 <div class="page-title">
+                    <h3></h3>
+                </div> *@
+                <div class="page-body">
+                    @using (Html.BeginForm("Summary", "Inventory", FormMethod.Post, new { id = "frmSummery" }))
+                    {
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    @* <h6 class="col-md-12" style="font-weight:bold">Search Report :</h6> *@
+                                    <div class="">
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-md-4 mb-2">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-md-2">
+                                                            <label for="ddlLoactionfilter" class="col-form-label">Store:</label>
+                                                        </div>
+                                                        <div class="col-md-10">
+                                                            @{
+                                                                //var isDisabled = ViewBag.defaultValue != null ? "disabled" : "";
+                                                            }
+                                                            @Html.DropDownListFor(Model => Model.LocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlLoactionfilter", @class = "form-select", @style = "width: 100% !important" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto mb-2">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <button type="button" class="btn btn-custom " id="btnSearchStoreTransferSummary" title="Search Summery Report"><i class="fas fa-search"></i> Search</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto mb-2">
+                                                    <span id="errorLocation" class="field-validation-error"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="container-block">
+    <div class="section-block">
+        <div class="page-header">
+            <div class="header-title">Store Transfer Raw Data</div>
+        </div>
+        <div class="page-content">
+            <div class="page-body">
+                <div class="col-md-12 col-sm-12">
+                    <div class="row">
+                        <div id="divStoreTransferRawData" class="custom-table table table-bordered table-responsive table-sm mt-2">
+                            <table id="tblStoreTransferRawData" class="">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="storeTransferRawDataNoDataMessage" class="text-center" style="display:none;">
+                            No records available to display
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="container-block col-md-6">
+            <div class="section-block">
+                <div class="page-header">
+                    <div class="header-title">Payment Summary</div>
+                </div>
+                <div class="page-content">
+                    <div class="page-body">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div id="divPaymentSummary" class="custom-table table table-bordered table-responsive table-sm mt-2">
+                                    <table id="tblStoreTransferPaymentSummary" class="">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div id="paymentSummaryNoDataMessage" class="text-center" style="display:none;">
+                                    No records available to display
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-block col-md-6">
+            <div class="section-block">
+                <div class="page-header">
+                    <div class="header-title">Payment Summary Amount</div>
+                </div>
+                <div class="page-content">
+                    <div class="page-body">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="row">
+                                <div id="divPaymentSummary" class="custom-table table table-responsive table-sm mt-2">
+                                    <table>
+                                        <tbody style="border-bottom: 2px solid green;">
+                                            <tr>
+                                                <td>Total Bill :</td>
+                                                <td class="text-right" id="lblTotalBill">&#8377; 0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Paid :</td>
+                                                <td class="text-right" id="lblTotalPaid">&#8377; 0</td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td><strong>Balance :</strong></td>
+                                                <td class="text-right"><strong id="lblTotalBalance">&#8377; 0</strong></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="@Url.Content("~/lib/select2/css/select2.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/custom-css/custom-select2.css")" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="@Url.Content("~/lib/moment.js/moment.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/select2/js/select2.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/store.js")" asp-append-version="true"></script>
+
+    <script>
+        $(document).ready( function () {
+
+            $('#ddlLoactionfilter').select2();
+
+            var searchLocationId = parseInt($('#ddlLoactionfilter').select2('val'));
+
+            callStoreTransferRawData(searchLocationId);
+            callStoreTransferPaymentData(searchLocationId);
+            getStoreTransferCalculation(searchLocationId);
+        });
+    </script>
+}

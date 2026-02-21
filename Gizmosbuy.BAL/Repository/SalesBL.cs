@@ -285,11 +285,11 @@ namespace Gizmosbuy.BAL.Repository
 
                 string billNo = string.Empty;
 
-                var sales = await _applicationDbContext.Sales.Where(x => x.BillNo.StartsWith(prefix)).OrderByDescending(o => o.SalesId).FirstOrDefaultAsync();
+                var lastBillNo = await _applicationDbContext.Procedures.spGetLastSalesBillNoAsync(prefix);
 
-                if (sales != null)
+                if (lastBillNo != null && lastBillNo.Count > 0)
                 {
-                    billNo = Utilities.GenerateBillNo(prefix, sales.BillNo);
+                    billNo = Utilities.GenerateBillNo(prefix, lastBillNo.FirstOrDefault().BillNo);
                 }
                 else
                 {
@@ -531,6 +531,7 @@ namespace Gizmosbuy.BAL.Repository
                     {
                         salesModelList.Add(new SalesModel
                         {
+                            SalesId = item.SalesID,
                             BillNo = item.BillNo,
                             SerialNo = item.SerialNo,
                             Model = item.Model,
