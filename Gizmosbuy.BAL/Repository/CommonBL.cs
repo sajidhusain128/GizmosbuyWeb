@@ -1,14 +1,10 @@
-﻿using System.IO;
-using System.Text;
-using Azure;
-using Gizmosbuy.BAL.Interfaces;
+﻿using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
 using Gizmosbuy.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using Twilio.Rest.Api.V2010.Account;
-using Twilio.TwiML.Voice;
 using Twilio.Types;
 
 namespace Gizmosbuy.BAL.Repository
@@ -143,66 +139,87 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<MessageResource> SendWhatsAppService(IWebConfiguration webConfiguration, IWhatsAppSettings whatsAppSettings, Tuple<string, MemoryStream> webFile, long? contactNo, string CustomerName)
+        public async Task<string> SendWhatsAppService(IWebConfiguration webConfiguration, IWhatsAppSettings whatsAppSettings, Tuple<string, MemoryStream> webFile, string contactNo, string CustomerName)
         {
             var filePath = "";
+            MessageResource message = null;
 
             try
             {
-                string bodyMessage = $"Dear *[@Customer]*,\n\nThank you for your recent purchase.\nPlease find attached the sales invoice for your records.\n\nBest regards,\n*Gizmosbuy*".Replace("[@Customer]", CustomerName).Replace("\n", Environment.NewLine);
+                string bodyMessage = string.Empty;
                 string CustomerNumber = "";
 
-                if (!string.IsNullOrWhiteSpace(contactNo.ToString()))
+                if (!string.IsNullOrWhiteSpace(contactNo))
                 {
-                    CustomerNumber = "+91" + contactNo.ToString().Trim();
-                }
-                else
-                {
-                    CustomerNumber = whatsAppSettings.ReceiverNumber;
-                }
-                var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "TempFiles");
+                    CustomerNumber = "+91" + contactNo.Trim();
 
-                if (!Directory.Exists(uploadPath))
-                {
-                    Directory.CreateDirectory(uploadPath);
-                }
+                    var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "TempFiles");
 
-                var fileName = webFile.Item1;
-                filePath = Path.Combine(uploadPath, fileName);
-
-                // Reset position before writing (important!)
-                var memoryStreamTemp = webFile.Item2;
-                // Use MemoryStream to hold data in memory
-                using (var memoryStream = new MemoryStream(memoryStreamTemp.ToArray()))
-                {
-                    // Save the file to the physical path using a FileStream
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    if (!Directory.Exists(uploadPath))
                     {
-                        await memoryStream.CopyToAsync(fileStream);
+                        Directory.CreateDirectory(uploadPath);
                     }
-                }
-                var url = Path.Combine(webConfiguration.Issuer, "TempFiles/", fileName);
 
-                var message = await MessageResource.CreateAsync(
-                    from: new PhoneNumber($"whatsapp:{whatsAppSettings.SenderNumber}"), // Twilio Sandbox number
-                    to: new PhoneNumber($"whatsapp:{CustomerNumber}"),  // Your verified WhatsApp number
-                    body: bodyMessage,
-                    mediaUrl: new List<Uri> {
-                        new Uri(url) // Publicly accessible PDF URL
+                    var fileName = webFile.Item1;
+                    filePath = Path.Combine(uploadPath, fileName);
+
+                    // Reset position before writing (important!)
+                    var memoryStreamTemp = webFile.Item2;
+                    // Use MemoryStream to hold data in memory
+                    using (var memoryStream = new MemoryStream(memoryStreamTemp.ToArray()))
+                    {
+                        // Save the file to the physical path using a FileStream
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await memoryStream.CopyToAsync(fileStream);
+                        }
                     }
-                );
+                    var url = Path.Combine(webConfiguration.Issuer, "TempFiles/", fileName);
 
-                if (message.Sid != "")
-                {
+
+
+                    if (!string.IsNullOrEmpty(whatsAppSettings.ContentSid))
+                    {
+                        var contentVariables = new Dictionary<string, string>
+                        {
+                            { "1", CustomerName },
+                            { "2", url }
+                        };
+
+                        message = await MessageResource.CreateAsync(
+                           from: new PhoneNumber($"whatsapp:{whatsAppSettings.SenderNumber}"), // Twilio Sandbox number
+                           to: new PhoneNumber($"whatsapp:{CustomerNumber}"),  // Your verified WhatsApp number
+                           contentSid: whatsAppSettings.ContentSid,
+                           contentVariables: Newtonsoft.Json.JsonConvert.SerializeObject(contentVariables)
+                       );
+                    }
+                    else
+                    {
+                        bodyMessage = whatsAppSettings.MessageContent;
+
+                        message = await MessageResource.CreateAsync(
+                            from: new PhoneNumber($"whatsapp:{whatsAppSettings.SenderNumber}"), // Twilio Sandbox number
+                            to: new PhoneNumber($"whatsapp:{CustomerNumber}"),  // Your verified WhatsApp number
+                            body: bodyMessage,
+                            mediaUrl: new List<Uri> {
+                            new Uri(url) // Publicly accessible PDF URL
+                            }
+                        );
+                    }
+
                     await System.Threading.Tasks.Task.Delay(2000);
 
                     if (File.Exists(filePath))
                     {
                         File.Delete(filePath);
                     }
-                }
 
-                return message;
+                    return message.Body;
+                }
+                else
+                {
+                    return "Invalid contact number.";
+                }
             }
             catch (Exception)
             {

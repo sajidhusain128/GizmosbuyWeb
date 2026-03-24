@@ -75,7 +75,7 @@ namespace GizmosbuyWeb.Controllers
                 ViewBag.ErrorMessage = "";
                 return View();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return View("Login", UserModel);
             }
@@ -114,7 +114,7 @@ namespace GizmosbuyWeb.Controllers
             catch (Exception)
             {
                 throw;
-            } 
+            }
         }
 
         [Authorize]

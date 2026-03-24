@@ -23,6 +23,7 @@ namespace Gizmosbuy.DAL.Models
         public DateTime? TransferDate { get; set; }
         [Column("SellingPrice", TypeName = "money")]
         public decimal? SellingPrice { get; set; }
+        public int? LocationID { get; set; }
         [StringLength(100)]
         public string LocationName { get; set; }
         public int? UserId { get; set; }

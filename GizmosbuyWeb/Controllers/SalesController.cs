@@ -13,9 +13,6 @@ using GizmosbuyWeb.Filters;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Twilio;
-using Twilio.Rest.Api.V2010.Account;
-using Twilio.Types;
 
 namespace Gizmosbuy.Web.Controllers
 {
@@ -363,13 +360,28 @@ namespace Gizmosbuy.Web.Controllers
             {
                 var response = await _salesBL.GetSalesReportData(invoiceNo);
 
-                var items = GetWebReport(response, invoiceNo);
+                if (response != null && response.Item1 != null && response.Item1.Any() && response.Item2 != null && response.Item2.Any())
+                {
+                    var items = GetWebReport(response, invoiceNo);
 
-                var whatsAppResponse = await _commonBL.SendWhatsAppService(_webConfiguration, _whatsAppSettings, items, response.Item2.FirstOrDefault().ContactNo, response.Item2.FirstOrDefault().CustomerName);
+                    string customerName = !string.IsNullOrWhiteSpace(response.Item2.FirstOrDefault().CustomerName) ? response.Item2.FirstOrDefault().CustomerName : string.Empty;
+                    string contactNo = (response.Item2.FirstOrDefault().ContactNo.HasValue && response.Item2.FirstOrDefault().ContactNo.Value != 0)
+                                        ? response.Item2.FirstOrDefault().ContactNo.Value.ToString()
+                                        : string.Empty;
 
-                Console.WriteLine($"Message SID: {whatsAppResponse.Sid}");
+                    var whatsAppResponse = await _commonBL.SendWhatsAppService(_webConfiguration, _whatsAppSettings, items, contactNo, customerName);
 
-                return Json(whatsAppResponse.Sid);
+                    Console.WriteLine($"Message Response: {whatsAppResponse}");
+
+                    var jsonResponse = new { Body = whatsAppResponse, CustomerName = customerName };
+
+                    return Json(jsonResponse);
+                }
+                else
+                {
+                    var jsonResponse = new { Body = "No data found to generate report.", CustomerName = string.Empty };
+                    return Json(jsonResponse);
+                }
             }
             catch (Exception)
             {
@@ -418,7 +430,7 @@ namespace Gizmosbuy.Web.Controllers
 
                 string fileName = $"SalesReport_{invoiceNo}_{DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss")}.pdf";
 
-                return new Tuple<string, MemoryStream>(fileName,ms);
+                return new Tuple<string, MemoryStream>(fileName, ms);
             }
             catch (Exception)
             {

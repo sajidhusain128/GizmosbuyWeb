@@ -9,16 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Content Remove="wwwroot\js\master.js" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <None Include="efpt.config.json.user" />
-	  <None Include="wwwroot\TempFiles\SalesReport_JGS0004_07_02_2026_23_38_10.pdf" />
-	  <None Include="wwwroot\TempFiles\SalesReport_JGS0004_07_02_2026_23_50_01.pdf" />
-	  <None Include="wwwroot\TempFiles\SalesReport_JGS0004_07_02_2026_23_51_55.pdf" />
-	  <None Include="wwwroot\TempFiles\SalesReport_JGS0004_08_02_2026_00_13_44.pdf" />
-	  <None Include="wwwroot\TempFiles\SalesReport_JGS0004_08_02_2026_00_16_00.pdf" />
 	</ItemGroup>
 
 	<ItemGroup>				
@@ -50,10 +41,6 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Gizmosbuy.BAL\Gizmosbuy.BAL.csproj" />
 	  <ProjectReference Include="..\Gizmosbuy.Core\Gizmosbuy.Core.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <TypeScriptCompile Include="wwwroot\js\master.js" />
 	</ItemGroup>
 
 	<ItemGroup>

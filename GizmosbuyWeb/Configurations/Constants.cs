@@ -1,5 +1,4 @@
 ﻿using Gizmosbuy.BAL.Commons;
-using Gizmosbuy.Core.Constants;
 
 namespace Gizmosbuy.Web.Configurations
 {
@@ -7,12 +6,12 @@ namespace Gizmosbuy.Web.Configurations
     {
         public static void SetSessionInstance(HttpContext httpContext)
         {
-            ConstantsSessions.UserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", httpContext));
-            ConstantsSessions.UserName = Utilities.GetSessionValue("UserName", httpContext);
-            ConstantsSessions.Email = Utilities.GetSessionValue("Email", httpContext);
-            ConstantsSessions.Role = Utilities.GetSessionValue("Role", httpContext);
-            ConstantsSessions.Location = Utilities.GetSessionValue("Location", httpContext);
-            ConstantsSessions.LocationId = Convert.ToInt32(Utilities.GetSessionValue("LocationId", httpContext));
+            httpContext.Items.Add("UserId", Convert.ToInt32(Utilities.GetSessionValue("UserId", httpContext)));
+            httpContext.Items.Add("UserName", Utilities.GetSessionValue("UserName", httpContext));
+            httpContext.Items.Add("Email", Utilities.GetSessionValue("Email", httpContext));
+            httpContext.Items.Add("Role", Utilities.GetSessionValue("Role", httpContext));
+            httpContext.Items.Add("Location", Utilities.GetSessionValue("Location", httpContext));
+            httpContext.Items.Add("LocationId", Convert.ToInt32(Utilities.GetSessionValue("LocationId", httpContext)));
         }
 
     }

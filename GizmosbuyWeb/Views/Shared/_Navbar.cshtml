@@ -1,5 +1,10 @@
 ﻿@using Gizmosbuy.Core.Constants
 @using Microsoft.AspNetCore.Http;
+@using Gizmosbuy.BAL.Commons;
+
+@{
+    var userName = Utilities.GetSessionValue(Constant.UserName, Context.Request.HttpContext);
+}
 <nav class="navbar navbar-expand navbar-toggleable fixed-top ">
     @* <i class="fas fa-chevron-left" id="sidebarCollapse"></i> *@
     <i class="fas fa-bars" id="sidebarCollapse"></i>
@@ -8,7 +13,7 @@
             aria-expanded="false" aria-label="Toggle navigation">
         <i class="fa-solid fa-ellipsis-vertical"></i>
     </button>
-    
+
     <div class="navbar-collapse collapse">
         <ul class="navbar-nav flex-grow-1">
             @* <li class="nav-item">
@@ -23,7 +28,7 @@
         </ul>
         <ul class="nav col-12 col-lg-auto justify-content-center my-md-0 text-small">
             <li class="nav-item dropdown">
-                <a aria-current="page" href="/dashboard#" class="active-link exact-active-link nav-link dropdown-toggle show" role="button" data-bs-toggle="dropdown" aria-expanded="true"> Hi, @ConstantsSessions.UserName</a>
+                <a aria-current="page" href="/dashboard#" class="active-link exact-active-link nav-link dropdown-toggle show" role="button" data-bs-toggle="dropdown" aria-expanded="true"> Hi, @userName</a>
                 <ul class="dropdown-menu" style="left: initial; right: 0px;" data-bs-popper="static">
                     <li>
                         @using (Html.BeginForm("Logout", "Auth", HttpMethods.Post))
@@ -55,7 +60,7 @@
                 <i class="fa-solid fa-xmark"></i>
             </div>
         </div>
-         <div class="notification-list notification-list--unread">
+        <div class="notification-list notification-list--unread">
             <div class="notification-list_img">
                 <img src="https://i.imgur.com/w4Mp4ny.jpg" alt="user">
             </div>
@@ -90,7 +95,7 @@
             <div class="notification-list_feature-img">
                 <img src="https://i.imgur.com/iIhftMJ.jpg" alt="Feature image">
             </div>
-        </div> 
+        </div>
     </div>
     <div class="notification-ui_dd-footer">
         <a href="#!" class="btn btn-success btn-block">View All</a>

@@ -25,9 +25,9 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int response = 0;
                 string invoiceNo = null;
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var salesModels = await _applicationDbContext.TempSales.Where(x => x.UserId == Convert.ToInt32(sessionUserId)).ToListAsync();
+                var salesModels = await _applicationDbContext.TempSales.Where(x => x.UserId == sessionUserId).ToListAsync();
 
                 OutputParameter<int> outputParameter = new OutputParameter<int>();
 
@@ -52,7 +52,7 @@ namespace Gizmosbuy.BAL.Repository
                             ContactNo = salesModel.ContactNo,
                             Location = salesModel.Location,
                             BillNo = salesModel.BillNo,
-                            CreatedBy = Convert.ToInt32(sessionUserId),
+                            CreatedBy = sessionUserId,
                             CreatedDate = DateTime.Now
                         };
 
@@ -75,7 +75,7 @@ namespace Gizmosbuy.BAL.Repository
                             outputParameter);
                     }
 
-                    var tempSaleslist = await _applicationDbContext.TempSales.Where(x => x.UserId == Convert.ToInt32(sessionUserId)).ToListAsync();
+                    var tempSaleslist = await _applicationDbContext.TempSales.Where(x => x.UserId == sessionUserId).ToListAsync();
 
                     _applicationDbContext.TempSales.RemoveRange(tempSaleslist);
                     response = await _applicationDbContext.SaveChangesAsync();
@@ -93,9 +93,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var salesList = await _applicationDbContext.Procedures.spGetSalesListAsync(Convert.ToInt32(sessionUserId));
+                var salesList = await _applicationDbContext.Procedures.spGetSalesListAsync(sessionUserId);
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
@@ -188,7 +188,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
                 Sale saleMaster = new Sale
                 {
@@ -201,7 +201,7 @@ namespace Gizmosbuy.BAL.Repository
                     ContactNo = salesModel.ContactNo,
                     Location = salesModel.LocationName,
                     BillNo = salesModel.BillNo,
-                    ModifiedBy = Convert.ToInt32(sessionUserId),
+                    ModifiedBy = sessionUserId,
                     ModifiedDate = DateTime.Now
                 };
 
@@ -237,9 +237,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var salesList = await _applicationDbContext.Procedures.spGetTempSalesListAsync(Convert.ToInt32(sessionUserId));
+                var salesList = await _applicationDbContext.Procedures.spGetTempSalesListAsync(sessionUserId);
 
                 string searchValue = pager.SearchValue ?? "";
 
@@ -308,11 +308,11 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
                 OutputParameter<int> outputParameter = new OutputParameter<int>();
 
-                tempSalesModel.CreatedBy = Convert.ToInt32(sessionUserId);
+                tempSalesModel.CreatedBy = sessionUserId;
                 tempSalesModel.CreatedDate = DateTime.Now;
 
                 var i = await _applicationDbContext.Procedures.spSaveTempSalesAsync(0,
@@ -415,9 +415,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                tempSalesModel.ModifiedBy = Convert.ToInt32(sessionUserId);
+                tempSalesModel.ModifiedBy = sessionUserId;
                 tempSalesModel.ModifiedDate = DateTime.Now;
 
                 OutputParameter<int> outputParameter = new OutputParameter<int>();
@@ -453,7 +453,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
                 string TotalPriceInWord = null;
                 List<SalesDataModel> salesDatas = null;
@@ -483,7 +483,7 @@ namespace Gizmosbuy.BAL.Repository
                 }
 
                 List<SalesHeaderModel> salesHeader = null;
-                var response2 = await _applicationDbContext.Procedures.spGetSalesReportHeaderAsync(invoiceNo, Convert.ToInt32(sessionUserId));
+                var response2 = await _applicationDbContext.Procedures.spGetSalesReportHeaderAsync(invoiceNo, sessionUserId);
 
                 if (response2 != null && response2.Count > 0)
                 {
@@ -519,9 +519,9 @@ namespace Gizmosbuy.BAL.Repository
             try
             {
                 List<ISalesModel> salesModelList = null;
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var response = await _applicationDbContext.Procedures.spGetInvoiceDetailsAsync(invoiceNo, Convert.ToInt32(sessionUserId));
+                var response = await _applicationDbContext.Procedures.spGetInvoiceDetailsAsync(invoiceNo, sessionUserId);
 
                 if (response.Any())
                 {
@@ -555,10 +555,10 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
                 OutputParameter<int> outputParameter = new OutputParameter<int>();
-                var i = await _applicationDbContext.Procedures.spDeleteSalesByInvoiceAsync(invoiceNo, Convert.ToInt32(sessionUserId), outputParameter);
+                var i = await _applicationDbContext.Procedures.spDeleteSalesByInvoiceAsync(invoiceNo, sessionUserId, outputParameter);
 
                 return await Task.FromResult(outputParameter.Value);
             }

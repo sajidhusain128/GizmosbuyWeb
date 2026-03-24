@@ -1,13 +1,12 @@
-﻿using System.Data;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.Web.Configurations;
 using Gizmosbuy.Web.Filters;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -40,19 +39,21 @@ namespace GizmosbuyWeb.Controllers
         //    return await Task.FromResult(JWToken);
         //}
 
-        private IEnumerable<Claim> GetUserClaims(IUserModel user)
+        private List<Claim> GetUserClaims(IUserModel user)
         {
             List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim("UserId", user.UserName));
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
-            claims.Add(new Claim("Role", user.UserRole));
+            claims.Add(new Claim(ClaimTypes.Role, user.UserRole));
+            claims.Add(new Claim("Location", user.Location));
+            claims.Add(new Claim("LocationId", user.locationId.ToString()));
 
-            return claims.AsEnumerable<Claim>();
+            return claims;
         }
 
         private void SetSession(IUserModel user, string token)
         {
-            //HttpContext.Session.SetString("JWToken", token);
             HttpContext.Session.SetString("UserId", user.UserId.ToString());
             HttpContext.Session.SetString("UserName", user.UserName);
             HttpContext.Session.SetString("Email", user.Email);
@@ -67,21 +68,16 @@ namespace GizmosbuyWeb.Controllers
         {
             SetSession(user, null);
 
-            var claimsIdentity = new ClaimsIdentity(GetUserClaims(user), IdentityConstants.ApplicationScheme);
+            var claimsIdentity = new ClaimsIdentity(GetUserClaims(user), CookieAuthenticationDefaults.AuthenticationScheme);
 
             await HttpContext.SignInAsync(
-                IdentityConstants.ApplicationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                new AuthenticationProperties
-                {
-                    IsPersistent = true, // Keeps cookie across browser sessions
-                    ExpiresUtc = DateTime.UtcNow.AddMinutes(_webConfiguration.SesssionTimeoutMinutes) // Optional override
-                });
+               CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity));
         }
 
         public async Task CreateSignOut()
         {
-            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
 
         public void ClearAllCookies()

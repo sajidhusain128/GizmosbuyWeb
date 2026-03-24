@@ -1,8 +1,11 @@
 ﻿@using Gizmosbuy.Core.Constants
 @using Microsoft.AspNetCore.Http;
+@using Gizmosbuy.BAL.Commons;
+@inject IHttpContextAccessor _httpContextAccessor
+
 @{
     ViewBag.Title = "Store Transfer";
-    string userRole = ConstantsSessions.Role;
+    string userRole = Utilities.GetSessionValue(Constant.Role, _httpContextAccessor.HttpContext);
 }
 
 <div class="col-md-12">

@@ -1,6 +1,4 @@
 ﻿using System.Data;
-using System.Linq;
-using Azure;
 using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Constants;
@@ -27,8 +25,8 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                int sessionUserId = ConstantsSessions.UserId;
-                int fromLocationId = ConstantsSessions.LocationId;
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+                int fromLocationId = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
 
                 if (fromLocationId == tempStoreTransferModel.ToLocationId)
                 {
@@ -69,7 +67,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                var tempStoreList = await _applicationDbContext.Procedures.spGetTempStoreTransferListAsync(ConstantsSessions.UserId);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+
+                var tempStoreList = await _applicationDbContext.Procedures.spGetTempStoreTransferListAsync(sessionUserId);
 
                 string searchValue = pager.SearchValue ?? "";
 
@@ -108,10 +108,12 @@ namespace Gizmosbuy.BAL.Repository
             try
             {
                 int response = 0;
-                int sessionUserId = ConstantsSessions.UserId;
-                string fromlocation = ConstantsSessions.Location;
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+                string fromlocation = Utilities.GetSessionValue("Location", _httpContextAccessor.HttpContext);
 
                 var tempStoreModels = await _applicationDbContext.TempStoreTransfers.Where(x => x.UserId == sessionUserId).ToArrayAsync();
+
+                var toLocationName = await _applicationDbContext.LocationMasters.FindAsync(tempStoreModels.FirstOrDefault().ToLocationId);
 
                 OutputParameter<int> outputParameter = new OutputParameter<int>();
 
@@ -125,7 +127,7 @@ namespace Gizmosbuy.BAL.Repository
                             tempStoreModel.SellingPrice,
                             tempStoreModel.SellingQuantity,
                             null,
-                            "GIZMOSBUY",
+                            toLocationName.LocationName,
                             null,
                             null,
                             fromlocation,
@@ -267,7 +269,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                int sessionUserId = ConstantsSessions.UserId;
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
                 tempStoreTransferModel.ModifiedBy = sessionUserId;
                 tempStoreTransferModel.ModifiedDate = DateTime.Now;
@@ -302,7 +304,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                int sessionUserId = ConstantsSessions.UserId;
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
                 var storeTransferList = await _applicationDbContext.Procedures.spGetStoreTransferListAsync(sessionUserId);
 
@@ -371,7 +373,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                int sessionUserId = ConstantsSessions.UserId;
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
                 OutputParameter<int> outputParameter = new OutputParameter<int>();
                 var i = await _applicationDbContext.Procedures.spDeleteStoreTransferByPurchaseIdAsync(invoiceNo, purchaseId, sessionUserId, outputParameter);
@@ -389,9 +391,9 @@ namespace Gizmosbuy.BAL.Repository
             try
             {
                 List<IStoreTransferModel> storeTransferModelList = null;
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var response = await _applicationDbContext.Procedures.spGetStoreTransferInvoiceDetailsAsync(invoiceNo, Convert.ToInt32(sessionUserId));
+                var response = await _applicationDbContext.Procedures.spGetStoreTransferInvoiceDetailsAsync(invoiceNo, sessionUserId);
 
                 if (response.Any())
                 {
@@ -428,7 +430,7 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                int sessionUserId = ConstantsSessions.UserId;
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
                 int response = 0;
 
                 using (var transaction = await _applicationDbContext.Database.BeginTransactionAsync())
@@ -477,7 +479,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                var returnNotifyList = await _applicationDbContext.Procedures.spGetStoreTransferNotificationListAsync(ConstantsSessions.LocationId, ConstantsSessions.UserId);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+                int locationId = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
+                var returnNotifyList = await _applicationDbContext.Procedures.spGetStoreTransferNotificationListAsync(locationId, sessionUserId);
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
@@ -545,7 +549,8 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                int fromLocationId = ConstantsSessions.LocationId;
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+                int fromLocationId = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
 
                 if (fromLocationId == transferPaymentModel.ToLocationId)
                 {
@@ -564,7 +569,7 @@ namespace Gizmosbuy.BAL.Repository
                     Remark = transferPaymentModel.Remark,
                     FromLocationId = fromLocationId,
                     ToLocationId = transferPaymentModel.ToLocationId,
-                    CreatedBy = ConstantsSessions.UserId,
+                    CreatedBy = sessionUserId,
                     CreatedDate = DateTime.Now
                 };
 
@@ -583,7 +588,8 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                var returnNotifyList = await _applicationDbContext.Procedures.spGetTransferPaymentListAsync(ConstantsSessions.UserId);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+                var returnNotifyList = await _applicationDbContext.Procedures.spGetTransferPaymentListAsync(sessionUserId);
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
@@ -630,7 +636,8 @@ namespace Gizmosbuy.BAL.Repository
             {
                 //var returnNotifyList = await _applicationDbContext.TransferPayments.Where(x => x.IsApproved == false).ToListAsync();
 
-                var returnNotifyList = await _applicationDbContext.Procedures.spGetTransferPaymentNotificationsListAsync(ConstantsSessions.UserId);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+                var returnNotifyList = await _applicationDbContext.Procedures.spGetTransferPaymentNotificationsListAsync(sessionUserId);
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
@@ -699,6 +706,8 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int response = 0;
 
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+
                 var transferPayments = await _applicationDbContext.TransferPayments.FindAsync(id);
 
                 if (transferPayments != null)
@@ -711,7 +720,7 @@ namespace Gizmosbuy.BAL.Repository
                     {
                         transferPayments.IsApproved = false;
                     }
-                    transferPayments.ModifiedBy = ConstantsSessions.UserId;
+                    transferPayments.ModifiedBy = sessionUserId;
                     transferPayments.ModifiedDate = DateTime.Now;
 
                     response = await _applicationDbContext.SaveChangesAsync();
@@ -735,7 +744,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (transferPayments != null)
                 {
-                    transferPaymentModel  = new TransferPaymentModel()
+                    transferPaymentModel = new TransferPaymentModel()
                     {
                         TransferPaymentId = transferPayments.TransferPaymentId,
                         PaymentDate = transferPayments.PaymentDate.GetValueOrDefault(),
@@ -760,7 +769,8 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                int fromLocationId = ConstantsSessions.LocationId;
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+                int fromLocationId = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
 
                 if (fromLocationId == transferPaymentModel.ToLocationId)
                 {
@@ -776,7 +786,7 @@ namespace Gizmosbuy.BAL.Repository
                     transferPayments.TransferMode = transferPaymentModel.TransferMode;
                     transferPayments.Remark = transferPaymentModel.Remark;
                     transferPayments.ToLocationId = transferPaymentModel.ToLocationId;
-                    transferPayments.ModifiedBy = ConstantsSessions.UserId;
+                    transferPayments.ModifiedBy = sessionUserId;
                     transferPayments.ModifiedDate = DateTime.Now;
 
                     int response = await _applicationDbContext.SaveChangesAsync();

@@ -3,6 +3,12 @@
     public class Constant
     {
         public const string MyPolicy = "MyPolicy";
+        public const string UserId = "UserId";
+        public const string UserName = "UserName";
+        public const string Email = "Email";
+        public const string Role = "Role";
+        public const string Location = "Location";
+        public const string LocationId = "LocationId";
     }
 
     public class ConstantsSessions

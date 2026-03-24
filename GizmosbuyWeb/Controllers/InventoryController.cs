@@ -67,7 +67,7 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                string RoleName = ConstantsSessions.Role;
+                string RoleName = Utilities.GetSessionValue("Role", HttpContext);
 
                 List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
 
@@ -84,10 +84,10 @@ namespace Gizmosbuy.Web.Controllers
 
                 if (RoleName == "Admin")
                 {
-                    string location = ConstantsSessions.Location;
+                    string location = Utilities.GetSessionValue("Location", HttpContext);
                     ViewBag.defaultLocationValue = location;
 
-                    int locationId = ConstantsSessions.LocationId;
+                    int locationId = Convert.ToInt32(Utilities.GetSessionValue("LocationId", HttpContext));
                     ViewBag.defaultLocationId = locationId.ToString();
                 }
 
@@ -161,7 +161,7 @@ namespace Gizmosbuy.Web.Controllers
         }
 
         [HttpGet]
-        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]                                          
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public async Task<IActionResult> RawDateExportExcel(string FromDate, string ToDate, string Search)
         {
             try
@@ -218,7 +218,7 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                string RoleName = ConstantsSessions.Role;
+                string RoleName = Utilities.GetSessionValue("Role", HttpContext);
 
                 List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
 

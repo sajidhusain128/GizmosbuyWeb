@@ -6,12 +6,12 @@ namespace Gizmosbuy.BAL.Interfaces
     public interface IStoreTransferBL
     {
         Task<int> CreateStoreTransfer();
-        Task<int> CreateTempStoreTransfer(TempStoreTransferModel tempStoreTransferModel);   
+        Task<int> CreateTempStoreTransfer(TempStoreTransferModel tempStoreTransferModel);
         Task<object> GetStoreTransferList(IPager pager);
         Task<ITempStoreTransferModel> GetTempStoreTransferByID(int id);
         Task<object> GetTempStoreTransferList(IPager pager);
         Task<int> TempStoreTransferDelete(int id);
-        Task<int> UpdateTempStoreTransfer(TempStoreTransferModel tempStoreTransferModel);  
+        Task<int> UpdateTempStoreTransfer(TempStoreTransferModel tempStoreTransferModel);
         Task<int> SendStoreReturnItemNotification(List<StoreReturnItemNotificationModel> storeReturnItemNotificationModel);
         Task<int> DeleteStoreTransferByInvoice(string invoiceNo, int purchaseId);
         Task<List<IStoreTransferModel>> GetReturnItemInvoiceDetails(string invoiceNo);

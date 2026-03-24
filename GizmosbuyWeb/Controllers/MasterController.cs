@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Gizmosbuy.BAL.Interfaces;
+﻿using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;

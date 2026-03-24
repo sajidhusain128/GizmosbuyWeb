@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using System.Data.Common;
-using Gizmosbuy.Core.Constants;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 

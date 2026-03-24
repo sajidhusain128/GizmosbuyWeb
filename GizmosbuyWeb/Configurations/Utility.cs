@@ -20,7 +20,7 @@ namespace GizmosbuyWeb.Configurations
             {
                 return "";
             }
-            
+
         }
 
         public static Func<T, bool> GetSearchValue<T>(string value)

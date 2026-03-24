@@ -1,16 +1,11 @@
-﻿using System.Collections.Immutable;
-using System.Data;
-using System.Data.Common;
-using System.Linq;
+﻿using System.Data;
 using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
-using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
 using Gizmosbuy.DAL.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Gizmosbuy.BAL.Repository
@@ -29,9 +24,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext)); ;
 
-                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate.ToString(), dateRange.EndDate.ToString(), Convert.ToInt32(sessionUserId));
+                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate.ToString(), dateRange.EndDate.ToString(), sessionUserId);
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
@@ -120,7 +115,7 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<List<IPurchaseSummaryModel>>  GetPurchaseSummaryData(int locationId)
+        public async Task<List<IPurchaseSummaryModel>> GetPurchaseSummaryData(int locationId)
         {
             try
             {
@@ -154,9 +149,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate.ToString(), dateRange.EndDate.ToString(), Convert.ToInt32(sessionUserId));
+                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate.ToString(), dateRange.EndDate.ToString(), sessionUserId);
                 string searchValue = pager.SearchValue ?? "";
 
                 List<spGetRawDataResult> mainData = null;

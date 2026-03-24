@@ -16,24 +16,25 @@ namespace Gizmosbuy.Web.Middlewares
         {
             try
             {
-                if (context.Request.Path == "/Auth/Login")
-                {
-                    if (!context.User.Identity.IsAuthenticated)
-                    {
-                        context.Session.Clear();
-                    }
-                    else
-                    {
-                        context.Response.Redirect("/Home/Index", permanent: true);
-                    }
-                }
+                //if (context.Request.Path == "/Auth/Login")
+                //{
+                //    var authPrinciple = context.Request.HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme).Result.Principal;
+                //    var IsAuthenticated = authPrinciple == null ? false : authPrinciple.Identity.IsAuthenticated;
+
+                //    var userId = context.Session.GetString("UserId");
+
+                //    if (IsAuthenticated && !string.IsNullOrEmpty(userId))
+                //    {
+                //        context.Response.Redirect("/Home/Index", permanent: true);
+                //    }
+                //}
 
                 await _next(context); // Proceed to the next middleware
             }
             catch (Exception ex)
             {
                 LogException(ex);
-                throw; 
+                throw;
             }
         }
 

@@ -252,7 +252,7 @@
                 paramName:"searchValue",
                 transformResult: function(result, query){
 
-                    suggestions = $.map(JSON.parse(result), function (value, key) {
+                    const suggestions = $.map(JSON.parse(result), function (value) {
                         if(value.valueId > 0){
                             return {
                                 id: value.valueId.toString(),
@@ -261,17 +261,14 @@
                         }
                     });
 
-                    response = {
+                    return  {
                         query: query,
                         suggestions: suggestions
                     };
-
-                return response;
                 },
                 minChars: 1,
                 triggerSelectOnValidInput:false,
                 onSelect: function (suggestion) {
-
                     $('#hdnPurchaseId').val(suggestion.id);
                     getPurchaseRecordInSales(suggestion.id);
                 }
@@ -283,7 +280,7 @@
                 paramName:"searchValue",
                 transformResult: function(result, query){
 
-                    suggestions = $.map(JSON.parse(result), function (value, key) {
+                    const suggestions = $.map(JSON.parse(result), function (value) {
                         if(value.valueId > 0){
                             return {
                                 id: value.valueId.toString(),
@@ -292,17 +289,14 @@
                         }
                     });
 
-                    response = {
+                    return {
                         query: query,
                         suggestions: suggestions
                     };
-
-                return response;
                 },
                 minChars: 1,
                 triggerSelectOnValidInput:false,
                 onSelect: function (suggestion) {
-
                     $('#hdnTempPurchaseId').val(suggestion.id);
                     getPurchaseRecordInTempSales(suggestion.id);
                 }
@@ -347,6 +341,7 @@
                         return "&#8377;"+ data;
                     }},
                     {"data": "locationName","title":"Location"},
+                    {"data": "locationID","title":"LocationId", visible : false},
                     {"data": "tempStoreTransferID","title":"Action",render:function (data, type, row){
                         if(data === null) return "";
                         var strData = '<a href="javascript:void(0)" onclick="editTempStoreTransfer(' + data + ')" class="custom-link-btn mr-3" title="Edit Temporory Store Transfer Entry"><i class="fas fa-edit fa-lg color-info"></i></a>'

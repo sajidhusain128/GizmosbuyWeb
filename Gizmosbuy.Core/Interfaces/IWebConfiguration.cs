@@ -1,6 +1,4 @@
-﻿using Gizmosbuy.Core.Models;
-
-namespace Gizmosbuy.Core.Interfaces
+﻿namespace Gizmosbuy.Core.Interfaces
 {
     public interface IWebConfiguration
     {
@@ -9,6 +7,7 @@ namespace Gizmosbuy.Core.Interfaces
         public string SecretKey { get; set; }
         public string Issuer { get; set; }
         public int SesssionTimeoutMinutes { get; set; }
+        public int MemoryCacheTimeoutMinutes { get; set; }
     }
 
     public interface IWhatsAppSettings
@@ -17,5 +16,7 @@ namespace Gizmosbuy.Core.Interfaces
         public string AuthToken { get; set; }
         public string SenderNumber { get; set; }
         public string ReceiverNumber { get; set; }
+        public string ContentSid { get; set; }
+        public string MessageContent { get; set; }
     }
 }

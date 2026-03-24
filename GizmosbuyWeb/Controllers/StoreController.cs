@@ -1,5 +1,4 @@
 ﻿using Gizmosbuy.BAL.Interfaces;
-using Gizmosbuy.BAL.Repository;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;

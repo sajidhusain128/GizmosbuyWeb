@@ -21,7 +21,7 @@ namespace Gizmosbuy.Web.Controllers
             _commonBL = commonBL;
         }
 
-        [CustomAuthorize(Role.SuperAdmin,Role.Admin)]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public IActionResult Index()
         {
             return View();
@@ -60,7 +60,7 @@ namespace Gizmosbuy.Web.Controllers
 
                 if (categories != null && categories.Count > 0)
                 {
-                    if(!categories.Any(c => c.CategoryId == 0))
+                    if (!categories.Any(c => c.CategoryId == 0))
                         categories.Insert(0, new CategoryModel { CategoryId = 0, CategoryName = "Select Category" });
                     ViewBag.Categories = categories;
                 }
@@ -74,7 +74,7 @@ namespace Gizmosbuy.Web.Controllers
 
                 if (brands != null && brands.Count > 0)
                 {
-                    if(!brands.Any(b => b.BrandId == 0))
+                    if (!brands.Any(b => b.BrandId == 0))
                         brands.Insert(0, new BrandModel { BrandId = 0, BrandName = "Select Brand" });
                     ViewBag.Brands = brands;
                 }
@@ -88,7 +88,7 @@ namespace Gizmosbuy.Web.Controllers
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
-                    if(!paymentModes.Any(p => p.PaymentModeId == 0))
+                    if (!paymentModes.Any(p => p.PaymentModeId == 0))
                         paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
                     ViewBag.PaymentModes = paymentModes;
                 }
@@ -146,7 +146,7 @@ namespace Gizmosbuy.Web.Controllers
 
                 if (categories != null && categories.Count > 0)
                 {
-                    if(!categories.Any(c => c.CategoryId == 0))
+                    if (!categories.Any(c => c.CategoryId == 0))
                         categories.Insert(0, new CategoryModel { CategoryId = 0, CategoryName = "Select Category" });
                     ViewBag.Categories = categories;
                 }
@@ -160,7 +160,7 @@ namespace Gizmosbuy.Web.Controllers
 
                 if (brands != null && brands.Count > 0)
                 {
-                    if(!brands.Any(b => b.BrandId == 0))
+                    if (!brands.Any(b => b.BrandId == 0))
                         brands.Insert(0, new BrandModel { BrandId = 0, BrandName = "Select Brand" });
                     ViewBag.Brands = brands;
                 }
@@ -174,7 +174,7 @@ namespace Gizmosbuy.Web.Controllers
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
-                    if(!paymentModes.Any(p => p.PaymentModeId == 0))
+                    if (!paymentModes.Any(p => p.PaymentModeId == 0))
                         paymentModes.Insert(0, new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" });
                     ViewBag.PaymentModes = paymentModes;
                 }

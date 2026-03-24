@@ -30,3 +30,7 @@
     display: block;
     border-bottom: 1px solid #000;
 }
+
+.autocomplete-suggestions .autocomplete-suggestion {
+    cursor: pointer;
+}

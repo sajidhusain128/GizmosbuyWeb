@@ -1,7 +1,8 @@
 ﻿using System.Net;
 using System.Security.Claims;
-using Gizmosbuy.Core.Constants;
 using GizmosbuyWeb.Configurations;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -26,9 +27,8 @@ namespace GizmosbuyWeb.Filters
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var IsAuthenticated = context.HttpContext.User.Identity.IsAuthenticated;
-            var claimsIndentity = context.HttpContext.User.Identity as ClaimsIdentity;
-            var userSession = context.HttpContext.Session.GetString("Role");
+            var authPrinciple = context.HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme).Result.Principal;
+            var IsAuthenticated = authPrinciple == null ? false : authPrinciple.Identity.IsAuthenticated;
 
 
             if (IsAuthenticated)
@@ -38,7 +38,7 @@ namespace GizmosbuyWeb.Filters
                 {
                     foreach (var item in _claim)
                     {
-                        if (context.HttpContext.User.HasClaim("Role", item))
+                        if (authPrinciple.HasClaim(ClaimTypes.Role, item))
                         {
                             flagClaim = true;
                         }
@@ -73,12 +73,12 @@ namespace GizmosbuyWeb.Filters
                 if (context.HttpContext.Request.IsAjaxRequest())
                 {
                     context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized; //Set Response 401  
-                    context.Result = new RedirectResult("~/Auth/Login");
+                    context.Result = new RedirectToActionResult("Login", "Auth", null);
                 }
                 else
                 {
                     context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                    context.Result = new RedirectResult("~/Auth/Login");
+                    context.Result = new RedirectToActionResult("Login", "Auth", null);
                 }
             }
             return;

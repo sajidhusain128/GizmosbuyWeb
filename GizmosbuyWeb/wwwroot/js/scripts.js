@@ -488,9 +488,9 @@ function UpdatePurchasePrice() {
 
         var total = "";
 
-        let purchaseSelected = $('#switchPurchaseType input[type="radio"]:checked').val();
+        var hdnPurchaseId = $('#hdnPurchaseId').val();
 
-        if (purchaseSelected == "Single") {
+        if (hdnPurchaseId != "" && hdnPurchaseId > 0) {
             if (!isNaN(purcPrice) && !isNaN(qty) && !isNaN(upgradePrice)) {
                 total = (purcPrice * qty) + upgradePrice;
             }
@@ -498,12 +498,24 @@ function UpdatePurchasePrice() {
                 total = (purcPrice * qty);
             }
         }
-        else if (purchaseSelected == "Bulk") {
-            if (!isNaN(purcPrice) && !isNaN(upgradePrice)) {
-                total = purcPrice + upgradePrice;
+        else {
+            let purchaseSelected = $('#switchPurchaseType input[type="radio"]:checked').val();
+
+            if (purchaseSelected == "Single") {
+                if (!isNaN(purcPrice) && !isNaN(qty) && !isNaN(upgradePrice)) {
+                    total = (purcPrice * qty) + upgradePrice;
+                }
+                else if (!isNaN(purcPrice) && !isNaN(qty) && isNaN(upgradePrice)) {
+                    total = (purcPrice * qty);
+                }
             }
-            else if (!isNaN(purcPrice) && isNaN(upgradePrice)) {
-                total = purcPrice;
+            else if (purchaseSelected == "Bulk") {
+                if (!isNaN(purcPrice) && !isNaN(upgradePrice)) {
+                    total = purcPrice + upgradePrice;
+                }
+                else if (!isNaN(purcPrice) && isNaN(upgradePrice)) {
+                    total = purcPrice;
+                }
             }
         }
 
@@ -1871,8 +1883,11 @@ function SendWhatsAppReport(invoiceNo) {
             url: '/Sales/SendWhatsAppSalesReport?invoiceNo=' + invoiceNo,
             //async: true,
             success: function (response) {
-                if (response != "") {
+                if (response.body != "" && response.customerName != "" && response.body.trim().includes(response.customerName.trim())) {
                     SuccessToast("Report send to whatsapp successfully.");
+                }
+                else {
+                    WarningToast(response.body);
                 }
                 hideLoader();
             },

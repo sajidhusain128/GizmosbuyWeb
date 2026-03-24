@@ -1,7 +1,6 @@
 ﻿using System.Data;
 using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
-using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
@@ -34,8 +33,8 @@ namespace Gizmosbuy.BAL.Repository
                     }
                 }
 
-                int purchaseLocationID = ConstantsSessions.LocationId;
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int purchaseLocationID = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
                 var parameterreturnValue = new OutputParameter<int?>();
                 var i = await _applicationDbContext.Procedures.spSavePurchaseAsync(
                     purchaseModel.PurchaseId,
@@ -53,7 +52,7 @@ namespace Gizmosbuy.BAL.Repository
                     purchaseModel.PaymentModeName,
                     purchaseModel.BuyingLead,
                     purchaseLocationID,
-                    Convert.ToInt32(sessionUserId),
+                    sessionUserId,
                     DateTime.Now,
                     purchaseModel.PurchaseType,
                     parameterreturnValue,
@@ -72,9 +71,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var purcahseList = await _applicationDbContext.Procedures.spGetPurchaseListAsync(Convert.ToInt32(sessionUserId));
+                var purcahseList = await _applicationDbContext.Procedures.spGetPurchaseListAsync(sessionUserId);
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
@@ -166,7 +165,7 @@ namespace Gizmosbuy.BAL.Repository
                 DataTable SearlNoDataTable = new DataTable();
                 SearlNoDataTable.Columns.Add("SerialNo", typeof(string));
 
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
                 var parameterreturnValue = new OutputParameter<int?>();
                 var i = await _applicationDbContext.Procedures.spSavePurchaseAsync(
                     purchaseModel.PurchaseId,
@@ -184,7 +183,7 @@ namespace Gizmosbuy.BAL.Repository
                     purchaseModel.PaymentModeName,
                     purchaseModel.BuyingLead,
                     0,
-                    Convert.ToInt32(sessionUserId),
+                    sessionUserId,
                     DateTime.Now,
                     "Single",
                     parameterreturnValue,
@@ -205,9 +204,9 @@ namespace Gizmosbuy.BAL.Repository
             {
                 List<IAutoCompleteModel> autoCompleteModelList = null;
 
-                string sessionUserId = Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext);
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var purcahseList = await _applicationDbContext.Procedures.spGetSerialNoListAsync(searchValue, Convert.ToInt32(sessionUserId));
+                var purcahseList = await _applicationDbContext.Procedures.spGetSerialNoListAsync(searchValue, sessionUserId);
 
                 if (purcahseList == null || purcahseList.Count == 0)
                 {
@@ -244,8 +243,8 @@ namespace Gizmosbuy.BAL.Repository
 
                 var result = _applicationDbContext.Purchases
                             .Where(p => p.PurchaseId == id)
-                            .Join(_applicationDbContext.Sales,p => p.PurchaseId,s => s.PurchaseId,(p, s) => new { p, s })
-                            .Join(_applicationDbContext.SalesJournals,ps => ps.s.SalesId,sj => sj.SalesId,(ps, sj) => ps.p)
+                            .Join(_applicationDbContext.Sales, p => p.PurchaseId, s => s.PurchaseId, (p, s) => new { p, s })
+                            .Join(_applicationDbContext.SalesJournals, ps => ps.s.SalesId, sj => sj.SalesId, (ps, sj) => ps.p)
                             .Any();
 
                 if (result)

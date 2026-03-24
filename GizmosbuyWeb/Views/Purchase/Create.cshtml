@@ -153,7 +153,7 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="txtPayMode" class="col-form-label">Payment Mode:</label>
-                                    <input type="text" id="txtPayMode" class="form-control" asp-for="PaymentModeName" placeholder="PaymentModeName" autocomplete="off">
+                                    <input type="text" id="txtPayMode" class="form-control" asp-for="PaymentModeName" placeholder="Payment Mode" autocomplete="off">
                                     @* @Html.DropDownListFor(Model => Model.PaymentModeId, new SelectList(((List<IPaymentModeModel>)ViewBag.PaymentModes).Select(x => new { Value = x.PaymentModeId, Text = x.PaymentModeName }), "Value", "Text"), null, new { id = "ddlPayMode", @class = "form-select", @style = "width:100% !important" }) *@
                                     <span class="field-validation-error"></span>
                                 </div>

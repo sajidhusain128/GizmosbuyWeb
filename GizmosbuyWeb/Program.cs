@@ -11,10 +11,11 @@ using Gizmosbuy.DAL.Data;
 using Gizmosbuy.Web.Middlewares;
 using log4net;
 using log4net.Config;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using Twilio;
 
 namespace GizmosbuyWeb
@@ -71,6 +72,7 @@ namespace GizmosbuyWeb
                 builder.Services.AddScoped<IMasterBL, MasterBL>();
                 builder.Services.AddScoped<IWebConfiguration, WebConfiguration>();
                 builder.Services.AddScoped<IWhatsAppSettings, WhatsAppSettings>();
+                builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
                 builder.Services.AddHttpContextAccessor();
                 builder.Services.AddMemoryCache();
 
@@ -86,6 +88,7 @@ namespace GizmosbuyWeb
                 //SiteKeys.Configure(webConfiguration ?? new WebConfiguration());
                 var key = Encoding.ASCII.GetBytes(webConfiguration.SecretKey);
 
+                //builder.Services.AddDistributedMemoryCache();
                 builder.Services.AddSession(options =>
                 {
                     options.IdleTimeout = TimeSpan.FromMinutes(webConfiguration.SesssionTimeoutMinutes);
@@ -93,15 +96,16 @@ namespace GizmosbuyWeb
                     options.Cookie.IsEssential = true; // Make the session cookie essential for the application
                 });
 
-                builder.Services.ConfigureApplicationCookie(options =>
-                {
-                    options.Cookie.Name = "MyAppAuthCookie";
-                    options.LoginPath = "/Auth/Login";
-                    options.LogoutPath = "/Auth/Logout";
-                    options.AccessDeniedPath = "/Auth/AccessDenied";
-                    options.ExpireTimeSpan = TimeSpan.FromMinutes(webConfiguration.SesssionTimeoutMinutes);
-                    options.SlidingExpiration = true;
-                });
+                builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(options =>
+                    {
+                        options.Cookie.Name = "MyCookieAuth";
+                        options.LoginPath = "/Auth/Login";
+                        options.LogoutPath = "/Auth/Logout";
+                        options.AccessDeniedPath = "/Auth/AccessDenied";
+                        options.ExpireTimeSpan = TimeSpan.FromMinutes(webConfiguration.SesssionTimeoutMinutes);
+                        options.SlidingExpiration = true;
+                    });
 
                 builder.Services.AddAuthorization();
 
@@ -155,28 +159,36 @@ namespace GizmosbuyWeb
                 app.UseRouting();
 
                 app.UseCookiePolicy();
-                app.UseSession();
-                app.UseCors("MyPolicy");
-
-                //app.Use(async (context, next) =>
-                //{
-                //    if (context.Request.Path == "/")
-                //    {
-                //        if (context.User.Identity.IsAuthenticated)
-                //        {
-                //            context.Response.Redirect("/Home/Index", permanent: true);
-                //        }
-                //        else
-                //        {
-                //            context.Response.Redirect("/Auth/Login", permanent: true);
-                //        }
-                //        return;
-                //    }
-                //    await next();
-                //});
-
                 app.UseAuthentication();
                 app.UseAuthorization();
+                app.UseSession();
+
+                app.UseCors("MyPolicy");
+
+                app.MapGet("/", async context =>
+                {
+                    var authPrinciple = context.Request.HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme).Result.Principal;
+                    var IsAuthenticated = authPrinciple == null ? false : authPrinciple.Identity.IsAuthenticated;
+
+                    if (!IsAuthenticated)
+                    {
+                        context.Response.Redirect("/Auth/Login", permanent: true);
+                    }
+                    return;
+                });
+
+                app.Use(async (context, next) =>
+                {
+                    var userId = context.Session.GetString("UserId");
+
+                    if (string.IsNullOrEmpty(userId) && !context.Request.Path.Value.Contains("/Auth/Login"))
+                    {
+                        context.Response.Redirect("/Auth/Login", permanent: true);
+                        return;
+                    }
+                    await next.Invoke();
+                });
+
 
 
                 //bool enableSwagger = builder.Configuration.GetValue<bool>("AppSettings:EnableSwagger");

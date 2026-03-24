@@ -1,23 +1,38 @@
-﻿using System.Text.Json;
-using Gizmosbuy.BAL.Interfaces;
+﻿using Gizmosbuy.BAL.Interfaces;
+using Gizmosbuy.Core.Interfaces;
+using Gizmosbuy.Core.Models;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 
 namespace Gizmosbuy.BAL.Repository
 {
     public class CacheService : ICacheService
     {
         private IMemoryCache _cache;
+        public readonly IWebConfiguration _webConfiguration;
 
-        public CacheService(IMemoryCache cache)
+        public CacheService(IMemoryCache cache, IOptions<WebConfiguration> webConfiguration)
         {
             _cache = cache;
+            _webConfiguration = webConfiguration.Value;
         }
+
+        private MemoryCacheEntryOptions _memoryCacheEntryOptions = null;
 
         private MemoryCacheEntryOptions CreateDefaultOptions()
         {
-            return new MemoryCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromMinutes(1))
-                .SetSlidingExpiration(TimeSpan.FromSeconds(30));
+            if (_memoryCacheEntryOptions == null)
+            {
+                int cacheTimeoutMinutes = _webConfiguration.MemoryCacheTimeoutMinutes > 0 ? _webConfiguration.MemoryCacheTimeoutMinutes : 60;
+                int absoluteExpirationMinutes = cacheTimeoutMinutes;
+                int slidingExpirationMinutes = (cacheTimeoutMinutes / 2); // Use half of absolute timeout for sliding expiration
+
+                _memoryCacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetAbsoluteExpiration(TimeSpan.FromMinutes(absoluteExpirationMinutes))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(slidingExpirationMinutes));
+            }
+
+            return _memoryCacheEntryOptions;
         }
 
         // Add specific cache entry
@@ -53,10 +68,12 @@ namespace Gizmosbuy.BAL.Repository
             {
                 _cache.Remove(key);
             }
+            _memoryCacheEntryOptions = null;
         }
         public void ClearAll()
         {
             // Dispose and recreate cache to clear everything
+            _memoryCacheEntryOptions = null;
             _cache.Dispose();
             _cache = new MemoryCache(new MemoryCacheOptions());
         }

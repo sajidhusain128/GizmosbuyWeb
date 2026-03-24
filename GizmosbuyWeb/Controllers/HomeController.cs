@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Web.Filters;
@@ -25,9 +26,11 @@ namespace GizmosbuyWeb.Controllers
         {
             ViewBag.Location = "";
 
-            if (ConstantsSessions.Location != null)
+            string location = Utilities.GetSessionValue("Location", HttpContext);
+
+            if (location != null)
             {
-                ViewBag.Location = ConstantsSessions.Location;
+                ViewBag.Location = location;
             }
 
             return View();

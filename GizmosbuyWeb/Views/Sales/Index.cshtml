@@ -1,8 +1,10 @@
 ﻿@using Gizmosbuy.Core.Constants
 @using Microsoft.AspNetCore.Http;
+@using Gizmosbuy.BAL.Commons;
+
 @{
     ViewBag.Title = "Sales";
-    string userRole = ConstantsSessions.Role;
+    string userRole = Utilities.GetSessionValue(Constant.Role, Context.Request.HttpContext);
 }
 
 <div class="col-md-12">

@@ -396,16 +396,13 @@ function getPurchaseRecordInSales(purchaseId) {
                         $('#txtSellingPrice').val(0);
                     }
 
-                    //if ($('#tblSalesTemp').DataTable().rows().any()) {
-                    //    var rowData = $('#tblSalesTemp').DataTable().data();
-                    //    if (rowData.length > 0) {
-                    //        $('#txtPayMode').val(rowData[0].paymentMode);
-                    //        $('#txtSellLead').val(rowData[0].sellingLead);
-                    //        $('#txtCustomerName').val(rowData[0].customerName);
-                    //        $('#txtContactNo').val(rowData[0].contactNo);
-                    //        $('#txtLoaction').val(rowData[0].location);
-                    //    }
-                    //}
+                    if ($('#tblTransferCreateTemp').DataTable().rows().any()) {
+                        var rowData = $('#tblTransferCreateTemp').DataTable().data();
+                        if (rowData.length > 0) {
+                            $('#txtTransferDate').datepicker("setDate", localDateFormat(rowData[0].transferDate, "dd/mm/yyyy"));
+                            $('#ddlSellingStore').select2("val", rowData[0].locationID.toString());
+                        }
+                    }
                 }
                 hideLoader();
             },

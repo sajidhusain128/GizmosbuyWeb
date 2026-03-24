@@ -66,7 +66,7 @@
                                     <div class="mb-4">
                                         <div class="input-group-text last">
                                             <i class="fas fa-key"></i>
-                                            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @id = "password", @placeholder = "Password", @type = "password" })
+                                            @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @id = "password", @placeholder = "Password", @type = "password", @autocomplete = "current-password" })
                                         </div>
                                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                                         <div class="invalid-feedback">
