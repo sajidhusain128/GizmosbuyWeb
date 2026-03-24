@@ -311,8 +311,10 @@ namespace Gizmosbuy.BAL.Repository
                 int start = pager.PageStart;
                 int length = pager.PageLength;
                 string searchValue = pager.SearchValue ?? "";
+                string columnName = pager.ColumnName ?? "";
+                string sortDirection = pager.SortDirection ?? "";
 
-                List<spGetStoreTransferListResult> mainData = null;
+                IList<spGetStoreTransferListResult> mainData = null;
 
                 if (searchValue != "")
                 {
@@ -321,6 +323,12 @@ namespace Gizmosbuy.BAL.Repository
                 else
                 {
                     mainData = storeTransferList;
+                }
+
+                // Apply sorting
+                if (!string.IsNullOrEmpty(columnName))
+                {
+                    mainData = mainData.OrderByDynamic(columnName, sortDirection).ToList();
                 }
 
                 var totalCount = mainData.Count;
@@ -475,7 +483,7 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<Object> GetStoreRetunNotificationsList(IPager pager)
+        public async Task<object> GetStoreRetunNotificationsList(IPager pager)
         {
             try
             {
@@ -486,6 +494,8 @@ namespace Gizmosbuy.BAL.Repository
                 int start = pager.PageStart;
                 int length = pager.PageLength;
                 string searchValue = pager.SearchValue ?? "";
+                string columnName = pager.ColumnName ?? "";
+                string sortDirection = pager.SortDirection ?? "";
 
                 IEnumerable<spGetStoreTransferNotificationListResult> mainData = null;
 
@@ -498,23 +508,44 @@ namespace Gizmosbuy.BAL.Repository
                     mainData = returnNotifyList;
                 }
 
-                var totalCount = mainData.ToList().Count;
-                var filterCount = totalCount;
-
-                mainData = mainData
-                    .Skip(start)
-                    .Take(length)
-                    .ToList();
-
-                var data = new
+                // Apply sorting
+                if (!string.IsNullOrEmpty(columnName))
                 {
-                    data = mainData,
-                    draw = pager.Draw,
-                    recordsTotal = totalCount,
-                    recordsFiltered = filterCount
-                };
+                    mainData = mainData.OrderByDynamic(columnName, sortDirection);
+                }
 
-                return data;
+                if (mainData != null && mainData.Any())
+                {
+                    var totalCount = mainData.ToList().Count;
+                    var filterCount = totalCount;
+
+                    mainData = mainData
+                        .Skip(start)
+                        .Take(length)
+                        .ToList();
+
+                    var data = new
+                    {
+                        data = mainData,
+                        draw = pager.Draw,
+                        recordsTotal = totalCount,
+                        recordsFiltered = filterCount
+                    };
+
+                    return data;
+                }
+                else
+                {
+                    var data = new
+                    {
+                        data = new List<object>(),
+                        draw = pager.Draw,
+                        recordsTotal = 0,
+                        recordsFiltered = 0
+                    };
+
+                    return data;
+                }
             }
             catch (Exception)
             {
@@ -584,7 +615,7 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<Object> GetTransferPaymentList(IPager pager)
+        public async Task<object> GetTransferPaymentList(IPager pager)
         {
             try
             {
@@ -594,6 +625,8 @@ namespace Gizmosbuy.BAL.Repository
                 int start = pager.PageStart;
                 int length = pager.PageLength;
                 string searchValue = pager.SearchValue ?? "";
+                string columnName = pager.ColumnName ?? "";
+                string sortDirection = pager.SortDirection ?? "";
 
                 IEnumerable<object> mainData = null;
 
@@ -606,23 +639,44 @@ namespace Gizmosbuy.BAL.Repository
                     mainData = returnNotifyList;
                 }
 
-                var totalCount = mainData.ToList().Count;
-                var filterCount = totalCount;
-
-                mainData = mainData
-                    .Skip(start)
-                    .Take(length)
-                    .ToList();
-
-                var data = new
+                // Apply sorting
+                if (!string.IsNullOrEmpty(columnName))
                 {
-                    data = mainData,
-                    draw = pager.Draw,
-                    recordsTotal = totalCount,
-                    recordsFiltered = filterCount
-                };
+                    mainData = mainData.OrderByDynamic(columnName, sortDirection);
+                }
 
-                return data;
+                if (mainData != null && mainData.Any())
+                {
+                    var totalCount = mainData.ToList().Count;
+                    var filterCount = totalCount;
+
+                    mainData = mainData
+                        .Skip(start)
+                        .Take(length)
+                        .ToList();
+
+                    var data = new
+                    {
+                        data = mainData,
+                        draw = pager.Draw,
+                        recordsTotal = totalCount,
+                        recordsFiltered = filterCount
+                    };
+
+                    return data;
+                }
+                else
+                {
+                    var data = new
+                    {
+                        data = new List<object>(),
+                        draw = pager.Draw,
+                        recordsTotal = 0,
+                        recordsFiltered = 0
+                    };
+
+                    return data;
+                }
             }
             catch (Exception)
             {
@@ -630,7 +684,7 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<Object> GetTransferPaymentNotificationsList(IPager pager)
+        public async Task<object> GetTransferPaymentNotificationsList(IPager pager)
         {
             try
             {
@@ -642,6 +696,8 @@ namespace Gizmosbuy.BAL.Repository
                 int start = pager.PageStart;
                 int length = pager.PageLength;
                 string searchValue = pager.SearchValue ?? "";
+                string columnName = pager.ColumnName ?? "";
+                string sortDirection = pager.SortDirection ?? "";
 
                 IEnumerable<object> mainData = null;
 
@@ -654,23 +710,44 @@ namespace Gizmosbuy.BAL.Repository
                     mainData = returnNotifyList;
                 }
 
-                var totalCount = mainData.ToList().Count;
-                var filterCount = totalCount;
-
-                mainData = mainData
-                    .Skip(start)
-                    .Take(length)
-                    .ToList();
-
-                var data = new
+                // Apply sorting
+                if (!string.IsNullOrEmpty(columnName))
                 {
-                    data = mainData,
-                    draw = pager.Draw,
-                    recordsTotal = totalCount,
-                    recordsFiltered = filterCount
-                };
+                    mainData = mainData.OrderByDynamic(columnName, sortDirection);
+                }
 
-                return data;
+                if (mainData != null && mainData.Any())
+                {
+                    var totalCount = mainData.ToList().Count;
+                    var filterCount = totalCount;
+
+                    mainData = mainData
+                        .Skip(start)
+                        .Take(length)
+                        .ToList();
+
+                    var data = new
+                    {
+                        data = mainData,
+                        draw = pager.Draw,
+                        recordsTotal = totalCount,
+                        recordsFiltered = filterCount
+                    };
+
+                    return data;
+                }
+                else
+                {
+                    var data = new
+                    {
+                        data = new List<object>(),
+                        draw = pager.Draw,
+                        recordsTotal = 0,
+                        recordsFiltered = 0
+                    };
+
+                    return data;
+                }
             }
             catch (Exception)
             {

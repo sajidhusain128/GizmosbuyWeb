@@ -100,8 +100,10 @@ namespace Gizmosbuy.BAL.Repository
                 int start = pager.PageStart;
                 int length = pager.PageLength;
                 string searchValue = pager.SearchValue ?? "";
+                string columnName = pager.ColumnName ?? "";
+                string sortDirection = pager.SortDirection ?? "";
 
-                List<spGetSalesListResult> mainData = null;
+                IList<spGetSalesListResult> mainData = null;
 
                 if (searchValue != "")
                 {
@@ -110,6 +112,12 @@ namespace Gizmosbuy.BAL.Repository
                 else
                 {
                     mainData = salesList;
+                }
+
+                // Apply sorting
+                if (!string.IsNullOrEmpty(columnName))
+                {
+                    mainData = mainData.OrderByDynamic(columnName, sortDirection).ToList();
                 }
 
                 var totalCount = mainData.Count;

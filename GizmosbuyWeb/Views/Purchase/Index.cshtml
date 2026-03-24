@@ -57,6 +57,7 @@
                 processing: true,
                 serverSide:true,
                 pageLength:10,
+                order: [], // 👈 disables initial sort
                 "paging":true,
                 "ajax":{
                     "url": "/Purchase/GetPurchaseList",
@@ -116,8 +117,8 @@
                     { targets: 9,className: 'text-nowrap text-right'},
                     { targets: 10,className: 'text-nowrap'},
                     { targets: 11,className: 'text-nowrap'},
-                    { targets: 12,className: 'text-nowrap text-center'},
-                    { targets: 13,className: 'text-nowrap text-center'}
+                    { targets: 12,className: 'text-nowrap text-center min-width-column',"orderable": false},
+                    { targets: 13,className: 'text-nowrap text-center min-width-column',"orderable": false}
                 ],
                 initComplete: function () {
                     $('*[title]').tooltip();

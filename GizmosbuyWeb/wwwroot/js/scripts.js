@@ -1583,6 +1583,7 @@ function callRawData() {
             serverSide: true,
             pageLength: 10,
             paging: true,
+            order: [], // disables initial sort
             ajax: {
                 "url": "/Inventory/GetRawData",
                 "data": function (d) {

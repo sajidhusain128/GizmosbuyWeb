@@ -67,7 +67,7 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<Object> GetPurchaseList(IPager pager)
+        public async Task<object> GetPurchaseList(IPager pager)
         {
             try
             {
@@ -78,16 +78,24 @@ namespace Gizmosbuy.BAL.Repository
                 int start = pager.PageStart;
                 int length = pager.PageLength;
                 string searchValue = pager.SearchValue ?? "";
+                string columnName = pager.ColumnName ?? "";
+                string sortDirection = pager.SortDirection ?? "";
 
-                List<spGetPurchaseListResult> mainData = null;
+                IList<spGetPurchaseListResult> mainData = null;
 
-                if (searchValue != "")
+                if (!string.IsNullOrEmpty(searchValue))
                 {
                     mainData = purcahseList.Where(Utilities.GetSearchValue<spGetPurchaseListResult>(searchValue)).ToList();
                 }
                 else
                 {
                     mainData = purcahseList;
+                }
+
+                // Apply sorting
+                if (!string.IsNullOrEmpty(columnName))
+                {
+                    mainData = mainData.OrderByDynamic(columnName, sortDirection).ToList();
                 }
 
                 var totalCount = mainData.Count;

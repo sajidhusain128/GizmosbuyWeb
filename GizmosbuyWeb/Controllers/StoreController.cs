@@ -2,6 +2,7 @@
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
+using GizmosbuyWeb.Configurations;
 using GizmosbuyWeb.Filters;
 using Microsoft.AspNetCore.Mvc;
 
@@ -102,6 +103,9 @@ namespace Gizmosbuy.Web.Controllers
                 pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
                 pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
                 pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
+                pager.SortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
+                pager.SortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                pager.ColumnName = Utility.CapitalizeFirstChar(Request.Form[$"columns[{pager.SortColumnIndex}][data]"].FirstOrDefault());
 
                 var purcahseList = await _storeTransferBL.GetTempStoreTransferList(pager);
 
@@ -187,6 +191,9 @@ namespace Gizmosbuy.Web.Controllers
                 pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
                 pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
                 pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
+                pager.SortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
+                pager.SortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                pager.ColumnName = Utility.CapitalizeFirstChar(Request.Form[$"columns[{pager.SortColumnIndex}][data]"].FirstOrDefault());
 
                 var storeTransferList = await _storeTransferBL.GetStoreTransferList(pager);
 
@@ -288,6 +295,9 @@ namespace Gizmosbuy.Web.Controllers
                 pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
                 pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
                 pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
+                pager.SortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
+                pager.SortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                pager.ColumnName = Utility.CapitalizeFirstChar(Request.Form[$"columns[{pager.SortColumnIndex}][data]"].FirstOrDefault());
 
                 var response = await _storeTransferBL.GetStoreRetunNotificationsList(pager);
 
@@ -395,6 +405,9 @@ namespace Gizmosbuy.Web.Controllers
                 pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
                 pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
                 pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
+                pager.SortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
+                pager.SortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                pager.ColumnName = Utility.CapitalizeFirstChar(Request.Form[$"columns[{pager.SortColumnIndex}][data]"].FirstOrDefault());
 
                 var response = await _storeTransferBL.GetTransferPaymentList(pager);
 
@@ -418,6 +431,9 @@ namespace Gizmosbuy.Web.Controllers
                 pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
                 pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
                 pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
+                pager.SortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
+                pager.SortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
+                pager.ColumnName = Utility.CapitalizeFirstChar(Request.Form[$"columns[{pager.SortColumnIndex}][data]"].FirstOrDefault());
 
                 var response = await _storeTransferBL.GetTransferPaymentNotificationsList(pager);
 

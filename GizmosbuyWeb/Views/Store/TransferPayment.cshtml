@@ -66,6 +66,7 @@
                 processing: true,
                 serverSide:true,
                 pageLength:10,
+                order: [], // disables initial sort
                 "paging":true,
                 "ajax":{
                     "url": "/Store/GetTransferPaymentList",
@@ -111,7 +112,7 @@
                     { targets: 4,className: 'text-nowrap'},
                     { targets: 5,className: 'text-nowrap'},
                     { targets: 6,className: 'text-nowrap'},
-                    { targets: 7,className: 'text-nowrap text-center'}
+                    { targets: 7,className: 'text-nowrap text-center min-width-column',"orderable": false}
                 ],
                 fixedColumns: {
                     start: 0,           // Unfress frist

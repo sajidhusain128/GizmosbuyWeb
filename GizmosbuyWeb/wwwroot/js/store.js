@@ -95,7 +95,7 @@ $(document).ready(function () {
 
                     var rows = $('#tblInvoiceDetails').DataTable().rows().nodes();
                     // Use jQuery to find all checkboxes within those rows and filter for checked ones
-                        var checkedCheckboxes = $('input[type="checkbox"]:checked', rows);
+                    var checkedCheckboxes = $('input[type="checkbox"]:checked', rows);
                     // Get the length of the resulting jQuery object
                     var count = checkedCheckboxes.length
 
@@ -167,7 +167,7 @@ $(document).ready(function () {
                 callStoreTransferPaymentData(0);
                 getStoreTransferCalculation(0);
             }
-            
+
         } catch (e) {
             console.error(e);
         }
@@ -1027,7 +1027,7 @@ function sendStoreReturnItemNotification() {
                     };
                     itemList.push(model);
                 }
-            })      
+            })
         }
 
         if (itemList.length > 0) {
@@ -1117,12 +1117,13 @@ function LoadTableStoreReturnItemNotification() {
             processing: true,
             serverSide: true,
             pageLength: 10,
-            "paging": true,
+            paging: true,
+            order: [], // disables initial sort
             "ajax": {
                 "url": "/Store/GetStoreRetunNotificationsList",
                 "type": "POST",
                 "datatype": "json",
-                "data":{}
+                "data": {}
             },
             "columns": [
                 {
@@ -1163,7 +1164,7 @@ function LoadTableStoreReturnItemNotification() {
                 { targets: 6, className: 'text-nowrap' },
                 { targets: 7, className: 'text-nowrap' },
                 { targets: 8, className: 'text-nowrap' },
-                { targets: 9, className: 'text-nowrap text-center' }
+                { targets: 9, className: 'text-nowrap text-center min-width-column', "orderable": false }
             ],
             fixedColumns: {
                 start: 0,           // Unfress frist
@@ -1356,7 +1357,8 @@ function LoadTableTransferPaymentNotification() {
             processing: true,
             serverSide: true,
             pageLength: 10,
-            "paging": true,
+            paging: true,
+            order: [], // disables initial sort
             "ajax": {
                 "url": "/Store/GetTransferPaymentNotificationsList",
                 "type": "POST",
@@ -1392,7 +1394,7 @@ function LoadTableTransferPaymentNotification() {
             columnDefs: [
                 { targets: 0, className: 'text-nowrap text-center' },
                 { targets: 1, className: 'text-nowrap' },
-                { targets: 2, className: 'text-nowrap text-center' }
+                { targets: 2, className: 'text-nowrap text-center', "orderable": false }
             ],
             fixedColumns: {
                 start: 0,           // Unfress frist
@@ -1483,7 +1485,7 @@ function updateApprovalTransferPayment(_id, _type) {
                         else if (_type == 'Reject') {
                             WarningToast("Transfer payment rejected.");
                         }
-                        
+
                         hideLoader();
 
                         setTimeout(function () {
@@ -1530,6 +1532,7 @@ function callStoreTransferRawData(locationId) {
             serverSide: true,
             pageLength: 10,
             paging: true,
+            order: [], // disables initial sort
             ajax: {
                 "url": "/Inventory/GetStoreTransferRawData",
                 "data": function (d) {
@@ -1616,6 +1619,7 @@ function callStoreTransferPaymentData(locationId) {
             serverSide: true,
             pageLength: 10,
             paging: true,
+            order: [], // disables initial sort
             ajax: {
                 "url": "/Inventory/GetStoreTransferPaymentSummary",
                 "data": function (d) {
@@ -1671,7 +1675,7 @@ function getStoreTransferCalculation(locationId) {
             $.ajax({
                 type: "GET",
                 url: '/Inventory/GetStoreTransferCalculation',
-                data: { searchLocationId : locationId },
+                data: { searchLocationId: locationId },
                 dataType: "json",
                 success: function (response) {
                     if (response != null) {

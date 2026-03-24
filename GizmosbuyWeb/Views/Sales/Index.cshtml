@@ -83,6 +83,7 @@
                 processing: true,
                 serverSide:true,
                 pageLength:10,
+                order: [], // disables initial sort
                 "paging":true,
                 "ajax":{
                     "url": "/Sales/GetSalesList",
@@ -145,9 +146,9 @@
                     { targets: 12,className: 'text-nowrap'},
                     { targets: 13,className: 'text-nowrap'},
                     { targets: 14,className: 'text-nowrap'},
-                    { targets: 15,className: 'text-nowrap text-center'},
-                    { targets: 16,className: 'text-nowrap text-center'},
-                    { targets: 17,className: 'text-nowrap text-center'}
+                    { targets: 15,className: 'text-nowrap text-center min-width-column',"orderable": false},
+                    { targets: 16,className: 'text-nowrap text-center min-width-column',"orderable": false},
+                    { targets: 17,className: 'text-nowrap text-center min-width-column',"orderable": false}
                 ],
                 initComplete: function () {
                     $('*[title]').tooltip();

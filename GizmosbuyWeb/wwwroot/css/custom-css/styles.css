@@ -1042,3 +1042,7 @@ a.disabled {
         border: 1px solid lightgray;
         margin: 5px;
     }
+
+.min-width-column {
+    min-width: 80px !important; /* Use !important to override DataTables' inline styles */
+}

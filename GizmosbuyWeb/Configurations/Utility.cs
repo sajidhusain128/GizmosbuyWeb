@@ -54,5 +54,17 @@ namespace GizmosbuyWeb.Configurations
                     return true;
             };
         }
+
+        public static string CapitalizeFirstChar(string s)
+        {
+            // Check for empty or null strings.
+            if (string.IsNullOrEmpty(s))
+            {
+                return string.Empty;
+            }
+
+            // Return the first character converted to uppercase, concatenated with the rest of the string.
+            return char.ToUpper(s[0]) + s.Substring(1);
+        }
     }
 }

@@ -15,11 +15,11 @@ namespace Gizmosbuy.BAL.Interfaces
         Task<int> SendStoreReturnItemNotification(List<StoreReturnItemNotificationModel> storeReturnItemNotificationModel);
         Task<int> DeleteStoreTransferByInvoice(string invoiceNo, int purchaseId);
         Task<List<IStoreTransferModel>> GetReturnItemInvoiceDetails(string invoiceNo);
-        Task<Object> GetStoreRetunNotificationsList(IPager pager);
+        Task<object> GetStoreRetunNotificationsList(IPager pager);
         Task<int> RejectStoreReturnItems(int id);
         Task<int> CreateTransferPayment(TransferPaymentModel transferPaymentModel);
-        Task<Object> GetTransferPaymentList(IPager pager);
-        Task<Object> GetTransferPaymentNotificationsList(IPager pager);
+        Task<object> GetTransferPaymentList(IPager pager);
+        Task<object> GetTransferPaymentNotificationsList(IPager pager);
         Task<int> TransferPaymentDelete(int id);
         Task<int> TransferPaymentStausUpdate(int id, string type);
         Task<ITransferPaymentModel> GetTransferPaymentByID(int id);

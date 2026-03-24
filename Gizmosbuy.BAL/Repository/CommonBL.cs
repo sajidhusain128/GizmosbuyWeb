@@ -207,7 +207,7 @@ namespace Gizmosbuy.BAL.Repository
                         );
                     }
 
-                    await System.Threading.Tasks.Task.Delay(2000);
+                    await Task.Delay(2000);
 
                     if (File.Exists(filePath))
                     {

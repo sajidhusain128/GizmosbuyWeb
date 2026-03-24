@@ -20,7 +20,7 @@ namespace Gizmosbuy.BAL.Repository
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<Object> GetRawData(IDateRange dateRange, IPager pager)
+        public async Task<object> GetRawData(IDateRange dateRange, IPager pager)
         {
             try
             {
@@ -31,8 +31,10 @@ namespace Gizmosbuy.BAL.Repository
                 int start = pager.PageStart;
                 int length = pager.PageLength;
                 string searchValue = pager.SearchValue ?? "";
+                string columnName = pager.ColumnName ?? "";
+                string sortDirection = pager.SortDirection ?? "";
 
-                List<spGetRawDataResult> mainData = null;
+                IList<spGetRawDataResult> mainData = null;
 
                 if (searchValue != "")
                 {
@@ -41,6 +43,12 @@ namespace Gizmosbuy.BAL.Repository
                 else
                 {
                     mainData = rawDataResults;
+                }
+
+                // Apply sorting
+                if (!string.IsNullOrEmpty(columnName))
+                {
+                    mainData = mainData.OrderByDynamic(columnName, sortDirection).ToList();
                 }
 
                 if (mainData != null && mainData.Count > 0)
@@ -173,7 +181,7 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<Object> GetStoreTransferRawData(int searchLocationId, IPager pager)
+        public async Task<object> GetStoreTransferRawData(int searchLocationId, IPager pager)
         {
             try
             {
@@ -182,6 +190,8 @@ namespace Gizmosbuy.BAL.Repository
                 int start = pager.PageStart;
                 int length = pager.PageLength;
                 string searchValue = pager.SearchValue ?? "";
+                string columnName = pager.ColumnName ?? "";
+                string sortDirection = pager.SortDirection ?? "";
 
                 IEnumerable<object> mainData = null;
 
@@ -192,6 +202,12 @@ namespace Gizmosbuy.BAL.Repository
                 else
                 {
                     mainData = rawDataResults;
+                }
+
+                // Apply sorting
+                if (!string.IsNullOrEmpty(columnName))
+                {
+                    mainData = mainData.OrderByDynamic(columnName, sortDirection);
                 }
 
                 if (mainData != null && mainData.Any())
@@ -233,7 +249,7 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<Object> GetStoreTransferPaymentSummary(int searchLocationId, IPager pager)
+        public async Task<object> GetStoreTransferPaymentSummary(int searchLocationId, IPager pager)
         {
             try
             {
@@ -242,6 +258,8 @@ namespace Gizmosbuy.BAL.Repository
                 int start = pager.PageStart;
                 int length = pager.PageLength;
                 string searchValue = pager.SearchValue ?? "";
+                string columnName = pager.ColumnName ?? "";
+                string sortDirection = pager.SortDirection ?? "";
 
                 IEnumerable<object> mainData = null;
 
@@ -252,6 +270,12 @@ namespace Gizmosbuy.BAL.Repository
                 else
                 {
                     mainData = rawDataResults;
+                }
+
+                // Apply sorting
+                if (!string.IsNullOrEmpty(columnName))
+                {
+                    mainData = mainData.OrderByDynamic(columnName, sortDirection);
                 }
 
                 if (mainData != null && mainData.Any())
@@ -293,7 +317,7 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<Object> GetStoreTransferCalculation(int searchLocationId)
+        public async Task<object> GetStoreTransferCalculation(int searchLocationId)
         {
             try
             {
