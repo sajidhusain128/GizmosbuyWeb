@@ -341,6 +341,12 @@ namespace Gizmosbuy.BAL.Repository
                     {
                         Label = "Total Bill",
                         TotalPrice = g.Sum(y => y.p.Quantity * y.st.SellingPrice) ?? 0
+                    })
+                    .GroupBy(x => x.Label)
+                    .Select(g => new
+                    {
+                        Label = g.Key,
+                        TotalPrice = g.Sum(y => y.TotalPrice)
                     }).FirstOrDefaultAsync();
 
 

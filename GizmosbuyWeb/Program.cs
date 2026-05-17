@@ -5,6 +5,7 @@ using FastReport;
 using FastReport.Export.PdfSimple;
 using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.BAL.Repository;
+using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
@@ -118,7 +119,7 @@ namespace GizmosbuyWeb
 
                 builder.Services.AddCors(options =>
                 {
-                    options.AddPolicy("MyPolicy",
+                    options.AddPolicy(Constant.MyPolicy,
                         builder =>
                         {
                             builder.WithOrigins(webConfiguration.Issuer)
@@ -163,7 +164,7 @@ namespace GizmosbuyWeb
                 app.UseAuthorization();
                 app.UseSession();
 
-                app.UseCors("MyPolicy");
+                app.UseCors(Constant.MyPolicy);
 
                 app.MapGet("/", async context =>
                 {
@@ -183,10 +184,12 @@ namespace GizmosbuyWeb
 
                     if (string.IsNullOrEmpty(userId) && !context.Request.Path.Value.Contains("/Auth/Login"))
                     {
+                        await context.Request.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                        context.Request.HttpContext.Session.Clear();
                         context.Response.Redirect("/Auth/Login", permanent: true);
                         return;
                     }
-                    await next.Invoke();
+                    await next();
                 });
 
 

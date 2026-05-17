@@ -1880,15 +1880,15 @@ function SendWhatsAppReport(invoiceNo) {
         showLoader();
 
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: '/Sales/SendWhatsAppSalesReport?invoiceNo=' + invoiceNo,
             //async: true,
             success: function (response) {
-                if (response.body != "" && response.customerName != "" && response.body.trim().includes(response.customerName.trim())) {
+                if (response != "" && response.trim().startsWith("Dear Sir")) {
                     SuccessToast("Report send to whatsapp successfully.");
                 }
                 else {
-                    WarningToast(response.body);
+                    WarningToast(response);
                 }
                 hideLoader();
             },

@@ -212,5 +212,15 @@ namespace Gizmosbuy.BAL.Commons
 
             return string.Join(" ", parts).Trim();
         }
+
+        public static string GetLast10Characters(string input)
+        {
+            if (string.IsNullOrEmpty(input) || input.Length <= 10)
+            {
+                return input;
+            }
+            // Starts 10 characters from the end and continues to the end of the string.
+            return input.Substring(input.Length - 10);
+        }
     }
 }

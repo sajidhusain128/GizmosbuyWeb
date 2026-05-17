@@ -1,4 +1,5 @@
-﻿using Gizmosbuy.BAL.Interfaces;
+﻿using Gizmosbuy.BAL.Commons;
+using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
@@ -176,13 +177,11 @@ namespace Gizmosbuy.BAL.Repository
                     }
                     var url = Path.Combine(webConfiguration.Issuer, "TempFiles/", fileName);
 
-
-
                     if (!string.IsNullOrEmpty(whatsAppSettings.ContentSid))
                     {
                         var contentVariables = new Dictionary<string, string>
                         {
-                            { "1", CustomerName },
+                            { "1", Utilities.GetLast10Characters(whatsAppSettings.SenderNumber) },
                             { "2", url }
                         };
 
@@ -202,7 +201,7 @@ namespace Gizmosbuy.BAL.Repository
                             to: new PhoneNumber($"whatsapp:{CustomerNumber}"),  // Your verified WhatsApp number
                             body: bodyMessage,
                             mediaUrl: new List<Uri> {
-                            new Uri(url) // Publicly accessible PDF URL
+                                new Uri(url) // Publicly accessible PDF URL
                             }
                         );
                     }

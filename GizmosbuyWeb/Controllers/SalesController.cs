@@ -33,6 +33,7 @@ namespace Gizmosbuy.Web.Controllers
             _whatsAppSettings = whatsAppSettings.Value;
         }
 
+        [HttpGet]
         [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public IActionResult Index()
         {
@@ -356,7 +357,7 @@ namespace Gizmosbuy.Web.Controllers
 
         }
 
-        [HttpGet]
+        [HttpPost]
         [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public async Task<IActionResult> SendWhatsAppSalesReport(string invoiceNo)
         {
@@ -377,13 +378,13 @@ namespace Gizmosbuy.Web.Controllers
 
                     Console.WriteLine($"Message Response: {whatsAppResponse}");
 
-                    var jsonResponse = new { Body = whatsAppResponse, CustomerName = customerName };
+                    var jsonResponse = whatsAppResponse; //new { Body = whatsAppResponse, CustomerName = customerName };
 
                     return Json(jsonResponse);
                 }
                 else
                 {
-                    var jsonResponse = new { Body = "No data found to generate report.", CustomerName = string.Empty };
+                    var jsonResponse = "No data found to generate report.";
                     return Json(jsonResponse);
                 }
             }
