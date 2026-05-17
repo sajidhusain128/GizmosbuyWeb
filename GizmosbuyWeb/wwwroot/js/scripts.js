@@ -888,6 +888,7 @@ function getPurchaseRecordInSales(purchaseId) {
                     if ($('#tblSalesTemp').DataTable().rows().any()) {
                         var rowData = $('#tblSalesTemp').DataTable().data();
                         if (rowData.length > 0) {
+                            $('#txtSellDate').datepicker("setDate", localDateFormat(rowData[0].sellingDate, "dd/mm/yyyy"));
                             $('#txtPayMode').val(rowData[0].paymentMode);
                             $('#txtSellLead').val(rowData[0].sellingLead);
                             $('#txtCustomerName').val(rowData[0].customerName);
