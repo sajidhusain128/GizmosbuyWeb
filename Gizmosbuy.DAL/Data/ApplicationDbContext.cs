@@ -52,7 +52,7 @@ public partial class ApplicationDbContext : DbContext
     {
         modelBuilder.Entity<ApprovalStatus>(entity =>
         {
-            entity.HasKey(e => e.ApprovalStatusId).HasName("PK__Approval__08E52618BFB6C76F");
+            entity.HasKey(e => e.ApprovalStatusId).HasName("PK__Approval__08E526186E44873D");
 
             entity.ToTable("ApprovalStatus");
 
@@ -66,7 +66,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<BrandMaster>(entity =>
         {
-            entity.HasKey(e => e.BrandId).HasName("PK__Brands__DAD4F3BEF9920761");
+            entity.HasKey(e => e.BrandId).HasName("PK__BrandMas__DAD4F3BE931E82F1");
 
             entity.ToTable("BrandMaster");
 
@@ -79,7 +79,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<CategoryMaster>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Categori__19093A2B0B896D14");
+            entity.HasKey(e => e.CategoryId).HasName("PK__Category__19093A2B61924B4F");
 
             entity.ToTable("CategoryMaster");
 
@@ -92,7 +92,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<LocationMaster>(entity =>
         {
-            entity.HasKey(e => e.LocationId).HasName("PK__Location__E7FEA47731190052");
+            entity.HasKey(e => e.LocationId).HasName("PK__Location__E7FEA4773383BD19");
 
             entity.ToTable("LocationMaster");
 
@@ -111,7 +111,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<PaymentModeMaster>(entity =>
         {
-            entity.HasKey(e => e.PaymentModeId).HasName("PK__PaymentM__F9599529B52ED2C4");
+            entity.HasKey(e => e.PaymentModeId).HasName("PK__PaymentM__F9599529FF755D83");
 
             entity.ToTable("PaymentModeMaster");
 
@@ -124,7 +124,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Purchase>(entity =>
         {
-            entity.HasKey(e => e.PurchaseId).HasName("PK__Purchase__6B0A6BDEA237620C");
+            entity.HasKey(e => e.PurchaseId).HasName("PK__Purchase__6B0A6BDE0A02B6F9");
 
             entity.Property(e => e.PurchaseId).HasColumnName("PurchaseID");
             entity.Property(e => e.BrandId).HasColumnName("BrandID");
@@ -155,7 +155,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<Sale>(entity =>
         {
-            entity.HasKey(e => e.SalesId).HasName("PK__Sales__C952FB12FCB88CDF");
+            entity.HasKey(e => e.SalesId).HasName("PK__Sales__C952FB12ED980652");
 
             entity.Property(e => e.SalesId).HasColumnName("SalesID");
             entity.Property(e => e.BillNo)
@@ -182,12 +182,12 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Purchase).WithMany(p => p.Sales)
                 .HasForeignKey(d => d.PurchaseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Sales__PurchaseI__625A9A57");
+                .HasConstraintName("FK__Sales__PurchaseI__6FE99F9F");
         });
 
         modelBuilder.Entity<SalesDeleted>(entity =>
         {
-            entity.HasKey(e => e.SalesId).HasName("PK__Sales_De__C952FB120906A4E2");
+            entity.HasKey(e => e.SalesId).HasName("PK__Sales_De__C952FB120AD79327");
 
             entity.ToTable("Sales_Deleted");
 
@@ -215,7 +215,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<SalesJournal>(entity =>
         {
-            entity.HasKey(e => e.SalesJournalId).HasName("PK__SalesJou__4F0AA0A12BFE71EB");
+            entity.HasKey(e => e.SalesJournalId).HasName("PK__SalesJou__295F7548490BE830");
 
             entity.ToTable("SalesJournal");
 
@@ -226,12 +226,12 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Sales).WithMany(p => p.SalesJournals)
                 .HasForeignKey(d => d.SalesId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__SalesJour__Sales__662B2B3B");
+                .HasConstraintName("FK__SalesJour__Sales__70DDC3D8");
         });
 
         modelBuilder.Entity<SalesJournalDeleted>(entity =>
         {
-            entity.HasKey(e => e.SalesJournalId).HasName("PK__SalesJou__295F7548F0519562");
+            entity.HasKey(e => e.SalesJournalId).HasName("PK__SalesJou__295F75486A62F071");
 
             entity.ToTable("SalesJournal_Deleted");
 
@@ -242,12 +242,12 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Sales).WithMany(p => p.SalesJournalDeleteds)
                 .HasForeignKey(d => d.SalesId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__SalesJour__Sales__15702A09");
+                .HasConstraintName("FK__SalesJour__Sales__71D1E811");
         });
 
         modelBuilder.Entity<StoreReturnItemNotification>(entity =>
         {
-            entity.HasKey(e => e.StoreReturnItemNotificationId).HasName("PK__StoreRet__12C6C6B008B4185F");
+            entity.HasKey(e => e.StoreReturnItemNotificationId).HasName("PK__StoreRet__12C6C6B0C2E9BF23");
 
             entity.ToTable("StoreReturnItemNotification");
 
@@ -269,7 +269,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<StoreTransfer>(entity =>
         {
-            entity.HasKey(e => e.StoreTransferId).HasName("PK__StoreTra__70452446291E27A2");
+            entity.HasKey(e => e.StoreTransferId).HasName("PK__StoreTra__704524462B433AF0");
 
             entity.ToTable("StoreTransfer");
 
@@ -294,7 +294,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<TempSale>(entity =>
         {
-            entity.HasKey(e => e.TempSalesId).HasName("PK__TempSale__C508D4FF54F286A8");
+            entity.HasKey(e => e.TempSalesId).HasName("PK__TempSale__C508D4FFD6B2A8EC");
 
             entity.Property(e => e.TempSalesId).HasColumnName("TempSalesID");
             entity.Property(e => e.BillNo)
@@ -322,12 +322,12 @@ public partial class ApplicationDbContext : DbContext
             entity.HasOne(d => d.Purchase).WithMany(p => p.TempSales)
                 .HasForeignKey(d => d.PurchaseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__TempSales__Purch__0880433F");
+                .HasConstraintName("FK__TempSales__Purch__74AE54BC");
         });
 
         modelBuilder.Entity<TempStoreTransfer>(entity =>
         {
-            entity.HasKey(e => e.TempStoreTransferId).HasName("PK__TempStor__881056733EFB2992");
+            entity.HasKey(e => e.TempStoreTransferId).HasName("PK__TempStor__88105673E839A0C9");
 
             entity.ToTable("TempStoreTransfer");
 
@@ -352,7 +352,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<TransferPayment>(entity =>
         {
-            entity.HasKey(e => e.TransferPaymentId).HasName("PK__Transfer__3923068B6B1C2081");
+            entity.HasKey(e => e.TransferPaymentId).HasName("PK__Transfer__3923068B7E4CCB52");
 
             entity.ToTable("TransferPayment");
 
@@ -373,7 +373,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<UserLocationMapping>(entity =>
         {
-            entity.HasKey(e => e.UserLocationMappingId).HasName("PK__UserLoca__DA68405D35755DCA");
+            entity.HasKey(e => e.UserLocationMappingId).HasName("PK__UserLoca__DA68405D26CB8BCB");
 
             entity.ToTable("UserLocationMapping");
 
@@ -392,7 +392,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<UserMaster>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CCAC7980290B");
+            entity.HasKey(e => e.UserId).HasName("PK__UserMast__1788CCAC20B98BDB");
 
             entity.ToTable("UserMaster");
 
@@ -406,8 +406,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.LocationId).HasColumnName("LocationID");
             entity.Property(e => e.Password)
                 .HasMaxLength(100)
-                .IsUnicode(false)
-                .UseCollation("SQL_Latin1_General_CP1_CS_AS");
+                .IsUnicode(false);
             entity.Property(e => e.UserName)
                 .HasMaxLength(50)
                 .IsUnicode(false);

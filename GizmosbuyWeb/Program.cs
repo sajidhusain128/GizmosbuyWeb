@@ -37,6 +37,8 @@ namespace GizmosbuyWeb
 
                 var builder = WebApplication.CreateBuilder(args);
 
+                builder.Configuration.AddEnvironmentVariables();
+
                 var cultureInfo = new CultureInfo("en-IN");
                 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
                 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
@@ -48,7 +50,7 @@ namespace GizmosbuyWeb
                 {
                     throw new InvalidOperationException("WebConfiguration section is missing or invalid in the configuration.");
                 }
-                var connectionString = webConfiguration.ConnectionStrings;
+                var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); // webConfiguration.ConnectionStrings;
 
                 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
@@ -110,12 +112,12 @@ namespace GizmosbuyWeb
 
                 builder.Services.AddAuthorization();
 
-                builder.Services.AddApiVersioning(options =>
-                {
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.ReportApiVersions = true;
-                });
+                //builder.Services.AddApiVersioning(options =>
+                //{
+                //    options.DefaultApiVersion = new ApiVersion(1, 0);
+                //    options.AssumeDefaultVersionWhenUnspecified = true;
+                //    options.ReportApiVersions = true;
+                //});
 
                 builder.Services.AddCors(options =>
                 {

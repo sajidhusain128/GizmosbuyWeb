@@ -23,15 +23,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                DataTable SearlNoDataTable = new DataTable();
-                SearlNoDataTable.Columns.Add("SerialNo", typeof(string));
-                if (purchaseModel.SerialNos != null && purchaseModel.SerialNos.Count > 0)
-                {
-                    foreach (var serialNo in purchaseModel.SerialNos)
-                    {
-                        SearlNoDataTable.Rows.Add(serialNo);
-                    }
-                }
+                IEnumerable<SerialNoListType> serialNoList = purchaseModel.SerialNos != null && purchaseModel.SerialNos.Any() 
+                    ? purchaseModel.SerialNos.Select(s => new SerialNoListType { Value = s }) 
+                    : new List<SerialNoListType>();
 
                 int purchaseLocationID = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
@@ -39,7 +33,7 @@ namespace Gizmosbuy.BAL.Repository
                 var i = await _applicationDbContext.Procedures.spSavePurchaseAsync(
                     purchaseModel.PurchaseId,
                     purchaseModel.SerialNo,
-                    SearlNoDataTable,
+                    serialNoList,
                     purchaseModel.PurchaseDate,
                     purchaseModel.CategoryId,
                     purchaseModel.BrandId,
@@ -170,15 +164,14 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                DataTable SearlNoDataTable = new DataTable();
-                SearlNoDataTable.Columns.Add("SerialNo", typeof(string));
+                IEnumerable<SerialNoListType> serialNoList = new List<SerialNoListType>();
 
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
                 var parameterreturnValue = new OutputParameter<int?>();
                 var i = await _applicationDbContext.Procedures.spSavePurchaseAsync(
                     purchaseModel.PurchaseId,
                     purchaseModel.SerialNo,
-                    SearlNoDataTable,
+                    serialNoList,
                     purchaseModel.PurchaseDate,
                     purchaseModel.CategoryId,
                     purchaseModel.BrandId,

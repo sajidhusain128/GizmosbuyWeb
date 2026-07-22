@@ -11,12 +11,10 @@ namespace Gizmosbuy.Web.Controllers
     public class StoreController : Controller
     {
         private readonly IStoreTransferBL _storeTransferBL;
-        private readonly ISalesBL _salesBL;
         private readonly ICommonBL _commonBL;
-        public StoreController(IStoreTransferBL storeTransferBL, ISalesBL salesBL, ICommonBL commonBL)
+        public StoreController(IStoreTransferBL storeTransferBL, ICommonBL commonBL)
         {
             _storeTransferBL = storeTransferBL;
-            _salesBL = salesBL;
             _commonBL = commonBL;
         }
 
@@ -49,7 +47,7 @@ namespace Gizmosbuy.Web.Controllers
                     //TempData["LocationModel"] = locationModel;
                 }
 
-                string newBillNo = await _salesBL.GenerateNewBillNo();
+                string newBillNo = await _storeTransferBL.GenerateStoreTransferNewBillNo();
                 ViewBag.NewBillNo = newBillNo;
 
                 return View();

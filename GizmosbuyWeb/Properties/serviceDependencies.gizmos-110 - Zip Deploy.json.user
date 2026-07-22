@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "apis1": {
+      "restored": true,
+      "restoreTime": "2026-07-01T19:45:03.0190187Z"
+    },
+    "mssql1": {
+      "restored": true,
+      "restoreTime": "2026-07-01T19:53:52.4155475Z"
+    }
+  },
+  "parameters": {
+    "mssql1.subscriptionId": {
+      "Name": "mssql1.subscriptionId",
+      "Type": "subscription",
+      "Value": "3bc1e34f-e69d-466f-965d-00479d9a6664"
+    },
+    "mssql1.resourceGroupName": {
+      "Name": "mssql1.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "gizmosbuy-Group"
+    },
+    "mssql1.serviceConnectorResourceGroupName": {
+      "Name": "mssql1.serviceConnectorResourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "gizmosbuy-Group"
+    }
+  }
+}

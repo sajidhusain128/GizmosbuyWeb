@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +18,7 @@ namespace Gizmosbuy.DAL.Data
         Task<int> spDeleteSalesByInvoiceAsync(string invoiceNo, int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> spDeleteStoreTransferByPurchaseIdAsync(string invoiceNo, int? purchaseId, int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetInvoiceDetailsResult>> spGetInvoiceDetailsAsync(string invoiceNo, int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<List<spGetLastSalesBillNoResult>> spGetLastSalesBillNoAsync(string billPrefix, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<spGetLastSalesBillNoResult>> spGetLastSalesBillNoAsync(string billPrefix, string salesType, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetPurchaseByIDResult>> spGetPurchaseByIDAsync(int? purchaseID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetPurchaseListResult>> spGetPurchaseListAsync(int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<List<spGetPurchaseSummaryDataResult>> spGetPurchaseSummaryDataAsync(int? locationId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
@@ -41,7 +43,7 @@ namespace Gizmosbuy.DAL.Data
         Task<List<spGetValidateLoginResult>> spGetValidateLoginAsync(string userName, string password, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> spInsertSalesDeletedAsync(string invoiceNo, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> spInsertTransferSalesDeletedAsync(int? sales, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
-        Task<int> spSavePurchaseAsync(int? purchaseID, string serialNo, DataTable serialList, DateTime? purchaseDate, int? categoryID, int? brandID, string model, string specifications, decimal? purchasePrice, int? quantity, decimal? upgradePrice, decimal? totalPrice, string paymentMode, string buyingLead, int? purchaseLocationID, int? transactionBy, DateTime? transactionDate, string purchaseType, OutputParameter<int?> result, OutputParameter<int?> idenityValue, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
+        Task<int> spSavePurchaseAsync(int? purchaseID, string serialNo, IEnumerable<SerialNoListType> serialList, DateTime? purchaseDate, int? categoryID, int? brandID, string model, string specifications, decimal? purchasePrice, int? quantity, decimal? upgradePrice, decimal? totalPrice, string paymentMode, string buyingLead, int? purchaseLocationID, int? transactionBy, DateTime? transactionDate, string purchaseType, OutputParameter<int?> result, OutputParameter<int?> idenityValue, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> spSaveSalesAsync(int? salesID, int? purchaseID, DateTime? sellingDate, decimal? sellingPrice, int? sellingQuantity, string paymentMode, string sellingLead, string customerName, long? contactNo, string location, string billNo, int? createdBy, DateTime? createdDate, int? modifiedBy, DateTime? modifiedDate, string actionType, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> spSaveStoreTransferAsync(int? storeTransferID, int? purchaseID, DateTime? transferDate, decimal? sellingPrice, int? sellingQuantity, int? fromLocationID, int? toLocationId, string billNo, int? transferPurchaseID, int? createdBy, DateTime? createdDate, int? modifiedBy, DateTime? modifiedDate, string actionType, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);
         Task<int> spSaveTempSalesAsync(int? tempSalesId, int? purchaseID, DateTime? sellingDate, decimal? sellingPrice, int? purchaseQuantity, int? sellingQuantity, string paymentMode, string sellingLead, string customerName, long? contactNo, string location, string billNo, int? createdBy, DateTime? createdDate, int? modifiedBy, DateTime? modifiedDate, string actionType, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default);

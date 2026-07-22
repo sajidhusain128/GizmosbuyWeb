@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -148,7 +150,7 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<List<spGetLastSalesBillNoResult>> spGetLastSalesBillNoAsync(string billPrefix, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetLastSalesBillNoResult>> spGetLastSalesBillNoAsync(string billPrefix, string salesType, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -166,9 +168,16 @@ namespace Gizmosbuy.DAL.Data
                     Value = billPrefix ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.VarChar,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "SalesType",
+                    Size = 50,
+                    Value = salesType ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetLastSalesBillNoResult>("EXEC @returnValue = [dbo].[spGetLastSalesBillNo] @BillPrefix = @BillPrefix", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetLastSalesBillNoResult>("EXEC @returnValue = [dbo].[spGetLastSalesBillNo] @BillPrefix = @BillPrefix, @SalesType = @SalesType", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
@@ -862,7 +871,7 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<int> spSavePurchaseAsync(int? purchaseID, string serialNo, DataTable serialList, DateTime? purchaseDate, int? categoryID, int? brandID, string model, string specifications, decimal? purchasePrice, int? quantity, decimal? upgradePrice, decimal? totalPrice, string paymentMode, string buyingLead, int? purchaseLocationID, int? transactionBy, DateTime? transactionDate, string purchaseType, OutputParameter<int?> result, OutputParameter<int?> idenityValue, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<int> spSavePurchaseAsync(int? purchaseID, string serialNo, IEnumerable<SerialNoListType> serialList, DateTime? purchaseDate, int? categoryID, int? brandID, string model, string specifications, decimal? purchasePrice, int? quantity, decimal? upgradePrice, decimal? totalPrice, string paymentMode, string buyingLead, int? purchaseLocationID, int? transactionBy, DateTime? transactionDate, string purchaseType, OutputParameter<int?> result, OutputParameter<int?> idenityValue, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterresult = new SqlParameter
             {
@@ -903,7 +912,7 @@ namespace Gizmosbuy.DAL.Data
                 new SqlParameter
                 {
                     ParameterName = "SerialList",
-                    Value = serialList ?? Convert.DBNull,
+                    Value = serialList == null ? Convert.DBNull : ToDataTable(serialList) ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Structured,
                     TypeName = "[dbo].[SerialNoListType]",
                 },
@@ -1489,6 +1498,34 @@ namespace Gizmosbuy.DAL.Data
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
+        }
+
+        private static DataTable ToDataTable<T>(IEnumerable<T> items)
+        {
+            var dataTable = new DataTable();
+            var properties = typeof(T).GetProperties();
+
+            foreach (var prop in properties)
+            {
+                var propertyType = prop.PropertyType;
+                if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    propertyType = Nullable.GetUnderlyingType(propertyType);
+                }
+                dataTable.Columns.Add(prop.Name, propertyType);
+            }
+
+            foreach (var item in items)
+            {
+                var values = new object[properties.Length];
+                for (int i = 0; i < properties.Length; i++)
+                {
+                    values[i] = properties[i].GetValue(item) ?? DBNull.Value;
+                }
+                dataTable.Rows.Add(values);
+            }
+
+            return dataTable;
         }
     }
 }

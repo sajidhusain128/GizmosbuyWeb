@@ -293,7 +293,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 string billNo = string.Empty;
 
-                var lastBillNo = await _applicationDbContext.Procedures.spGetLastSalesBillNoAsync(prefix);
+                var lastBillNo = await _applicationDbContext.Procedures.spGetLastSalesBillNoAsync(prefix,"Sales");
 
                 if (lastBillNo != null && lastBillNo.Count > 0)
                 {

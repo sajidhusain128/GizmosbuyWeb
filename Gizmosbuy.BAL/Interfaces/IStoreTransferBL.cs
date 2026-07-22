@@ -24,5 +24,6 @@ namespace Gizmosbuy.BAL.Interfaces
         Task<int> TransferPaymentStausUpdate(int id, string type);
         Task<ITransferPaymentModel> GetTransferPaymentByID(int id);
         Task<int> UpdateTransferPayment(TransferPaymentModel transferPaymentModel);
+        Task<string> GenerateStoreTransferNewBillNo();
     }
 }

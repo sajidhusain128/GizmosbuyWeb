@@ -1,0 +1,30 @@
+﻿version: '3.8'
+
+services:
+  gizmosbuyweb:
+    image: gizmosbuyweb:latest        # Custom image name for your app
+    build:
+      context: .
+      dockerfile: Dockerfile          # Make sure your project has a Dockerfile
+    ports:
+      - "8080:8082"                     # Expose app on host port 8080
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DOTNET_USE_POLLING_FILE_WATCHER=true
+      - AppSettings__DefaultConnection=data source=LAPTOP-83UG5CR5;Initial Catalog=Gizmosbuy;Integrated Security=True;TrustServerCertificate=True;
+    restart: always
+    depends_on:
+      - sqlserver
+
+  # Optional: SQL Server container for local dev/test
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Gizmosbuy@321
+    restart: always
+    networks:
+      - gizmosnet

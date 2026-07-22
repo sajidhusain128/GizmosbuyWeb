@@ -83,12 +83,12 @@ namespace Gizmosbuy.BAL.Commons
             }
         }
 
-        public static string GenerateBillNo(string prefixValue, string value)
+        public static string GenerateBillNo(string preFixValue, string value)
         {
             try
             {
                 string output = "";
-                string prefix = string.IsNullOrWhiteSpace(prefixValue) ? "" : prefixValue;
+                string prefix = string.IsNullOrWhiteSpace(preFixValue) ? "" : preFixValue;
 
                 if (string.IsNullOrWhiteSpace(value))
                 {
@@ -99,21 +99,41 @@ namespace Gizmosbuy.BAL.Commons
                     string stringNumber = value.Replace(prefix, "");
                     int num = Convert.ToInt32(stringNumber);
 
-                    switch (stringNumber.Length)
-                    {
-                        case 4:
-                            output = (++num).ToString("0000");
-                            break;
-                        case 5:
-                            output = (++num).ToString("00000");
-                            break;
-                        default:
-                            output = (++num).ToString();
-                            break;
-                    }
+                    string str = new string('0', stringNumber.Length);
+                    output = num > 0 ? (++num).ToString(str) : (++num).ToString();
                 }
 
                 output = prefix + output;
+
+                return output;
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+        public static string GenerateStoreTransferBillNo(string preFixValue, string value, string postFixValue)
+        {
+            try
+            {
+                string output = "";
+                string prefix = string.IsNullOrWhiteSpace(preFixValue) ? "" : preFixValue;
+
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return prefix + "0001" + postFixValue;
+                }
+                else
+                {
+                    string stringNumber = value.Replace(prefix, "").Replace(postFixValue, "");
+                    int num = Convert.ToInt32(stringNumber);
+
+                    string str = new string('0', stringNumber.Length);
+                    output = num > 0 ? (++num).ToString(str) : (++num).ToString();
+                }
+
+                output = prefix + output + postFixValue;
 
                 return output;
             }

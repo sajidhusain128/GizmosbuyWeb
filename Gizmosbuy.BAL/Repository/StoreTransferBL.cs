@@ -163,13 +163,12 @@ namespace Gizmosbuy.BAL.Repository
                         var parameterreturnValue = new OutputParameter<int?>();
                         var parameterreturnValue2 = new OutputParameter<int?>();
 
-                        DataTable SearlNoDataTable = new DataTable();
-                        SearlNoDataTable.Columns.Add("SerialNo", typeof(string));
+                        IEnumerable<SerialNoListType> serialNoList = new List<SerialNoListType>();
 
                         var j = await _applicationDbContext.Procedures.spSavePurchaseAsync(
                             0,
                             purchaseModel.SerialNo,
-                            SearlNoDataTable,
+                            serialNoList,
                             purchaseModel.PurchaseDate,
                             purchaseModel.CategoryId,
                             purchaseModel.BrandId,
@@ -873,6 +872,37 @@ namespace Gizmosbuy.BAL.Repository
                 {
                     return 0;
                 }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> GenerateStoreTransferNewBillNo()
+        {
+            try
+            {
+                string sessionLocation = Utilities.GetSessionValue("Location", _httpContextAccessor.HttpContext);
+
+                var prefix = _applicationDbContext.LocationMasters.Where(x => x.LocationName == sessionLocation).FirstOrDefault().LocationCode;
+
+                prefix = string.IsNullOrWhiteSpace(prefix) ? "JGS" : prefix;
+
+                string billNo = string.Empty;
+
+                var lastBillNo = await _applicationDbContext.Procedures.spGetLastSalesBillNoAsync(prefix, "StoreTransfer");
+
+                if (lastBillNo != null && lastBillNo.Count > 0)
+                {
+                    billNo = Utilities.GenerateStoreTransferBillNo(prefix, lastBillNo.FirstOrDefault().BillNo, "ST");
+                }
+                else
+                {
+                    billNo = Utilities.GenerateStoreTransferBillNo(prefix, "", "ST");
+                }
+
+                return await Task.FromResult(billNo);
             }
             catch (Exception)
             {
