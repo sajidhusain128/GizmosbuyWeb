@@ -235,3 +235,14 @@
 /GizmosbuyWeb/obj/Gizmosbuy.Web.csproj.nuget.g.targets
 *.g.props
 *.g.targets
+/Gizmosbuy.BAL/bin
+/Gizmosbuy.BAL/obj
+/Gizmosbuy.Core/bin
+/Gizmosbuy.Core/obj
+/Gizmosbuy.DAL/bin
+/Gizmosbuy.DAL/obj
+/Gizmosbuy.DAL/obj/Gizmosbuy.DAL.csproj.nuget.g.targets
+/GizmosbuyWeb/bin
+/.vs/GizmosbuyWeb/v18
+/Gizmosbuy.DAL/obj/Gizmosbuy.DAL.csproj.nuget.g.targets
+/Gizmosbuy.DAL/obj/Gizmosbuy.DAL.csproj.nuget.g.targets
