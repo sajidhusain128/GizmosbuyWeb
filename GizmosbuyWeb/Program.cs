@@ -48,7 +48,7 @@ namespace GizmosbuyWeb
                 {
                     throw new InvalidOperationException("WebConfiguration section is missing or invalid in the configuration.");
                 }
-                var connectionString = webConfiguration.ConnectionStrings;
+                var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); // webConfiguration.ConnectionStrings;
 
                 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
@@ -71,6 +71,7 @@ namespace GizmosbuyWeb
                 builder.Services.AddScoped<IInventoryBL, InventoryBL>();
                 builder.Services.AddScoped<IStoreTransferBL, StoreTransferBL>();
                 builder.Services.AddScoped<IMasterBL, MasterBL>();
+                builder.Services.AddScoped<IFinanceBL, FinanceBL>();
                 builder.Services.AddScoped<IWebConfiguration, WebConfiguration>();
                 builder.Services.AddScoped<IWhatsAppSettings, WhatsAppSettings>();
                 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -102,20 +103,20 @@ namespace GizmosbuyWeb
                     {
                         options.Cookie.Name = "MyCookieAuth";
                         options.LoginPath = "/Auth/Login";
-                        options.LogoutPath = "/Auth/Logout";
-                        options.AccessDeniedPath = "/Auth/AccessDenied";
+                        //options.LogoutPath = "/Auth/Logout";
+                        options.AccessDeniedPath = "/Error/UnauthorizedAccess";
                         options.ExpireTimeSpan = TimeSpan.FromMinutes(webConfiguration.SesssionTimeoutMinutes);
                         options.SlidingExpiration = true;
                     });
 
                 builder.Services.AddAuthorization();
 
-                builder.Services.AddApiVersioning(options =>
-                {
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.ReportApiVersions = true;
-                });
+                //builder.Services.AddApiVersioning(options =>
+                //{
+                //    options.DefaultApiVersion = new ApiVersion(1, 0);
+                //    options.AssumeDefaultVersionWhenUnspecified = true;
+                //    options.ReportApiVersions = true;
+                //});
 
                 builder.Services.AddCors(options =>
                 {
@@ -145,7 +146,8 @@ namespace GizmosbuyWeb
                 // Configure the HTTP request pipeline.
                 if (!app.Environment.IsDevelopment())
                 {
-                    app.UseExceptionHandler("/Shared/Error");
+                    app.UseExceptionHandler("/Error/InternalServerError");
+                    app.UseStatusCodePagesWithReExecute("/Error/Index", "?statusCode={0}");
                     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                     app.UseHsts();
                 }

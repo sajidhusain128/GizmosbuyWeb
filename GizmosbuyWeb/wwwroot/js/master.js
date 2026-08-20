@@ -9,6 +9,10 @@ $(document).ready(function () {
         }
     });
 
+    $("#btnExportUserPassword").click(function () {
+        location.href = "/Master/UserPasswordExportExcel?Search=" + tableUserPassword.search();
+    })
+
 });
 function maskPassword(password) {
     if (password && typeof password === 'string') {

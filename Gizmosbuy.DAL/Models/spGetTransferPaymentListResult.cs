@@ -19,5 +19,7 @@ namespace Gizmosbuy.DAL.Models
         [StringLength(100)]
         public string ToLocation { get; set; }
         public bool? IsApproved { get; set; }
+        [StringLength(8)]
+        public string ApprovedStatus { get; set; }
     }
 }

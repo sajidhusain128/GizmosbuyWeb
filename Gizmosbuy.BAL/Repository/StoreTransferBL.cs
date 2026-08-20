@@ -71,13 +71,13 @@ namespace Gizmosbuy.BAL.Repository
 
                 var tempStoreList = await _applicationDbContext.Procedures.spGetTempStoreTransferListAsync(sessionUserId);
 
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
 
                 List<spGetTempStoreTransferListResult> mainData = null;
 
                 if (searchValue != "")
                 {
-                    mainData = tempStoreList.Where(Utilities.GetSearchValue<spGetTempStoreTransferListResult>(searchValue)).ToList();
+                    mainData = tempStoreList.Where(Utilities.GetSearchValue<spGetTempStoreTransferListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
                 }
                 else
                 {
@@ -121,25 +121,27 @@ namespace Gizmosbuy.BAL.Repository
                 {
                     foreach (var tempStoreModel in tempStoreModels)
                     {
+                        DateTime currentDateTime = tempStoreModel.TransferDate.GetValueOrDefault().Date + DateTime.Now.TimeOfDay;
+
                         var i = await _applicationDbContext.Procedures.spSaveSalesAsync(0,
                             tempStoreModel.PurchaseId,
-                            tempStoreModel.TransferDate,
+                            currentDateTime,
                             tempStoreModel.SellingPrice,
                             tempStoreModel.SellingQuantity,
                             null,
                             toLocationName.LocationName,
                             null,
                             null,
-                            fromlocation,
+                            toLocationName.LocationName,
                             tempStoreModel.BillNo,
+                            null,
+                            null,
                             tempStoreModel.CreatedBy,
                             tempStoreModel.CreatedDate,
                             null,
                             null,
                             "INSERT",
                             outputParameter);
-
-
 
                         var purchases = await _applicationDbContext.Purchases.Where(x => x.PurchaseId == tempStoreModel.PurchaseId).FirstOrDefaultAsync();
 
@@ -163,13 +165,12 @@ namespace Gizmosbuy.BAL.Repository
                         var parameterreturnValue = new OutputParameter<int?>();
                         var parameterreturnValue2 = new OutputParameter<int?>();
 
-                        DataTable SearlNoDataTable = new DataTable();
-                        SearlNoDataTable.Columns.Add("SerialNo", typeof(string));
+                        IEnumerable<SerialNoListType> serialNoList = new List<SerialNoListType>();
 
                         var j = await _applicationDbContext.Procedures.spSavePurchaseAsync(
                             0,
                             purchaseModel.SerialNo,
-                            SearlNoDataTable,
+                            serialNoList,
                             purchaseModel.PurchaseDate,
                             purchaseModel.CategoryId,
                             purchaseModel.BrandId,
@@ -193,7 +194,7 @@ namespace Gizmosbuy.BAL.Repository
 
                         var i1 = await _applicationDbContext.Procedures.spSaveStoreTransferAsync(0,
                             tempStoreModel.PurchaseId,
-                            tempStoreModel.TransferDate,
+                            currentDateTime,
                             tempStoreModel.SellingPrice,
                             tempStoreModel.SellingQuantity,
                             tempStoreModel.FromLocationId,
@@ -300,17 +301,17 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<object> GetStoreTransferList(IPager pager)
+        public async Task<object> GetStoreTransferList(IPager pager, int searchToLocationId)
         {
             try
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var storeTransferList = await _applicationDbContext.Procedures.spGetStoreTransferListAsync(sessionUserId);
+                var storeTransferList = await _applicationDbContext.Procedures.spGetStoreTransferListAsync(sessionUserId, searchToLocationId);
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
                 string columnName = pager.ColumnName ?? "";
                 string sortDirection = pager.SortDirection ?? "";
 
@@ -318,7 +319,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (searchValue != "")
                 {
-                    mainData = storeTransferList.Where(Utilities.GetSearchValue<spGetStoreTransferListResult>(searchValue)).ToList();
+                    mainData = storeTransferList.Where(Utilities.GetSearchValue<spGetStoreTransferListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
                 }
                 else
                 {
@@ -493,7 +494,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
                 string columnName = pager.ColumnName ?? "";
                 string sortDirection = pager.SortDirection ?? "";
 
@@ -501,7 +502,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (searchValue != "")
                 {
-                    mainData = returnNotifyList.Where(Utilities.GetSearchValue<spGetStoreTransferNotificationListResult>(searchValue));
+                    mainData = returnNotifyList.Where(Utilities.GetSearchValue<spGetStoreTransferNotificationListResult>(searchValue, Constant.GlobalDateFormat));
                 }
                 else
                 {
@@ -624,7 +625,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
                 string columnName = pager.ColumnName ?? "";
                 string sortDirection = pager.SortDirection ?? "";
 
@@ -632,7 +633,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (searchValue != "")
                 {
-                    mainData = returnNotifyList.Where(Utilities.GetSearchValue<object>(searchValue));
+                    mainData = returnNotifyList.Where(Utilities.GetSearchValue<object>(searchValue, Constant.GlobalDateFormat));
                 }
                 else
                 {
@@ -695,15 +696,15 @@ namespace Gizmosbuy.BAL.Repository
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
                 string columnName = pager.ColumnName ?? "";
                 string sortDirection = pager.SortDirection ?? "";
 
-                IEnumerable<object> mainData = null;
+                IEnumerable<spGetTransferPaymentNotificationsListResult> mainData = null;
 
                 if (searchValue != "")
                 {
-                    mainData = returnNotifyList.Where(Utilities.GetSearchValue<object>(searchValue));
+                    mainData = returnNotifyList.Where(Utilities.GetSearchValue<spGetTransferPaymentNotificationsListResult>(searchValue, Constant.GlobalDateFormat));
                 }
                 else
                 {
@@ -873,6 +874,94 @@ namespace Gizmosbuy.BAL.Repository
                 {
                     return 0;
                 }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> GenerateStoreTransferNewBillNo()
+        {
+            try
+            {
+                string sessionLocation = Utilities.GetSessionValue("Location", _httpContextAccessor.HttpContext);
+
+                var prefix = _applicationDbContext.LocationMasters.FirstOrDefault(x => x.LocationName == sessionLocation).LocationCode;
+
+                prefix = string.IsNullOrWhiteSpace(prefix) ? "JGS" : prefix;
+
+                string billNo = string.Empty;
+
+                var lastBillNo = await _applicationDbContext.Procedures.spGetLastSalesBillNoAsync(prefix, "StoreTransfer");
+
+                if (lastBillNo != null && lastBillNo.Count > 0)
+                {
+                    billNo = Utilities.GenerateStoreTransferBillNo(prefix, lastBillNo.FirstOrDefault().BillNo, "ST");
+                }
+                else
+                {
+                    billNo = Utilities.GenerateStoreTransferBillNo(prefix, "", "ST");
+                }
+
+                return await Task.FromResult(billNo);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IList<spGetStoreTransferListResult>> GetStoreTransferExport(int searchToLocationId, IPager pager)
+        {
+            try
+            {
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+
+                var storeTransferList = await _applicationDbContext.Procedures.spGetStoreTransferListAsync(sessionUserId, searchToLocationId);
+                
+                string searchValue = pager.SearchValue.Trim() ?? "";
+
+                IList<spGetStoreTransferListResult> mainData = null;
+
+                if (searchValue != "")
+                {
+                    mainData = storeTransferList.Where(Utilities.GetSearchValue<spGetStoreTransferListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
+                }
+                else
+                {
+                    mainData = storeTransferList;
+                }
+
+                return mainData;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IList<spGetTransferPaymentListResult>> GetTransferPaymentExport(IPager pager)
+        {
+            try
+            {
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+                var returnNotifyList = await _applicationDbContext.Procedures.spGetTransferPaymentListAsync(sessionUserId);
+
+                string searchValue = pager.SearchValue.Trim() ?? "";
+
+                IEnumerable<spGetTransferPaymentListResult> mainData = null;
+
+                if (searchValue != "")
+                {
+                    mainData = returnNotifyList.Where(Utilities.GetSearchValue<spGetTransferPaymentListResult>(searchValue, Constant.GlobalDateFormat));
+                }
+                else
+                {
+                    mainData = returnNotifyList;
+                }
+
+                return mainData.ToList();
             }
             catch (Exception)
             {

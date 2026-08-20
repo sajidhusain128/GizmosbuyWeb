@@ -10,25 +10,35 @@
     </div>
 </div>
 <div class="container-block">
-    <div class="section-block">
-        <div class="page-header">
-            <div class="header-title">Store Transfer Payment</div>
-        </div>
-        <div class="page-content">
-            <div class="page-title">
-                <h3></h3>
-                <div class="col-md-12">
+    <div class="page-title">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12 col-12">
                     <div class="row">
-                        <div class="col-md-12 col-sm-12">
+                        <div class="col-md-6 col-6">
                             <div class="row">
                                 <a href="@Url.Action("CreateTransferPayment", "Store")" class="btn btn-custom" title="Create Store Transfer Payment Entry"><i class="fas fa-save"></i> Create Entry</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-6">
+                            <div class="row justify-content-end">
+                                <button id="btnExportTransferPayment" class="btn btn-custom" title="Export To Excel"><i class="fas fa-file-excel"></i> Export</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="page-body">
-                <div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
+        </div>
+    </div>
+</div>
+<div class="container-block">
+    <div class="section-block">
+        <div class="page-header">
+            <div class="header-title">Store Transfer Payment</div>
+        </div>
+        <div class="page-content p-0">
+            <div class="page-body p-0">
+                <div class="custom-table table table-bordered table-responsive table-sm m-0 table-striped">
                     <table id="tblTransferPayment" class="">
                         <thead>
                             <tr>
@@ -55,10 +65,11 @@
     <script src="@Url.Content("~/js/store.js")" asp-append-version="true"></script>
 
     <script type="text/javascript">
+        var tableTransferPayment = null;
 
         $(document).ready( function () {
 
-            $('#tblTransferPayment').DataTable({
+            tableTransferPayment = $('#tblTransferPayment').DataTable({
                 scrollX: true,
                 scrollY: 406,
                 scrollCollapse: true,
@@ -90,9 +101,7 @@
                     {"data": "transferMode","title":"Payment Mode"},
                     {"data": "remark","title":"Remark"},
                     {"data": "toLocation","title":"To Location"},
-                    {"data": "isApproved","title":"Approved Status",render:function (data, type, row){
-                        return (data == true) ? "Approved" : (data == false) ? "Rejected" : "Pending";
-                    }},
+                    {"data": "approvedStatus","title":"Approved Status"},
                     {"data": "transferPaymentID","title":"Action",render:function (data, type, row){
                         if(data === null) return "";
 

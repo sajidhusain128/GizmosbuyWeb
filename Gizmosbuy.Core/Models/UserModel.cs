@@ -17,7 +17,7 @@ namespace Gizmosbuy.Core.Models
         public string Email { get; set; } = null;
         public string FirstName { get; set; } = null;
         public string UserRole { get; set; } = null;
-        public string Location { get; set; } = null;
+        public string LocationName { get; set; } = null;
         public int locationId { get; set; } = 0;
         public string SessionId { get; set; } = null;
     }

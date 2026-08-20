@@ -46,7 +46,7 @@ namespace GizmosbuyWeb.Controllers
             claims.Add(new Claim(ClaimTypes.Name, user.UserName));
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
             claims.Add(new Claim(ClaimTypes.Role, user.UserRole));
-            claims.Add(new Claim("Location", user.Location));
+            claims.Add(new Claim("Location", user.LocationName));
             claims.Add(new Claim("LocationId", user.locationId.ToString()));
 
             return claims;
@@ -58,7 +58,7 @@ namespace GizmosbuyWeb.Controllers
             HttpContext.Session.SetString("UserName", user.UserName);
             HttpContext.Session.SetString("Email", user.Email);
             HttpContext.Session.SetString("Role", user.UserRole);
-            HttpContext.Session.SetString("Location", user.Location);
+            HttpContext.Session.SetString("Location", user.LocationName);
             HttpContext.Session.SetString("LocationId", user.locationId.ToString());
 
             Constants.SetSessionInstance(HttpContext);

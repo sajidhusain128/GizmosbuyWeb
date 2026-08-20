@@ -12,25 +12,27 @@
 
         </div>
     </a>
-    <div class="p-3">
+    <div class="p-3" style="overflow: auto;height: 100vh;">
         <ul class="list-unstyled components mb-5">
             <li>
                 <a href="@Url.Action("Index", "Home")">
                     <div>
-                        <i class="fas fa-dashboard"></i>
+                        <i class="fas fa-dashboard "></i>
                         <span>Dashboard</span>
                     </div>
                 </a>
             </li>
+            <hl class="menu-divider"></hl>
             <li class="has-sub-list">
-                <a href="javascript:void(0)">
+                <div class="sidemenu-title"> Entry</div>
+                @* <a href="javascript:void(0)">
                     <div>
-                        <i class="fa-regular fa-rectangle-list"></i>
+                        <i class="fa-regular fa-rectangle-list "></i>
                         <span>Entry</span>
                     </div>
                     <i class="expander fa-solid fa-square-plus"></i>
-                </a>
-                <ul class="sub-list">
+                </a> *@
+                <ul class="sub-list show">
                     @if (userRole == "SuperAdmin" || userRole == "Admin")
                     {
                         <li>
@@ -64,30 +66,83 @@
                             </a>
                         </li>
                     }
-                    @if (userRole == "Admin")
-                    {
-                        <li>
-                            <a href="@Url.Action("TransferPayment", "Store")">
-                                <div>
-                                    <i class="fa-solid fa-money-bill-transfer"></i>
-                                    <span>Transfer Payment</span>
-                                </div>
-                            </a>
-                        </li>
-                    }
                 </ul>
             </li>
             @if (userRole == "SuperAdmin" || userRole == "Admin")
             {
+                <hl class="menu-divider"></hl>
                 <li class="has-sub-list">
-                    <a href="javascript:void(0)">
+                    <div class="sidemenu-title"> Finance</div>
+                     @* <a href="javascript:void(0)">
                         <div>
-                            <i class="fa-solid fa-receipt"></i>
+                            <i class="fa-regular fa-money-bill-1 "></i>
+                            <span>Finance</span>
+                        </div>
+                        <i class="expander fa-solid fa-square-plus"></i>
+                    </a> *@
+                    <ul class="sub-list show">
+                        @if (userRole == "Admin")
+                        {
+                            <li>
+                                <a href="@Url.Action("TransferPayment", "Store")">
+                                    <div>
+                                        <i class="fa-solid fa-money-bill-transfer"></i>
+                                        <span>Transfer Payment</span>
+                                    </div>
+                                </a>
+                            </li>
+                        }
+                        @if (userRole == "SuperAdmin")
+                        {
+                            <li>
+                                <a href="@Url.Action("Expense", "Finance")">
+                                    <div>
+                                        <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                                        <span>Expense</span>
+                                    </div>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </li>
+            }
+            @if (userRole == "SuperAdmin")
+            {
+                <hl class="menu-divider"></hl>
+                <li class="has-sub-list">
+                    <div class="sidemenu-title"> Masters</div>
+                    @* <a href="javascript:void(0)">
+                        <div>
+                            <i class="fas fa-list "></i>
+                            <span>Masters</span>
+                        </div>
+                        <i class="expander fa-solid fa-square-plus"></i>
+                    </a> *@
+                    <ul class="sub-list show">
+                        <li>
+                            <a href="@Url.Action("UsersPassword", "Master")">
+                                <div>
+                                    <i class="fas fa-user"></i>
+                                    <span>Users Password</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            }
+            @if (userRole == "SuperAdmin" || userRole == "Admin")
+            {
+                <hl class="menu-divider"></hl>
+                <li class="has-sub-list">
+                    <div class="sidemenu-title"> Report</div>
+                    @* <a href="javascript:void(0)">
+                        <div>
+                            <i class="fa-solid fa-receipt "></i>
                             <span>Report</span>
                         </div>
                         <i class="expander fa-solid fa-square-plus"></i>
-                    </a>
-                    <ul class="sub-list">
+                    </a> *@
+                    <ul class="sub-list show">
                         @if (userRole == "SuperAdmin" || userRole == "Admin")
                         {
                             <li>
@@ -110,7 +165,7 @@
                                 </a>
                             </li>
                         }
-                        @if (userRole == "SuperAdmin")
+                        @if (userRole == "SuperAdmin" || userRole == "Admin")
                         {
                             <li>
                                 <a href="@Url.Action("PaymentSummary", "Inventory")">
@@ -121,28 +176,6 @@
                                 </a>
                             </li>
                         }
-                    </ul>
-                </li>
-            }
-            @if (userRole == "SuperAdmin")
-            {
-                <li class="has-sub-list">
-                    <a href="javascript:void(0)">
-                        <div>
-                            <i class="fas fa-list"></i>
-                            <span>Masters</span>
-                        </div>
-                        <i class="expander fa-solid fa-square-plus"></i>
-                    </a>
-                    <ul class="sub-list">
-                        <li>
-                            <a href="@Url.Action("UsersPassword", "Master")">
-                                <div>
-                                    <i class="fas fa-user"></i>
-                                    <span>Users Password</span>
-                                </div>
-                            </a>
-                        </li>
                     </ul>
                 </li>
             }

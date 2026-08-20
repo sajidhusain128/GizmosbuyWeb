@@ -140,6 +140,36 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
+        public async Task<List<IExpenseTypeModel>> GetAllExpenseTypes(string cacheKey)
+        {
+            try
+            {
+                var value = await _cacheService.GetOrSetAsync(cacheKey, async entry =>
+                {
+                    List<ExpenseTypeMaster> expenseTypeMasters = await _applicationDbContext.ExpenseTypeMasters.Where(x => x.IsActive == true).ToListAsync();
+
+                    List<IExpenseTypeModel> expenseTypeModelList = new List<IExpenseTypeModel>();
+                    foreach (var expenseType in expenseTypeMasters)
+                    {
+                        expenseTypeModelList.Add(new ExpenseTypeModel
+                        {
+                            ExpenseTypeId = expenseType.ExpenseTypeId,
+                            ExpenseTypeName = expenseType.ExpenseTypeName,
+                            IsActive = expenseType.IsActive
+                        });
+                    }
+
+                    return expenseTypeModelList;
+                });
+
+                return value;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<string> SendWhatsAppService(IWebConfiguration webConfiguration, IWhatsAppSettings whatsAppSettings, Tuple<string, MemoryStream> webFile, string contactNo, string CustomerName)
         {
             var filePath = "";

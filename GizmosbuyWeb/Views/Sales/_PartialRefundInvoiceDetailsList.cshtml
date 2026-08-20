@@ -3,16 +3,29 @@
 @if (Model != null && Model.Count > 0)
 {
     <input type="hidden" id="hdnIvoiceNo" value="@Model.FirstOrDefault().BillNo" />
-    <div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
+    <div class="float-end">
+        <span class="field-validation-error">Sign(*) :- Invalid Return Qty or Blank</span>
+    </div>
+    <div class="custom-table table table-bordered table-responsive table-sm mt-2 mb-0 table-striped">
         <table id="tblInvoiceDetails" class="">
             <thead>
                 <tr>
+                    <th style="text-align:center;">
+                        <div class="checkbox-wrapper-1">
+                            <div class="round">
+                                <input type="checkbox" id="check-all">
+                                <label for="check-all"></label>
+                            </div>
+                        </div>
+                    </th>
                     <th>Bill No.</th>
                     <th>Serial No.</th>
                     <th>Model</th>
                     <th>Selling Price</th>
                     <th>Customer Name</th>
                     <th>Contact No.</th>
+                    <th class="text-center">Current Qty</th>
+                    <th class="text-center">Return Qty</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,12 +34,31 @@
                     foreach (var item in Model)
                     {
                         <tr>
+                            <td>
+                                <div class="checkbox-wrapper-1">
+                                    <div class="round">
+                                        <input type="checkbox" class="row-check" id="checkbox-@item.SalesId" value="">
+                                        <label for="checkbox-@item.SalesId"></label>
+                                    </div>
+                                </div>
+                            </td>
                             <td>@item.BillNo</td>
-                            <td>@item.SerialNo</td>
+                            <td>
+                                <span class="SerialNo">@item.SerialNo</span>
+                            </td>
                             <td>@item.Model</td>
                             <td align="right">@Math.Round(item.SellingPrice.GetValueOrDefault(), 2)</td>
                             <td>@item.CustomerName</td>
                             <td>@item.ContactNo</td>
+                            <td>@item.SellingQuantity</td>
+                            <td>
+                                <input type="hidden" id="hdnPurchaseID_@item.SalesId" class="hidden_PurchaseID" value="@item.PurchaseId" />
+                                <input type="hidden" id="hdnSalesID_@item.SalesId" class="hidden_SalesID" value="@item.SalesId" />
+                                <div style="display:flex">
+                                    <input type="text" id="txtReturnQty_@item.SalesId" class="form-control row-input ReturnQty" style="width: 70px;text-align: center; margin:auto;height: 30px;" value="@item.SellingQuantity" onkeyup="validateReturnQtyForItems('tblInvoiceDetails',this)" autocomplete="off" disabled />
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </td>
                         </tr>
                     }
                 }

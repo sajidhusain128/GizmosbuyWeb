@@ -172,6 +172,14 @@ $(document).ready(function () {
             console.error(e);
         }
     });
+
+    $("#btnExportReturnStore").click(function () {
+        location.href = "/Store/StoreTransferExportExcel?Search=" + tableStoreTransfer.search() + "&searchToLocationId=" + $("#ddlSellingStoreST").select2('val');
+    })
+
+    $("#btnExportTransferPayment").click(function () {
+        location.href = "/Store/TransferPaymentExportExcel?Search=" + tableTransferPayment.search();
+    })
 });
 
 function resetTransferReturnForm() {
@@ -391,6 +399,15 @@ function getPurchaseRecordInSales(purchaseId) {
                     $('#txtModel').val(response.model);
                     $('#txtSpecs').val(response.specifications);
                     $('#txtQuantity').val(response.quantity);
+
+                    if (response.categoryName == "Laptop") {
+                        $('#txtSellQuantity').val(1);
+                        $('#txtSellQuantity').attr("disabled", true);
+                    }
+                    else {
+                        $('#txtSellQuantity').val("");
+                        $('#txtSellQuantity').attr("disabled", false);
+                    }
 
                     if (response.categoryName != null && categoryList.indexOf(response.categoryName) >= 0) {
                         $('#txtSellingPrice').val(0);
@@ -730,32 +747,38 @@ function getInvoiceDetailsForStoreTransferRefund() {
         showLoader();
         var invoiceNo = $("#txtInvoiceNo").val();
 
-        $.ajax({
-            type: "GET",
-            url: '/Store/GetReturnItemInvoiceDetails',
-            data: { invoiceNo: invoiceNo },
-            //dataType: "html",
-            success: function (response) {
-                if (response !== null && response.trim() !== '') {
-                    $('#divInvoiceDetails').html(response);
-                    $('#btnFetchInvoiceDetails').attr("disabled", true);
-                    $('#btnClearInvoiceDetails').attr("disabled", false);
-                    //$('#btnReturnStoreTransferItemsSave').attr("disabled", false);
+        if (invoiceNo.endsWith("ST")) {
+            $.ajax({
+                type: "GET",
+                url: '/Store/GetReturnItemInvoiceDetails',
+                data: { invoiceNo: invoiceNo },
+                //dataType: "html",
+                success: function (response) {
+                    if (response !== null && response.trim() !== '') {
+                        $('#divInvoiceDetails').html(response);
+                        $('#btnFetchInvoiceDetails').attr("disabled", true);
+                        $('#btnClearInvoiceDetails').attr("disabled", false);
+                        //$('#btnReturnStoreTransferItemsSave').attr("disabled", false);
 
-                    bindReturnItemTable();
+                        bindReturnItemTable();
+                    }
+                    else {
+                        $('#divInvoiceDetails').html("");
+                        $('#btnFetchInvoiceDetails').attr("disabled", false);
+                        WarningToast("Entered invoice details not found.")
+                    }
+                    hideLoader();
+                },
+                error: function (e) {
+                    hideLoader();
+                    ErrorToast("Something went wrong!");
                 }
-                else {
-                    $('#divInvoiceDetails').html("");
-                    $('#btnFetchInvoiceDetails').attr("disabled", false);
-                    WarningToast("Entered invoice details not found.")
-                }
-                hideLoader();
-            },
-            error: function (e) {
-                hideLoader();
-                ErrorToast("Something went wrong!");
-            }
-        });
+            });
+        }
+        else {
+            hideLoader();
+            WarningToast("This invoice is for a retail sale, not a store transfer.");
+        }
 
     } catch (e) {
         console.error(e);
@@ -773,6 +796,10 @@ function bindReturnItemTable() {
                     searchable: false,        // disable search
                     className: 'dt-body-center'
 
+                },
+                {
+                    targets: '_all',
+                    className: 'text-nowrap'
                 },
                 {
                     targets: -2, // second last column
@@ -798,8 +825,8 @@ function bindReturnItemTable() {
             order: [[1, 'asc']],
             paging: false
         }).on('draw', function () {
-            var total = $('#tblInvoiceDetails tbody input.row-check').length;
-            var checked = $('#tblInvoiceDetails tbody input.row-check:checked').length;
+            var total = $('[id^="tblInvoiceDetails_"] tbody input.row-check').length;
+            var checked = $('[id^="tblInvoiceDetails_"] tbody input.row-check:checked').length;
             //$('#check-all').prop('checked', total > 0 && total === checked);
 
             var selectAll = $('#check-all').get(0);
@@ -820,14 +847,14 @@ function bindReturnItemTable() {
         });
 
         // Select all
-        $('#tblInvoiceDetails #check-all').on('click', function () {
-            $('#tblInvoiceDetails tbody input.row-check').prop('checked', this.checked);
+        $('[id^="tblInvoiceDetails_"] #check-all').on('click', function () {
+            $('[id^="tblInvoiceDetails_"] tbody input.row-check').prop('checked', this.checked);
         });
 
         // Sync header checkbox
-        $('#tblInvoiceDetails tbody').on('change', 'input.row-check', function () {
-            var total = $('#tblInvoiceDetails tbody input.row-check').length;
-            var checked = $('#tblInvoiceDetails tbody input.row-check:checked').length;
+        $('[id^="tblInvoiceDetails_"] tbody').on('change', 'input.row-check', function () {
+            var total = $('[id^="tblInvoiceDetails_"] tbody input.row-check').length;
+            var checked = $('[id^="tblInvoiceDetails_"] tbody input.row-check:checked').length;
             //$('#check-all').prop('checked', total === checked);
 
             var selectAll = $('#check-all').get(0);
@@ -849,11 +876,11 @@ function bindReturnItemTable() {
             }
         });
 
-        $('#tblInvoiceDetails tbody').on('change', 'input.row-check', function () {
+        $('[id^="tblInvoiceDetails_"] tbody').on('change', 'input.row-check', function () {
             enableDisableRowInputText($('#tblInvoiceDetails').DataTable(), $(this));
         });
-        $('#tblInvoiceDetails #check-all').on('change', function () {
-            $('#tblInvoiceDetails tbody input.row-check').change();
+        $('[id^="tblInvoiceDetails_"] #check-all').on('change', function () {
+            $('[id^="tblInvoiceDetails_"] tbody input.row-check').change();
         });
 
     } catch (e) {
@@ -928,32 +955,6 @@ function checkReturnQtyValidity(table) {
         else {
             $('#btnReturnStoreTransferItemsSave').prop('disabled', true);
         }
-
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-
-function validateReturnQtyForItems(tblInvoiceDetails, _this) {
-    try {
-        var $currentCellElement = $(_this);
-        var $currentCell = $currentCellElement.closest('td');
-        var $previousCell = $currentCell.prev('td');
-        var cellValueText = $previousCell.text();
-
-        if (parseInt(_this.value) > parseInt(cellValueText) || parseInt(_this.value) <= 0) {
-            $(_this).next('.field-validation-error').text('*');
-        }
-        else if (_this.value == '') {
-            $(_this).next('.field-validation-error').text('*');
-        }
-        else {
-            $(_this).next('.field-validation-error').text('');
-        }
-
-        var table = $('#' + tblInvoiceDetails).DataTable();
-        checkReturnQtyValidity(table);
 
     } catch (e) {
         console.error(e);
@@ -1144,8 +1145,8 @@ function LoadTableStoreReturnItemNotification() {
                         if (data === null) return "";
 
                         return `<div class="column-flex">
-                        <a href="javascript:void(0)" onclick="deleteStoreTransferReturnEntry('${row.billNo}', ${row.transferPurchaseID})" class="color-success mr-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Approve Return Item(s)"><i class="fas fa-circle-check fa-xl"></i></a>
-                        <a href="javascript:void(0)" onclick="rejectStoreReturnItems(${row.storeReturnItemNotificationID})" class="color-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Reject Return Item(s)"><i class="fas fa-circle-xmark fa-xl"></i></a>
+                        <a href="javascript:void(0)" onclick="deleteStoreTransferReturnEntry('${row.billNo}', ${row.transferPurchaseID})" class="color-success mr-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Approve Return Item(s)"><i class="fas fa-square-check fa-xl"></i></a>
+                        <a href="javascript:void(0)" onclick="rejectStoreReturnItems(${row.storeReturnItemNotificationID})" class="color-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Reject Return Item(s)"><i class="fas fa-square-xmark fa-xl"></i></a>
                         </div>`;
                     }
                 }
@@ -1174,14 +1175,14 @@ function LoadTableStoreReturnItemNotification() {
                 $('*[title]').tooltip();
             },
             drawCallback: function (settings) {
-                if (settings.aoData.length == 0) {
-                    $('#divStoreReturnItemNotification').hide();
-                    $('#storeReturnNotificationNoDataMessage').show();
-                }
-                else {
-                    $('#divStoreReturnItemNotification').show();
-                    $('#storeReturnNotificationNoDataMessage').hide();
-                }
+                // if (settings.aoData.length == 0) {
+                //     $('#divStoreReturnItemNotification').hide();
+                //     $('#storeReturnNotificationNoDataMessage').show();
+                // }
+                // else {
+                //     $('#divStoreReturnItemNotification').show();
+                //     $('#storeReturnNotificationNoDataMessage').hide();
+                // }
             }
         });
     } catch (e) {
@@ -1353,6 +1354,7 @@ function LoadTableTransferPaymentNotification() {
             scrollX: true,
             scrollY: 406,
             scrollCollapse: true,
+            responsive: true,
             fixedColumns: true,
             processing: true,
             serverSide: true,
@@ -1379,10 +1381,9 @@ function LoadTableTransferPaymentNotification() {
                 {
                     "data": null, "title": "Action", render: function (data, type, row) {
                         if (data === null) return "";
-                        debugger;
                         return `<div class="column-flex">
-                        <a href="javascript:void(0)" onclick="updateApprovalTransferPayment(${row.transferPaymentID},'Approve')" class="color-success mr-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Approve Transfer Payment"><i class="fas fa-circle-check fa-md"></i></a>
-                        <a href="javascript:void(0)" onclick="updateApprovalTransferPayment(${row.transferPaymentID},'Reject')" class="color-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Reject Transfer Payment"><i class="fas fa-circle-xmark fa-md"></i></a>
+                        <a href="javascript:void(0)" onclick="updateApprovalTransferPayment(${row.transferPaymentID},'Approve')" class="color-success mr-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Approve Transfer Payment"><i class="fas fa-square-check fa-xl"></i></a>
+                        <a href="javascript:void(0)" onclick="updateApprovalTransferPayment(${row.transferPaymentID},'Reject')" class="color-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Reject Transfer Payment"><i class="fas fa-square-xmark fa-xl"></i></a>
                         </div>`;
                     }
                 }
@@ -1404,14 +1405,14 @@ function LoadTableTransferPaymentNotification() {
                 $('*[title]').tooltip();
             },
             drawCallback: function (settings) {
-                if (settings.aoData.length == 0) {
-                    $('#divTransferPaymentNotification').hide();
-                    $('#transferPaymentNotificationNoDataMessage').show();
-                }
-                else {
-                    $('#divTransferPaymentNotification').show();
-                    $('#transferPaymentNotificationNoDataMessage').hide();
-                }
+                // if (settings.aoData.length == 0) {
+                //     $('#divTransferPaymentNotification').hide();
+                //     $('#transferPaymentNotificationNoDataMessage').show();
+                // }
+                // else {
+                //     $('#divTransferPaymentNotification').show();
+                //     $('#transferPaymentNotificationNoDataMessage').hide();
+                // }
             }
         });
     } catch (e) {

@@ -1,4 +1,5 @@
 ﻿using Gizmosbuy.Core.Interfaces;
+using Gizmosbuy.Core.Models;
 
 namespace Gizmosbuy.BAL.Interfaces
 {
@@ -7,5 +8,6 @@ namespace Gizmosbuy.BAL.Interfaces
         Task<object> GetUserList(IPager pager);
         Task<IUserModel> GetUserById(int id);
         Task<int> UpdateUserPassword(IUserModel userModel);
+        Task<IList<UserModel>> GetUserPasswordExport(IPager pager);
     }
 }

@@ -620,7 +620,7 @@ pre {
 .col-lg-auto, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl,
 .col-xl-auto {
     position: relative;
-    width: 100%;
+    width: auto;
     padding-right: 15px;
     padding-left: 15px;
 }
@@ -1857,7 +1857,7 @@ pre {
 
     .table-bordered th,
     .table-bordered td {
-        border: 1px solid #c2c5c9;
+       /* border: 1px solid #c2c5c9;*/
     }
 
     .table-bordered thead th,
@@ -1873,7 +1873,39 @@ pre {
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-    background-color: rgb(155 153 153 / 5%);
+    /*background-color: rgb(155 153 153 / 5%);*/
+}
+
+.table tbody tr:hover {
+    background-color: #fafafa;
+}
+
+.table-striped tbody tr:hover {
+    background-color: #fafafa;
+}
+
+table.dataTable tbody tr:hover > .dtfc-fixed-start,
+table.dataTable tbody tr:hover > .dtfc-fixed-end {
+    background-color: #fafafa !important;
+}
+
+table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order:before, 
+table.dataTable thead > tr > th.dt-orderable-asc span.dt-column-order:after, 
+table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order:before, 
+table.dataTable thead > tr > th.dt-orderable-desc span.dt-column-order:after, 
+table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order:before, 
+table.dataTable thead > tr > th.dt-ordering-asc span.dt-column-order:after, 
+table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order:before, 
+table.dataTable thead > tr > th.dt-ordering-desc span.dt-column-order:after, 
+table.dataTable thead > tr > td.dt-orderable-asc span.dt-column-order:before, 
+table.dataTable thead > tr > td.dt-orderable-asc span.dt-column-order:after, 
+table.dataTable thead > tr > td.dt-orderable-desc span.dt-column-order:before, 
+table.dataTable thead > tr > td.dt-orderable-desc span.dt-column-order:after, 
+table.dataTable thead > tr > td.dt-ordering-asc span.dt-column-order:before, 
+table.dataTable thead > tr > td.dt-ordering-asc span.dt-column-order:after, 
+table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order:before, 
+table.dataTable thead > tr > td.dt-ordering-desc span.dt-column-order:after {
+    opacity: 0.5 !important;
 }
 
 .table-hover tbody tr:hover {
@@ -11516,7 +11548,7 @@ h1, h2, h3, h4, h5,
 #sidebar {
     min-width: 250px;
     max-width: 250px;
-    background: #02370b;
+    /*background: #02370b;*/
     color: #fff;
     -webkit-transition: all 0.3s;
     -o-transition: all 0.3s;
@@ -11526,6 +11558,7 @@ h1, h2, h3, h4, h5,
     position: fixed;
     height: 100vh;
     left: -250px;
+    background: linear-gradient(160deg, #004d20 0%, #006b2b 48%, #008334 100%);
 }
 
     #sidebar.active {
@@ -11585,38 +11618,40 @@ h1, h2, h3, h4, h5,
             }
 
         #sidebar ul li a {
-            padding: 6px;
+            padding: 4px;
             display: flex;
             color: rgba(255, 255, 255, 1);
             /*border-bottom: 1px solid rgba(255, 255, 255, 0.1);*/
             text-decoration: none;
-            
             align-items: center;
             justify-content: space-between;
+            border-radius: 4px;
+            font-size:14px;
         }
 
             #sidebar ul li a:hover {
-                color: #f8b739;
+                /*color: #f8b739;*/
                 background-color: #f8b739;
                 /*border-radius:8px;*/
+                background-color: #ffffff1a;
             }
 
             #sidebar ul li a:after {
                 right: 12px;
             }
 
-            #sidebar ul li.active > a {
-                background: transparent;
-                color: #f8b739;
-            }
+        #sidebar ul li.active > a {
+            background: #00000033;
+            /*color: #c2ff00;*/
+        }
 
         #sidebar ul li:not(.active) > a:hover {
             color: #ffffff;
         }
 
         #sidebar ul li.active > a:hover {
-            background-color: #f8b739;
-            color: #047716;
+            background-color: #ffffff1a;
+            /*color: #047716;*/
         }
 
     #sidebar .logo {
@@ -11667,6 +11702,7 @@ a[data-toggle="collapse"] {
 .btn.btn-primary {
     background: #f8b739;
     border-color: #f8b739;
+    color: #252526;
 }
 
     .btn.btn-primary:hover, .btn.btn-primary:focus {
@@ -11685,12 +11721,12 @@ a[data-toggle="collapse"] {
 }
 
 .list-unstyled .sub-list {
-    margin-left: 15px !important;
+    margin-left: 0px !important;
     list-style-type: none;
     padding-left: 0px;
-    border-top: 1px solid #047716;
-    border-bottom: 1px solid #047716;
-    background-color: #013e0b;
+    /*border-top: 1px solid #047716;
+    border-bottom: 1px solid #047716;*/
+/*    background-color: #013e0b;*/
   /*  padding-top: 5px;
     margin-top: 5px;*/
 
@@ -11719,4 +11755,18 @@ a[data-toggle="collapse"] {
 
 #sidebar ul li > .sub-list li a{
     margin-bottom:0px;
+}
+
+.menu-divider {
+    border-bottom: 1px solid #0bba26;
+    display: block;
+    margin: 10px 0;
+}
+
+.sidemenu-title {
+    font-weight: 700;
+    padding-left: 9px;
+    color: #f8b739;
+    font-size: 14px;
+
 }

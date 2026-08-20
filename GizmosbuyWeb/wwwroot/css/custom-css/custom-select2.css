@@ -6,6 +6,10 @@
         height: 38px !important;
     }
 
+/*.select2-container--default{
+    padding-left:0 !important;
+}*/
+
 .select2-container--default .select2-selection--single {
     border: 1px solid #ccc !important;
 }

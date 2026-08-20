@@ -105,6 +105,10 @@ $(document).ready(function () {
                 $('#txtBuyLead').removeAttr("readonly", "readonly");
             }
 
+            if (category.text == "Laptop") {
+                $('#txtQuantity').val("1");
+            }
+
             //if (category.text == "Accessories") {
             //    $('#txtSrNo').val("NA");
             //}
@@ -119,12 +123,14 @@ $(document).ready(function () {
             e.stopPropagation();
 
             var year = $('#txtSellYear').val();
-            var month = $('#ddlMonths').select2('val');
+            var month = $('#ddlSellMonth').select2('val');
+            var date = $('#ddlSellDate').select2('val');
 
+            var ddlSalesType = $('#ddlSalesType').select2('val');
             var ddlLocationValue = $('#ddlLoaction').select2('val');
             var ddlTypeValue = $('#ddlStatus').select2('val');
 
-            getSalesSummary(ddlTypeValue, ddlLocationValue, month, year);
+            getSummaryDate(ddlSalesType, ddlTypeValue, ddlLocationValue, date, month, year);
         } catch (e) {
             console.log(e);
         }
@@ -197,13 +203,28 @@ $(document).ready(function () {
             if ($('#txtInvoiceNo').val() !== "") {
                 if ($('#hdnIvoiceNo').val() === $('#txtInvoiceNo').val()) {
 
-                    $('#spnInvoiceNoError').text("");
+                    var rows = $('#tblInvoiceDetails').DataTable().rows().nodes();
+                    // Use jQuery to find all checkboxes within those rows and filter for checked ones
+                    var checkedCheckboxes = $('input[type="checkbox"]:checked', rows);
+                    // Get the length of the resulting jQuery object
+                    var count = checkedCheckboxes.length
 
-                    var modal = new bootstrap.Modal('#salesDeleteRefundModel', {
-                        backdrop: 'static',
-                        keyboard: false
-                    })
-                    modal.show();
+                    if (count > 0) {
+                        $('#spnInvoiceNoError').text("");
+
+                        showBoostrapModal('#salesDeleteRefundModel');
+                    }
+                    else {
+                        WarningToast("Please select the checkbox for items.");
+                    }
+
+                    // $('#spnInvoiceNoError').text("");
+
+                    // var modal = new bootstrap.Modal('#salesDeleteRefundModel', {
+                    //     backdrop: 'static',
+                    //     keyboard: false
+                    // })
+                    // modal.show();
                 }
                 else {
                     WarningToast("Fetched details and entered bill no. does not matched. So please enter correct.")
@@ -258,15 +279,21 @@ $(document).ready(function () {
             if (status.text == "Pending") {
                 $('#divSellYear').hide();
                 $('#divSellMonth').hide();
+                $('#divSellDate').hide();
                 $('#txtSellYear').val("");
-                $('#txtSellMonth').val("");
+                $('#ddlSellMonth').val("").trigger('change');
+                $('#ddlSellDate').val("").trigger('change');
                 $('#divSummaryData').html("");
+                $('#divSalesType').hide();
+                $('#ddlSalesType').val($('#ddlSalesType option:eq(0)').val()).trigger('change');
             }
             else {
                 $('#divSellYear').show();
                 $('#divSellMonth').show();
+                $('#divSellDate').show();
                 $('#txtSellYear').val(new Date().getFullYear())
                 $('#divSummaryData').html("");
+                $('#divSalesType').show();
             }
 
         } catch (e) {
@@ -290,7 +317,7 @@ $(document).ready(function () {
         }
     });
 
-    $("#divSerialContainer").on('click',"#btnAddSerialNoInput", function (e) {
+    $("#divSerialContainer").on('click', "#btnAddSerialNoInput", function (e) {
         try {
             e.preventDefault();
             e.stopPropagation();
@@ -381,6 +408,14 @@ $(document).ready(function () {
             console.log(e);
         }
     });
+
+    $("#btnExportPurchase").click(function () {
+        location.href = "/Purchase/PurchaseExportExcel?Search=" + tablePurchase.search();
+    })
+
+    $("#btnExportSales").click(function () {
+        location.href = "/Sales/SalesExportExcel?Search=" + tableSales.search();
+    })
 });
 
 const radios = document.querySelectorAll('#switchPurchaseType input[type="radio"]');
@@ -738,6 +773,15 @@ function savePurchase() {
                                 location.href = "/Purchase/Index";
                             }, 2000);
                         }
+                        if (response == "Exist") {
+                            hideLoader();
+                            if (PurchaseType == "Single") {
+                                WarningToast("Purchase with the same serial number already exists.");
+                            }
+                            else if (PurchaseType == "Bulk") {
+                                WarningToast("Purchase with the same serial number already exists in bulk list.");
+                            }
+                        }
                         else if (response == "Failed") {
                             hideLoader();
                             ErrorToast("Error occurred while saving purchase record(s).");
@@ -768,6 +812,10 @@ function savePurchase() {
                             setTimeout(function () {
                                 location.href = "/Purchase/Index";
                             }, 2000);
+                        }
+                        if (response == "Exist") {
+                            hideLoader();
+                            WarningToast("Purchase with the same serial number already exists.");
                         }
                         else if (response == "Failed") {
                             hideLoader();
@@ -885,6 +933,15 @@ function getPurchaseRecordInSales(purchaseId) {
                         $('#txtSellingPrice').val(0);
                     }
 
+                    if (response.categoryName == "Laptop") {
+                        $('#txtSellQuantity').val(1);
+                        $('#txtSellQuantity').attr("disabled", true);
+                    }
+                    else {
+                        $('#txtSellQuantity').val("");
+                        $('#txtSellQuantity').attr("disabled", false);
+                    }
+
                     if ($('#tblSalesTemp').DataTable().rows().any()) {
                         var rowData = $('#tblSalesTemp').DataTable().data();
                         if (rowData.length > 0) {
@@ -1000,7 +1057,13 @@ function validateSalesForm() {
             $('#txtContactNo').parents('.row').find('.field-validation-error').text("Contact No is required.");
         }
         else {
-            $('#txtContactNo').parents('.row').find('.field-validation-error').text("");
+            if ($('#txtContactNo').val().length < 10) {
+                errorCount++;
+                $('#txtContactNo').parents('.row').find('.field-validation-error').text("Contact No should be 10 digits.");
+            }
+            else {
+                $('#txtContactNo').parents('.row').find('.field-validation-error').text("");
+            }
         }
 
         if ($('#ddlLoaction').val() == "") {
@@ -1092,6 +1155,8 @@ function updateSales() {
             var contactNo = $('#txtContactNo').val();
             var locationName = $('#txtLoaction').val();
             var billNo = $('#txtBillNo').val();
+            var warranty = $('#txtWarranty').val();
+            var remark = $('#txtRemark').val();
 
             var hdnSalesId = $('#hdnSalesId').val();
 
@@ -1106,7 +1171,9 @@ function updateSales() {
                 customerName: customerName,
                 contactNo: contactNo,
                 locationName: locationName,
-                billNo: billNo
+                billNo: billNo,
+                warranty: warranty,
+                remark: remark
             }
 
             var form = $("#frmSales");
@@ -1233,7 +1300,13 @@ function validateTempSalesForm() {
             $('#txtContactNoTemp').parents('.row').find('.field-validation-error').text("Contact No is required.");
         }
         else {
-            $('#txtContactNoTemp').parents('.row').find('.field-validation-error').text("");
+            if ($('#txtContactNoTemp').val().length < 10) {
+                errorCount++;
+                $('#txtContactNoTemp').parents('.row').find('.field-validation-error').text("Contact No should be 10 digits.");
+            }
+            else {
+                $('#txtContactNoTemp').parents('.row').find('.field-validation-error').text("");
+            }
         }
 
         if ($('#txtLoactionTemp').val() == "") {
@@ -1277,6 +1350,8 @@ function saveTempSales() {
             var contactNo = $('#txtContactNo').val();
             var locationName = $('#txtLoaction').val();
             var billNo = $('#txtBillNo').val();
+            var warranty = $('#txtWarranty').val();
+            var remark = $('#txtRemark').val();
 
             var hdnSalesId = $('#hdnSalesId').val();
 
@@ -1292,7 +1367,9 @@ function saveTempSales() {
                 customerName: customerName,
                 contactNo: contactNo,
                 location: locationName,
-                billNo: billNo
+                billNo: billNo,
+                warranty: warranty,
+                remark: remark
             }
 
             var form = $("#frmSales");
@@ -1361,6 +1438,8 @@ function updateTempSales() {
                 var contactNo = $('#txtContactNoTemp').val();
                 var locationName = $('#txtLoactionTemp').val();
                 var billNo = $('#txtBillNoTemp').val();
+                var warranty = $('#txtWarrantyTemp').val();
+                var remark = $('#txtRemarkTemp').val();
 
                 var model = {
                     tempSalesId: hdnTempSalesId,
@@ -1375,7 +1454,9 @@ function updateTempSales() {
                     customerName: customerName,
                     contactNo: contactNo,
                     location: locationName,
-                    billNo: billNo
+                    billNo: billNo,
+                    warranty: warranty,
+                    remark: remark
                 }
 
                 var form = $("#frmTempSales");
@@ -1452,8 +1533,17 @@ function EditTempSales(id) {
                     $('#txtContactNoTemp').val(response.contactNo);
                     $('#txtLoactionTemp').val(response.location);
                     $('#txtBillNoTemp').val(response.billNo);
+                    $('#txtWarrantyTemp').val(response.warranty);
+                    $('#txtRemarkTemp').val(response.remark);
                     $('#hdnTempPurchaseId').val(response.purchaseId);
                     getPurchaseRecordInTempSales(response.purchaseId);
+
+                    if (response.categoryName == "Laptop") {
+                        $('#txtSellQuantityTemp').attr("disabled", true);
+                    }
+                    else {
+                        $('#txtSellQuantityTemp').attr("disabled", false);
+                    }
 
                     $('#txtSellDateTemp').datepicker({
                         format: 'dd/mm/yyyy',
@@ -1669,7 +1759,21 @@ function callRawData() {
                 },
                 { "data": "purchasePaymentMode", "title": "Purchase Payment Mode" },
                 { "data": "buyingLead", "title": "Buying Lead" },
-                { "data": "stockStatus", "title": "Stock Status" },
+                {
+                    "data": "stockStatus", "title": "Stock Status", render: function (data, type, row) {
+                        if (data === null) return "-";
+
+                        var val = "";
+                        if (data == "Sold") {
+                            val = "badge-error";
+                        }
+                        else if (data == "Pending") {
+                            val = "badge-success";
+                        }
+
+                        return "<div class='badge badge-soft badge-outline " + val + "'>" + data + "</div>";
+                    }
+                },
                 {
                     "data": "sellingDate", "title": "Selling Date", render: function (data, type, row) {
                         if (data === null) return "-";
@@ -1689,14 +1793,16 @@ function callRawData() {
                     "data": "profit", "title": "Profit", render: function (data, type, row, a) {
                         if (data === null || data == 0) return "-";
 
-                        return "&#8377; " + data;
+                        return "<div class='badge  badge-success'>" + "&#8377; " + data + "</div>";
+                        //return "&#8377; " + data;
                     }
                 },
                 {
                     "data": "loss", "title": "Loss", render: function (data, type, row) {
                         if (data === null || data == 0) return "-";
 
-                        return "&#8377; " + data;
+                        return "<div class='badge  badge-error'>" + "&#8377; " + data + "</div>";
+                        //return "&#8377; " + data;
                     }
                 },
                 {
@@ -1753,6 +1859,12 @@ function callRawData() {
                         else return data;
                     }
                 },
+                {
+                    "data": "storeName", "title": "Store Name", render: function (data, type, row) {
+                        if (data === null) return "-";
+                        else return data;
+                    }
+                }
             ],
             columnDefs: [
                 { targets: 0, className: 'text-nowrap bg-purchase text-center' },
@@ -1768,7 +1880,7 @@ function callRawData() {
                 { targets: 10, className: 'text-nowrap bg-purchase text-right' },
                 { targets: 11, className: 'text-nowrap bg-purchase' },
                 { targets: 12, className: 'text-nowrap bg-purchase' },
-                { targets: 13, className: 'text-nowrap' },
+                { targets: 13, className: 'text-nowrap text-center' },
 
                 { targets: 14, className: 'text-nowrap' },
                 { targets: 15, className: 'text-nowrap text-right' },
@@ -1783,17 +1895,18 @@ function callRawData() {
                 { targets: 24, className: 'text-nowrap' },
                 { targets: 25, className: 'text-nowrap' },
                 { targets: 26, className: 'text-nowrap' },
-                { targets: 27, className: 'text-nowrap' }
+                { targets: 27, className: 'text-nowrap' },
+                { targets: 28, className: 'text-nowrap' }
             ],
             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                 if (aData["sellingQuantity"] > 0) {
-                    for (let i = 14; i <= 27; i++) {
+                    for (let i = 14; i <= 28; i++) {
                         $(nRow.children[i]).addClass('bg-sales');
                     }
                 }
 
                 if (aData["profit"] > 0) {
-                    $(nRow.children[17]).addClass('bg-profit');
+                    //$(nRow.children[17]).addClass('bg-profit');
                 } else if (aData["loss"] > 0) {
                     $(nRow.children[18]).addClass('bg-loss');
                 }
@@ -1816,17 +1929,37 @@ function callRawData() {
     }
 }
 
-function getSalesSummary(transactionType, locationId, month, year) {
+function getSummaryDate(salesType, transactionType, locationId, date, month, year) {
     try {
         showLoader();
 
         var form = $("#frmSummery");
         var token = $('input[name="__RequestVerificationToken"]', form).val();
 
+        if (transactionType == "Sales") {
+            var model = {
+                salesType: salesType,
+                status: transactionType,
+                locationId: locationId,
+                sellDate: date,
+                sellMonth: month,
+                sellYear: year
+            }
+        }
+        else {
+            var model = {
+                status: transactionType,
+                locationId: locationId
+            }
+        }
+
         $.ajax({
             type: "POST",
             url: '/Inventory/GetSummayData',
-            data: { __RequestVerificationToken: token, TransactionType: transactionType, locationId: locationId, month: getMonthNumber(month), year: year },
+            data: {
+                __RequestVerificationToken: token,
+                summaryModel: model
+            },
             //dataType: "html",
             success: function (response) {
                 if (response != null) {
@@ -1909,33 +2042,218 @@ function getInvoiceDetailsForSalesRefund() {
         showLoader();
         var invoiceNo = $("#txtInvoiceNo").val();
 
-        $.ajax({
-            type: "GET",
-            url: '/Sales/GetInvoiceDetails',
-            data: { invoiceNo: invoiceNo },
-            //dataType: "html",
-            success: function (response) {
-                if (response !== null && response.trim() !== '') {
-                    $('#divInvoiceDetails').html(response);
-                    $('#btnFetchInvoiceDetails').attr("disabled", true);
-                    $('#btnClearInvoiceDetails').attr("disabled", false);
-                    $('#btnRefundSalesItemsSave').attr("disabled", false);
+        if (!invoiceNo.endsWith("ST")) {
+            $.ajax({
+                type: "GET",
+                url: '/Sales/GetInvoiceDetails',
+                data: { invoiceNo: invoiceNo },
+                //dataType: "html",
+                success: function (response) {
+                    if (response !== null && response.trim() !== '') {
+                        $('#divInvoiceDetails').html(response);
+                        $('#btnFetchInvoiceDetails').attr("disabled", true);
+                        $('#btnClearInvoiceDetails').attr("disabled", false);
+                        //$('#btnRefundSalesItemsSave').attr("disabled", false);
+
+                        bindRefundItemTable();
+                    }
+                    else {
+                        $('#divInvoiceDetails').html("");
+                        $('#btnFetchInvoiceDetails').attr("disabled", false);
+                        WarningToast("Entered invoice details not found.");
+                    }
+                    hideLoader();
+                },
+                error: function (e) {
+                    hideLoader();
+                    ErrorToast("Something went wrong!");
                 }
-                else {
-                    $('#divInvoiceDetails').html("");
-                    $('#btnFetchInvoiceDetails').attr("disabled", false);
-                    WarningToast("Entered invoice details not found.")
-                }
-                hideLoader();
-            },
-            error: function (e) {
-                hideLoader();
-                ErrorToast("Something went wrong!");
-            }
-        });
+            });
+        }
+        else {
+            hideLoader();
+            WarningToast("This invoice is for a store transfer, not a retail sale.");
+        }
 
     } catch (e) {
         console.log(e);
+    }
+}
+
+function bindRefundItemTable() {
+    try {
+        $('#tblInvoiceDetails').DataTable({
+            scrollX: true,
+            maxScrollY: 360,
+            columnDefs: [
+                {
+                    targets: 0,               // first column
+                    orderable: false,         // disable sorting
+                    searchable: false,        // disable search
+                    className: 'dt-body-center'
+
+                },
+                {
+                    targets: '_all',
+                    className: 'text-nowrap'
+                },
+                {
+                    targets: -2, // second last column
+                    className: 'dt-body-center'
+                },
+                {
+                    targets: -1, // last column
+                    className: 'dt-body-center'
+                }
+
+            ],
+            layout: {
+                topStart: 'info',
+                topEnd: 'search',
+                bottomStart: ''
+            },
+            fixedColumns: {
+                start: 2
+            },
+            select: {
+                'style': 'multi'
+            },
+            order: [[1, 'asc']],
+            paging: false
+        }).on('draw', function () {
+            var total = $('[id^="tblInvoiceDetails_"] tbody input.row-check').length;
+            var checked = $('[id^="tblInvoiceDetails_"] tbody input.row-check:checked').length;
+            //$('#check-all').prop('checked', total > 0 && total === checked);
+
+            var selectAll = $('#check-all').get(0);
+
+            if (checked === 0) {
+                selectAll.checked = false;
+                selectAll.indeterminate = false;
+            }
+            else if (checked === total) {
+                selectAll.checked = true;
+                selectAll.indeterminate = false;
+            }
+            else {
+                selectAll.checked = false;
+                selectAll.indeterminate = true;
+            }
+
+        });
+
+        // Select all
+        $('[id^="tblInvoiceDetails_"] thead #check-all').on('click', function () {
+            $('[id^="tblInvoiceDetails_"] tbody input.row-check').prop('checked', this.checked);
+        });
+
+        // Sync header checkbox
+        $('[id^="tblInvoiceDetails_"] tbody').on('change', 'input.row-check', function () {
+            var total = $('[id^="tblInvoiceDetails_"] tbody input.row-check').length;
+            var checked = $('[id^="tblInvoiceDetails_"] tbody input.row-check:checked').length;
+            //$('#check-all').prop('checked', total === checked);
+
+            var selectAll = $('#check-all').get(0);
+
+            if (checked === 0) {
+                // none selected
+                selectAll.checked = false;
+                selectAll.indeterminate = false;
+            }
+            else if (checked === total) {
+                // all selected
+                selectAll.checked = true;
+                selectAll.indeterminate = false;
+            }
+            else {
+                // some selected → show minus
+                selectAll.checked = false;
+                selectAll.indeterminate = true;
+            }
+        });
+
+        $('[id^="tblInvoiceDetails_"] tbody').on('change', 'input.row-check', function () {
+            enableDisableRowInputText($('#tblInvoiceDetails').DataTable(), $(this));
+        });
+        $('[id^="tblInvoiceDetails_"] #check-all').on('change', function () {
+            $('[id^="tblInvoiceDetails_"] tbody input.row-check').change();
+        });
+
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function enableDisableRowInputText(table, input) {
+    // Get the closest table row (<tr>) to the clicked checkbox
+    var $row = $(input).closest('tr');
+
+    // 3. Use the DataTables API to get the data for the specific row
+    var $rowData = table.row($row).data();
+
+    var $textbox = $row.find('.row-input');
+
+    // Check if the checkbox is currently checked or unchecked
+    if (input[0].checked) {
+        $textbox.prop('disabled', false)
+        table.row($row).selector.rows[0].style = "background-color: #f8b739";
+    } else {
+        $textbox.prop('disabled', true)
+        $textbox.val($rowData[7]);
+        $textbox.next('.field-validation-error').text('');
+        table.row($row).selector.rows[0].style = "";
+    }
+
+    checkCheckedReturnItems(table);
+}
+
+function checkCheckedReturnItems(table) {
+    try {
+        var rows = table.rows().nodes();
+        // Use jQuery to find all checkboxes within those rows and filter for checked ones
+        var checkedCheckboxes = $('input[type="checkbox"]:checked', rows);
+        // Get the length of the resulting jQuery object
+        var count = checkedCheckboxes.length
+
+        if (count > 0) {
+            $('#btnRefundSalesItemsSave').prop('disabled', false);
+        }
+        else {
+            $('#btnRefundSalesItemsSave').prop('disabled', true);
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function checkReturnQtyValidity(table) {
+    try {
+        var allValid = true;
+
+        var allInputs = table.$('.row-input');
+        //var $error = $row.find('.field-validation-error');
+
+        allInputs.each(function () {
+            // Add your specific validation logic here. 
+            // For simple "not empty" validation:
+            if ($(this).val().trim() === '' || $(this).next('.field-validation-error').text() != "") {
+                allValid = false;
+                return false; // Break the each loop
+            }
+
+            // You can add more complex validation (e.g., regex for email)
+            // if (this.name === 'email' && !isValidEmail($(this).val())) { ... }
+        });
+
+        if (allValid) {
+            $('#btnRefundSalesItemsSave').prop('disabled', false);
+        }
+        else {
+            $('#btnRefundSalesItemsSave').prop('disabled', true);
+        }
+
+    } catch (e) {
+        console.error(e);
     }
 }
 
@@ -1945,13 +2263,38 @@ function deleteSalesRefundEntry() {
         showLoader();
         var invoiceNo = $("#txtInvoiceNo").val();
 
+        var itemList = [];
+
+        var rows = $('#tblInvoiceDetails').DataTable().rows().nodes();
+        // Use jQuery to find all checkboxes within those rows and filter for checked ones
+        var checkedCheckboxes = $('input[type="checkbox"]:checked', rows);
+
+        if (checkedCheckboxes.length > 0) {
+
+            rows.each(row => {
+                if ($(row).find('input[type="checkbox"]')[0].checked) {
+                    var purchaseID = $(row).find('.hidden_PurchaseID').val();
+                    var returnQty = $(row).find('.ReturnQty').val();
+                    var salesID = $(row).find('.hidden_SalesID').val();
+
+                    var model = {
+                        purchaseId: purchaseID,
+                        salesId: salesID,
+                        billNo: invoiceNo,
+                        returnQuantity: returnQty
+                    };
+                    itemList.push(model);
+                }
+            })
+        }
+
         var form = $("#frmSalesRefund");
         var token = $('input[name="__RequestVerificationToken"]', form).val();
 
         $.ajax({
             type: "POST",
             url: '/Sales/DeleteSalesByInvoice',
-            data: { __RequestVerificationToken: token, invoiceNo: invoiceNo },
+            data: { __RequestVerificationToken: token, invoiceNo: invoiceNo, salesReturnItems: itemList },
             dataType: "json",
             success: function (response) {
                 if (response != null) {

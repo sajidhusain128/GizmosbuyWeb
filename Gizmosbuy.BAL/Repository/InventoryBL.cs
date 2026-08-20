@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
+using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
@@ -26,11 +27,11 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext)); ;
 
-                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate.ToString(), dateRange.EndDate.ToString(), sessionUserId);
+                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate, dateRange.EndDate, sessionUserId);
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
                 string columnName = pager.ColumnName ?? "";
                 string sortDirection = pager.SortDirection ?? "";
 
@@ -38,7 +39,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (searchValue != "")
                 {
-                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetRawDataResult>(searchValue)).ToList();
+                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetRawDataResult>(searchValue, Constant.GlobalDateFormat)).ToList();
                 }
                 else
                 {
@@ -90,13 +91,13 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<List<ISalesSummaryModel>> GetSalesSummaryData(int locationId, int month, int year)
+        public async Task<List<ISalesSummaryModel>> GetSalesSummaryData(ISummaryModel summaryModel)
         {
             try
             {
                 List<ISalesSummaryModel> salesSummaryModelList = null;
 
-                var salesDataList = await _applicationDbContext.Procedures.spGetSalesSummaryDataAsync(locationId, month, year);
+                var salesDataList = await _applicationDbContext.Procedures.spGetSalesSummaryDataAsync(summaryModel.LocationId, summaryModel.SalesType, summaryModel.SellDate, summaryModel.SellMonth, summaryModel.SellYear);
 
                 if (salesDataList != null && salesDataList.Count > 0)
                 {
@@ -115,7 +116,7 @@ namespace Gizmosbuy.BAL.Repository
                     }
                 }
 
-                return salesSummaryModelList; ;
+                return salesSummaryModelList;
             }
             catch (Exception)
             {
@@ -159,14 +160,14 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate.ToString(), dateRange.EndDate.ToString(), sessionUserId);
-                string searchValue = pager.SearchValue ?? "";
+                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate, dateRange.EndDate, sessionUserId);
+                string searchValue = pager.SearchValue.Trim() ?? "";
 
                 List<spGetRawDataResult> mainData = null;
 
                 if (searchValue != "")
                 {
-                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetRawDataResult>(searchValue)).ToList();
+                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetRawDataResult>(searchValue, Constant.GlobalDateFormat)).ToList();
                 }
                 else
                 {
@@ -189,15 +190,15 @@ namespace Gizmosbuy.BAL.Repository
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
                 string columnName = pager.ColumnName ?? "";
                 string sortDirection = pager.SortDirection ?? "";
 
-                IEnumerable<object> mainData = null;
+                IEnumerable<spGetStoreTransferRawDataResult> mainData = null;
 
                 if (searchValue != "")
                 {
-                    mainData = rawDataResults.Where(Utilities.GetSearchValue<object>(searchValue));
+                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetStoreTransferRawDataResult>(searchValue, Constant.GlobalDateFormat));
                 }
                 else
                 {
@@ -257,15 +258,15 @@ namespace Gizmosbuy.BAL.Repository
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
                 string columnName = pager.ColumnName ?? "";
                 string sortDirection = pager.SortDirection ?? "";
 
-                IEnumerable<object> mainData = null;
+                IEnumerable<spGetStoreTransferPaymentSummaryResult> mainData = null;
 
                 if (searchValue != "")
                 {
-                    mainData = rawDataResults.Where(Utilities.GetSearchValue<object>(searchValue));
+                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetStoreTransferPaymentSummaryResult>(searchValue, Constant.GlobalDateFormat));
                 }
                 else
                 {

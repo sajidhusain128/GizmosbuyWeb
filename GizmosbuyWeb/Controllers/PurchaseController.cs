@@ -1,12 +1,17 @@
-﻿using Gizmosbuy.BAL.Interfaces;
+﻿using ClosedXML.Excel;
+using Gizmosbuy.BAL.Commons;
+using Gizmosbuy.BAL.Interfaces;
+using Gizmosbuy.BAL.Repository;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
+using Gizmosbuy.DAL.Models;
 using Gizmosbuy.Web.Filters;
 using GizmosbuyWeb.Configurations;
 using GizmosbuyWeb.Filters;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Gizmosbuy.Web.Controllers
 {
@@ -60,7 +65,8 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                List<ICategoryModel> categories = await _commonBL.GetAllCategories("_categoryList");
+                List<ICategoryModel> cachedCategoryList = await _commonBL.GetAllCategories("_categoryList");
+                List<ICategoryModel> categories = [.. cachedCategoryList.Any() ? cachedCategoryList : null];
 
                 if (categories != null && categories.Count > 0)
                 {
@@ -74,7 +80,8 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.Categories = categories;
                 }
 
-                List<IBrandModel> brands = await _commonBL.GetAllBrands("_brandList");
+                List<IBrandModel> cachedBrandList = await _commonBL.GetAllBrands("_brandList");
+                List<IBrandModel> brands = [.. cachedBrandList.Any() ? cachedBrandList : null];
 
                 if (brands != null && brands.Count > 0)
                 {
@@ -88,7 +95,8 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.Brands = brands;
                 }
 
-                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes("_paymentList");
+                List<IPaymentModeModel> cachedPaymentModeList = await _commonBL.GetAllPaymentModes("_paymentList");
+                List<IPaymentModeModel> paymentModes = [.. cachedPaymentModeList.Any() ? cachedPaymentModeList : null];
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
@@ -128,9 +136,13 @@ namespace Gizmosbuy.Web.Controllers
             {
                 int i = await _purchaseBL.CreatePurchase(purchaseModel);
 
-                if (i > 0)
+                if (i == 1)
                 {
                     return Json("Success");
+                }
+                else if (i == -1)
+                {
+                    return Json("Exist");
                 }
 
                 return Json("Failed");
@@ -146,7 +158,8 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                List<ICategoryModel> categories = await _commonBL.GetAllCategories("_categoryList");
+                List<ICategoryModel> cachedCategoryList = await _commonBL.GetAllCategories("_categoryList");
+                List<ICategoryModel> categories = [.. cachedCategoryList.Any() ? cachedCategoryList : null];
 
                 if (categories != null && categories.Count > 0)
                 {
@@ -160,7 +173,8 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.Categories = categories;
                 }
 
-                List<IBrandModel> brands = await _commonBL.GetAllBrands("_brandList");
+                List<IBrandModel> cachedBrandList = await _commonBL.GetAllBrands("_brandList");
+                List<IBrandModel> brands = [.. cachedBrandList.Any() ? cachedBrandList : null];
 
                 if (brands != null && brands.Count > 0)
                 {
@@ -174,7 +188,8 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.Brands = brands;
                 }
 
-                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes("_paymentList");
+                List<IPaymentModeModel> cachedPaymentModeList = await _commonBL.GetAllPaymentModes("_paymentList");
+                List<IPaymentModeModel> paymentModes = [.. cachedPaymentModeList.Any() ? cachedPaymentModeList : null];
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
@@ -189,6 +204,8 @@ namespace Gizmosbuy.Web.Controllers
                 }
 
                 IPurchaseModel purchaseModel = await _purchaseBL.GetPurchaseByID(Id);
+
+                ViewBag.TransferPurchaseID = Convert.ToInt32(Request.Query["TransferPurchaseID"]);
 
                 if (purchaseModel != null)
                 {
@@ -212,9 +229,13 @@ namespace Gizmosbuy.Web.Controllers
             {
                 int i = await _purchaseBL.UpdatePurchase(purchaseModel);
 
-                if (i > 0)
+                if (i == 1)
                 {
                     return Json("Success");
+                }
+                else if (i == -1)
+                {
+                    return Json("Exist");
                 }
 
                 return Json("Failed");
@@ -275,6 +296,64 @@ namespace Gizmosbuy.Web.Controllers
                 }
 
                 return Json("Failed");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
+        public async Task<IActionResult> PurchaseExportExcel(string Search)
+        {
+            try
+            {
+                IPager pager = new Pager();
+
+                pager.SearchValue = Search ?? "";
+
+                var result = await _purchaseBL.GetPurchaseExport(pager);
+
+                if (result != null && result.Count > 0)
+                {
+
+                    DataTable dt = Utilities.CreateDataTable(result); // Fetch your data
+
+                    if (dt.Columns.Count > 0)
+                    {
+                        if(dt.Columns.Contains("TransferPurchaseID"))
+                        {
+                            dt.Columns.Remove("TransferPurchaseID");
+                        }
+                        if(dt.Columns.Contains("CanEdit"))
+                        {
+                            dt.Columns.Remove("CanEdit");
+                        }
+                        if(dt.Columns.Contains("CanDelete"))
+                        {
+                            dt.Columns.Remove("CanDelete");
+                        }
+                    }
+
+                    string fileName = $"Purchase_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        wb.Worksheets.Add(dt, "Sheet1");
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            wb.SaveAs(stream);
+                            return File(stream.ToArray(),
+                                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                        fileName);
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             catch (Exception)
             {

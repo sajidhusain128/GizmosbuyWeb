@@ -9,6 +9,8 @@
         public const string Role = "Role";
         public const string Location = "Location";
         public const string LocationId = "LocationId";
+
+        public const string GlobalDateFormat = "dd/MM/yyyy";
     }
 
     public class ConstantsSessions

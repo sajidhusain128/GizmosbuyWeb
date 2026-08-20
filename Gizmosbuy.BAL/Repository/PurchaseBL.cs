@@ -1,11 +1,13 @@
 ﻿using System.Data;
 using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
+using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
 using Gizmosbuy.DAL.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gizmosbuy.BAL.Repository
 {
@@ -23,15 +25,9 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                DataTable SearlNoDataTable = new DataTable();
-                SearlNoDataTable.Columns.Add("SerialNo", typeof(string));
-                if (purchaseModel.SerialNos != null && purchaseModel.SerialNos.Count > 0)
-                {
-                    foreach (var serialNo in purchaseModel.SerialNos)
-                    {
-                        SearlNoDataTable.Rows.Add(serialNo);
-                    }
-                }
+                IEnumerable<SerialNoListType> serialNoList = purchaseModel.SerialNos != null && purchaseModel.SerialNos.Any()
+                    ? purchaseModel.SerialNos.Select(s => new SerialNoListType { Value = s })
+                    : new List<SerialNoListType>();
 
                 int purchaseLocationID = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
@@ -39,7 +35,7 @@ namespace Gizmosbuy.BAL.Repository
                 var i = await _applicationDbContext.Procedures.spSavePurchaseAsync(
                     purchaseModel.PurchaseId,
                     purchaseModel.SerialNo,
-                    SearlNoDataTable,
+                    serialNoList,
                     purchaseModel.PurchaseDate,
                     purchaseModel.CategoryId,
                     purchaseModel.BrandId,
@@ -77,7 +73,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
                 string columnName = pager.ColumnName ?? "";
                 string sortDirection = pager.SortDirection ?? "";
 
@@ -85,7 +81,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (!string.IsNullOrEmpty(searchValue))
                 {
-                    mainData = purcahseList.Where(Utilities.GetSearchValue<spGetPurchaseListResult>(searchValue)).ToList();
+                    mainData = purcahseList.Where(Utilities.GetSearchValue<spGetPurchaseListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
                 }
                 else
                 {
@@ -170,15 +166,14 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                DataTable SearlNoDataTable = new DataTable();
-                SearlNoDataTable.Columns.Add("SerialNo", typeof(string));
+                IEnumerable<SerialNoListType> serialNoList = new List<SerialNoListType>();
 
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
                 var parameterreturnValue = new OutputParameter<int?>();
                 var i = await _applicationDbContext.Procedures.spSavePurchaseAsync(
                     purchaseModel.PurchaseId,
                     purchaseModel.SerialNo,
-                    SearlNoDataTable,
+                    serialNoList,
                     purchaseModel.PurchaseDate,
                     purchaseModel.CategoryId,
                     purchaseModel.BrandId,
@@ -278,6 +273,35 @@ namespace Gizmosbuy.BAL.Repository
             {
                 throw;
             }
+        }
+
+        public async Task<IList<spGetPurchaseListResult>> GetPurchaseExport(IPager pager)
+        {
+            try
+            {
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+
+                var purcahseList = await _applicationDbContext.Procedures.spGetPurchaseListAsync(sessionUserId);
+
+                string searchValue = pager.SearchValue.Trim() ?? "";
+
+                IList<spGetPurchaseListResult> mainData = null;
+
+                if (!string.IsNullOrEmpty(searchValue))
+                {
+                    mainData = purcahseList.Where(Utilities.GetSearchValue<spGetPurchaseListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
+                }
+                else
+                {
+                    mainData = purcahseList;
+                }
+
+                return mainData;
+            }
+            catch (Exception)
+            {
+                throw;
+            }   
         }
     }
 }

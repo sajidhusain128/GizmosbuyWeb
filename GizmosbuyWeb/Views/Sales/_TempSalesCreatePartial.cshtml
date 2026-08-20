@@ -6,7 +6,7 @@
 }
 
 
-<div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
+<div class="custom-table table table-bordered table-responsive table-sm m-0 table-striped">
     <table id="tblSalesTemp" class="">
         <thead>
             <tr>
@@ -20,7 +20,7 @@
         </tbody>
     </table>
 </div>
-<div class="col-md-12 mb-2">
+<div class="col-md-12 my-2">
     <div class="row">
         <div class="text-right">
             <button type="button" class="btn btn-custom" id="btnSalesSave" title="Save Final Added Entries"><i class="fas fa-save"></i> Save</button>
@@ -262,6 +262,32 @@
                                             </div>
                                             <div class="col-md-5">
                                                 <input type="text" id="txtBillNoTemp" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" readonly>
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtWarrantyTemp" class="col-form-label">Warranty:</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" id="txtWarrantyTemp" class="form-control" asp-for="Warranty" autocomplete="off">
+                                            </div>
+                                            <div class="col-auto">
+                                                <span class="field-validation-error"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 mb-2">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2">
+                                                <label for="txtRemarkTemp" class="col-form-label">Remark:</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" id="txtRemarkTemp" class="form-control" asp-for="Remark" autocomplete="off">
                                             </div>
                                             <div class="col-auto">
                                                 <span class="field-validation-error"></span>

@@ -19,10 +19,12 @@ namespace Gizmosbuy.Web.Controllers
     public class InventoryController : Controller
     {
         private readonly IInventoryBL _inventoryBL;
+        private readonly IFinanceBL _financeBL;
         private readonly ICommonBL _commonBL;
-        public InventoryController(IInventoryBL inventoryBL, ICommonBL commonBL)
+        public InventoryController(IInventoryBL inventoryBL, IFinanceBL financeBL, ICommonBL commonBL)
         {
             _inventoryBL = inventoryBL;
+            _financeBL = financeBL;
             _commonBL = commonBL;
         }
 
@@ -95,23 +97,23 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.defaultLocationId = locationId.ToString();
                 }
 
-                List<string> stringValues = new List<string> { "January", "February", "March", "April", "May", "Jun", "July", "August", "September", "October", "November", "December" };
+                List<string> stringValues = new List<string> { "Select Month", "January", "February", "March", "April", "May", "Jun", "July", "August", "September", "October", "November", "December" };
                 List<SelectListItem> selectListItems = new List<SelectListItem>();
-                int index = 0;
 
-                foreach (var item in stringValues)
+                foreach (var (item, index) in stringValues.WithIndex())
                 {
+                    //int increment = index;
                     selectListItems.Add(new SelectListItem
                     {
                         Text = item,
-                        Value = item,
-                        Selected = (item == DateTime.Now.ToString("MMMM"))
+                        Value = index.ToString()
                     });
-                    index++; // Manually increment the index
                 }
 
                 ViewBag.Months = selectListItems;
 
+
+                ViewBag.Date = Enumerable.Range(1, 31).Select(i => new SelectListItem { Value = i.ToString(), Text = i.ToString() }).ToList();
 
                 return View();
             }
@@ -129,13 +131,13 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
-        public async Task<IActionResult> GetSummayData(string transactionType, int locationId, int month, int year)
+        public async Task<IActionResult> GetSummayData(ISummaryModel summaryModel)
         {
             try
             {
-                if (transactionType == "Sales")
+                if (summaryModel.Status == "Sales")
                 {
-                    var result = await _inventoryBL.GetSalesSummaryData(locationId, month, year);
+                    var result = await _inventoryBL.GetSalesSummaryData(summaryModel);
 
                     if (result == null)
                     {
@@ -144,9 +146,9 @@ namespace Gizmosbuy.Web.Controllers
 
                     return PartialView("_SalesSummaryPartial", result);
                 }
-                else if (transactionType == "Purchase")
+                else if (summaryModel.Status == "Purchase")
                 {
-                    var result = await _inventoryBL.GetPurchaseSummaryData(locationId);
+                    var result = await _inventoryBL.GetPurchaseSummaryData(summaryModel.LocationId);
 
                     if (result == null)
                     {
@@ -172,8 +174,8 @@ namespace Gizmosbuy.Web.Controllers
             {
                 DateRange dateRange = new DateRange
                 {
-                    StartDate = FromDate,
-                    EndDate = ToDate
+                    StartDate = FromDate == "" ? null : FromDate,
+                    EndDate = ToDate == "" ? null : ToDate
                 };
 
                 IPager pager = new Pager();
@@ -224,7 +226,8 @@ namespace Gizmosbuy.Web.Controllers
             {
                 string RoleName = Utilities.GetSessionValue("Role", HttpContext);
 
-                List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> cachedLocationList = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> locationModel = [.. cachedLocationList.Any() ? cachedLocationList : null];
 
                 if (locationModel != null && locationModel.Count > 0)
                 {
@@ -309,6 +312,27 @@ namespace Gizmosbuy.Web.Controllers
                 var result = await _inventoryBL.GetStoreTransferCalculation(searchLocationId);
 
                 return Json(result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
+        public async Task<IActionResult> GetExpenseSummayData(ISummaryModel summaryModel)
+        {
+            try
+            {
+                var result = await _financeBL.GetExpenseSummaryData(summaryModel);
+
+                if (result == null)
+                {
+                    result = new List<IExpenseSummaryModel>();
+                }
+
+                return PartialView("_ExpenseSummaryPartial", result);
             }
             catch (Exception)
             {

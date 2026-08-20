@@ -1,5 +1,6 @@
 ﻿using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
+using Gizmosbuy.DAL.Models;
 
 namespace Gizmosbuy.BAL.Interfaces
 {
@@ -7,7 +8,7 @@ namespace Gizmosbuy.BAL.Interfaces
     {
         Task<int> CreateStoreTransfer();
         Task<int> CreateTempStoreTransfer(TempStoreTransferModel tempStoreTransferModel);
-        Task<object> GetStoreTransferList(IPager pager);
+        Task<object> GetStoreTransferList(IPager pager, int searchToLocationId);
         Task<ITempStoreTransferModel> GetTempStoreTransferByID(int id);
         Task<object> GetTempStoreTransferList(IPager pager);
         Task<int> TempStoreTransferDelete(int id);
@@ -24,5 +25,8 @@ namespace Gizmosbuy.BAL.Interfaces
         Task<int> TransferPaymentStausUpdate(int id, string type);
         Task<ITransferPaymentModel> GetTransferPaymentByID(int id);
         Task<int> UpdateTransferPayment(TransferPaymentModel transferPaymentModel);
+        Task<string> GenerateStoreTransferNewBillNo();
+        Task<IList<spGetStoreTransferListResult>> GetStoreTransferExport(int searchToLocationId, IPager pager);
+        Task<IList<spGetTransferPaymentListResult>> GetTransferPaymentExport(IPager pager);
     }
 }

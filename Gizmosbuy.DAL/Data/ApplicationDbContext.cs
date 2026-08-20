@@ -20,6 +20,10 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<CategoryMaster> CategoryMasters { get; set; }
 
+    public virtual DbSet<Expense> Expenses { get; set; }
+
+    public virtual DbSet<ExpenseTypeMaster> ExpenseTypeMasters { get; set; }
+
     public virtual DbSet<LocationMaster> LocationMasters { get; set; }
 
     public virtual DbSet<PaymentModeMaster> PaymentModeMasters { get; set; }
@@ -86,6 +90,35 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.CategoryName)
                 .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.IsActive).HasDefaultValue(false);
+        });
+
+        modelBuilder.Entity<Expense>(entity =>
+        {
+            entity.HasKey(e => e.ExpenseId).HasName("PK__Expenses__1445CFF3B639300E");
+
+            entity.Property(e => e.ExpenseId).HasColumnName("ExpenseID");
+            entity.Property(e => e.Amount).HasColumnType("money");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.ExpenseDate).HasColumnType("datetime");
+            entity.Property(e => e.ExpenseTypeId).HasColumnName("ExpenseTypeID");
+            entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
+            entity.Property(e => e.PaymentModeId).HasColumnName("PaymentModeID");
+            entity.Property(e => e.Remark)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<ExpenseTypeMaster>(entity =>
+        {
+            entity.HasKey(e => e.ExpenseTypeId).HasName("PK__ExpenseT__E082A36F63B89EDF");
+
+            entity.ToTable("ExpenseTypeMaster");
+
+            entity.Property(e => e.ExpenseTypeId).HasColumnName("ExpenseTypeID");
+            entity.Property(e => e.ExpenseTypeName)
+                .HasMaxLength(50)
                 .IsUnicode(false);
             entity.Property(e => e.IsActive).HasDefaultValue(false);
         });
@@ -173,11 +206,17 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.PurchaseId).HasColumnName("PurchaseID");
+            entity.Property(e => e.Remark)
+                .HasMaxLength(500)
+                .IsUnicode(false);
             entity.Property(e => e.SellingDate).HasColumnType("datetime");
             entity.Property(e => e.SellingLead)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.SellingPrice).HasColumnType("money");
+            entity.Property(e => e.Warranty)
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Purchase).WithMany(p => p.Sales)
                 .HasForeignKey(d => d.PurchaseId)
@@ -206,11 +245,17 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.PurchaseId).HasColumnName("PurchaseID");
+            entity.Property(e => e.Remark)
+                .HasMaxLength(500)
+                .IsUnicode(false);
             entity.Property(e => e.SellingDate).HasColumnType("datetime");
             entity.Property(e => e.SellingLead)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.SellingPrice).HasColumnType("money");
+            entity.Property(e => e.Warranty)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<SalesJournal>(entity =>
@@ -294,7 +339,7 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<TempSale>(entity =>
         {
-            entity.HasKey(e => e.TempSalesId).HasName("PK__TempSale__C508D4FF54F286A8");
+            entity.HasKey(e => e.TempSalesId).HasName("PK__TempSale__C508D4FF4D71675C");
 
             entity.Property(e => e.TempSalesId).HasColumnName("TempSalesID");
             entity.Property(e => e.BillNo)
@@ -312,17 +357,23 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.PurchaseId).HasColumnName("PurchaseID");
+            entity.Property(e => e.Remark)
+                .HasMaxLength(50)
+                .IsUnicode(false);
             entity.Property(e => e.SellingDate).HasColumnType("datetime");
             entity.Property(e => e.SellingLead)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.SellingPrice).HasColumnType("money");
             entity.Property(e => e.UserId).HasColumnName("UserID");
+            entity.Property(e => e.Warranty)
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
             entity.HasOne(d => d.Purchase).WithMany(p => p.TempSales)
                 .HasForeignKey(d => d.PurchaseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__TempSales__Purch__0880433F");
+                .HasConstraintName("FK__TempSales__Purch__11007AA7");
         });
 
         modelBuilder.Entity<TempStoreTransfer>(entity =>

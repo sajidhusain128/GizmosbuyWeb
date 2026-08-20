@@ -7,7 +7,7 @@ namespace Gizmosbuy.BAL.Interfaces
     public interface IInventoryBL
     {
         Task<object> GetRawData(IDateRange dateRange, IPager pager);
-        Task<List<ISalesSummaryModel>> GetSalesSummaryData(int locationId, int month, int year);
+        Task<List<ISalesSummaryModel>> GetSalesSummaryData(ISummaryModel summaryModel);
         Task<List<IPurchaseSummaryModel>> GetPurchaseSummaryData(int locationId);
         Task<List<spGetRawDataResult>> GetRawDataExport(IDateRange dateRange, IPager pager);
         Task<object> GetStoreTransferRawData(int searchLocationId, IPager pager);

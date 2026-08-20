@@ -1,8 +1,10 @@
 ﻿using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
+using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
+using Gizmosbuy.DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,20 +26,38 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int start = pager.PageStart;
                 int length = pager.PageLength;
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
 
-                IEnumerable<object> mainData = null;
+                IEnumerable<UserModel> mainData = null;
 
                 if (searchValue != "")
                 {
-                    mainData = _applicationDbContext.UserMasters.Where(Utilities.GetSearchValue<object>(searchValue));
+                    mainData =  _applicationDbContext.UserMasters
+                        .Join(_applicationDbContext.LocationMasters, UM => UM.LocationId, LM => LM.LocationId, (UM, LM) => new { UM, LM })
+                        .Select(S => new UserModel
+                        {
+                            UserId = S.UM.UserId,
+                            UserName = S.UM.UserName,
+                            Password = S.UM.Password,
+                            UserRole = S.UM.UserRole,
+                            LocationName = S.LM.LocationName
+                        }).Where(Utilities.GetSearchValue<UserModel>(searchValue, Constant.GlobalDateFormat)).ToList();
                 }
                 else
                 {
-                    mainData = _applicationDbContext.UserMasters;
+                    mainData = _applicationDbContext.UserMasters
+                        .Join(_applicationDbContext.LocationMasters,UM => UM.LocationId,LM => LM.LocationId,(UM, LM) => new {UM, LM })
+                        .Select(S => new UserModel
+                        {
+                            UserId = S.UM.UserId,
+                            UserName = S.UM.UserName,
+                            Password = S.UM.Password,
+                            UserRole = S.UM.UserRole,
+                            LocationName = S.LM.LocationName
+                        });
                 }
 
-                var totalCount = mainData.ToList().Count;
+                var totalCount = mainData.Count();
                 var filterCount = totalCount;
 
                 mainData = mainData
@@ -102,6 +122,51 @@ namespace Gizmosbuy.BAL.Repository
                 {
                     return 0;
                 }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IList<UserModel>> GetUserPasswordExport(IPager pager)
+        {
+            try
+            {
+                int start = pager.PageStart;
+                int length = pager.PageLength;
+                string searchValue = pager.SearchValue.Trim() ?? "";
+
+                IEnumerable<UserModel> mainData = null;
+
+                if (searchValue != "")
+                {
+                    mainData = _applicationDbContext.UserMasters
+                        .Join(_applicationDbContext.LocationMasters, UM => UM.LocationId, LM => LM.LocationId, (UM, LM) => new { UM, LM })
+                        .Select(S => new UserModel
+                        {
+                            UserId = S.UM.UserId,
+                            UserName = S.UM.UserName,
+                            Password = S.UM.Password,
+                            UserRole = S.UM.UserRole,
+                            LocationName = S.LM.LocationName
+                        }).Where(Utilities.GetSearchValue<UserModel>(searchValue, Constant.GlobalDateFormat)).ToList();
+                }
+                else
+                {
+                    mainData = _applicationDbContext.UserMasters
+                        .Join(_applicationDbContext.LocationMasters, UM => UM.LocationId, LM => LM.LocationId, (UM, LM) => new { UM, LM })
+                        .Select(S => new UserModel
+                        {
+                            UserId = S.UM.UserId,
+                            UserName = S.UM.UserName,
+                            Password = S.UM.Password,
+                            UserRole = S.UM.UserRole,
+                            LocationName = S.LM.LocationName
+                        });
+                }
+
+                return mainData.ToList();
             }
             catch (Exception)
             {

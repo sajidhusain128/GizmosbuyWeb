@@ -24,5 +24,7 @@ namespace Gizmosbuy.DAL.Models
         [StringLength(100)]
         public string CustomerName { get; set; }
         public long? ContactNo { get; set; }
+        public int? SellingQuantity { get; set; }
+        public int PurchaseID { get; set; }
     }
 }

@@ -34,6 +34,10 @@ namespace Gizmosbuy.DAL.Models
         public string Location { get; set; }
         [StringLength(50)]
         public string BillNo { get; set; }
+        [StringLength(50)]
+        public string Warranty { get; set; }
+        [StringLength(50)]
+        public string Remark { get; set; }
         [StringLength(100)]
         public string SellingLead { get; set; }
         public int PurchaseID { get; set; }

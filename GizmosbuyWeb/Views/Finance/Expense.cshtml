@@ -1,0 +1,141 @@
+﻿@using Gizmosbuy.Core.Constants
+@using Gizmosbuy.BAL.Commons;
+
+@{
+    ViewBag.Title = "Expenses";
+    string userRole = Utilities.GetSessionValue(Constant.Role, Context.Request.HttpContext);
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="body-title">
+            <h1>Expense</h1>
+        </div>
+    </div>
+</div>
+<div class="container-block">
+    <div class="page-title">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12 col-12">
+                    <div class="row">
+                        <div class="col-md-6 col-6">
+                            <div class="row">
+                                <a href="@Url.Action("CreateExpense", "Finance")" class="btn btn-custom" title="Create Expense Entry"><i class="fas fa-save"></i> Create Entry</a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-6">
+                            <div class="row justify-content-end">
+                                <button id="btnExportExpense" class="btn btn-custom" title="Export To Excel"><i class="fas fa-file-excel"></i> Export</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-block">
+    <div class="section-block">
+        <div class="page-header">
+            <div class="header-title">Expense List</div>
+        </div>
+        <div class="page-content p-0">
+            <div class="page-body p-0">
+                <div class="custom-table table table-bordered table-responsive table-sm m-0 table-striped">
+                    <table id="tblExpense" class="">
+                        <thead>
+                            <tr>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_PartialExpenseDeletePopup.cshtml")
+
+@section Scripts
+{
+    <script src="@Url.Content("~/lib/moment.js/moment.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/finance.js")" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+        var tableExpense = null;
+
+        $(document).ready(function () {
+
+            tableExpense = $('#tblExpense').DataTable({
+                scrollX: true,
+                scrollY: 406,
+                scrollCollapse: true,
+                fixedColumns: true,
+                processing: true,
+                serverSide: true,
+                pageLength: 10,
+                order: [], // 👈 disables initial sort
+                "paging": true,
+                "ajax": {
+                    "url": "/Finance/GetExpenseList",
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": null, "title": "#" },
+                    {
+                        "data": "expenseDate", "title": "Expense Date", render: function (data, type, row) {
+                            if (data === null) return "";
+
+                            return moment(data).format('DD/MM/YYYY');
+                        }
+                    },
+                    {
+                        "data": "amount", "title": "Amount", render: function (data, type, row) {
+                            if (data === null) return "";
+
+                            return "&#8377; " + data;
+                        }
+                    },
+                    { "data": "expenseTypeName", "title": "Expense Type" },
+                    { "data": "remark", "title": "Remark" },
+                    { "data": "paymentModeName", "title": "Payment Mode" },
+                    { "data": "expenseMonthName", "title": "Expense Month" },
+                    { "data": "expenseYear", "title": "Expense Year" },
+                    // {
+                    //     "data": "purchaseID", "title": "Action ", render: function (data, type, row) {
+                    //         if (data === null) return "";
+
+                    //         return '<a href="/Finance/EditExpense?Id=' + row.expenseId + '" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Expense Entry" class="mr-2"><i class="fas fa-edit fa-lg color-info"></i></a>'+
+                    //             '<a href="javascript:void(0)" onclick="showDeleteExpenseModel(' + row.expenseId + ')" class="custom-link-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Expense Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>';
+                    //     }
+                    // }
+                ],
+                columnDefs: [
+                    { targets: 0, className: 'text-nowrap' },
+                    { targets: 1, className: 'text-nowrap' },
+                    { targets: 2, className: 'text-nowrap text-right' },
+                    { targets: 3, className: 'text-nowrap' },
+                    { targets: 4, className: 'text-nowrap' },
+                    { targets: 5, className: 'text-nowrap' },
+                    { targets: 6, className: 'text-nowrap' },
+                    { targets: 7, className: 'text-nowrap' },
+                    //{ targets: 8, className: 'text-nowrap text-center min-width-column', "orderable": false }
+                ],
+                initComplete: function () {
+                    $('*[title]').tooltip();
+                },
+                fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                    $("td:first", nRow).html(iDisplayIndex + 1);
+                    return nRow;
+                }
+            });
+        });
+    </script>
+}

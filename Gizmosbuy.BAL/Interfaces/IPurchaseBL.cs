@@ -1,4 +1,5 @@
 ﻿using Gizmosbuy.Core.Interfaces;
+using Gizmosbuy.DAL.Models;
 
 namespace Gizmosbuy.BAL.Interfaces
 {
@@ -10,5 +11,6 @@ namespace Gizmosbuy.BAL.Interfaces
         Task<int> UpdatePurchase(IPurchaseModel purchaseModel);
         Task<List<IAutoCompleteModel>> GetSerialNoList(string serailNo);
         Task<int> PurchaseDelete(int id);
+        Task<IList<spGetPurchaseListResult>> GetPurchaseExport(IPager pager);
     }
 }

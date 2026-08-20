@@ -1,5 +1,6 @@
 ﻿using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
+using Gizmosbuy.DAL.Models;
 
 namespace Gizmosbuy.BAL.Interfaces
 {
@@ -17,6 +18,7 @@ namespace Gizmosbuy.BAL.Interfaces
         Task<int> UpdateTempSales(TempSalesModel tempSalesModel);
         Task<Tuple<List<SalesDataModel>, List<SalesHeaderModel>>> GetSalesReportData(string invoiceNo);
         Task<List<ISalesModel>> GetInvoiceDetails(string invoiceNo);
-        Task<int> DeleteSalesByInvoice(string invoiceNo);
+        Task<int> DeleteSalesByInvoice(string invoiceNo, List<SalesReturnItems> salesReturnItems);
+        Task<IList<spGetSalesListResult>> GetSalesExport(IPager pager);
     }
 }

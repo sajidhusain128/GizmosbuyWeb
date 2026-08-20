@@ -1,5 +1,6 @@
 ﻿using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
+using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
@@ -40,37 +41,25 @@ namespace Gizmosbuy.BAL.Repository
 
                     foreach (var salesModel in salesModels)
                     {
-                        Sale saleMaster = new Sale
-                        {
-                            PurchaseId = salesModel.PurchaseId,
-                            SellingDate = salesModel.SellingDate,
-                            SellingPrice = salesModel.SellingPrice,
-                            SellingQuantity = salesModel.SellingQuantity,
-                            PaymentMode = salesModel.PaymentMode,
-                            SellingLead = salesModel.SellingLead,
-                            CustomerName = salesModel.CustomerName,
-                            ContactNo = salesModel.ContactNo,
-                            Location = salesModel.Location,
-                            BillNo = salesModel.BillNo,
-                            CreatedBy = sessionUserId,
-                            CreatedDate = DateTime.Now
-                        };
+                        DateTime currentDateTime = salesModel.SellingDate.GetValueOrDefault().Date + DateTime.Now.TimeOfDay;
 
                         var i = await _applicationDbContext.Procedures.spSaveSalesAsync(0,
-                            saleMaster.PurchaseId,
-                            saleMaster.SellingDate,
-                            saleMaster.SellingPrice,
-                            saleMaster.SellingQuantity,
-                            saleMaster.PaymentMode,
-                            saleMaster.SellingLead,
-                            saleMaster.CustomerName,
-                            saleMaster.ContactNo,
-                            saleMaster.Location,
-                            saleMaster.BillNo,
-                            saleMaster.CreatedBy,
-                            saleMaster.CreatedDate,
-                            null,
-                            null,
+                            salesModel.PurchaseId,
+                            currentDateTime,
+                            salesModel.SellingPrice,
+                            salesModel.SellingQuantity,
+                            salesModel.PaymentMode,
+                            salesModel.SellingLead,
+                            salesModel.CustomerName,
+                            salesModel.ContactNo,
+                            salesModel.Location,
+                            salesModel.BillNo,
+                            salesModel.Warranty,
+                            salesModel.Remark,
+                            sessionUserId,
+                            DateTime.Now,
+                            null, // ModifiedBy
+                            null, // ModifiedDate
                             "INSERT",
                             outputParameter);
                     }
@@ -99,7 +88,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 int start = pager.PageStart;
                 int length = pager.PageLength;
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
                 string columnName = pager.ColumnName ?? "";
                 string sortDirection = pager.SortDirection ?? "";
 
@@ -107,7 +96,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (searchValue != "")
                 {
-                    mainData = salesList.Where(Utilities.GetSearchValue<spGetSalesListResult>(searchValue)).ToList();
+                    mainData = salesList.Where(Utilities.GetSearchValue<spGetSalesListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
                 }
                 else
                 {
@@ -179,6 +168,8 @@ namespace Gizmosbuy.BAL.Repository
                         ContactNo = spGetSalesByIDResult.ContactNo.GetValueOrDefault(),
                         LocationName = spGetSalesByIDResult.Location,
                         BillNo = spGetSalesByIDResult.BillNo,
+                        Warranty = spGetSalesByIDResult.Warranty,
+                        Remark = spGetSalesByIDResult.Remark,
                         SellingLead = spGetSalesByIDResult.SellingLead
 
                     };
@@ -198,38 +189,27 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                Sale saleMaster = new Sale
-                {
-                    SalesId = salesModel.SalesId,
-                    SellingDate = salesModel.SellingDate,
-                    SellingPrice = salesModel.SellingPrice,
-                    PaymentMode = salesModel.PaymentModeName,
-                    SellingLead = salesModel.SellingLead,
-                    CustomerName = salesModel.CustomerName,
-                    ContactNo = salesModel.ContactNo,
-                    Location = salesModel.LocationName,
-                    BillNo = salesModel.BillNo,
-                    ModifiedBy = sessionUserId,
-                    ModifiedDate = DateTime.Now
-                };
-
                 OutputParameter<int> outputParameter = new OutputParameter<int>();
 
-                var i = await _applicationDbContext.Procedures.spSaveSalesAsync(saleMaster.SalesId,
-                    saleMaster.PurchaseId,
-                    saleMaster.SellingDate,
-                    saleMaster.SellingPrice,
-                    saleMaster.SellingQuantity,
-                    saleMaster.PaymentMode,
-                    saleMaster.SellingLead,
-                    saleMaster.CustomerName,
-                    saleMaster.ContactNo,
-                    saleMaster.Location,
-                    saleMaster.BillNo,
+                DateTime currentDateTime = salesModel.SellingDate.GetValueOrDefault().Date + DateTime.Now.TimeOfDay;
+
+                var i = await _applicationDbContext.Procedures.spSaveSalesAsync(salesModel.SalesId,
+                    salesModel.PurchaseId,
+                    currentDateTime,
+                    salesModel.SellingPrice,
+                    salesModel.SellingQuantity,
+                    salesModel.PaymentModeName,
+                    salesModel.SellingLead,
+                    salesModel.CustomerName,
+                    salesModel.ContactNo,
+                    salesModel.LocationName,
+                    salesModel.BillNo,
+                    salesModel.Warranty,
+                    salesModel.Remark,
                     null, // CreatedBy
                     null, // CreatedDate
-                    saleMaster.ModifiedBy,
-                    saleMaster.ModifiedDate,
+                    sessionUserId,
+                    DateTime.Now,
                     "UPDATE",
                     outputParameter);
 
@@ -249,13 +229,13 @@ namespace Gizmosbuy.BAL.Repository
 
                 var salesList = await _applicationDbContext.Procedures.spGetTempSalesListAsync(sessionUserId);
 
-                string searchValue = pager.SearchValue ?? "";
+                string searchValue = pager.SearchValue.Trim() ?? "";
 
                 List<spGetTempSalesListResult> mainData = null;
 
                 if (searchValue != "")
                 {
-                    mainData = salesList.Where(Utilities.GetSearchValue<spGetTempSalesListResult>(searchValue)).ToList();
+                    mainData = salesList.Where(Utilities.GetSearchValue<spGetTempSalesListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
                 }
                 else
                 {
@@ -287,13 +267,13 @@ namespace Gizmosbuy.BAL.Repository
             {
                 string sessionLocation = Utilities.GetSessionValue("Location", _httpContextAccessor.HttpContext);
 
-                var prefix = _applicationDbContext.LocationMasters.Where(x => x.LocationName == sessionLocation).FirstOrDefault().LocationCode;
+                var prefix = _applicationDbContext.LocationMasters.FirstOrDefault(x => x.LocationName == sessionLocation).LocationCode;
 
                 prefix = string.IsNullOrWhiteSpace(prefix) ? "JGS" : prefix;
 
                 string billNo = string.Empty;
 
-                var lastBillNo = await _applicationDbContext.Procedures.spGetLastSalesBillNoAsync(prefix);
+                var lastBillNo = await _applicationDbContext.Procedures.spGetLastSalesBillNoAsync(prefix, "Sales");
 
                 if (lastBillNo != null && lastBillNo.Count > 0)
                 {
@@ -335,6 +315,8 @@ namespace Gizmosbuy.BAL.Repository
                         tempSalesModel.ContactNo,
                         tempSalesModel.Location,
                         tempSalesModel.BillNo,
+                        tempSalesModel.Warranty,
+                        tempSalesModel.Remark,
                         tempSalesModel.CreatedBy,
                         tempSalesModel.CreatedDate,
                         null,
@@ -384,6 +366,8 @@ namespace Gizmosbuy.BAL.Repository
                         ContactNo = spGetSalesByIDResult.ContactNo,
                         Location = spGetSalesByIDResult.Location,
                         BillNo = spGetSalesByIDResult.BillNo,
+                        Warranty = spGetSalesByIDResult.Warranty,
+                        Remark = spGetSalesByIDResult.Remark,
                         SellingLead = spGetSalesByIDResult.SellingLead,
                         PurchaseId = spGetSalesByIDResult.PurchaseID
                     };
@@ -442,6 +426,8 @@ namespace Gizmosbuy.BAL.Repository
                         tempSalesModel.ContactNo,
                         tempSalesModel.Location,
                         tempSalesModel.BillNo,
+                        tempSalesModel.Warranty,
+                        tempSalesModel.Remark,
                         null,
                         null,
                         tempSalesModel.ModifiedBy,
@@ -509,7 +495,8 @@ namespace Gizmosbuy.BAL.Repository
                             PaymentModeName = item.PaymentModeName,
                             TotalPriceInWord = TotalPriceInWord,
                             StoreAddress = item.StoreAddress,
-                            StoreContactNo = item.StoreContactNo
+                            StoreContactNo = item.StoreContactNo,
+                            Warranty = item.Warranty
                         });
                     }
                 }
@@ -545,7 +532,9 @@ namespace Gizmosbuy.BAL.Repository
                             Model = item.Model,
                             SellingPrice = item.SellingPrice,
                             CustomerName = item.CustomerName,
-                            ContactNo = item.ContactNo
+                            ContactNo = item.ContactNo,
+                            SellingQuantity = item.SellingQuantity,
+                            PurchaseId = item.PurchaseID
                         });
                     }
                 }
@@ -559,16 +548,54 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<int> DeleteSalesByInvoice(string invoiceNo)
+        public async Task<int> DeleteSalesByInvoice(string invoiceNo, List<SalesReturnItems> salesReturnItems)
         {
             try
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
+                IEnumerable<DeleteSalesType> salesDeleteList = salesReturnItems != null && salesReturnItems.Any()
+                    ? salesReturnItems.Select(s => new DeleteSalesType { 
+                        BillNo = s.BillNo,
+                        SalesID = s.SalesId,
+                        PurchaseID = s.PurchaseId,
+                        SellingQuantity = s.ReturnQuantity
+                    })
+                    : new List<DeleteSalesType>();
+
                 OutputParameter<int> outputParameter = new OutputParameter<int>();
-                var i = await _applicationDbContext.Procedures.spDeleteSalesByInvoiceAsync(invoiceNo, sessionUserId, outputParameter);
+                var i = await _applicationDbContext.Procedures.spDeleteSalesByInvoiceAsync(invoiceNo, salesDeleteList, sessionUserId, outputParameter);
 
                 return await Task.FromResult(outputParameter.Value);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IList<spGetSalesListResult>> GetSalesExport(IPager pager)
+        {
+            try
+            {
+                int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+
+                var salesList = await _applicationDbContext.Procedures.spGetSalesListAsync(sessionUserId);
+
+                string searchValue = pager.SearchValue.Trim() ?? "";
+
+                IList<spGetSalesListResult> mainData = null;
+
+                if (searchValue != "")
+                {
+                    mainData = salesList.Where(Utilities.GetSearchValue<spGetSalesListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
+                }
+                else
+                {
+                    mainData = salesList;
+                }
+
+                return mainData;
             }
             catch (Exception)
             {

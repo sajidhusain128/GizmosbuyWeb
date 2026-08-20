@@ -1,4 +1,4 @@
-﻿using System.Data;
+﻿using ClosedXML.Excel;
 using FastReport.Data;
 using FastReport.Export.PdfSimple;
 using FastReport.Utils;
@@ -14,6 +14,7 @@ using GizmosbuyWeb.Filters;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Data;
 
 namespace Gizmosbuy.Web.Controllers
 {
@@ -72,7 +73,8 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes("_paymentList");
+                List<IPaymentModeModel> cachedPaymentModeList = await _commonBL.GetAllPaymentModes("_paymentList");
+                List<IPaymentModeModel> paymentModes = [.. cachedPaymentModeList.Any() ? cachedPaymentModeList : null];
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
@@ -125,7 +127,8 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes("_paymentList");
+                List<IPaymentModeModel> cachedPaymentModeList = await _commonBL.GetAllPaymentModes("_paymentList");
+                List<IPaymentModeModel> paymentModes = [.. cachedPaymentModeList.Any() ? cachedPaymentModeList : null];
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
@@ -139,7 +142,8 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.PaymentModes = paymentModes;
                 }
 
-                List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> cachedLocationList = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> locationModel = [.. cachedLocationList.Any() ? cachedLocationList : null];
 
                 if (locationModel != null && locationModel.Count > 0)
                 {
@@ -268,7 +272,8 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                List<IPaymentModeModel> paymentModes = await _commonBL.GetAllPaymentModes("_paymentList");
+                List<IPaymentModeModel> cachedPaymentModeList = await _commonBL.GetAllPaymentModes("_paymentList");
+                List<IPaymentModeModel> paymentModes = [.. cachedPaymentModeList.Any() ? cachedPaymentModeList : null];
 
                 if (paymentModes != null && paymentModes.Count > 0)
                 {
@@ -469,11 +474,11 @@ namespace Gizmosbuy.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
-        public async Task<IActionResult> DeleteSalesByInvoice(string invoiceNo)
+        public async Task<IActionResult> DeleteSalesByInvoice(string invoiceNo, List<SalesReturnItems> salesReturnItems)
         {
             try
             {
-                var response = await _salesBL.DeleteSalesByInvoice(invoiceNo);
+                var response = await _salesBL.DeleteSalesByInvoice(invoiceNo, salesReturnItems);
 
                 if (response > 0)
                 {
@@ -485,6 +490,47 @@ namespace Gizmosbuy.Web.Controllers
                 }
 
                 return Json("Failed");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
+        public async Task<IActionResult> SalesExportExcel(string Search)
+        {
+            try
+            {
+                IPager pager = new Pager();
+
+                pager.SearchValue = Search ?? "";
+
+                var result = await _salesBL.GetSalesExport(pager);
+
+                if (result != null && result.Count > 0)
+                {
+                    DataTable dt = Utilities.CreateDataTable(result); // Fetch your data
+
+                    string fileName = $"Sales_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        wb.Worksheets.Add(dt, "Sheet1");
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            wb.SaveAs(stream);
+                            return File(stream.ToArray(),
+                                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                        fileName);
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             catch (Exception)
             {

@@ -1,5 +1,4 @@
 ﻿@using Gizmosbuy.Core.Constants
-@using Microsoft.AspNetCore.Http;
 @using Gizmosbuy.BAL.Commons;
 
 @{
@@ -15,34 +14,44 @@
     </div>
 </div>
 <div class="container-block">
+    <div class="page-title">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="row">
+                        <a href="@Url.Action("Create", "Sales")" class="btn btn-custom" title="Create Sales Entry"><i class="fas fa-save"></i> Create Entry</a>
+                    </div>
+
+                </div>
+                @if (userRole == "SuperAdmin" || userRole == "Admin")
+                {
+                    <div class="col-md-6 col-sm-12">
+                        <div class="row column-gap-3 justify-content-end">
+                            <div class="col-md-auto col-sm-6 mb-2">
+                                <div class="row">
+                                    <button id="btnRefundSalesModal" class="btn btn-custom" title="Refund Sold Items"><i class="fa-solid fa-money-bill"></i> Refund</button>
+                                </div>
+                            </div>
+                            <div class="col-md-auto col-sm-6 mb-2">
+                                <div class="row">
+                                    <button id="btnExportSales" class="btn btn-custom" title="Export To Excel"><i class="fas fa-file-excel"></i> Export</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-block">
     <div class="section-block">
         <div class="page-header">
             <div class="header-title">Sales List</div>
         </div>
-        <div class="page-content">
-            <div class="page-title">
-                <h3></h3>
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12">
-                            <div class="row">
-                                <a href="@Url.Action("Create", "Sales")" class="btn btn-custom" title="Create Sales Entry"><i class="fas fa-save"></i> Create Entry</a>
-                            </div>
-
-                        </div>
-                        @if (userRole == "SuperAdmin" || userRole == "Admin")
-                        {
-                            <div class="col-md-6 col-sm-12">
-                                <div class="row float-end">
-                                    <button id="btnRefundSalesModal" class="btn btn-custom" title="Refund Sold Items"><i class="fa-solid fa-money-bill"></i> Refund</button>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </div>
-            <div class="page-body">
-                <div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
+        <div class="page-content p-0">
+            <div class="page-body p-0">
+                <div class="custom-table table table-bordered table-responsive table-sm m-0 table-striped">
                     <table id="tblSales" class="">
                         <thead>
                             <tr>
@@ -69,86 +78,96 @@
     <script src="@Url.Content("~/js/scripts.js")" asp-append-version="true"></script>
 
     <script type="text/javascript">
+        var tableSales = null;
 
-        $(document).ready( function () {
+        $(document).ready(function () {
 
             var form = $("#frmSales");
             var token = $('input[name="__RequestVerificationToken"]', form).val();
 
-            $('#tblSales').DataTable({
+            tableSales = $('#tblSales').DataTable({
                 scrollX: true,
                 scrollY: 406,
                 scrollCollapse: true,
                 fixedColumns: true,
                 processing: true,
-                serverSide:true,
-                pageLength:10,
+                serverSide: true,
+                pageLength: 10,
                 order: [], // disables initial sort
-                "paging":true,
-                "ajax":{
+                "paging": true,
+                "ajax": {
                     "url": "/Sales/GetSalesList",
                     "type": "POST",
                     "datatype": "json",
                     "data": { __RequestVerificationToken: token },
                 },
-                "columns":[
-                    {"data": "salesID","title":"Sr.No."},
-                    {"data": "serialNo","title":"Serial No"},
-                    {"data": "categoryName","title":"Category"},
-                    {"data": "brandName","title":"Brand"},
-                    {"data": "model","title":"Model"},
-                    {"data": "specifications","title":"Specifications"},
-                    {"data": "sellingQuantity","title":"Selling Quantity"},
-                    {"data": "sellingDate","title":"Selling Date",render:function (data, type, row){
-                        if(data === null) return "";
+                "columns": [
+                    { "data": "salesID", "title": "Sr.No." },
+                    { "data": "serialNo", "title": "Serial No" },
+                    { "data": "categoryName", "title": "Category" },
+                    { "data": "brandName", "title": "Brand" },
+                    { "data": "model", "title": "Model" },
+                    { "data": "specifications", "title": "Specifications" },
+                    { "data": "sellingQuantity", "title": "Selling Quantity" },
+                    {
+                        "data": "sellingDate", "title": "Selling Date", render: function (data, type, row) {
+                            if (data === null) return "";
 
-                        return moment(data).format('DD/MM/YYYY');
-                    }},
-                    {"data": "sellingPrice","title":"Selling Price",render:function (data, type, row){
-                        if(data === null) return "";
+                            return moment(data).format('DD/MM/YYYY');
+                        }
+                    },
+                    {
+                        "data": "sellingPrice", "title": "Selling Price", render: function (data, type, row) {
+                            if (data === null) return "";
 
-                        return "&#8377;"+ data;
-                    }},
-                    {"data": "paymentMode","title":"Payment Mode"},
-                    {"data": "customerName","title":"Customer Name"},
-                    {"data": "contactNo","title":"Contact No"},
+                            return "&#8377;" + data;
+                        }
+                    },
+                    { "data": "paymentMode", "title": "Payment Mode" },
+                    { "data": "customerName", "title": "Customer Name" },
+                    { "data": "contactNo", "title": "Contact No" },
 
-                    {"data": "location","title":"Location"},
-                    {"data": "billNo","title":"Bill No"},
-                    {"data": "sellingLead","title":"Selling Lead"},
-                    {"data": "salesID","title":"Edit",render:function (data, type, row){
-                        if(data === null) return "";
-                        return '<a href="/Sales/Edit?Id=' + data + '" class="custom-link-btn" title="Edit Sales Entry"><i class="fas fa-edit fa-lg color-info"></i></a>';
-                    }},
-                    {"data": "billNo","title":"Download",render:function (data, type, row){
-                        if(data === null) return "";
+                    { "data": "location", "title": "Location" },
+                    { "data": "billNo", "title": "Bill No" },
+                    { "data": "sellingLead", "title": "Selling Lead" },
+                    {
+                        "data": "salesID", "title": "Edit", render: function (data, type, row) {
+                            if (data === null) return "";
+                            return '<a href="/Sales/Edit?Id=' + data + '" class="custom-link-btn" title="Edit Sales Entry"><i class="fas fa-edit fa-lg color-info"></i></a>';
+                        }
+                    },
+                    {
+                        "data": "billNo", "title": "Invoice Report", render: function (data, type, row) {
+                            if (data === null) return "";
 
-                        return '<a href="/Sales/DownloadSalesReport?invoiceNo=' + data + '" class="custom-link-btn" title="Download Report"><i class="fas fa-file-arrow-down fa-lg color-info"></i></a>';
-                    }},
-                    {"data": "billNo","title":"WhatsApp",render:function (data, type, row){
-                        if(data === null) return "";
-                        return `<a href="javascript:void(0)" onclick="SendWhatsAppReport('${data}')" class="custom-link-btn" title="Download Report"><i class="fa-brands fa-whatsapp fa-xl color-info"></i></a>`;
-                    }}
+                            return '<a href="/Sales/DownloadSalesReport?invoiceNo=' + data + '" class="custom-link-btn mr-3" title="Download Report"><i class="fa-solid fa-file-pdf fa-lg" style="color:#b22222;"></i></a>' +
+                                `<a href="javascript:void(0)" onclick="SendWhatsAppReport('${data}')" class="custom-link-btn" title="Download Report"><i class="fa-brands fa-square-whatsapp fa-xl color-success"></i></a>`;
+                        }
+                    },
+                    // {"data": "billNo","title":"WhatsApp",render:function (data, type, row){
+                    //     if(data === null) return "";
+                    //     return `<a href="javascript:void(0)" onclick="SendWhatsAppReport('${data}')" class="custom-link-btn" title="Download Report"><i class="fa-brands fa-whatsapp fa-xl color-info"></i></a>`;
+                    // }}
                 ],
                 columnDefs: [
-                    { targets: 0,className: 'text-nowrap'},
-                    { targets: 1,className: 'text-nowrap'},
-                    { targets: 2,className: 'text-nowrap'},
-                    { targets: 3,className: 'text-nowrap'},
-                    { targets: 4,className: 'text-nowrap'},
-                    { targets: 5,className: 'text-nowrap'},
-                    { targets: 6,className: 'text-nowrap text-right'},
-                    { targets: 7,className: 'text-nowrap'},
-                    { targets: 8,className: 'text-nowrap text-right'},
-                    { targets: 9,className: 'text-nowrap'},
-                    { targets: 10,className: 'text-nowrap'},
-                    { targets: 11,className: 'text-nowrap'},
-                    { targets: 12,className: 'text-nowrap'},
-                    { targets: 13,className: 'text-nowrap'},
-                    { targets: 14,className: 'text-nowrap'},
-                    { targets: 15,className: 'text-nowrap text-center min-width-column',"orderable": false},
-                    { targets: 16,className: 'text-nowrap text-center min-width-column',"orderable": false},
-                    { targets: 17,className: 'text-nowrap text-center min-width-column',"orderable": false}
+                    { targets: 0, className: 'text-nowrap' },
+                    { targets: 1, className: 'text-nowrap' },
+                    { targets: 2, className: 'text-nowrap' },
+                    { targets: 3, className: 'text-nowrap' },
+                    { targets: 4, className: 'text-nowrap' },
+                    { targets: 5, className: 'text-nowrap' },
+                    { targets: 6, className: 'text-nowrap text-right' },
+                    { targets: 7, className: 'text-nowrap' },
+                    { targets: 8, className: 'text-nowrap text-right' },
+                    { targets: 9, className: 'text-nowrap' },
+                    { targets: 10, className: 'text-nowrap' },
+                    { targets: 11, className: 'text-nowrap' },
+                    { targets: 12, className: 'text-nowrap' },
+                    { targets: 13, className: 'text-nowrap' },
+                    { targets: 14, className: 'text-nowrap' },
+                    { targets: 15, className: 'text-nowrap text-center min-width-column', "orderable": false },
+                    { targets: 16, className: 'text-nowrap text-center min-width-column', "orderable": false },
+                    // { targets: 17,className: 'text-nowrap text-center min-width-column',"orderable": false}
                 ],
                 initComplete: function () {
                     $('*[title]').tooltip();

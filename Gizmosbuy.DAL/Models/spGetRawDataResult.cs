@@ -56,6 +56,8 @@ namespace Gizmosbuy.DAL.Models
         [StringLength(3)]
         public string SellMonth { get; set; }
         public int? SellYear { get; set; }
+        [StringLength(100)]
+        public string StoreName { get; set; }
         public DateTime? CreatedDate { get; set; }
     }
 }

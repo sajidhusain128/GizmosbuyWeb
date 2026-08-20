@@ -4,59 +4,173 @@
     align-content: center;
     justify-content: center;
 }
-.checkbox-wrapper-1 .round {
-    position: relative;
-}
 
-    .checkbox-wrapper-1 .round label {
-        background-color: #fff;
-        border: 3px solid #09841e;
-        border-radius: 2px;
-        cursor: pointer;
-        height: 23px;
-        width: 23px;
-        display: block;
-        margin-bottom: 0px;
-        transition: background-color 100ms 200ms, transform 350ms linear;
+    .checkbox-wrapper-1 .round {
+        position: relative;
     }
 
-        .checkbox-wrapper-1 .round label:after {
-            border: 3px solid #ce8c0b;
-            border-top: none;
-            border-right: none;
-            content: "";
-            height: 5px;
-            left: 6px;
-            opacity: 0;
-            position: absolute;
-            top: 8px;
-            transform: rotate(-45deg);
-            width: 12px;
+        .checkbox-wrapper-1 .round label {
+            background-color: #fff;
+            border: 3px solid #09841e;
+            border-radius: 2px;
+            cursor: pointer;
+            height: 23px;
+            width: 23px;
+            display: block;
+            margin-bottom: 0px;
+            transition: background-color 100ms 200ms, transform 350ms linear;
         }
 
-    .checkbox-wrapper-1 .round input[type="checkbox"] {
-        visibility: hidden;
-        display: none;
-        opacity: 0;
-    }
-
-        .checkbox-wrapper-1 .round input[type="checkbox"]:checked + label,
-        .checkbox-wrapper-1 .round input[type="checkbox"]:indeterminate + label {
-            /*background-color: #66bb6a;*/
-        }
-            .checkbox-wrapper-1 .round input[type="checkbox"]:indeterminate + label:after {
+            .checkbox-wrapper-1 .round label:after {
                 border: 3px solid #ce8c0b;
                 border-top: none;
                 border-right: none;
                 content: "";
-                height: 0;
+                height: 5px;
                 left: 6px;
-                opacity: 1;
+                opacity: 0;
                 position: absolute;
-                top: 10px;
-                transform: rotate(0deg);
+                top: 8px;
+                transform: rotate(-45deg);
                 width: 12px;
             }
-        .checkbox-wrapper-1 .round input[type="checkbox"]:checked + label:after {
-            opacity: 1;
+
+        .checkbox-wrapper-1 .round input[type="checkbox"] {
+            visibility: hidden;
+            display: none;
+            opacity: 0;
         }
+
+            .checkbox-wrapper-1 .round input[type="checkbox"]:checked + label,
+            .checkbox-wrapper-1 .round input[type="checkbox"]:indeterminate + label {
+                /*background-color: #66bb6a;*/
+            }
+
+                .checkbox-wrapper-1 .round input[type="checkbox"]:indeterminate + label:after {
+                    border: 3px solid #ce8c0b;
+                    border-top: none;
+                    border-right: none;
+                    content: "";
+                    height: 0;
+                    left: 6px;
+                    opacity: 1;
+                    position: absolute;
+                    top: 10px;
+                    transform: rotate(0deg);
+                    width: 12px;
+                }
+
+                .checkbox-wrapper-1 .round input[type="checkbox"]:checked + label:after {
+                    opacity: 1;
+                }
+
+.stats {
+    grid-auto-flow: column;
+    display: flex;
+    column-gap: 20px;
+    padding: 15px;
+    background: #f9f8f8;
+    border-radius: 4px;
+    border: 1px solid lightgray;
+}
+
+.stat {
+    border-color: inherit;
+    grid-template-columns: repeat(1, 1fr);
+    /* gap: .25rem 1rem;*/
+    width: 100%;
+    /*  padding-block: 1rem;
+    padding-inline: 1.5rem;*/
+    display: inline-grid;
+    border-radius: 5px;
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+    background-color: #ffffff;
+}
+
+    .stat:not(:last-child) {
+        border-right: 1px solid lightgray;
+    }
+
+.stat-success {
+    background-color: #edfaee;
+}
+
+.stat-warning {
+    background-color: #fff7ed;
+}
+
+.stat-error {
+    background-color: #ffeeec;
+}
+
+.stat-info {
+    background-color: #eff6ff;
+}
+
+.stat-success .stat-title {
+    color: #00ca4b;
+}
+
+.stat-warning .stat-title {
+    color: #fcaa1e;
+}
+
+.stat-error .stat-title {
+    color: #fb4141;
+}
+
+.stat-info .stat-title {
+    color: #1c398e;
+}
+
+.stat-success .stat-title .fa {
+    border: 2px solid #00ca4b;
+}
+
+.stat-warning .stat-title .fa {
+    border: 2px solid #fcaa1e;
+}
+
+.stat-error .stat-title .fa {
+    border: 2px solid #fb4141;
+}
+
+.stat-info .stat-title .fa {
+    border: 2px solid #1c398e;
+}
+
+.stat-title {
+    white-space: nowrap;
+    grid-column-start: 1;
+    font-size: 18px;
+    font-weight: bold;
+    width: 100%;
+    /*text-align: center;*/
+    /*background-color: #e4f6e7;*/
+    color: #047716;
+    padding: 10px;
+}
+
+.stat-value {
+    font-size: 20px;
+    width: 100%;
+    /*text-align: center;*/
+    /*padding-block: 10px;*/
+    color: #4b4c52;
+    padding: 5px 10px;
+}
+
+.stat-title .fa {
+    border: 2px solid #047716;
+    border-radius: 20px;
+    padding: 6px;
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    text-align: center;
+    font-size: 14px;
+}
+
+.place-items-center {
+    place-items: center;
+}

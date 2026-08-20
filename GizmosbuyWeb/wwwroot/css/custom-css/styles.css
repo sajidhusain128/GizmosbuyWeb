@@ -140,11 +140,12 @@ body {
 }
 
 .navbar {
-    background: #08a321;
+    /*background: #08a321;*/
     padding: 0.5rem !important;
     justify-content: space-between !important;
     left: inherit;
     height: 60px;
+    background: linear-gradient(90deg, #004d20 -100%, #006b2b 0%, #008334 100%);
 }
 
 .navbar-expand .navbar-nav .nav-link {
@@ -274,10 +275,11 @@ body {
         min-height: auto;
         display: block;
         text-align: left;
-        padding: 5px 10px;
+        padding: 10px;
         border-bottom: 2px solid var(--bs-gray);
         background-color: #f8b739;
         color: var(--bs-white);
+        background-color: #66bb74;
     }
 
     .main-section .page-content{
@@ -405,11 +407,15 @@ body {
     margin-bottom:0px;
 }
 
-.custom-table .dt-container .pagination li.active .page-link {
-    background-color: #08a321;
-    border-color: #047716;
-    color:#ffffff;
-}
+        .custom-table .dt-container .pagination li {
+            margin: 0px 3px;
+        }
+
+        .custom-table .dt-container .pagination li.active .page-link {
+            background-color: #08a321;
+            border-color: #047716;
+            color: #ffffff;
+        }
 
         .custom-table .dt-container .pagination li .page-link {
             border-color: #047716;
@@ -440,9 +446,9 @@ body {
 
         .custom-table .dt-container table thead th {
             border-bottom: 2px solid #047716;
-            background-color: #08a321;
-            color: #ffffff;
-            padding: 5px;
+            background-color: #e4f6e7;
+            color: #047716;
+            padding: 10px 8px;
         }
 
 .custom-table .dt-container table th,
@@ -451,7 +457,7 @@ body {
 }
 
         .custom-table .dt-container table td {
-            padding: 7px 8px;
+            padding: 10px 8px;
             vertical-align: middle;
             line-height: normal;
         }
@@ -534,7 +540,7 @@ body {
 }
 
 .toast.text-bg-success {
-    background-color: #34bc34 !important;
+    background-color: #258925 !important;
 }
 
 .toast.text-bg-danger {
@@ -697,6 +703,11 @@ a.disabled {
     opacity: 0.2;
 }
 
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 .space-evenly {
     display: flex;
     justify-content: space-evenly;
@@ -705,6 +716,13 @@ a.disabled {
 .select2-dropdown {
     z-index: 1092 !important;
 }
+
+.select2-readonly + .select2-container .select2-selection {
+    background-color: #e9ecef !important; /* Greys out the background */
+    pointer-events: none; /* Blocks all mouse clicks and opens */
+    cursor: not-allowed;
+}
+
 
 #notifications {
     color: #ffffff !important;
@@ -858,7 +876,7 @@ a.disabled {
 }
 
 .section-block {
-    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.3);
     background-color: #ffffff;
     height: 100%;
 }
@@ -1045,4 +1063,77 @@ a.disabled {
 
 .min-width-column {
     min-width: 80px !important; /* Use !important to override DataTables' inline styles */
+}
+
+.badge {
+    width: fit-content;
+    padding: 4px 6px;
+    border-radius: 4px;
+    margin: auto;
+    font-weight: 600;
+    line-height: 14px;
+    font-size: 13px;
+}
+.badge-success {
+    background-color: #00ca4b !important;
+    color: #ffffff !important;
+}
+
+.badge-warning {
+    background-color: #fcaa1e !important;
+    color: #ffffff !important;
+}
+
+.badge-error {
+    background-color: #fb4141 !important;
+    color: #ffffff !important;
+}
+
+.badge-info {
+    background-color: #1c398e !important;
+    color: #ffffff !important;
+}
+
+.badge-soft.badge-success {
+    background-color: #edfaee !important;
+    color: #00ca4b !important;
+}
+
+.badge-soft.badge-warning {
+    background-color: #fff7ed !important;
+    color: #fcaa1e !important;
+}
+
+.badge-soft.badge-error {
+    background-color: #ffeeec !important;
+    color: #fb4141 !important;
+}
+
+.badge-soft.badge-info {
+    background-color: #eff6ff !important;
+    color: #1c398e !important;
+}
+
+.badge-outline.badge-success {
+    border: 1px solid #00ca4b;
+    color: #00ca4b !important;
+    background-color: #edfaee !important;
+}
+
+.badge-outline.badge-warning {
+    border: 1px solid #fcaa1e;
+    color: #fcaa1e !important;
+    background-color: #fff7ed !important;
+}
+
+.badge-outline.badge-error {
+    border: 1px solid #fb4141;
+    color: #fb4141 !important;
+    background-color: #ffeeec !important;
+}
+
+.badge-outline.badge-info {
+    border: 1px solid #1c398e;
+    color: #1c398e !important;
+    background-color: #eff6ff !important;
 }

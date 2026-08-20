@@ -7,12 +7,22 @@
 @{
     TempData["Title"] = "Payment Summary";
     string userRole = Utilities.GetSessionValue(Constant.Role, Context.Request.HttpContext);
+    string userLocation = Utilities.GetSessionValue(Constant.Location, Context.Request.HttpContext);
+    int userLocationId = Int32.TryParse(Utilities.GetSessionValue(Constant.LocationId, Context.Request.HttpContext), out int result) ? result : -1;
 }
 
 <div class="col-md-12">
     <div class="row">
         <div class="body-title">
-            <h1>Summary</h1>
+            <h1>
+                Summary
+                @{
+                    if (userRole == "Admin" && userLocation != "")
+                    {
+                        <span>(@userLocation)</span>
+                    }
+                }
+            </h1>
         </div>
     </div>
 </div>
@@ -72,32 +82,31 @@
         </div>
     </div>
 }
+
 <div class="container-block">
     <div class="section-block">
         <div class="page-header">
             <div class="header-title">Store Transfer Raw Data</div>
         </div>
-        <div class="page-content">
-            <div class="page-body">
-                <div class="col-md-12 col-sm-12">
-                    <div class="row">
-                        <div id="divStoreTransferRawData" class="custom-table table table-bordered table-responsive table-sm mt-2">
-                            <table id="tblStoreTransferRawData" class="">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="storeTransferRawDataNoDataMessage" class="text-center" style="display:none;">
-                            No records available to display
-                        </div>
+        <div class="">
+            <div class="col-md-12 col-sm-12">
+                <div class="row">
+                    <div id="divStoreTransferRawData" class="custom-table table table-bordered table-responsive table-sm m-0">
+                        <table id="tblStoreTransferRawData" class="">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="storeTransferRawDataNoDataMessage" class="text-center" style="display:none;">
+                        No records available to display
                     </div>
                 </div>
             </div>
@@ -112,11 +121,11 @@
                 <div class="page-header">
                     <div class="header-title">Payment Summary</div>
                 </div>
-                <div class="page-content">
-                    <div class="page-body">
+                <div class="page-content p-0">
+                    <div class="page-body p-0">
                         <div class="col-md-12 col-sm-12">
                             <div class="row">
-                                <div id="divPaymentSummary" class="custom-table table table-bordered table-responsive table-sm mt-2">
+                                <div id="divPaymentSummary" class="custom-table table table-bordered table-responsive table-sm m-0">
                                     <table id="tblStoreTransferPaymentSummary" class="">
                                         <thead>
                                             <tr>
@@ -148,7 +157,7 @@
                     <div class="page-body">
                         <div class="col-md-12 col-sm-12">
                             <div class="row">
-                                <div id="divPaymentSummary" class="custom-table table table-responsive table-sm mt-2">
+                                @*                                 <div id="divPaymentSummary" class="custom-table table table-responsive table-sm mt-2">
                                     <table>
                                         <tbody style="border-bottom: 2px solid green;">
                                             <tr>
@@ -167,7 +176,32 @@
                                             </tr>
                                         </tfoot>
                                     </table>
+                                </div> *@
+                                <div class="stats px-0">
+                                    <div class="container ">
+                                        <div class="row g-3">
+                                            <div class="col">
+                                                <div class="stat place-items-center stat-warning">
+                                                    <div class="stat-title"><i class="fa fa-solid fa-receipt "></i> Total Bill</div>
+                                                    <div class="stat-value"><span id="lblTotalBill">&#8377; 0</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="stat place-items-center stat-success">
+                                                    <div class="stat-title"><i class="fa fa-solid fa-sack-dollar"></i> Total Paid</div>
+                                                    <div class="stat-value"><span id="lblTotalPaid">&#8377; 0</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="stat place-items-center stat-error">
+                                                    <div class="stat-title"><i class="fa fa-solid fa-wallet"></i> Balance </div>
+                                                    <div class="stat-value"><strong id="lblTotalBalance">&#8377; 0</strong></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -188,15 +222,22 @@
     <script src="@Url.Content("~/js/store.js")" asp-append-version="true"></script>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
 
             $('#ddlLoactionfilter').select2();
 
-            var searchLocationId = parseInt($('#ddlLoactionfilter').select2('val'));
+            var searchLocationId = ("@userRole" == "Admin") ? parseInt(@userLocationId) : parseInt($('#ddlLoactionfilter').select2('val'));
+            runSequentialTasks();
 
-            callStoreTransferRawData(searchLocationId);
-            callStoreTransferPaymentData(searchLocationId);
-            getStoreTransferCalculation(searchLocationId);
+            async function runSequentialTasks() {
+                const results = await Promise.allSettled([
+                    callStoreTransferRawData(searchLocationId),
+                    callStoreTransferPaymentData(searchLocationId),
+                    getStoreTransferCalculation(searchLocationId)
+                ]);
+            }
+
+            runSequentialTasks();
         });
     </script>
 }

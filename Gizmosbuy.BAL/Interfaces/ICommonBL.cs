@@ -8,6 +8,7 @@ namespace Gizmosbuy.BAL.Interfaces
         Task<List<IBrandModel>> GetAllBrands(string cacheKey);
         Task<List<IPaymentModeModel>> GetAllPaymentModes(string cacheKey);
         Task<List<ILocationModel>> GetAllLocations(string cacheKey);
+        Task<List<IExpenseTypeModel>> GetAllExpenseTypes(string cacheKey);
         Task<string> SendWhatsAppService(IWebConfiguration webConfiguration, IWhatsAppSettings whatsAppSettings, Tuple<string, MemoryStream> webFile, string contactNo, string CustomerName);
     }
 }

@@ -15,16 +15,17 @@
     </div>
 </div>
 <div class="container-block">
+    <div class="page-title">
+        <a href="@Url.Action("Index", "Sales")" class="btn btn-primary btn-sm"><i class="fas fa-arrow-left"></i> Back to list</a>
+    </div>
+</div>
+<div class="container-block">
     <div class="section-block">
         <div class="page-header">
             <div class="header-title">Sales Edit</div>
         </div>
         <div class="page-content">
-            <div class="page-title">
-                <h3></h3>
-                <a href="@Url.Action("Index", "Sales")" class="btn btn-primary btn-sm"><i class="fas fa-arrow-left"></i> Back to list</a>
-            </div>
-            <div class="page-body">
+            <div class="page-body p-0">
                 @using (Html.BeginForm("Create", "Sales", FormMethod.Post, new { id = "frmSales" }))
                 {
                     @Html.AntiForgeryToken()
@@ -251,6 +252,32 @@
                                 </div>
                                 <div class="col-md-4">
                                     <input type="text" id="txtBillNo" class="form-control" asp-for="BillNo" autocomplete="off" readonly>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtWarranty" class="col-form-label">Warranty:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtWarranty" class="form-control" asp-for="Warranty" autocomplete="off">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtRemark" class="col-form-label">Remark:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtRemark" class="form-control" asp-for="Remark" autocomplete="off">
                                 </div>
                                 <div class="col-auto">
                                     <span class="field-validation-error"></span>

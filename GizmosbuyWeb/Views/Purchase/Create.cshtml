@@ -14,16 +14,18 @@
     </div>
 </div>
 <div class="container-block">
+    <div class="page-title">
+        <a href="@Url.Action("Index", "Purchase")" class="btn btn-primary btn-sm" title="Back to Purchase List"><i class="fas fa-arrow-left"></i> Back to list</a>
+    </div>
+</div>
+<div class="container-block">
     <div class="section-block">
         <div class="page-header">
             <div class="header-title">Purchase Entry</div>
         </div>
         <div class="page-content">
-            <div class="page-title">
-                <h3></h3>
-                <a href="@Url.Action("Index", "Purchase")" class="btn btn-primary btn-sm" title="Back to Purchase List"><i class="fas fa-arrow-left"></i> Back to list</a>
-            </div>
-            <div class="page-body">
+            
+            <div class="page-body p-0">
                 @using (Html.BeginForm("Create", "Purchase", FormMethod.Post, new { id = "frmPurchase" }))
                 {
                     @Html.AntiForgeryToken()
@@ -186,6 +188,7 @@
 }
 
 @section Scripts {
+    <script src="@Url.Content("~/lib/moment.js/moment.min.js")" asp-append-version="true"></script>
     <script src="@Url.Content("~/lib/select2/js/select2.min.js")" asp-append-version="true"></script>
     <script src="@Url.Content("~/js/scripts.js")" asp-append-version="true"></script>
 
@@ -200,13 +203,16 @@
 
             $('#txtPurchaseDate').datepicker({
                 format: 'dd/mm/yyyy',
-                endDate: '+0d',
+                endDate: '0d',
                 maxDate: 'today',
                 autoclose: true,
                 todayHighlight: true,
                 todayBtn: true,
                 clearBtn: true
             });
+
+            var todayDate = new Date();
+            $('#txtPurchaseDate').datepicker("setDate",localDateFormat(todayDate, 'dd/mm/yyyy'));
 
             $('#ddlCategory,#ddlBrand').select2();
         });

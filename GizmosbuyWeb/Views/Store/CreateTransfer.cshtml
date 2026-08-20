@@ -14,16 +14,17 @@
     </div>
 </div>
 <div class="container-block">
+    <div class="page-title">
+        <a href="@Url.Action("Index", "Store")" class="btn btn-primary btn-sm" title="Back to Sales List"><i class="fas fa-arrow-left"></i> Back to list</a>
+    </div>
+</div>
+<div class="container-block">
     <div class="section-block">
         <div class="page-header">
             <div class="header-title">Store Transfer Entry</div>
         </div>
-        <div class="page-content">
-            <div class="page-title">
-                <h3></h3>
-                <a href="@Url.Action("Index", "Store")" class="btn btn-primary btn-sm" title="Back to Sales List"><i class="fas fa-arrow-left"></i> Back to list</a>
-            </div>
-            <div class="page-body">
+        <div class="page-content p-0">
+            <div class="page-body p-0">
                 @await Html.PartialAsync("_TempTransferCreatePartial.cshtml")
 
                 <div>
@@ -33,7 +34,7 @@
 
                         <input type="hidden" id="hdnPurchaseId" value="" />
 
-                        <div class="form-group">
+                        <div class="form-group p-2 mb-0">
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
                                     <div class="col-md-2">
@@ -235,13 +236,16 @@
 
             $('#txtTransferDate').datepicker({
                 format: 'dd/mm/yyyy',
-                endDate: '+0d',
+                endDate: '0d',
                 maxDate: 'today',
                 autoclose: true,
                 todayHighlight: true,
                 todayBtn: 'linked',
                 clearBtn: true
             });
+
+            var todayDate = new Date();
+            $('#txtTransferDate').datepicker("setDate",localDateFormat(todayDate, 'dd/mm/yyyy'));
 
             $('#ddlCategory,#ddlBrand').select2();
             $('#ddlSellingStore,#ddlSellingStoreTemp').select2();

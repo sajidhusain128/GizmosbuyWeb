@@ -1,6 +1,7 @@
 ﻿@using Gizmosbuy.Core.Constants
 @using Microsoft.AspNetCore.Http;
 @using Gizmosbuy.BAL.Commons;
+@using Gizmosbuy.Core.Interfaces
 @inject IHttpContextAccessor _httpContextAccessor
 
 @{
@@ -16,31 +17,52 @@
     </div>
 </div>
 <div class="container-block">
-    <div class="section-block">
-        <div class="page-header">
-            <div class="header-title">Store Transfer List</div>
-        </div>
-        <div class="page-content">
-            <div class="page-title">
-                <h3></h3>
-                <div class="col-md-12">
+    <div class="page-title">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
                     <div class="row">
-                        <div class="col-md-6 col-sm-12">
+                        <div class="col-md-auto col-sm-6 mb-2">
                             <div class="row">
                                 <a href="@Url.Action("CreateTransfer", "Store")" class="btn btn-custom" title="Create Store Transfer Entry"><i class="fas fa-save"></i> Create Entry</a>
                             </div>
-
                         </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="row float-end">
+                        <div class="col-md-6 col-sm-6 mb-2">
+                            <div class="row">
+                                <div>
+                                    @Html.DropDownList("FromLocationId", new SelectList(((List<ILocationModel>)ViewBag.LocationModelST).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlSellingStoreST", @class = "form-select", @style = "width:100% !important;min-width:300px" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="row column-gap-3 justify-content-end">
+                        <div class="col-md-auto col-sm-6 mb-2">
+                            <div class="row ">
                                 <button id="btnReturnStoreTransferModal" class="btn btn-custom" title="Return Transfer Items"><i class="fa-solid fa-person-walking-arrow-loop-left"></i> Return Item</button>
+                            </div>
+                        </div>
+                        <div class="col-md-auto col-sm-6 mb-2">
+                            <div class="row">
+                                <button id="btnExportReturnStore" class="btn btn-custom" title="Export To Excel"><i class="fas fa-file-excel"></i> Export</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="page-body">
-                <div class="custom-table table table-bordered table-responsive table-sm mt-2 table-striped">
+        </div>
+    </div>
+</div>
+<div class="container-block">
+    <div class="section-block">
+        <div class="page-header">
+            <div class="header-title">Store Transfer List</div>
+        </div>
+        <div class="page-content p-0">
+            <div class="page-body p-0">
+                <div class="custom-table table table-bordered table-responsive table-sm m-0 table-striped">
                     <table id="tblStoreTransfers" class="">
                         <thead>
                             <tr>
@@ -61,80 +83,127 @@
 
 @await Html.PartialAsync("_PartialReturnTransferItems.cshtml")
 
+@section Styles {
+    <link href="@Url.Content("~/lib/select2/css/select2.min.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/custom-css/custom-select2.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/custom-css/autocomplete.css")" rel="stylesheet" asp-append-version="true" />
+}
+
 @section Scripts
 {
     <script src="@Url.Content("~/lib/moment.js/moment.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/select2/js/select2.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/autocomplete/jquery.autocomplete.js")" asp-append-version="true"></script>
     <script src="@Url.Content("~/js/store.js")" asp-append-version="true"></script>
 
     <script type="text/javascript">
+        var tableStoreTransfer = null;
+        $(document).ready(function() {
+            var selectedToLocation = 0;
 
-        $(document).ready( function () {
+           
+            CallStoreTransferList();
+            $('#ddlSellingStoreST').select2();
 
-            $('#tblStoreTransfers').DataTable({
-                scrollX: true,
-                scrollY: 406,
-                scrollCollapse: true,
-                fixedColumns: true,
-                processing: true,
-                serverSide:true,
-                pageLength:10,
-                order: [], // disables initial sort
-                "paging":true,
-                "ajax":{
-                    "url": "/Store/GetStoreTransferList",
-                    "type": "POST",
-                    "datatype": "json",
-                    "data": {},
-                },
-                "columns":[
-                    {"data": "storeTransferID","title":"Sr.No."},
-                    {"data": "serialNo","title":"Serial No"},
-                    {"data": "categoryName","title":"Category"},
-                    {"data": "brandName","title":"Brand"},
-                    {"data": "model","title":"Model"},
-                    {"data": "specifications","title":"Specifications"},
-                    {"data": "transferDate","title":"Selling/Transfer Date",render:function (data, type, row){
-                        if(data === null) return "";
-
-                        return moment(data).format('DD/MM/YYYY');
-                    }},
-                    {"data": "sellingPrice","title":"Selling Price",render:function (data, type, row){
-                        if(data === null) return "";
-
-                        return "&#8377;"+ data;
-                    }},
-                    {"data": "sellingQuantity","title":"Selling Quantity"},
-                    {"data": "totalPrice","title":"Total Price",render:function (data, type, row){
-                        if(data === null) return "";
-
-                        return "&#8377;"+ data;
-                    }},
-
-                    {"data": "fromLocation","title":"From Location"},
-                    {"data": "toLocation","title":"To Location"},
-                    {"data": "billNo","title":"Bill No"},
-                    {"data": "returnedStatus","title":"Returned Status"}
-                ],
-                columnDefs: [
-                    { targets: 0,className: 'text-nowrap text-center'},
-                    { targets: 1,className: 'text-nowrap'},
-                    { targets: 2,className: 'text-nowrap'},
-                    { targets: 3,className: 'text-nowrap'},
-                    { targets: 4,className: 'text-nowrap'},
-                    { targets: 5,className: 'text-nowrap'},
-                    { targets: 6,className: 'text-nowrap'},
-                    { targets: 7,className: 'text-nowrap text-right'},
-                    { targets: 8,className: 'text-nowrap text-right'},
-                    { targets: 9,className: 'text-nowrap text-right'},
-                    { targets: 10,className: 'text-nowrap'},
-                    { targets: 11,className: 'text-nowrap'},
-                    { targets: 12,className: 'text-nowrap'},
-                    { targets: 13,className: 'text-nowrap'}
-                ],
-                initComplete: function () {
-                    $('*[title]').tooltip();
-                }
+            $('#ddlSellingStoreST').on('change', function(e) {
+                selectedToLocation = $(this).val();
+                tableStoreTransfer.destroy();
+                CallStoreTransferList()
             });
+
+            function CallStoreTransferList() {
+                tableStoreTransfer = $('#tblStoreTransfers').DataTable({
+                    scrollX: true,
+                    scrollY: 406,
+                    scrollCollapse: true,
+                    fixedColumns: true,
+                    processing: true,
+                    serverSide: true,
+                    pageLength: 10,
+                    order: [], // disables initial sort
+                    "paging": true,
+                    "ajax": {
+                        "url": "/Store/GetStoreTransferList",
+                        "type": "POST",
+                        "datatype": "json",
+                        "data": function(d) {
+                            d.searchToLocationId = selectedToLocation;
+                        },
+                    },
+                    "columns": [
+                        { "data": "storeTransferID", "title": "Sr.No." },
+                        { "data": "serialNo", "title": "Serial No" },
+                        { "data": "categoryName", "title": "Category" },
+                        { "data": "brandName", "title": "Brand" },
+                        { "data": "model", "title": "Model" },
+                        { "data": "specifications", "title": "Specifications" },
+                        {
+                            "data": "transferDate", "title": "Selling/Transfer Date", render: function(data, type, row) {
+                                if (data === null) return "";
+
+                                return moment(data).format('DD/MM/YYYY');
+                            }
+                        },
+                        {
+                            "data": "sellingPrice", "title": "Selling Price", render: function(data, type, row) {
+                                if (data === null) return "";
+
+                                return "&#8377;" + data;
+                            }
+                        },
+                        { "data": "sellingQuantity", "title": "Selling Quantity" },
+                        {
+                            "data": "totalPrice", "title": "Total Price", render: function(data, type, row) {
+                                if (data === null) return "";
+
+                                return "&#8377;" + data;
+                            }
+                        },
+
+                        { "data": "fromLocation", "title": "From Location" },
+                        { "data": "toLocation", "title": "To Location" },
+                        { "data": "billNo", "title": "Bill No" },
+                        {
+                            "data": "returnedStatus", "title": "Transfer Status", render: function(data, type, row) {
+                                if (data === null) return "";
+
+                                var val = "";
+                                if (data == "Sold") {
+                                    val = "badge-error";
+                                }
+                                else if (data == "Partially Returned") {
+                                    val = "badge-warning";
+                                }
+                                else if (data == "Returned") {
+                                    val = "badge-success";
+                                }
+
+                                return "<div class='badge badge-soft badge-outline " + val + "'>" + data + "</div>";
+                            }
+                        }
+                    ],
+                    columnDefs: [
+                        { targets: 0, className: 'text-nowrap text-center' },
+                        { targets: 1, className: 'text-nowrap' },
+                        { targets: 2, className: 'text-nowrap' },
+                        { targets: 3, className: 'text-nowrap' },
+                        { targets: 4, className: 'text-nowrap' },
+                        { targets: 5, className: 'text-nowrap' },
+                        { targets: 6, className: 'text-nowrap' },
+                        { targets: 7, className: 'text-nowrap text-right' },
+                        { targets: 8, className: 'text-nowrap text-right' },
+                        { targets: 9, className: 'text-nowrap text-right' },
+                        { targets: 10, className: 'text-nowrap' },
+                        { targets: 11, className: 'text-nowrap' },
+                        { targets: 12, className: 'text-nowrap' },
+                        { targets: 13, className: 'text-nowrap text-center' }
+                    ],
+                    initComplete: function() {
+                        $('*[title]').tooltip();
+                    }
+                });
+            }
+
         });
     </script>
 }

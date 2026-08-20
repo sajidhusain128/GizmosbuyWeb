@@ -12,23 +12,14 @@
 </div>
 <div class="container-block">
     <div class="section-block">
-        <div class="page-header">
-            <div class="header-title">Raw Data List</div>
-        </div>
         <div class="page-content">
-            <div class="page-title">
-                <h3></h3>
-            </div>
-            <div class="page-body">
-
-                <div class="form-group">
+            <div class="page-body p-0">
+                <div class="form-group mb-0">
                     <div class="row">
-                        <div class="col-md-4 mb-2" style="align-content: center;">
+                        <div class="col-md-3" style="align-content: center;">
                             <div class="row align-items-center">
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <label for="txtStartDate" class="col-form-label">Start Date:</label>
-                                </div>
-                                <div class="col-md-8">
                                     <div class="input-group">
                                         <input type="text" id="txtStartDate" asp-for="StartDate" class="form-control" placeholder="DD/MM/YYYY" maxlength="10" pattern="\d{1,2}/\d{1,2}/\d{4}" onkeyup="dateAutoFormatter(event)" autocomplete="off">
                                         <span class="input-group-text" id="basic-addon1">
@@ -36,17 +27,12 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-auto">
-                                    <span class="field-validation-error"></span>
-                                </div>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-2" style="align-content: center;">
+                        <div class="col-md-3" style="align-content: center;">
                             <div class="row align-items-center">
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <label for="txtEndDate" class="col-form-label">End Date:</label>
-                                </div>
-                                <div class="col-md-8">
                                     <div class="input-group">
                                         <input type="text" id="txtEndDate" asp-for="EndDate" class="form-control" placeholder="DD/MM/YYYY" maxlength="10" pattern="\d{1,2}/\d{1,2}/\d{4}" onkeyup="dateAutoFormatter(event)" autocomplete="off">
                                         <span class="input-group-text" id="basic-addon1">
@@ -54,20 +40,38 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-auto">
-                                    <span class="field-validation-error"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <label for="btnSearchRawData" class="col-form-label">&nbsp;</label><br />
+                                    <button type="button" class="btn btn-custom " id="btnSearchRawData" title="Search"><i class="fas fa-search"></i> Search</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-2 text-right" style="display: flex;justify-content: space-between;align-items: center;">
-                            <button type="button" class="btn btn-custom " id="btnSearchRawData" title="Search"><i class="fas fa-search"></i> Search</button>
-                            <button type="button" class="btn btn-custom " id="btnExportRawData" title="Export To Excel" data-bs-toggle="tooltip"><i class="fas fa-file-excel"></i> Export</button>
+                        <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-md-12 text-right">
+                                    <label for="btnSearchRawData" class="col-form-label">&nbsp;</label><br />
+                                    <button type="button" class="btn btn-custom " id="btnExportRawData" title="Export To Excel" data-bs-toggle="tooltip"><i class="fas fa-file-excel"></i> Export</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-
-                <div class="custom-table table table-bordered table-responsive table-sm mt-2 ">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-block">
+    <div class="section-block">
+        <div class="page-header">
+            <div class="header-title">Raw Data List</div>
+        </div>
+        <div class="page-content p-0">
+            <div class="page-body p-0">
+                <div class="custom-table table table-bordered table-responsive table-sm m-0 ">
                     <table id="tblRawData" class="">
                         <thead>
                             <tr>
@@ -75,10 +79,10 @@
                             </tr>
                         </thead>
                         @*  <thead class="filter-head">
-                    <tr >
-                        <th></th>
-                    </tr>
-                </thead> *@
+                                <tr >
+                                    <th></th>
+                                </tr>
+                            </thead> *@
                         <tbody>
                             <tr>
                                 <td></td>
@@ -98,14 +102,14 @@
 
     <script type="text/javascript">
 
-        $(document).ready( function () {
+        $(document).ready(function() {
 
-            var curDateMonth = new Date();
-            $('#txtEndDate').val(localDateFormat(curDateMonth, 'dd/mm/yyyy'));
+            // var curDateMonth = new Date();
+            // $('#txtEndDate').val(localDateFormat(curDateMonth, 'dd/mm/yyyy'));
 
-            var prvDateMonth = new Date(curDateMonth.getFullYear(), curDateMonth.getMonth() - 1, curDateMonth.getDate());
+            // var prvDateMonth = new Date(curDateMonth.getFullYear(), curDateMonth.getMonth() - 1, curDateMonth.getDate());
 
-            $('#txtStartDate').val(localDateFormat(prvDateMonth, 'dd/mm/yyyy'));
+            // $('#txtStartDate').val(localDateFormat(prvDateMonth, 'dd/mm/yyyy'));
 
             $('#txtStartDate').datepicker({
                 format: 'dd/mm/yyyy',

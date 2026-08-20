@@ -56,7 +56,7 @@
                                     </div>
                                     <div class="mb-4">
                                         <div class="input-group-text first">
-                                            <i class="fas fa-user"></i>
+                                            <i class="fas fa-user" style="margin-right: 10px;"></i>
                                             @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @id = "username", @placeholder = "UserName", @autocomplete = "off" })
                                         </div>
                                         @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
@@ -65,7 +65,7 @@
                                     </div>
                                     <div class="mb-4">
                                         <div class="input-group-text last">
-                                            <i class="fas fa-key"></i>
+                                            <i class="fas fa-key" style="margin-right: 10px;"></i>
                                             @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @id = "password", @placeholder = "Password", @type = "password", @autocomplete = "current-password" })
                                         </div>
                                         @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })

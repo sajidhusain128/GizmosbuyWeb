@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="07/06/2025 23:13:36" ReportInfo.Modified="02/13/2026 23:22:18" ReportInfo.CreatorVersion="2021.1.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="07/06/2025 23:13:36" ReportInfo.Modified="07/08/2026 00:56:23" ReportInfo.CreatorVersion="2021.1.0.0">
   <ScriptText>using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +27,7 @@ namespace FastReport
 }
 </ScriptText>
   <Dictionary>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqzP/32u1QtzIsUJqKG+CmmrmNuDHT7oBRMr0z3pkCSb7GvmwRZ2uAT+4NEn+xtN0Dvgq1QEeJg/MmhO5XHpCk7VAvjAO/TSCa31xNocc+N0eJ+ri/kBBgxmShG/8YBZ/2KlHjYQLp+ubHsKSrEqOXLhxctcOtUY63LIcfobUGep1o6AlD+j3Nvhy81Pp8IQXNdUdHygKFGudnWEZtW+MHw87yTs2Z4jg64I7dc3uOgNg=">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqzP/32u1QtzIsUJqKG+CmmrmNuDHT7oBRMr0z3pkCSb7GvmwRZ2uAT+4NEn+xtN0Dvgq1QEeJg/MmhO5XHpCk7VAvjAO/TSCa31xNocc+N0eJ+ri/kBBgxmShG/8YBZ/2KlHjYQLp+ubHsKSrEqOXLhxctcOtUY63LIcfobUGep1o6AlD+j3Nvhy81Pp8IQXNdUdHygKFGudnWEZtW+MHwx4Kh7tC8h6c1I/jrq9Sty8=">
       <TableDataSource Name="Table" Alias="SalesData" DataType="System.Int32" Enabled="true" SelectCommand="SELECT &#13;&#10;ROW_NUMBER() OVER(ORDER BY S.SalesID) AS RowNum,&#13;&#10;S.SalesID,&#13;&#10;CM.CategoryName,&#13;&#10;BM.BrandName,&#13;&#10;p.Model,&#13;&#10;p.SerialNo,&#13;&#10;P.Specifications,&#13;&#10;S.SellingQuantity,&#13;&#10;S.SellingPrice&#13;&#10;FROM Sales S WITH(NOLOCK)&#13;&#10;JOIN Purchases P WITH(NOLOCK) ON P.PurchaseID = S.PurchaseID&#13;&#10;JOIN CategoryMaster CM WITH(NOLOCK) ON CM.CategoryID = P.CategoryID&#13;&#10;JOIN BrandMaster BM WITH(NOLOCK) ON BM.BrandID = P.BrandID&#13;&#10;">
         <Column Name="BrandName" DataType="System.String"/>
         <Column Name="CategoryName" DataType="System.String"/>
@@ -41,8 +41,8 @@ namespace FastReport
         <CommandParameter Name="InvoiceNo" DataType="22" Size="100"/>
       </TableDataSource>
     </MsSqlDataConnection>
-    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqzP/32u1QtzIsUJqKG+CmmrmNuDHT7oBRMr0z3pkCSb7GvmwRZ2uAT+4NEn+xtN0Dvgq1QEeJg/MmhO5XHpCk7VAvjAO/TSCa31xNocc+N0eJ+ri/kBBgxmShG/8YBZ/2KlHjYQLp+ubHsKSrEqOXLhxctcOtUY63LIcfobUGep1o6AlD+j3Nvhy81Pp8IQXNdUdHygKFGudnWEZtW+MHw22WqW6Ct3A+K9gFfo9JGwg=">
-      <TableDataSource Name="Table3" Alias="SalesHeader" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;S.CustomerName,&#13;&#10;S.ContactNo,&#13;&#10;S.[Location],&#13;&#10;S.BillNo as InvoiceNo,&#13;&#10;S.SellingDate,&#13;&#10;S.PaymentMode,&#13;&#10;S.SellingLead,&#13;&#10;'' as TotalPriceInWord,&#13;&#10;'' as StoreAddress,&#13;&#10;'' as StoreContactNo&#13;&#10;FROM Sales S WITH(NOLOCK)">
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqzP/32u1QtzIsUJqKG+CmmrmNuDHT7oBRMr0z3pkCSb7GvmwRZ2uAT+4NEn+xtN0Dvgq1QEeJg/MmhO5XHpCk7VAvjAO/TSCa31xNocc+N0eJ+ri/kBBgxmShG/8YBZ/2KlHjYQLp+ubHsKSrEqOXLhxctcOtUY63LIcfobUGep1o6AlD+j3Nvhy81Pp8IQXNdUdHygKFGudnWEZtW+MHwwZFNHrlMXEPrmDQjMM0XOw=">
+      <TableDataSource Name="Table3" Alias="SalesHeader" DataType="System.Int32" Enabled="true" SelectCommand="SELECT&#13;&#10;S.CustomerName,&#13;&#10;S.ContactNo,&#13;&#10;S.[Location],&#13;&#10;S.BillNo as InvoiceNo,&#13;&#10;S.SellingDate,&#13;&#10;S.PaymentMode,&#13;&#10;S.SellingLead,&#13;&#10;'' as TotalPriceInWord,&#13;&#10;'' as StoreAddress,&#13;&#10;'' as StoreContactNo,&#13;&#10;'' as Warranty&#13;&#10;FROM Sales S WITH(NOLOCK)">
         <Column Name="CustomerName" DataType="System.String"/>
         <Column Name="ContactNo" DataType="System.Int64"/>
         <Column Name="Location" DataType="System.String"/>
@@ -53,6 +53,8 @@ namespace FastReport
         <Column Name="PaymentMode" DataType="System.String"/>
         <Column Name="StoreAddress" DataType="System.String"/>
         <Column Name="StoreContactNo" DataType="System.String"/>
+        <Column Name="Column" DataType="System.Int32" Calculated="true" Expression=""/>
+        <Column Name="Warranty" DataType="System.String"/>
       </TableDataSource>
     </MsSqlDataConnection>
     <Total Name="GrandTotal" Expression="[SalesData.SellingPrice]" Evaluator="Data1" ResetAfterPrint="false"/>
@@ -93,7 +95,7 @@ namespace FastReport
           <TableCell Name="Cell12" Text="[SalesHeader.ContactNo]" VertAlign="Center" Font="Times New Roman, 11pt"/>
           <TableCell Name="Cell13" VertAlign="Center" Font="Arial, 10pt"/>
           <TableCell Name="Cell14" Text="Date:-" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold"/>
-          <TableCell Name="Cell15" Text="[FormatDateTime(ToDateTime([SalesHeader.SellingDate]),&quot;dd\\/MM\\/yyyy&quot;)]" VertAlign="Center" Font="Times New Roman, 11pt"/>
+          <TableCell Name="Cell15" Text="[FormatDateTime(ToDateTime([SalesHeader.SellingDate]),&quot;dd\\/MM\\/yyyy HH:mm&quot;)]" VertAlign="Center" Font="Times New Roman, 11pt"/>
         </TableRow>
         <TableRow Name="Row4" Height="28.35">
           <TableCell Name="Cell16" Text="Location.:-" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold"/>
@@ -103,8 +105,8 @@ namespace FastReport
           <TableCell Name="Cell20" Text="[SalesHeader.PaymentModeName]" VertAlign="Center" Font="Times New Roman, 11pt"/>
         </TableRow>
         <TableRow Name="Row5" Height="28.35">
-          <TableCell Name="Cell21" VertAlign="Center" Font="Arial, 10pt"/>
-          <TableCell Name="Cell22" VertAlign="Center" Font="Arial, 10pt"/>
+          <TableCell Name="Cell21" Text="Warranty:-" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold"/>
+          <TableCell Name="Cell22" Text="[SalesHeader.Warranty]" VertAlign="Center" Font="Times New Roman, 11pt"/>
           <TableCell Name="Cell23" VertAlign="Center" Font="Arial, 10pt"/>
           <TableCell Name="Cell24" Text="Reference:-" VertAlign="Center" Font="Times New Roman, 11pt, style=Bold"/>
           <TableCell Name="Cell25" Text="[SalesHeader.SellingLead]" VertAlign="Center" Font="Times New Roman, 11pt"/>
@@ -157,7 +159,7 @@ namespace FastReport
       </TableObject>
       <ContainerObject Name="Container4" Left="378" Top="85.05" Width="340.2" Height="1.89" Fill.Color="11, 135, 66"/>
       <TextObject Name="Text15" Left="444.45" Top="103.95" Width="254.85" Height="18.9" Text="For: GIZMOSBUY" HorzAlign="Center" Font="Times New Roman, 11pt"/>
-      <PictureObject Name="Picture2" Left="510.45" Top="132.3" Width="119.6" Height="67.55" ImageAlign="Center_Center"/>
+      <PictureObject Name="Picture2" Left="510.45" Top="132.3" Width="119.6" Height="67.55" ImageAlign="Center_Center" Image=""/>
       <TextObject Name="Text16" Left="444.45" Top="207.9" Width="254.85" Height="18.9" Text="Authorized Signatory" HorzAlign="Center" Font="Times New Roman, 12pt, style=Bold"/>
       <TableObject Name="Table4" Top="5.67" Width="718" Height="28.35" Fill.Color="Black">
         <TableColumn Name="Column33" Width="42.5"/>

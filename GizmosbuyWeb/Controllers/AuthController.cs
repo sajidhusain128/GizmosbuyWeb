@@ -117,7 +117,7 @@ namespace GizmosbuyWeb.Controllers
             }
         }
 
-        [Authorize]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin, Role.User)]
         public IActionResult AccessDenied()
         {
             return View();

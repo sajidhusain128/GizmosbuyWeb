@@ -12,5 +12,6 @@
         public string TotalPriceInWord { get; set; }
         public string StoreAddress { get; set; }
         public long? StoreContactNo { get; set; }
+        public string Warranty { get; set; }
     }
 }

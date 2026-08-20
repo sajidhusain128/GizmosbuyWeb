@@ -59,12 +59,12 @@ namespace GizmosbuyWeb.Filters
                     if (context.HttpContext.Request.IsAjaxRequest())
                     {
                         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden; //Set Response 401   
-                        context.Result = new RedirectResult("~/Auth/AccessDenied");
+                        context.Result = new RedirectResult("~/Error/UnauthorizedAccess");
                     }
                     else
                     {
                         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                        context.Result = new RedirectResult("~/Auth/AccessDenied");
+                        context.Result = new RedirectResult("~/Error/UnauthorizedAccess");
                     }
                 }
             }

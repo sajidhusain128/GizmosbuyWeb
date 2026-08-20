@@ -1,28 +1,36 @@
-﻿using Gizmosbuy.BAL.Interfaces;
+﻿using ClosedXML.Excel;
+using Gizmosbuy.BAL.Commons;
+using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using GizmosbuyWeb.Configurations;
 using GizmosbuyWeb.Filters;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Gizmosbuy.Web.Controllers
 {
     public class StoreController : Controller
     {
         private readonly IStoreTransferBL _storeTransferBL;
-        private readonly ISalesBL _salesBL;
         private readonly ICommonBL _commonBL;
-        public StoreController(IStoreTransferBL storeTransferBL, ISalesBL salesBL, ICommonBL commonBL)
+        public StoreController(IStoreTransferBL storeTransferBL, ICommonBL commonBL)
         {
             _storeTransferBL = storeTransferBL;
-            _salesBL = salesBL;
             _commonBL = commonBL;
         }
 
         [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
+
+            if (locationModel != null && locationModel.Count > 0)
+            {
+                ViewBag.LocationModelST = locationModel;
+            }
+
             return View();
         }
 
@@ -31,7 +39,8 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> cachedLocationList = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> locationModel = [.. cachedLocationList.Any() ? cachedLocationList : null];
 
                 if (locationModel != null && locationModel.Count > 0)
                 {
@@ -40,16 +49,14 @@ namespace Gizmosbuy.Web.Controllers
                         locationModel.Insert(0, new LocationModel { LocationId = 0, LocationName = "Select Transfer Location" });
 
                     ViewBag.LocationModel = locationModel;
-                    //TempData["LocationModel"] = locationModel;
                 }
                 else
                 {
                     locationModel = new List<ILocationModel> { new LocationModel { LocationId = 0, LocationName = "Select Transfer Location" } };
                     ViewBag.LocationModel = locationModel;
-                    //TempData["LocationModel"] = locationModel;
                 }
 
-                string newBillNo = await _salesBL.GenerateNewBillNo();
+                string newBillNo = await _storeTransferBL.GenerateStoreTransferNewBillNo();
                 ViewBag.NewBillNo = newBillNo;
 
                 return View();
@@ -181,7 +188,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
-        public async Task<IActionResult> GetStoreTransferList()
+        public async Task<IActionResult> GetStoreTransferList(int searchToLocationId)
         {
             IPager pager = new Pager();
 
@@ -195,7 +202,7 @@ namespace Gizmosbuy.Web.Controllers
                 pager.SortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
                 pager.ColumnName = Utility.CapitalizeFirstChar(Request.Form[$"columns[{pager.SortColumnIndex}][data]"].FirstOrDefault());
 
-                var storeTransferList = await _storeTransferBL.GetStoreTransferList(pager);
+                var storeTransferList = await _storeTransferBL.GetStoreTransferList(pager, searchToLocationId);
 
                 return Json(storeTransferList);
             }
@@ -343,7 +350,8 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> cachedLocationList = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> locationModel = [.. cachedLocationList.Any() ? cachedLocationList : null];
 
                 if (locationModel != null && locationModel.Count > 0)
                 {
@@ -492,7 +500,8 @@ namespace Gizmosbuy.Web.Controllers
         {
             try
             {
-                List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> cachedLocationList = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> locationModel = [.. cachedLocationList.Any() ? cachedLocationList : null];
 
                 if (locationModel != null && locationModel.Count > 0)
                 {
@@ -537,6 +546,100 @@ namespace Gizmosbuy.Web.Controllers
                 }
 
                 return Json("Failed");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
+        public async Task<IActionResult> StoreTransferExportExcel(string Search, int searchToLocationId)
+        {
+            try
+            {
+                IPager pager = new Pager();
+
+                pager.SearchValue = Search ?? "";
+
+                var result = await _storeTransferBL.GetStoreTransferExport(searchToLocationId, pager);
+
+                if (result != null && result.Count > 0)
+                {
+                    DataTable dt = Utilities.CreateDataTable(result); // Fetch your data
+
+                    string fileName = $"StoreTransfer_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        wb.Worksheets.Add(dt, "Sheet1");
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            wb.SaveAs(stream);
+                            return File(stream.ToArray(),
+                                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                        fileName);
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
+        public async Task<IActionResult> TransferPaymentExportExcel(string Search)
+        {
+            try
+            {
+                IPager pager = new Pager();
+
+                pager.SearchValue = Search ?? "";
+
+                var result = await _storeTransferBL.GetTransferPaymentExport(pager);
+
+                if (result != null && result.Count > 0)
+                {
+                    DataTable dt = Utilities.CreateDataTable(result); // Fetch your data
+
+                    if (dt.Columns.Count > 0)
+                    {
+                        if (dt.Columns.Contains("TransferPaymentID"))
+                        {
+                            dt.Columns.Remove("TransferPaymentID");
+                        }
+                        if (dt.Columns.Contains("IsApproved"))
+                        {
+                            dt.Columns.Remove("IsApproved");
+                        }
+                    }
+
+                    string fileName = $"TransferPayment_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        wb.Worksheets.Add(dt, "Sheet1");
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            wb.SaveAs(stream);
+                            return File(stream.ToArray(),
+                                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                        fileName);
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             catch (Exception)
             {

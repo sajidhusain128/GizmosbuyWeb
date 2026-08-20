@@ -12,9 +12,9 @@
         <thead>
             <tr>
                 <th>Category</th>
-                <th>Quantity</th>
-                <th>Selling Price Revenue</th>
-                <th>Sum of Profit</th>
+                <th style="text-align: right;">Quantity</th>
+                <th style="text-align: right;">Selling Price Revenue</th>
+                <th style="text-align: right;">Sum of Profit</th>
             </tr>
         </thead>
         <tbody>
@@ -22,13 +22,13 @@
             {
                 foreach (var item in Model)
                 {
-                    var str = item.CategoryName.Contains("Total") ? "font-weight:bold" : "";
+                        var str = item.CategoryName.Contains("Total") ? "font-weight:bold;border-top: 2px solid #047716;" : "";
 
                     <tr style="@str">
                         <td>@item.CategoryName</td>
                         <td align="right">@item.Quantity</td>
-                        <td align="right">@Math.Round(item.SellingPrices,2)</td>
-                        <td align="right">@Math.Round(item.Sumofprofit,2)</td>
+                        <td align="right">&#8377; @Math.Round(item.SellingPrices, 2)</td>
+                        <td align="right">&#8377; @Math.Round(item.Sumofprofit, 2)</td>
                     </tr>
                 }
             }

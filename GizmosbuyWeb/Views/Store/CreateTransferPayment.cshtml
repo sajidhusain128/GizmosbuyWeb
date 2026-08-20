@@ -14,21 +14,22 @@
     </div>
 </div>
 <div class="container-block">
+    <div class="page-title">
+        <a href="@Url.Action("TransferPayment", "Store")" class="btn btn-primary btn-sm" title="Back to Store Transfer Payment List"><i class="fas fa-arrow-left"></i> Back to list</a>
+    </div>
+</div>
+<div class="container-block">
     <div class="section-block">
         <div class="page-header">
             <div class="header-title">Transfer Payment Entry</div>
         </div>
         <div class="page-content">
-            <div class="page-title">
-                <h3></h3>
-                <a href="@Url.Action("TransferPayment", "Store")" class="btn btn-primary btn-sm" title="Back to Store Transfer Payment List"><i class="fas fa-arrow-left"></i> Back to list</a>
-            </div>
-            <div class="page-body">
+            <div class="page-body p-0">
                 @using (Html.BeginForm("CreateTransferPayment", "Store", FormMethod.Post, new { id = "frmTransferPayment" }))
                 {
                     @Html.AntiForgeryToken()
 
-                    <div class="form-group">
+                    <div class="form-group mb-0">
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
                                 <div class="col-md-2">
@@ -138,13 +139,16 @@
 
             $('#txtPaymentDate').datepicker({
                 format: 'dd/mm/yyyy',
-                endDate: '+0d',
+                endDate: '0d',
                 maxDate: 'today',
                 autoclose: true,
                 todayHighlight: true,
                 todayBtn: 'linked',
                 clearBtn: true
             });
+
+            var todayDate = new Date();
+            $('#txtPaymentDate').datepicker("setDate",localDateFormat(todayDate, 'dd/mm/yyyy'));
         });
     </script>
 }

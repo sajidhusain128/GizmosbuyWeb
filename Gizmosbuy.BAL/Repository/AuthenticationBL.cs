@@ -36,7 +36,7 @@ namespace Gizmosbuy.BAL.Repository
                         Email = email,
                         FirstName = firstName,
                         UserRole = userRole,
-                        Location = location,
+                        LocationName = location,
                         locationId = locationId
                     };
                 }

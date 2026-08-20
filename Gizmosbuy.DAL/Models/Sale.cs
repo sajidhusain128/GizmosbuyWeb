@@ -29,6 +29,10 @@ public partial class Sale
 
     public string BillNo { get; set; }
 
+    public string Warranty { get; set; }
+
+    public string Remark { get; set; }
+
     public int? CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }

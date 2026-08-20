@@ -5,21 +5,6 @@ $(document).ready(function () {
     $('*[title]').tooltip();
 
     setActiveMenu();
-
-    $('.has-sub-list').click(function () {
-        if ($(this).children('.sub-list').length > 0) {
-            $(this).children('.sub-list').toggleClass("show");
-
-            if ($(this).children('.sub-list').hasClass('show')) {
-                $(this).children('a').children('.expander').removeClass("fa-square-plus");
-                $(this).children('a').children('.expander').addClass("fa-square-minus");
-            }
-            else {
-                $(this).children('a').children('.expander').removeClass("fa-square-minus");
-                $(this).children('a').children('.expander').addClass("fa-square-plus");
-            }
-        }
-    });
 });
 
 function showLoader() {
@@ -345,6 +330,12 @@ function setActiveMenu() {
                 getActivePath = "/Inventory/PaymentSummary";
                 break;
 
+            case "/Finance/Expense":
+            case "/Finance/CreateExpense":
+                getActivePath = "/Finance/Expense";
+                break;
+
+
             default:
                 getActivePath = "/Home/Index";
                 break;
@@ -437,5 +428,30 @@ function toggleInputPasswordView(_this) {
         }
     } catch (e) {
         console.log(e);
+    }
+}
+
+function validateReturnQtyForItems(tblInvoiceDetails, _this) {
+    try {
+        var $currentCellElement = $(_this);
+        var $currentCell = $currentCellElement.closest('td');
+        var $previousCell = $currentCell.prev('td');
+        var cellValueText = $previousCell.text();
+
+        if (parseInt(_this.value) > parseInt(cellValueText) || parseInt(_this.value) <= 0) {
+            $(_this).next('.field-validation-error').text('*');
+        }
+        else if (_this.value == '') {
+            $(_this).next('.field-validation-error').text('*');
+        }
+        else {
+            $(_this).next('.field-validation-error').text('');
+        }
+
+        var table = $('#' + tblInvoiceDetails).DataTable();
+        checkReturnQtyValidity(table);
+
+    } catch (e) {
+        console.error(e);
     }
 }

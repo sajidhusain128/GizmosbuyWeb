@@ -1,0 +1,191 @@
+﻿@using Gizmosbuy.Core.Interfaces
+@model Gizmosbuy.Core.Interfaces.IExpenseModel
+@{
+    TempData["Title"] = "Create Expense";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="body-title">
+            <h1>Expense</h1>
+        </div>
+    </div>
+</div>
+<div class="container-block">
+    <div class="page-title">
+        <a href="@Url.Action("Expense", "Finance")" class="btn btn-primary btn-sm" title="Back to Expense List"><i class="fas fa-arrow-left"></i> Back to list</a>
+    </div>
+</div>
+<div class="container-block">
+    <div class="section-block">
+        <div class="page-header">
+            <div class="header-title">Expense Entry</div>
+        </div>
+        <div class="page-content">
+            <div class="page-body p-0">
+                @using (Html.BeginForm("CreateExpense", "Finance", FormMethod.Post, new { id = "frmCreateExpense" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group mb-0">
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtExpenseDate" class="col-form-label">Expense Date:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="text" id="txtExpenseDate" class="form-control" asp-for="ExpenseDate" placeholder="DD/MM/YYYY" maxlength="10" onkeypress="numberOnly()" onKeyDown="dateAutoFormatter(event)" onpaste="return false;" autocomplete="off">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtExpenseAmount" class="col-form-label">Amount:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <input type="text" id="txtExpenseAmount" class="form-control text-right" asp-for="Amount" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
+                                        <span class="input-group-text" id="txtExpenseAmount-addon1">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-rupee" viewBox="0 0 16 16">
+                                                <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="ddlExpenseType" class="col-form-label">Transfer Store:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(Model => Model.ExpenseId, new SelectList(((List<IExpenseTypeModel>)ViewBag.ExpenseTypes).Select(x => new { Value = x.ExpenseTypeId, Text = x.ExpenseTypeName }), "Value", "Text"), null, new { id = "ddlExpenseType", @class = "form-select", @style = "width:100% !important" })
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="ddlPaymentMode" class="col-form-label">Payment Mode:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(Model => Model.PaymentModeId, new SelectList(((List<IPaymentModeModel>)ViewBag.PaymentModes).Select(x => new { Value = x.PaymentModeId, Text = x.PaymentModeName }), "Value", "Text"), null, new { id = "ddlPaymentMode", @class = "form-select", @style = "width:100% !important" })
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtRemark" class="col-form-label">Remark:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" id="txtRemark" class="form-control" asp-for="Remark" autocomplete="off">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="ddlExpenseMonth" class="col-form-label">Sell Month:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.DropDownListFor(Model => Model.ExpenseMonth, (List<SelectListItem>)ViewBag.Months, "Select Month", new { id = "ddlExpenseMonth", @class = "form-select" })
+                                    @* <input type="text" id="txtSellMonth" class="form-control" placeholder="Month" maxlength="3" autocomplete="off" onkeydown="return false"> *@
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    <label for="txtExpenseYear" class="col-form-label">Sell Date:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    @* @Html.DropDownListFor(Model => Model.ExpenseYear, (List<SelectListItem>)ViewBag.Years, "Select Year", new { id = "ddlExpenseYear", @class = "form-select" }) *@
+                                    <input type="text" id="txtExpenseYear" class="form-control" placeholder="YYYY" min="1900" max="2099" step="1" value="@DateTime.Now.Year" maxlength="4" autocomplete="off" onkeydown="return false">
+                                </div>
+                                <div class="col-auto">
+                                    <span class="field-validation-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-custom" id="btnExpenseSave" title="Save Expense Entry"><i class="fas fa-save"></i> Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="@Url.Content("~/lib/select2/css/select2.min.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/custom-css/custom-select2.css")" rel="stylesheet" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="@Url.Content("~/lib/select2/js/select2.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/finance.js")" asp-append-version="true"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#ddlExpenseType,#ddlPaymentMode,#ddlExpenseMonth').select2();
+
+            $('#txtExpenseDate').datepicker({
+                format: 'dd/mm/yyyy',
+                endDate: '0d',
+                maxDate: 'today',
+                autoclose: true,
+                todayHighlight: true,
+                todayBtn: 'linked',
+                clearBtn: true
+            });
+
+            $('#txtExpenseYear').datepicker({
+                format: 'yyyy',
+                viewMode: "years",
+                minViewMode: "years",
+                autoclose: true,
+                todayHighlight: true,
+                todayBtn: 'linked',
+                clearBtn: true
+            });
+
+            var todayDate = new Date();
+            $('#txtExpenseDate').datepicker("setDate", localDateFormat(todayDate, 'dd/mm/yyyy'));
+        });
+    </script>
+}

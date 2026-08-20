@@ -1,6 +1,35 @@
 ﻿@{
     TempData["Title"] = "Privacy Policy";
 }
-<h1>@TempData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+
+
+
+<div class="body">
+    <h1>@TempData["Title"]</h1>
+    <div class="message">
+        <p>Use this page to detail your site's privacy policy.</p>
+
+        @* <strong>Term And Conditions</strong>
+        <ol>
+            <li>Physical & liquid damage is not included in the warranty.</li>
+            <li>Battery & adapter are not included in the warranty.</li>
+            <li>Screen damage, lines, or spots on the screen are not included in the warranty.</li>
+            <li>Under service warranty, the customer must pay for spare parts cost if any, service or repair charges will be free.</li>
+        </ol> *@
+    </div>
+</div>
+
+<style type="text/css">
+
+    .body {
+        padding: 15px;
+    }
+
+    .body h3 {
+        color: red;
+        font-size: 60px;
+        margin-bottom: 35px;
+    }
+
+</style>

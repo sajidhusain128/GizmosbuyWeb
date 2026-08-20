@@ -1,13 +1,14 @@
-﻿using System.Data;
+﻿using Microsoft.AspNetCore.Http;
+using System.Data;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
-using Microsoft.AspNetCore.Http;
 
 namespace Gizmosbuy.BAL.Commons
 {
     public class Utilities
     {
-        public static Func<T, bool> GetSearchValue<T>(string value)
+        public static Func<T, bool> GetSearchValue<T>(string value, string dateFormat)
         {
             Type temp = typeof(T);
 
@@ -21,9 +22,32 @@ namespace Gizmosbuy.BAL.Commons
                         {
                             object? obj2 = pro.GetValue(obj);
 
-                            if (Convert.ToString(obj2).ToLower().Contains(value.ToLower()))
+                            if (obj2 != null)
                             {
-                                return true;
+                                string strValue;
+
+                                // Special handling for DateTime
+                                if (obj2 is DateTime dt)
+                                {
+                                    // Format as dd-MM-yyyy (or any format you need)
+                                    strValue = dt.ToString(dateFormat, CultureInfo.InvariantCulture);
+                                }
+                                else if (obj2 is DateTime?)
+                                {
+                                    var dtNullable = (DateTime?)obj2;
+                                    strValue = dtNullable.HasValue
+                                        ? dtNullable.Value.ToString(dateFormat, CultureInfo.InvariantCulture)
+                                        : string.Empty;
+                                }
+                                else
+                                {
+                                    strValue = Convert.ToString(obj2) ?? string.Empty;
+                                }
+
+                                if (strValue.ToLower().Contains(value.ToLower()))
+                                {
+                                    return true;
+                                }
                             }
                         }
                         catch (Exception)
@@ -39,7 +63,6 @@ namespace Gizmosbuy.BAL.Commons
             };
         }
 
-
         public static string GetSessionValue(string key, HttpContext httpContext)
         {
             try
@@ -52,34 +75,6 @@ namespace Gizmosbuy.BAL.Commons
             catch (Exception)
             {
                 return null;
-            }
-        }
-
-        public static string GetPrefixByLocation(string Location)
-        {
-            try
-            {
-                switch (Location)
-                {
-                    case "Jogeshwari":
-                        return "JGS";
-
-                    case "Nalasopara":
-                        return "NSP";
-
-                    case "Chhapi":
-                        return "CHP";
-
-                    case "Ahmedabad":
-                        return "AMD";
-
-                    default:
-                        return "JGS";
-                }
-            }
-            catch (Exception)
-            {
-                return "";
             }
         }
 
@@ -114,6 +109,36 @@ namespace Gizmosbuy.BAL.Commons
                 }
 
                 output = prefix + output;
+
+                return output;
+            }
+            catch (Exception)
+            {
+                return "";
+            }
+        }
+
+        public static string GenerateStoreTransferBillNo(string preFixValue, string value, string postFixValue)
+        {
+            try
+            {
+                string output = "";
+                string prefix = string.IsNullOrWhiteSpace(preFixValue) ? "" : preFixValue;
+
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    return prefix + "0001" + postFixValue;
+                }
+                else
+                {
+                    string stringNumber = value.Replace(prefix, "").Replace(postFixValue, "");
+                    int num = Convert.ToInt32(stringNumber);
+
+                    string str = new string('0', stringNumber.Length);
+                    output = num > 0 ? (++num).ToString(str) : (++num).ToString();
+                }
+
+                output = prefix + output + postFixValue;
 
                 return output;
             }
@@ -221,6 +246,26 @@ namespace Gizmosbuy.BAL.Commons
             }
             // Starts 10 characters from the end and continues to the end of the string.
             return input.Substring(input.Length - 10);
+        }
+
+        public static Dictionary<string, int> GetMonthList()
+        {
+            try
+            {
+                List<string> stringValues = new List<string> { "January", "February", "March", "April", "May", "Jun", "July", "August", "September", "October", "November", "December" };
+
+                // Convert to Dictionary (Key: Month Name, Value: Month Number)
+                Dictionary<string, int> monthDictionary = stringValues
+                    .Select((month, index) => new { Name = month, Number = index + 1 })
+                    .ToDictionary(m => m.Name, m => m.Number);
+
+                return monthDictionary;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }
