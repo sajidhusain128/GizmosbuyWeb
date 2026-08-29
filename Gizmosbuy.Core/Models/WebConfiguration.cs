@@ -15,6 +15,8 @@ namespace Gizmosbuy.Core.Models
     public class WhatsAppSettings : IWhatsAppSettings
     {
         public string AccountSid { get; set; }
+        public string ClientId { get; set; }
+        public string ClientSecret { get; set; }
         public string AuthToken { get; set; }
         public string SenderNumber { get; set; }
         public string ReceiverNumber { get; set; }

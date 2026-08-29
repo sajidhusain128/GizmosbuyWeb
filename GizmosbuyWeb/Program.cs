@@ -22,7 +22,7 @@ namespace GizmosbuyWeb
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             // Load log4net config
             var logRepository = LogManager.GetRepository(Assembly.GetEntryAssembly());
@@ -77,7 +77,7 @@ namespace GizmosbuyWeb
                 builder.Services.AddHttpContextAccessor();
                 builder.Services.AddMemoryCache();
 
-                TwilioClient.Init(whatsAppSettings.AccountSid, whatsAppSettings.AuthToken);
+                TwilioClient.Init(whatsAppSettings.ClientId, whatsAppSettings.ClientSecret, whatsAppSettings.AccountSid);
 
                 //builder.Services.AddBALService(webConfiguration ?? new WebConfiguration());
 
