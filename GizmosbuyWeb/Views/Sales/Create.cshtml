@@ -1,6 +1,4 @@
-﻿@using Gizmosbuy.Core.Interfaces
-@using Gizmosbuy.Core.Models
-@model Gizmosbuy.Core.Models.SalesModel
+﻿@model Gizmosbuy.Core.Models.SalesModel
 @{
     TempData["Title"] = "Create Sales";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -37,20 +35,20 @@
                         <div class="form-group p-2 mb-0">
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                             &nbsp;
                                         </div>
                                         <label for="txtSrNo" class="col-form-label">Serial No:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                             Type <strong>Serial No.</strong> in below input to fetch purchase record.
                                         </div>
                                         <input type="text" id="txtSrNo" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off">
 
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
@@ -59,77 +57,77 @@
 
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="ddlCategory" class="col-form-label">Category:</label>
+                                    <div class="col-md-2 col-12">
+                                        <label for="txtCategory" class="col-form-label">Category:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         @* @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @disabled = "true" }) *@
-                                        <input type="text" id="txtCategory" class="form-control" placeholder="" autocomplete="off" readonly>
+                                        <input type="text" id="txtCategory" class="form-control" placeholder="" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="ddlBrand" class="col-form-label">Brand:</label>
+                                    <div class="col-md-2 col-12">
+                                        <label for="txtBrand" class="col-form-label">Brand:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         @* @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @disabled = "true" }) *@
-                                        <input type="text" id="txtBrand" class="form-control" placeholder="" autocomplete="off" readonly>
+                                        <input type="text" id="txtBrand" class="form-control" placeholder="" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtModel" class="col-form-label">Model:</label>
                                     </div>
-                                    <div class="col-md-4">
-                                        <input type="text" id="txtModel" class="form-control" asp-for="Model" autocomplete="off" readonly>
+                                    <div class="col-md-4 col-12">
+                                        <input type="text" id="txtModel" class="form-control" asp-for="Model" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtSpecs" class="col-form-label">Specifications:</label>
                                     </div>
-                                    <div class="col-md-4">
-                                        <input type="text" id="txtSpecs" class="form-control" asp-for="Specifications" autocomplete="off" readonly>
+                                    <div class="col-md-4 col-12">
+                                        <input type="text" id="txtSpecs" class="form-control" asp-for="Specifications" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="Quantity" class="col-form-label">Quantity:</label>
                                     </div>
-                                    <div class="col-md-4">
-                                        <input type="text" id="txtQuantity" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
+                                    <div class="col-md-4 col-12">
+                                        <input type="text" id="txtQuantity" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtSellDate" class="col-form-label">Sell Date:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <div class="input-group">
                                             <input type="text" id="txtSellDate" class="form-control" asp-for="SellingDate" placeholder="DD/MM/YYYY" maxlength="10" pattern="[0-9/]*" onkeypress="return false;" onKeyDown="preventBackspace();" onpaste="return false;" autocomplete="off">
                                             <span class="input-group-text" id="basic-addon1">
@@ -137,17 +135,17 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtSellingPrice" class="col-form-label">Selling Price:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <div class="input-group">
                                             <input type="text" id="txtSellingPrice" class="form-control text-right" asp-for="SellingPrice" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
                                             <span class="input-group-text" id="txtSellingPrice-addon1">
@@ -157,133 +155,133 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtSellQuantity" class="col-form-label">Selling Quantity:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <input type="text" id="txtSellQuantity" class="form-control" onkeypress="numberOnly(event)" autocomplete="off">
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtPayMode" class="col-form-label">Payment Mode:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <input type="text" id="txtPayMode" class="form-control" asp-for="PaymentModeName" autocomplete="off">
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtSellLead" class="col-form-label">Selling Lead:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <input type="text" id="txtSellLead" class="form-control" asp-for="SellingLead" autocomplete="off">
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtCustomerName" class="col-form-label">Customer Name:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <input type="text" id="txtCustomerName" class="form-control" asp-for="CustomerName" autocomplete="off">
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtContactNo" class="col-form-label">Contact No:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <input type="text" id="txtContactNo" class="form-control" asp-for="ContactNo" onkeypress="numberOnly(event)" maxlength="10" autocomplete="off">
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtLoaction" class="col-form-label">Location:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <input type="text" id="txtLoaction" class="form-control" asp-for="LocationName" autocomplete="off">
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtBillNo" class="col-form-label">Bill No:</label>
                                     </div>
-                                    <div class="col-md-4">
-                                        <input type="text" id="txtBillNo" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" readonly>
+                                    <div class="col-md-4 col-12">
+                                        <input type="text" id="txtBillNo" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtWarranty" class="col-form-label">Warranty:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <input type="text" id="txtWarranty" class="form-control" asp-for="Warranty" autocomplete="off">
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtRemark" class="col-form-label">Remark:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <input type="text" id="txtRemark" class="form-control" asp-for="Remark" autocomplete="off">
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-md-6 col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12 text-right">
                                         <button type="button" class="btn btn-custom" id="btnAddTempSales" title="Add Sales Entry to Above List"><i class="fas fa-plus"></i> Add Entry</button>
                                     </div>
                                 </div>
@@ -299,19 +297,16 @@
 @await Html.PartialAsync("_SalesFileSharedPopup.cshtml")
 
 @section Styles {
-    <link href="@Url.Content("~/lib/select2/css/select2.min.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/css/custom-css/custom-select2.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/css/custom-css/autocomplete.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/custom-css/autocomplete.css")" rel="stylesheet" asp-append-version="true" />
 }
 
 @section Scripts {
     <script src="@Url.Content("~/lib/moment.js/moment.min.js")" asp-append-version="true"></script>
-    <script src="@Url.Content("~/lib/select2/js/select2.min.js")" asp-append-version="true"></script>
     <script src="@Url.Content("~/lib/autocomplete/jquery.autocomplete.js")" asp-append-version="true"></script>
     <script src="@Url.Content("~/js/scripts.js")" asp-append-version="true"></script>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#txtSellDate').datepicker({
                 format: 'dd/mm/yyyy',
                 endDate: '0d',
@@ -323,18 +318,16 @@
             });
 
             var todayDate = new Date();
-            $('#txtSellDate').datepicker("setDate",localDateFormat(todayDate, 'dd/mm/yyyy'));
-
-            $('#ddlCategory,#ddlBrand').select2();
+            $('#txtSellDate').datepicker("setDate", localDateFormat(todayDate, 'dd/mm/yyyy'));
 
             $("#txtSrNo").devbridgeAutocomplete({
                 serviceUrl: "/Purchase/GetAutoCompleteSerialNo",
                 type: "POST",
-                paramName:"searchValue",
-                transformResult: function(result, query){
+                paramName: "searchValue",
+                transformResult: function(result, query) {
 
-                    suggestions = $.map(JSON.parse(result), function (value, key) {
-                        if(value.valueId > 0){
+                    suggestions = $.map(JSON.parse(result), function(value, key) {
+                        if (value.valueId > 0) {
                             return {
                                 id: value.valueId.toString(),
                                 value: value.description.toString()
@@ -347,11 +340,11 @@
                         suggestions: suggestions
                     };
 
-                return response;
+                    return response;
                 },
                 minChars: 1,
-                triggerSelectOnValidInput:false,
-                onSelect: function (suggestion) {
+                triggerSelectOnValidInput: false,
+                onSelect: function(suggestion) {
 
                     $('#hdnPurchaseId').val(suggestion.id);
                     getPurchaseRecordInSales(suggestion.id);
@@ -361,11 +354,11 @@
             $("#txtSrNoTemp").devbridgeAutocomplete({
                 serviceUrl: "/Purchase/GetAutoCompleteSerialNo",
                 type: "POST",
-                paramName:"searchValue",
-                transformResult: function(result, query){
+                paramName: "searchValue",
+                transformResult: function(result, query) {
 
-                    suggestions = $.map(JSON.parse(result), function (value, key) {
-                        if(value.valueId > 0){
+                    suggestions = $.map(JSON.parse(result), function(value, key) {
+                        if (value.valueId > 0) {
                             return {
                                 id: value.valueId.toString(),
                                 value: value.description.toString()
@@ -378,11 +371,11 @@
                         suggestions: suggestions
                     };
 
-                return response;
+                    return response;
                 },
                 minChars: 1,
-                triggerSelectOnValidInput:false,
-                onSelect: function (suggestion) {
+                triggerSelectOnValidInput: false,
+                onSelect: function(suggestion) {
 
                     $('#hdnTempPurchaseId').val(suggestion.id);
                     getPurchaseRecordInTempSales(suggestion.id);
@@ -400,77 +393,83 @@
                 scrollCollapse: true,
                 fixedColumns: true,
                 processing: true,
-                serverSide:true,
-                pageLength:10,
-                "paging":false,
-                "ajax":{
+                serverSide: true,
+                pageLength: 10,
+                "paging": false,
+                "ajax": {
                     "url": "/Sales/GetTempSalesList",
                     "type": "POST",
                     "datatype": "json",
                     "data": { __RequestVerificationToken: token },
                 },
-                "columns":[
-                    {"data": "tempSalesID","title":"Sr.No."},
-                    {"data": "serialNo","title":"Serial No"},
-                    {"data": "categoryName","title":"Category"},
-                    {"data": "brandName","title":"Brand"},
-                    {"data": "model","title":"Model"},
-                    {"data": "specifications","title":"Specifications"},
-                    {"data": "sellingQuantity","title":"Selling Quantity"},
-                    {"data": "sellingDate","title":"Selling Date",render:function (data, type, row){
-                        if(data === null) return "";
+                "columns": [
+                    { "data": "tempSalesID", "title": "Sr.No." },
+                    { "data": "serialNo", "title": "Serial No" },
+                    { "data": "categoryName", "title": "Category" },
+                    { "data": "brandName", "title": "Brand" },
+                    { "data": "model", "title": "Model" },
+                    { "data": "specifications", "title": "Specifications" },
+                    { "data": "sellingQuantity", "title": "Selling Quantity" },
+                    {
+                        "data": "sellingDate", "title": "Selling Date", render: function(data, type, row) {
+                            if (data === null) return "";
 
-                        return moment(data).format('DD/MM/YYYY');
-                    }},
-                    {"data": "sellingPrice","title":"Selling Price",render:function (data, type, row){
-                        if(data === null) return "";
+                            return moment(data).format('DD/MM/YYYY');
+                        }
+                    },
+                    {
+                        "data": "sellingPrice", "title": "Selling Price", render: function(data, type, row) {
+                            if (data === null) return "";
 
-                        return "&#8377;"+ data;
-                    }},
-                    {"data": "paymentMode","title":"Payment Mode"},
-                    {"data": "customerName","title":"Customer Name"},
-                    {"data": "contactNo","title":"Contact No"},
+                            return "&#8377;" + data;
+                        }
+                    },
+                    { "data": "paymentMode", "title": "Payment Mode" },
+                    { "data": "customerName", "title": "Customer Name" },
+                    { "data": "contactNo", "title": "Contact No" },
 
-                    {"data": "location","title":"Location"},
-                    {"data": "billNo","title":"Bill No"},
-                    {"data": "warranty","title":"Warranty"},
-                    {"data": "remark","title":"Remark"},
-                    {"data": "sellingLead","title":"Selling Lead"},
-                    {"data": "tempSalesID","title":"Action",render:function (data, type, row){
-                        if(data === null) return "";
-                        var strData = '<a href="javascript:void(0)" onclick="EditTempSales(' + data + ')" class="custom-link-btn mr-2" title="Edit Temporory Sales Entry"><i class="fas fa-edit fa-lg color-info"></i></a>'
-                        strData = strData + '<a href="javascript:void(0)" onclick="showDeleteTempSalesModel(' + data + ')" class="custom-link-btn" title="Delete Temporory Sales Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>'
-                        return strData;
-                    }},
+                    { "data": "location", "title": "Location" },
+                    { "data": "billNo", "title": "Bill No" },
+                    { "data": "warranty", "title": "Warranty" },
+                    { "data": "remark", "title": "Remark" },
+                    { "data": "sellingLead", "title": "Selling Lead" },
+                    {
+                        "data": "tempSalesID", "title": "Action", render: function(data, type, row) {
+                            if (data === null) return "";
+                            var strData = '<a href="javascript:void(0)" onclick="EditTempSales(' + data + ')" class="custom-link-btn mr-2" title="Edit Temporory Sales Entry"><i class="fas fa-edit fa-lg color-info"></i></a>'
+                            strData = strData + '<a href="javascript:void(0)" onclick="showDeleteTempSalesModel(' + data + ')" class="custom-link-btn" title="Delete Temporory Sales Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>'
+                            return strData;
+                        }
+                    },
                 ],
                 columnDefs: [
-                    { targets: 0,className: 'text-nowrap'},
-                    { targets: 1,className: 'text-nowrap'},
-                    { targets: 2,className: 'text-nowrap'},
-                    { targets: 3,className: 'text-nowrap'},
-                    { targets: 4,className: 'text-nowrap'},
-                    { targets: 5,className: 'text-nowrap'},
-                    { targets: 6,className: 'text-nowrap text-right'},
-                    { targets: 7,className: 'text-nowrap'},
-                    { targets: 8,className: 'text-nowrap text-right'},
-                    { targets: 9,className: 'text-nowrap'},
-                    { targets: 10,className: 'text-nowrap'},
-                    { targets: 11,className: 'text-nowrap'},
-                    { targets: 12,className: 'text-nowrap'},
-                    { targets: 13,className: 'text-nowrap'},
-                    { targets: 14,className: 'text-nowrap'},
-                    { targets: 15,className: 'text-nowrap'},
-                    { targets: 16,className: 'text-nowrap'},
-                    { targets: 17,className: 'text-nowrap text-center'}
+                    { targets: 0, className: 'text-nowrap' },
+                    { targets: 1, className: 'text-nowrap' },
+                    { targets: 2, className: 'text-nowrap' },
+                    { targets: 3, className: 'text-nowrap' },
+                    { targets: 4, className: 'text-nowrap' },
+                    { targets: 5, className: 'text-nowrap' },
+                    { targets: 6, className: 'text-nowrap text-right' },
+                    { targets: 7, className: 'text-nowrap' },
+                    { targets: 8, className: 'text-nowrap text-right' },
+                    { targets: 9, className: 'text-nowrap' },
+                    { targets: 10, className: 'text-nowrap' },
+                    { targets: 11, className: 'text-nowrap' },
+                    { targets: 12, className: 'text-nowrap' },
+                    { targets: 13, className: 'text-nowrap' },
+                    { targets: 14, className: 'text-nowrap' },
+                    { targets: 15, className: 'text-nowrap' },
+                    { targets: 16, className: 'text-nowrap' },
+                    { targets: 17, className: 'text-nowrap text-center' }
                 ],
-                drawCallback:function(settings){
-                    if (settings.aoData.length == 0)  {
+                drawCallback: function(settings) {
+                    if (settings.aoData.length == 0) {
                         $('#btnSalesSave').addClass("disabled");
                     } else {
                         $('#btnSalesSave').removeClass("disabled");
                     }
                 },
-                initComplete: function () {
+                initComplete: function() {
                     $('*[title]').tooltip();
                 }
             });

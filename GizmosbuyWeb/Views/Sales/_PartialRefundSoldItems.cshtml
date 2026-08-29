@@ -1,6 +1,4 @@
-﻿
-
-<div class="modal fade" id="tempRefundSoldItemsModel" tabindex="-1" aria-labelledby="tempRefundSoldItemsModelLabel" aria-hidden="true">
+﻿<div class="modal fade" id="tempRefundSoldItemsModel" tabindex="-1" aria-labelledby="tempRefundSoldItemsModelLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -18,31 +16,34 @@
                         <div class="form-group mb-0">
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-12">
-                                        <h6 style="font-weight: 600;">Please enter below detail for refund sold items.</h6>
-                                    </div>
+                                    <h6 style="font-weight: 600;" class="p-0">Please enter below detail for refund sold items.</h6>
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="col-auto offset-md-2">
-                                    <div class="row">
-                                        <span id="spnInvoiceNoError" class="field-validation-error"></span>
-                                    </div>
+                            <div class="col-md-12 col-12 mb-2">
+                                <div class="row">
+                                    <span id="spnInvoiceNoError" class="field-validation-error p-0"></span>
                                 </div>
                             </div>
-                            <div class="col-md-12 mb-2">
+                            <div class="col-md-12 col-12">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="txtInvoiceNo" class="col-form-label">Invoice No.:</label>
+                                    <div class="col-md-6 col-12 my-2">
+                                        <div class="row">
+                                            <input type="text" id="txtInvoiceNo" class="form-control" placeholder="Invoice No." autocomplete="off">
+                                        </div>
                                     </div>
-                                    <div class="col-md-5">
-                                        <input type="text" id="txtInvoiceNo" class="form-control" placeholder="" autocomplete="off">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="button" class="btn btn-custom" id="btnFetchInvoiceDetails" title="Click here to fetch invoice details"><i class="fa-solid fa-circle-arrow-down"></i> Fetch</button>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button type="button" class="btn btn-info" id="btnClearInvoiceDetails" title="Clear invoice details"><i class="fa-solid fa-eraser"></i> Clear</button>
+                                    <div class="col-md-6 col-12">
+                                        <div class="row justify-content-end">
+                                            <div class="col-md-6 my-2">
+                                                <div class="">
+                                                    <button type="button" class="btn btn-custom" id="btnFetchInvoiceDetails" title="Click here to fetch invoice details"><i class="fa-solid fa-circle-arrow-down"></i> Fetch</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 my-2">
+                                                <div class="row justify-content-end">
+                                                    <button type="button" class="btn btn-info" id="btnClearInvoiceDetails" title="Clear invoice details"><i class="fa-solid fa-eraser"></i> Clear</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     @* <div class="col-auto">
                                         <span class="field-validation-error"></span>
@@ -51,7 +52,6 @@
                             </div>
 
                             <div id="divInvoiceDetails">
-                                
                             </div>
                         </div>
 

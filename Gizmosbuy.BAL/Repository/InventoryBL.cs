@@ -1,13 +1,12 @@
-﻿using System.Data;
-using Gizmosbuy.BAL.Commons;
+﻿using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
-using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
 using Gizmosbuy.DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Gizmosbuy.BAL.Repository
 {
@@ -27,63 +26,24 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext)); ;
 
-                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate, dateRange.EndDate, sessionUserId);
+                bool isExport = false;
 
-                int start = pager.PageStart;
-                int length = pager.PageLength;
-                string searchValue = pager.SearchValue.Trim() ?? "";
-                string columnName = pager.ColumnName ?? "";
-                string sortDirection = pager.SortDirection ?? "";
+                var paramReturnTotalCount = new OutputParameter<int?>();
 
-                IList<spGetRawDataResult> mainData = null;
+                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate, dateRange.EndDate, sessionUserId, pager.SearchValue, pager.PageLength, pager.Offset, pager.ColumnName, pager.SortDirection, isExport, paramReturnTotalCount);
 
-                if (searchValue != "")
+                var totalCount = paramReturnTotalCount.Value.GetValueOrDefault();
+                var filterCount = totalCount;
+
+                var data = new
                 {
-                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetRawDataResult>(searchValue, Constant.GlobalDateFormat)).ToList();
-                }
-                else
-                {
-                    mainData = rawDataResults;
-                }
+                    data = rawDataResults,
+                    draw = pager.Draw,
+                    recordsTotal = totalCount,
+                    recordsFiltered = filterCount
+                };
 
-                // Apply sorting
-                if (!string.IsNullOrEmpty(columnName))
-                {
-                    mainData = mainData.OrderByDynamic(columnName, sortDirection).ToList();
-                }
-
-                if (mainData != null && mainData.Count > 0)
-                {
-                    var totalCount = mainData.Count;
-                    var filterCount = mainData.Count;
-
-                    mainData = mainData
-                        .Skip(start)
-                        .Take(length)
-                        .ToList();
-
-                    var data = new
-                    {
-                        data = mainData,
-                        draw = pager.Draw,
-                        recordsTotal = totalCount,
-                        recordsFiltered = filterCount
-                    };
-
-                    return data;
-                }
-                else
-                {
-                    var data = new
-                    {
-                        data = new List<spGetRawDataResult>(),
-                        draw = pager.Draw,
-                        recordsTotal = 0,
-                        recordsFiltered = 0
-                    };
-
-                    return data;
-                }
+                return data;
             }
             catch (Exception)
             {
@@ -160,21 +120,11 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate, dateRange.EndDate, sessionUserId);
-                string searchValue = pager.SearchValue.Trim() ?? "";
+                bool isExport = true;
 
-                List<spGetRawDataResult> mainData = null;
+                var rawDataResults = await _applicationDbContext.Procedures.spGetRawDataAsync(dateRange.StartDate, dateRange.EndDate, sessionUserId, pager.SearchValue, null, null, pager.ColumnName, pager.SortDirection, isExport, null);
 
-                if (searchValue != "")
-                {
-                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetRawDataResult>(searchValue, Constant.GlobalDateFormat)).ToList();
-                }
-                else
-                {
-                    mainData = rawDataResults;
-                }
-
-                return mainData;
+                return rawDataResults;
             }
             catch (Exception)
             {
@@ -186,63 +136,24 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                var rawDataResults = await _applicationDbContext.Procedures.spGetStoreTransferRawDataAsync(searchLocationId);
+                bool isExport = false;
 
-                int start = pager.PageStart;
-                int length = pager.PageLength;
-                string searchValue = pager.SearchValue.Trim() ?? "";
-                string columnName = pager.ColumnName ?? "";
-                string sortDirection = pager.SortDirection ?? "";
+                var paramReturnTotalCount = new OutputParameter<int?>();
 
-                IEnumerable<spGetStoreTransferRawDataResult> mainData = null;
+                var rawDataResults = await _applicationDbContext.Procedures.spGetStoreTransferRawDataAsync(searchLocationId, pager.SearchValue, pager.PageLength, pager.Offset, pager.ColumnName, pager.SortDirection, isExport, paramReturnTotalCount);
 
-                if (searchValue != "")
+                var totalCount = paramReturnTotalCount.Value.GetValueOrDefault();
+                var filterCount = totalCount;
+
+                var data = new
                 {
-                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetStoreTransferRawDataResult>(searchValue, Constant.GlobalDateFormat));
-                }
-                else
-                {
-                    mainData = rawDataResults;
-                }
+                    data = rawDataResults,
+                    draw = pager.Draw,
+                    recordsTotal = totalCount,
+                    recordsFiltered = filterCount
+                };
 
-                // Apply sorting
-                if (!string.IsNullOrEmpty(columnName))
-                {
-                    mainData = mainData.OrderByDynamic(columnName, sortDirection);
-                }
-
-                if (mainData != null && mainData.Any())
-                {
-                    var totalCount = mainData.ToList().Count;
-                    var filterCount = totalCount;
-
-                    mainData = mainData
-                        .Skip(start)
-                        .Take(length)
-                        .ToList();
-
-                    var data = new
-                    {
-                        data = mainData,
-                        draw = pager.Draw,
-                        recordsTotal = totalCount,
-                        recordsFiltered = filterCount
-                    };
-
-                    return data;
-                }
-                else
-                {
-                    var data = new
-                    {
-                        data = new List<object>(),
-                        draw = pager.Draw,
-                        recordsTotal = 0,
-                        recordsFiltered = 0
-                    };
-
-                    return data;
-                }
+                return data;
             }
             catch (Exception)
             {
@@ -254,63 +165,24 @@ namespace Gizmosbuy.BAL.Repository
         {
             try
             {
-                var rawDataResults = await _applicationDbContext.Procedures.spGetStoreTransferPaymentSummaryAsync(searchLocationId);
+                bool isExport = false;
 
-                int start = pager.PageStart;
-                int length = pager.PageLength;
-                string searchValue = pager.SearchValue.Trim() ?? "";
-                string columnName = pager.ColumnName ?? "";
-                string sortDirection = pager.SortDirection ?? "";
+                var paramReturnTotalCount = new OutputParameter<int?>();
 
-                IEnumerable<spGetStoreTransferPaymentSummaryResult> mainData = null;
+                var rawDataResults = await _applicationDbContext.Procedures.spGetStoreTransferPaymentSummaryAsync(searchLocationId, pager.SearchValue, pager.PageLength, pager.Offset, pager.ColumnName, pager.SortDirection, isExport, paramReturnTotalCount);
 
-                if (searchValue != "")
+                var totalCount = paramReturnTotalCount.Value.GetValueOrDefault();
+                var filterCount = totalCount;
+
+                var data = new
                 {
-                    mainData = rawDataResults.Where(Utilities.GetSearchValue<spGetStoreTransferPaymentSummaryResult>(searchValue, Constant.GlobalDateFormat));
-                }
-                else
-                {
-                    mainData = rawDataResults;
-                }
+                    data = rawDataResults,
+                    draw = pager.Draw,
+                    recordsTotal = totalCount,
+                    recordsFiltered = filterCount
+                };
 
-                // Apply sorting
-                if (!string.IsNullOrEmpty(columnName))
-                {
-                    mainData = mainData.OrderByDynamic(columnName, sortDirection);
-                }
-
-                if (mainData != null && mainData.Any())
-                {
-                    var totalCount = mainData.ToList().Count;
-                    var filterCount = totalCount;
-
-                    mainData = mainData
-                        .Skip(start)
-                        .Take(length)
-                        .ToList();
-
-                    var data = new
-                    {
-                        data = mainData,
-                        draw = pager.Draw,
-                        recordsTotal = totalCount,
-                        recordsFiltered = filterCount
-                    };
-
-                    return data;
-                }
-                else
-                {
-                    var data = new
-                    {
-                        data = new List<object>(),
-                        draw = pager.Draw,
-                        recordsTotal = 0,
-                        recordsFiltered = 0
-                    };
-
-                    return data;
-                }
+                return data;
             }
             catch (Exception)
             {
@@ -391,6 +263,43 @@ namespace Gizmosbuy.BAL.Repository
             catch (Exception)
             {
 
+                throw;
+            }
+        }
+
+        public async Task<IList<spGetStoreTransferRawDataResult>> GetStoreTransferRawDataExport(int searchLocationId, IPager pager)
+        {
+            try
+            {
+                bool isExport = true;
+
+                var rawDataResults = await _applicationDbContext.Procedures.spGetStoreTransferRawDataAsync(searchLocationId, pager.SearchValue, null, null, pager.ColumnName, pager.SortDirection, isExport, null);
+
+                return rawDataResults;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IList<spGetStoreTransferPaymentSummaryResult>> GetStoreTransferPaymentSummaryExport(int searchLocationId, IPager pager)
+        {
+            try
+            {
+                string sessionUserRole = Utilities.GetSessionValue("Role", _httpContextAccessor.HttpContext) ?? "";
+                int sessionLocationId = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
+
+                searchLocationId = sessionUserRole == "Admin" ? sessionLocationId : searchLocationId;
+
+                bool isExport = true;
+
+                var rawDataResults = await _applicationDbContext.Procedures.spGetStoreTransferPaymentSummaryAsync(searchLocationId, pager.SearchValue, null, null, pager.ColumnName, pager.SortDirection, isExport, null);
+
+                return rawDataResults;
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }

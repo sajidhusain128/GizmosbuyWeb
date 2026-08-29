@@ -1,9 +1,10 @@
-﻿@using Gizmosbuy.Core.Constants
-@using Gizmosbuy.BAL.Commons;
-
+﻿@using Gizmosbuy.BAL.Commons;
+@using Gizmosbuy.Core.Constants
+@using Gizmosbuy.Core.Interfaces
 @{
     ViewBag.Title = "Expenses";
     string userRole = Utilities.GetSessionValue(Constant.Role, Context.Request.HttpContext);
+    var storeData = (List<ILocationModel>)ViewBag.LocationModel;
 }
 
 <div class="col-md-12">
@@ -14,27 +15,44 @@
     </div>
 </div>
 <div class="container-block">
-    <div class="page-title">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-12 col-12">
+    <div class="section-block">
+        <div class="page-content p-0">
+            <div class="page-title">
+                <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-6 col-6">
+                        <div class="col-md-6 col-12 my-2">
                             <div class="row">
-                                <a href="@Url.Action("CreateExpense", "Finance")" class="btn btn-custom" title="Create Expense Entry"><i class="fas fa-save"></i> Create Entry</a>
+                                <div class="col-md-auto col-6 px-2">
+                                    <div class="">
+                                        <a href="@Url.Action("CreateExpense", "Finance")" class="btn btn-custom" title="Create Expense Entry"><i class="fas fa-save"></i> Create Entry</a>
+                                    </div>
+                                </div>
+                                @if (userRole == "SuperAdmin")
+                                {
+                                    <div class="col-md-6 col-6 px-2">
+                                        <div class="">
+                                            @Html.DropDownList("locationId", new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlExpenseStore", @class = "form-select select2-dropdown", @style = "width:100% !important;" })
+                                        </div>
+                                    </div>
+                                }
                             </div>
                         </div>
-                        <div class="col-md-6 col-6">
-                            <div class="row justify-content-end">
-                                <button id="btnExportExpense" class="btn btn-custom" title="Export To Excel"><i class="fas fa-file-excel"></i> Export</button>
+                        <div class="col-md-6 col-12 my-2">
+                            <div class=" row justify-content-end">
+                                <div class="col-md-auto col-12 px-2">
+                                    <div class="text-right">
+                                        <button id="btnExportExpense" class="btn btn-custom" title="Export To Excel"><i class="fas fa-file-excel"></i> Export</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> 
 </div>
+
 <div class="container-block">
     <div class="section-block">
         <div class="page-header">
@@ -62,8 +80,14 @@
 </div>
 @await Html.PartialAsync("_PartialExpenseDeletePopup.cshtml")
 
+@section Styles {
+    <link href="@Url.Content("~/lib/select2/css/select2.min.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/custom-css/custom-select2.css")" rel="stylesheet" asp-append-version="true" />
+}
+
 @section Scripts
 {
+    <script src="@Url.Content("~/lib/select2/js/select2.min.js")" asp-append-version="true"></script>
     <script src="@Url.Content("~/lib/moment.js/moment.min.js")" asp-append-version="true"></script>
     <script src="@Url.Content("~/js/finance.js")" asp-append-version="true"></script>
 
@@ -71,71 +95,98 @@
         var tableExpense = null;
 
         $(document).ready(function () {
+            var selectedLocation = 0;
 
-            tableExpense = $('#tblExpense').DataTable({
-                scrollX: true,
-                scrollY: 406,
-                scrollCollapse: true,
-                fixedColumns: true,
-                processing: true,
-                serverSide: true,
-                pageLength: 10,
-                order: [], // 👈 disables initial sort
-                "paging": true,
-                "ajax": {
-                    "url": "/Finance/GetExpenseList",
-                    "type": "POST",
-                    "datatype": "json"
-                },
-                "columns": [
-                    { "data": null, "title": "#" },
-                    {
-                        "data": "expenseDate", "title": "Expense Date", render: function (data, type, row) {
-                            if (data === null) return "";
+            CallExpenseList();
 
-                            return moment(data).format('DD/MM/YYYY');
-                        }
+            if ("@userRole" == "SuperAdmin"){
+                $('#ddlExpenseStore').select2();
+
+                $('#ddlExpenseStore').on('change', function (e) {
+                    selectedLocation = $(this).val();
+                    tableExpense.destroy();
+                    CallExpenseList()
+                });
+            }   
+
+            function CallExpenseList() {
+                tableExpense = $('#tblExpense').DataTable({
+                    scrollX: true,
+                    scrollY: 406,
+                    scrollCollapse: true,
+                    fixedColumns: true,
+                    processing: true,
+                    serverSide: true,
+                    pageLength: 10,
+                    order: [[0, '']], // 👈 disables initial sort
+                    "paging": true,
+                    "ajax": {
+                        "url": "/Finance/GetExpenseList",
+                        "type": "POST",
+                        "datatype": "json",
+                        "data": function(d) {
+                            d.searchLocationId = selectedLocation;
+                        },
                     },
-                    {
-                        "data": "amount", "title": "Amount", render: function (data, type, row) {
-                            if (data === null) return "";
+                    "columns": [
+                        { "data": null, "title": "#" },
+                        {
+                            "data": "expenseDate", "title": "Expense Date", render: function (data, type, row) {
+                                if (data === null) return "";
 
-                            return "&#8377; " + data;
-                        }
+                                return moment(data).format('DD/MM/YYYY');
+                            }
+                        },
+                        {
+                            "data": "amount", "title": "Amount", render: function (data, type, row) {
+                                if (data === null) return "";
+
+                                return "&#8377; " + data;
+                            }
+                        },
+                        { "data": "expenseTypeName", "title": "Expense Type" },
+                        { "data": "remark", "title": "Remark" },
+                        { "data": "paymentModeName", "title": "Payment Mode" },
+                        { "data": "expenseMonthName", "title": "Expense Month" },
+                        { "data": "expenseYear", "title": "Expense Year" },
+                        { "data": "locationName", "title": "Store Name" },
+                        // {
+                        //     "data": "purchaseID", "title": "Action ", render: function (data, type, row) {
+                        //         if (data === null) return "";
+
+                        //         return '<a href="/Finance/EditExpense?Id=' + row.expenseId + '" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Expense Entry" class="mr-2"><i class="fas fa-edit fa-lg color-info"></i></a>'+
+                        //             '<a href="javascript:void(0)" onclick="showDeleteExpenseModel(' + row.expenseId + ')" class="custom-link-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Expense Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>';
+                        //     }
+                        // }
+                    ],
+                    columnDefs: [
+                        { targets: 0, className: 'text-nowrap', orderable: false },
+                        { targets: 1, className: 'text-nowrap' },
+                        { targets: 2, className: 'text-nowrap text-right' },
+                        { targets: 3, className: 'text-nowrap' },
+                        { targets: 4, className: 'text-nowrap' },
+                        { targets: 5, className: 'text-nowrap' },
+                        { targets: 6, className: 'text-nowrap' },
+                        { targets: 7, className: 'text-nowrap' },
+                        { targets: 8, className: 'text-nowrap' },
+                        //{ targets: 9, className: 'text-nowrap text-center min-width-column', "orderable": false }
+                    ],
+                    initComplete: function () {
+                        $('*[title]').tooltip();
                     },
-                    { "data": "expenseTypeName", "title": "Expense Type" },
-                    { "data": "remark", "title": "Remark" },
-                    { "data": "paymentModeName", "title": "Payment Mode" },
-                    { "data": "expenseMonthName", "title": "Expense Month" },
-                    { "data": "expenseYear", "title": "Expense Year" },
-                    // {
-                    //     "data": "purchaseID", "title": "Action ", render: function (data, type, row) {
-                    //         if (data === null) return "";
-
-                    //         return '<a href="/Finance/EditExpense?Id=' + row.expenseId + '" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Expense Entry" class="mr-2"><i class="fas fa-edit fa-lg color-info"></i></a>'+
-                    //             '<a href="javascript:void(0)" onclick="showDeleteExpenseModel(' + row.expenseId + ')" class="custom-link-btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Expense Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>';
-                    //     }
-                    // }
-                ],
-                columnDefs: [
-                    { targets: 0, className: 'text-nowrap' },
-                    { targets: 1, className: 'text-nowrap' },
-                    { targets: 2, className: 'text-nowrap text-right' },
-                    { targets: 3, className: 'text-nowrap' },
-                    { targets: 4, className: 'text-nowrap' },
-                    { targets: 5, className: 'text-nowrap' },
-                    { targets: 6, className: 'text-nowrap' },
-                    { targets: 7, className: 'text-nowrap' },
-                    //{ targets: 8, className: 'text-nowrap text-center min-width-column', "orderable": false }
-                ],
-                initComplete: function () {
-                    $('*[title]').tooltip();
-                },
-                fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                    $("td:first", nRow).html(iDisplayIndex + 1);
-                    return nRow;
-                }
-            });
+                    fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+                        $("td:first", nRow).html(iDisplayIndex + 1);
+                        return nRow;
+                    },
+                    drawCallback: function(settings) {
+                        if (settings.aoData.length == 0) {
+                            $("#btnExportExpense").addClass("disabled");
+                        } else {
+                            $("#btnExportExpense").removeClass("disabled");
+                        }
+                    }
+                });
+            }
         });
     </script>
 }

@@ -1,12 +1,6 @@
-﻿@using Gizmosbuy.Core.Constants
-@using Microsoft.AspNetCore.Http;
-@using Gizmosbuy.BAL.Commons;
-@using Gizmosbuy.Core.Interfaces
-@inject IHttpContextAccessor _httpContextAccessor
-
+﻿@using Gizmosbuy.Core.Interfaces
 @{
     ViewBag.Title = "Store Transfer";
-    string userRole = Utilities.GetSessionValue(Constant.Role, _httpContextAccessor.HttpContext);
 }
 
 <div class="col-md-12">
@@ -17,36 +11,38 @@
     </div>
 </div>
 <div class="container-block">
-    <div class="page-title">
-        <div class="col-md-12">
-            <div class="row">
-                <div class="col-md-6 col-sm-12">
+    <div class="section-block">
+        <div class="page-content p-0">
+            <div class="page-title">
+                <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-auto col-sm-6 mb-2">
+                        <div class="col-md-6 col-12 my-2">
                             <div class="row">
-                                <a href="@Url.Action("CreateTransfer", "Store")" class="btn btn-custom" title="Create Store Transfer Entry"><i class="fas fa-save"></i> Create Entry</a>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 mb-2">
-                            <div class="row">
-                                <div>
-                                    @Html.DropDownList("FromLocationId", new SelectList(((List<ILocationModel>)ViewBag.LocationModelST).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlSellingStoreST", @class = "form-select", @style = "width:100% !important;min-width:300px" })
+                                <div class="col-md-auto col-6 px-2">
+                                    <div class="">
+                                        <a href="@Url.Action("CreateTransfer", "Store")" class="btn btn-custom" title="Create Store Transfer Entry"><i class="fas fa-save"></i> Create Entry</a>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-6 px-2">
+                                    <div class="">
+                                        @Html.DropDownList("FromLocationId", new SelectList(((List<ILocationModel>)ViewBag.LocationModelST).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlSellingStoreST", @class = "form-select select2-dropdown", @style = "width:100% !important;" })
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                </div>
-                <div class="col-md-6 col-sm-12">
-                    <div class="row column-gap-3 justify-content-end">
-                        <div class="col-md-auto col-sm-6 mb-2">
-                            <div class="row ">
-                                <button id="btnReturnStoreTransferModal" class="btn btn-custom" title="Return Transfer Items"><i class="fa-solid fa-person-walking-arrow-loop-left"></i> Return Item</button>
-                            </div>
                         </div>
-                        <div class="col-md-auto col-sm-6 mb-2">
-                            <div class="row">
-                                <button id="btnExportReturnStore" class="btn btn-custom" title="Export To Excel"><i class="fas fa-file-excel"></i> Export</button>
+                        <div class="col-md-6 col-12 my-2">
+                            <div class="row justify-content-end">
+                                <div class="col-md-auto col-6 px-2">
+                                    <div class="">
+                                        <button id="btnReturnStoreTransferModal" class="btn btn-custom" title="Return Transfer Items"><i class="fa-solid fa-person-walking-arrow-loop-left"></i> Return Item</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-auto col-6 px-2">
+                                    <div class="text-right">
+                                        <button id="btnExportReturnStore" class="btn btn-custom" title="Export To Excel"><i class="fas fa-file-excel"></i> Export</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -101,7 +97,6 @@
         $(document).ready(function() {
             var selectedToLocation = 0;
 
-           
             CallStoreTransferList();
             $('#ddlSellingStoreST').select2();
 
@@ -164,18 +159,18 @@
                         { "data": "toLocation", "title": "To Location" },
                         { "data": "billNo", "title": "Bill No" },
                         {
-                            "data": "returnedStatus", "title": "Transfer Status", render: function(data, type, row) {
+                            "data": "transferStatus", "title": "Transfer Status", render: function(data, type, row) {
                                 if (data === null) return "";
 
                                 var val = "";
-                                if (data == "Sold") {
-                                    val = "badge-error";
+                                if (data == "Transfered") {
+                                    val = "badge-success";
                                 }
-                                else if (data == "Partially Returned") {
+                                else if (data == "Partially Transfered") {
                                     val = "badge-warning";
                                 }
                                 else if (data == "Returned") {
-                                    val = "badge-success";
+                                    val = "badge-info";
                                 }
 
                                 return "<div class='badge badge-soft badge-outline " + val + "'>" + data + "</div>";
@@ -200,6 +195,13 @@
                     ],
                     initComplete: function() {
                         $('*[title]').tooltip();
+                    },
+                    drawCallback: function(settings) {
+                        if (settings.aoData.length == 0) {
+                            $("#btnExportReturnStore").addClass("disabled");
+                        } else {
+                            $("#btnExportReturnStore").removeClass("disabled");
+                        }
                     }
                 });
             }

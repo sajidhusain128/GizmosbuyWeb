@@ -124,6 +124,86 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
+        public virtual async Task<List<spGetExpenseListResult>> spGetExpenseListAsync(int? createdBy, int? locationID, string search, int? pageSize, int? offset, string sortBy, string sortOrder, bool? isExport, OutputParameter<int?> totalRecords, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterTotalRecords = new SqlParameter
+            {
+                ParameterName = "TotalRecords",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = totalRecords?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "CreatedBy",
+                    Value = createdBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "LocationID",
+                    Value = locationID ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 1000,
+                    Value = search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = pageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Offset",
+                    Value = offset ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortBy",
+                    Size = 100,
+                    Value = sortBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortOrder",
+                    Size = 20,
+                    Value = sortOrder ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsExport",
+                    Value = isExport ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                parameterTotalRecords,
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<spGetExpenseListResult>("EXEC @returnValue = [dbo].[spGetExpenseList] @CreatedBy = @CreatedBy, @LocationID = @LocationID, @Search = @Search, @PageSize = @PageSize, @Offset = @Offset, @SortBy = @SortBy, @SortOrder = @SortOrder, @IsExport = @IsExport, @TotalRecords = @TotalRecords OUTPUT", sqlParameters, cancellationToken);
+
+            totalRecords?.SetValue(parameterTotalRecords.Value);
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
         public virtual async Task<List<spGetExpenseSummaryDataResult>> spGetExpenseSummaryDataAsync(int? locationId, int? month, int? year, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
@@ -255,8 +335,15 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<List<spGetPurchaseListResult>> spGetPurchaseListAsync(int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetPurchaseListResult>> spGetPurchaseListAsync(int? createdBy, string search, int? pageSize, int? offset, string sortBy, string sortOrder, bool? isExport, OutputParameter<int?> totalRecords, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
+            var parameterTotalRecords = new SqlParameter
+            {
+                ParameterName = "TotalRecords",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = totalRecords?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
@@ -272,10 +359,51 @@ namespace Gizmosbuy.DAL.Data
                     Value = createdBy ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 1000,
+                    Value = search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = pageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Offset",
+                    Value = offset ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortBy",
+                    Size = 100,
+                    Value = sortBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortOrder",
+                    Size = 20,
+                    Value = sortOrder ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsExport",
+                    Value = isExport ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                parameterTotalRecords,
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetPurchaseListResult>("EXEC @returnValue = [dbo].[spGetPurchaseList] @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetPurchaseListResult>("EXEC @returnValue = [dbo].[spGetPurchaseList] @CreatedBy = @CreatedBy, @Search = @Search, @PageSize = @PageSize, @Offset = @Offset, @SortBy = @SortBy, @SortOrder = @SortOrder, @IsExport = @IsExport, @TotalRecords = @TotalRecords OUTPUT", sqlParameters, cancellationToken);
 
+            totalRecords?.SetValue(parameterTotalRecords.Value);
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
@@ -307,8 +435,15 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<List<spGetRawDataResult>> spGetRawDataAsync(string startDate, string endDate, int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetRawDataResult>> spGetRawDataAsync(string startDate, string endDate, int? createdBy, string search, int? pageSize, int? offset, string sortBy, string sortOrder, bool? isExport, OutputParameter<int?> totalRecords, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
+            var parameterTotalRecords = new SqlParameter
+            {
+                ParameterName = "TotalRecords",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = totalRecords?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
@@ -338,10 +473,51 @@ namespace Gizmosbuy.DAL.Data
                     Value = createdBy ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 1000,
+                    Value = search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = pageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Offset",
+                    Value = offset ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortBy",
+                    Size = 100,
+                    Value = sortBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortOrder",
+                    Size = 20,
+                    Value = sortOrder ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsExport",
+                    Value = isExport ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                parameterTotalRecords,
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetRawDataResult>("EXEC @returnValue = [dbo].[spGetRawData] @StartDate = @StartDate, @EndDate = @EndDate, @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetRawDataResult>("EXEC @returnValue = [dbo].[spGetRawData] @StartDate = @StartDate, @EndDate = @EndDate, @CreatedBy = @CreatedBy, @Search = @Search, @PageSize = @PageSize, @Offset = @Offset, @SortBy = @SortBy, @SortOrder = @SortOrder, @IsExport = @IsExport, @TotalRecords = @TotalRecords OUTPUT", sqlParameters, cancellationToken);
 
+            totalRecords?.SetValue(parameterTotalRecords.Value);
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
@@ -373,8 +549,15 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<List<spGetSalesListResult>> spGetSalesListAsync(int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetSalesListResult>> spGetSalesListAsync(int? createdBy, string search, int? pageSize, int? offset, string sortBy, string sortOrder, bool? isExport, OutputParameter<int?> totalRecords, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
+            var parameterTotalRecords = new SqlParameter
+            {
+                ParameterName = "TotalRecords",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = totalRecords?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
@@ -390,10 +573,51 @@ namespace Gizmosbuy.DAL.Data
                     Value = createdBy ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 1000,
+                    Value = search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = pageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Offset",
+                    Value = offset ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortBy",
+                    Size = 100,
+                    Value = sortBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortOrder",
+                    Size = 20,
+                    Value = sortOrder ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsExport",
+                    Value = isExport ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                parameterTotalRecords,
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetSalesListResult>("EXEC @returnValue = [dbo].[spGetSalesList] @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetSalesListResult>("EXEC @returnValue = [dbo].[spGetSalesList] @CreatedBy = @CreatedBy, @Search = @Search, @PageSize = @PageSize, @Offset = @Offset, @SortBy = @SortBy, @SortOrder = @SortOrder, @IsExport = @IsExport, @TotalRecords = @TotalRecords OUTPUT", sqlParameters, cancellationToken);
 
+            totalRecords?.SetValue(parameterTotalRecords.Value);
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
@@ -576,8 +800,15 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<List<spGetStoreTransferListResult>> spGetStoreTransferListAsync(int? createdBy, int? toLocationID, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetStoreTransferListResult>> spGetStoreTransferListAsync(int? createdBy, int? toLocationID, string search, int? pageSize, int? offset, string sortBy, string sortOrder, bool? isExport, OutputParameter<int?> totalRecords, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
+            var parameterTotalRecords = new SqlParameter
+            {
+                ParameterName = "TotalRecords",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = totalRecords?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
@@ -599,17 +830,65 @@ namespace Gizmosbuy.DAL.Data
                     Value = toLocationID ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 1000,
+                    Value = search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = pageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Offset",
+                    Value = offset ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortBy",
+                    Size = 100,
+                    Value = sortBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortOrder",
+                    Size = 20,
+                    Value = sortOrder ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsExport",
+                    Value = isExport ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                parameterTotalRecords,
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetStoreTransferListResult>("EXEC @returnValue = [dbo].[spGetStoreTransferList] @CreatedBy = @CreatedBy, @ToLocationID = @ToLocationID", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetStoreTransferListResult>("EXEC @returnValue = [dbo].[spGetStoreTransferList] @CreatedBy = @CreatedBy, @ToLocationID = @ToLocationID, @Search = @Search, @PageSize = @PageSize, @Offset = @Offset, @SortBy = @SortBy, @SortOrder = @SortOrder, @IsExport = @IsExport, @TotalRecords = @TotalRecords OUTPUT", sqlParameters, cancellationToken);
 
+            totalRecords?.SetValue(parameterTotalRecords.Value);
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<spGetStoreTransferNotificationListResult>> spGetStoreTransferNotificationListAsync(int? locationId, int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetStoreTransferNotificationListResult>> spGetStoreTransferNotificationListAsync(int? locationId, int? createdBy, string search, int? pageSize, int? offset, string sortBy, string sortOrder, bool? isExport, OutputParameter<int?> totalRecords, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
+            var parameterTotalRecords = new SqlParameter
+            {
+                ParameterName = "TotalRecords",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = totalRecords?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
@@ -631,17 +910,65 @@ namespace Gizmosbuy.DAL.Data
                     Value = createdBy ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 1000,
+                    Value = search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = pageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Offset",
+                    Value = offset ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortBy",
+                    Size = 100,
+                    Value = sortBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortOrder",
+                    Size = 20,
+                    Value = sortOrder ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsExport",
+                    Value = isExport ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                parameterTotalRecords,
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetStoreTransferNotificationListResult>("EXEC @returnValue = [dbo].[spGetStoreTransferNotificationList] @LocationId = @LocationId, @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetStoreTransferNotificationListResult>("EXEC @returnValue = [dbo].[spGetStoreTransferNotificationList] @LocationId = @LocationId, @CreatedBy = @CreatedBy, @Search = @Search, @PageSize = @PageSize, @Offset = @Offset, @SortBy = @SortBy, @SortOrder = @SortOrder, @IsExport = @IsExport, @TotalRecords = @TotalRecords OUTPUT", sqlParameters, cancellationToken);
 
+            totalRecords?.SetValue(parameterTotalRecords.Value);
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<spGetStoreTransferPaymentSummaryResult>> spGetStoreTransferPaymentSummaryAsync(int? locationId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetStoreTransferPaymentSummaryResult>> spGetStoreTransferPaymentSummaryAsync(int? locationId, string search, int? pageSize, int? offset, string sortBy, string sortOrder, bool? isExport, OutputParameter<int?> totalRecords, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
+            var parameterTotalRecords = new SqlParameter
+            {
+                ParameterName = "TotalRecords",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = totalRecords?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
@@ -657,17 +984,65 @@ namespace Gizmosbuy.DAL.Data
                     Value = locationId ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 1000,
+                    Value = search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = pageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Offset",
+                    Value = offset ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortBy",
+                    Size = 100,
+                    Value = sortBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortOrder",
+                    Size = 20,
+                    Value = sortOrder ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsExport",
+                    Value = isExport ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                parameterTotalRecords,
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetStoreTransferPaymentSummaryResult>("EXEC @returnValue = [dbo].[spGetStoreTransferPaymentSummary] @LocationId = @LocationId", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetStoreTransferPaymentSummaryResult>("EXEC @returnValue = [dbo].[spGetStoreTransferPaymentSummary] @LocationId = @LocationId, @Search = @Search, @PageSize = @PageSize, @Offset = @Offset, @SortBy = @SortBy, @SortOrder = @SortOrder, @IsExport = @IsExport, @TotalRecords = @TotalRecords OUTPUT", sqlParameters, cancellationToken);
 
+            totalRecords?.SetValue(parameterTotalRecords.Value);
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<spGetStoreTransferRawDataResult>> spGetStoreTransferRawDataAsync(int? locationId, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetStoreTransferRawDataResult>> spGetStoreTransferRawDataAsync(int? locationId, string search, int? pageSize, int? offset, string sortBy, string sortOrder, bool? isExport, OutputParameter<int?> totalRecords, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
+            var parameterTotalRecords = new SqlParameter
+            {
+                ParameterName = "TotalRecords",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = totalRecords?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
@@ -683,10 +1058,51 @@ namespace Gizmosbuy.DAL.Data
                     Value = locationId ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 1000,
+                    Value = search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = pageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Offset",
+                    Value = offset ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortBy",
+                    Size = 100,
+                    Value = sortBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortOrder",
+                    Size = 20,
+                    Value = sortOrder ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsExport",
+                    Value = isExport ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                parameterTotalRecords,
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetStoreTransferRawDataResult>("EXEC @returnValue = [dbo].[spGetStoreTransferRawData] @LocationId = @LocationId", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetStoreTransferRawDataResult>("EXEC @returnValue = [dbo].[spGetStoreTransferRawData] @LocationId = @LocationId, @Search = @Search, @PageSize = @PageSize, @Offset = @Offset, @SortBy = @SortBy, @SortOrder = @SortOrder, @IsExport = @IsExport, @TotalRecords = @TotalRecords OUTPUT", sqlParameters, cancellationToken);
 
+            totalRecords?.SetValue(parameterTotalRecords.Value);
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
@@ -796,8 +1212,15 @@ namespace Gizmosbuy.DAL.Data
             return _;
         }
 
-        public virtual async Task<List<spGetTransferPaymentListResult>> spGetTransferPaymentListAsync(int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetTransferPaymentListResult>> spGetTransferPaymentListAsync(int? createdBy, string search, int? pageSize, int? offset, string sortBy, string sortOrder, bool? isExport, OutputParameter<int?> totalRecords, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
+            var parameterTotalRecords = new SqlParameter
+            {
+                ParameterName = "TotalRecords",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = totalRecords?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
@@ -813,17 +1236,65 @@ namespace Gizmosbuy.DAL.Data
                     Value = createdBy ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 1000,
+                    Value = search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = pageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Offset",
+                    Value = offset ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortBy",
+                    Size = 100,
+                    Value = sortBy ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SortOrder",
+                    Size = 20,
+                    Value = sortOrder ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsExport",
+                    Value = isExport ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                parameterTotalRecords,
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetTransferPaymentListResult>("EXEC @returnValue = [dbo].[spGetTransferPaymentList] @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetTransferPaymentListResult>("EXEC @returnValue = [dbo].[spGetTransferPaymentList] @CreatedBy = @CreatedBy, @Search = @Search, @PageSize = @PageSize, @Offset = @Offset, @SortBy = @SortBy, @SortOrder = @SortOrder, @IsExport = @IsExport, @TotalRecords = @TotalRecords OUTPUT", sqlParameters, cancellationToken);
 
+            totalRecords?.SetValue(parameterTotalRecords.Value);
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<spGetTransferPaymentNotificationsListResult>> spGetTransferPaymentNotificationsListAsync(int? createdBy, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
+        public virtual async Task<List<spGetTransferPaymentNotificationsListResult>> spGetTransferPaymentNotificationsListAsync(int? createdBy, string search, int? pageSize, int? offset, bool? isExport, OutputParameter<int?> totalRecords, OutputParameter<int> returnValue = null, CancellationToken cancellationToken = default)
         {
+            var parameterTotalRecords = new SqlParameter
+            {
+                ParameterName = "TotalRecords",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = totalRecords?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
             var parameterreturnValue = new SqlParameter
             {
                 ParameterName = "returnValue",
@@ -839,10 +1310,37 @@ namespace Gizmosbuy.DAL.Data
                     Value = createdBy ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Int,
                 },
+                new SqlParameter
+                {
+                    ParameterName = "Search",
+                    Size = 1000,
+                    Value = search ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.VarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "PageSize",
+                    Value = pageSize ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Offset",
+                    Value = offset ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "IsExport",
+                    Value = isExport ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Bit,
+                },
+                parameterTotalRecords,
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryAsync<spGetTransferPaymentNotificationsListResult>("EXEC @returnValue = [dbo].[spGetTransferPaymentNotificationsList] @CreatedBy = @CreatedBy", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<spGetTransferPaymentNotificationsListResult>("EXEC @returnValue = [dbo].[spGetTransferPaymentNotificationsList] @CreatedBy = @CreatedBy, @Search = @Search, @PageSize = @PageSize, @Offset = @Offset, @IsExport = @IsExport, @TotalRecords = @TotalRecords OUTPUT", sqlParameters, cancellationToken);
 
+            totalRecords?.SetValue(parameterTotalRecords.Value);
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;

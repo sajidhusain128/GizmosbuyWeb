@@ -1,13 +1,10 @@
 ﻿using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
-using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
 using Gizmosbuy.DAL.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace Gizmosbuy.BAL.Repository
 {
@@ -21,110 +18,24 @@ namespace Gizmosbuy.BAL.Repository
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<object> GetExpenseList(IPager pager)
+        public async Task<object> GetExpenseList(IPager pager, int searchLocationId)
         {
             try
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var totalCount = 0;
-                int start = pager.PageStart;
-                int length = pager.PageLength;
-                string searchValue = pager.SearchValue.Trim() ?? "";
-                string columnName = pager.ColumnName ?? "";
-                string sortDirection = pager.SortDirection ?? "";
+                bool isExport = false;
 
-                var monthListDict = Utilities.GetMonthList();
+                var paramReturnTotalCount = new OutputParameter<int?>();
 
-                IEnumerable<ExpenseModel> mainData = null;
+                var expenseList = await _applicationDbContext.Procedures.spGetExpenseListAsync(sessionUserId, searchLocationId, pager.SearchValue, pager.PageLength, pager.Offset, pager.ColumnName, pager.SortDirection, isExport, paramReturnTotalCount);
 
-                if (!string.IsNullOrEmpty(searchValue))
-                {
-                    mainData = await _applicationDbContext.Expenses
-                                        .Join(_applicationDbContext.ExpenseTypeMasters, E => E.ExpenseTypeId, ET => ET.ExpenseTypeId, (E, ET) => new { E, ET })
-                                        .Join(_applicationDbContext.PaymentModeMasters, E2 => E2.E.PaymentModeId, PM => PM.PaymentModeId, (E2, PM) => new { E2, PM })
-                                        .Select(S => new ExpenseModel
-                                        {
-                                            ExpenseId = S.E2.E.ExpenseId,
-                                            ExpenseDate = S.E2.E.ExpenseDate.GetValueOrDefault(),
-                                            Amount = S.E2.E.Amount.GetValueOrDefault(),
-                                            ExpenseTypeName = S.E2.ET.ExpenseTypeName,
-                                            Remark = S.E2.E.Remark,
-                                            PaymentModeName = S.PM.PaymentModeName,
-                                            ExpenseMonth = S.E2.E.ExpenseMonth.GetValueOrDefault(),
-                                            ExpenseMonthName = "",// monthListDict.FirstOrDefault(f => f.Value == S.E2.E.ExpenseMonth.GetValueOrDefault()).Key,
-                                            ExpenseYear = S.E2.E.ExpenseYear.GetValueOrDefault(),
-                                        })
-                                        .ToListAsync();
-
-                    mainData = mainData.Join(monthListDict, M => M.ExpenseMonth, ML => ML.Value, (M, ML) => new { M, ML })
-                                        .Select(S => new ExpenseModel
-                                        {
-                                            ExpenseId = S.M.ExpenseId,
-                                            ExpenseDate = S.M.ExpenseDate,
-                                            Amount = S.M.Amount,
-                                            ExpenseTypeName = S.M.ExpenseTypeName,
-                                            Remark = S.M.Remark,
-                                            PaymentModeName = S.M.PaymentModeName,
-                                            ExpenseMonth = S.M.ExpenseMonth,
-                                            ExpenseMonthName = S.ML.Key,
-                                            ExpenseYear = S.M.ExpenseYear,
-                                        }).Where(Utilities.GetSearchValue<ExpenseModel>(searchValue, Constant.GlobalDateFormat))
-                                        .Skip(start)
-                                        .Take(length);
-
-                    totalCount = mainData.Count();
-                }
-                else
-                {
-                    mainData = await _applicationDbContext.Expenses
-                                        .Join(_applicationDbContext.ExpenseTypeMasters, E => E.ExpenseTypeId, ET => ET.ExpenseTypeId, (E, ET) => new { E, ET })
-                                        .Join(_applicationDbContext.PaymentModeMasters, E2 => E2.E.PaymentModeId, PM => PM.PaymentModeId, (E2, PM) => new { E2, PM })
-                                        .Skip(start)
-                                        .Take(length)
-                                        .Select(S => new ExpenseModel
-                                        {
-                                            ExpenseId = S.E2.E.ExpenseId,
-                                            ExpenseDate = S.E2.E.ExpenseDate.GetValueOrDefault(),
-                                            Amount = S.E2.E.Amount.GetValueOrDefault(),
-                                            ExpenseTypeName = S.E2.ET.ExpenseTypeName,
-                                            Remark = S.E2.E.Remark,
-                                            PaymentModeName = S.PM.PaymentModeName,
-                                            ExpenseMonth = S.E2.E.ExpenseMonth.GetValueOrDefault(),
-                                            ExpenseMonthName = "",// monthListDict.FirstOrDefault(f => f.Value == S.E2.E.ExpenseMonth.GetValueOrDefault()).Key,
-                                            ExpenseYear = S.E2.E.ExpenseYear.GetValueOrDefault(),
-                                        })
-                                        .ToListAsync();
-
-                    mainData = mainData.Join(monthListDict, M => M.ExpenseMonth, ML => ML.Value, (M, ML) => new { M, ML })
-                                        .Select(S => new ExpenseModel
-                                        {
-                                            ExpenseId = S.M.ExpenseId,
-                                            ExpenseDate = S.M.ExpenseDate,
-                                            Amount = S.M.Amount,
-                                            ExpenseTypeName = S.M.ExpenseTypeName,
-                                            Remark = S.M.Remark,
-                                            PaymentModeName = S.M.PaymentModeName,
-                                            ExpenseMonth = S.M.ExpenseMonth,
-                                            ExpenseMonthName = S.ML.Key,
-                                            ExpenseYear = S.M.ExpenseYear,
-                                        });
-
-                    totalCount = mainData.Count();
-                }
-
-                // Apply sorting
-                if (!string.IsNullOrEmpty(columnName))
-                {
-                    mainData = mainData.OrderByDynamic(columnName, sortDirection).ToList();
-                }
-
+                var totalCount = paramReturnTotalCount.Value.GetValueOrDefault();
                 var filterCount = totalCount;
-
 
                 var data = new
                 {
-                    data = mainData,
+                    data = expenseList,
                     draw = pager.Draw,
                     recordsTotal = totalCount,
                     recordsFiltered = filterCount
@@ -144,6 +55,8 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int response = 0;
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+                int sessionLocationId = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
+                string sessionUserRole = Utilities.GetSessionValue("Role", _httpContextAccessor.HttpContext) ?? "";
 
                 DateTime expenseDateTime = expenseModel.ExpenseDate.Date + DateTime.Now.TimeOfDay;
 
@@ -156,6 +69,7 @@ namespace Gizmosbuy.BAL.Repository
                     PaymentModeId = expenseModel.PaymentModeId,
                     ExpenseMonth = expenseModel.ExpenseMonth,
                     ExpenseYear = expenseModel.ExpenseYear,
+                    LocationId = (sessionUserRole == "SuperAdmin") ? expenseModel.LocationId : sessionLocationId,
                     CreatedBy = sessionUserId,
                     CreatedDate = DateTime.Now
                 };
@@ -185,6 +99,7 @@ namespace Gizmosbuy.BAL.Repository
                     PaymentModeId = expense.PaymentModeId.Value,
                     ExpenseMonth = expense.ExpenseMonth.Value,
                     ExpenseYear = expense.ExpenseYear.Value,
+                    LocationId = expense.LocationId.Value
                 };
 
                 return expenseModel;
@@ -201,6 +116,8 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int response = 0;
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
+                int sessionLocationId = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
+                string sessionUserRole = Utilities.GetSessionValue("Role", _httpContextAccessor.HttpContext) ?? "";
 
                 DateTime expenseDateTime = expenseModel.ExpenseDate.Date + DateTime.Now.TimeOfDay;
 
@@ -215,6 +132,7 @@ namespace Gizmosbuy.BAL.Repository
                     expense.PaymentModeId = expenseModel.PaymentModeId;
                     expense.ExpenseMonth = expenseModel.ExpenseMonth;
                     expense.ExpenseYear = expenseModel.ExpenseYear;
+                    expense.LocationId = (sessionUserRole == "SuperAdmin") ? expenseModel.LocationId : sessionLocationId;
                     expense.ModifiedBy = sessionUserId;
                     expense.ModifiedDate = DateTime.Now;
                 }
@@ -281,87 +199,19 @@ namespace Gizmosbuy.BAL.Repository
             }
         }
 
-        public async Task<IList<ExpenseModel>> GetExpenseExport(IPager pager)
+        public async Task<IList<spGetExpenseListResult>> GetExpenseExport(IPager pager, int searchLocationId)
         {
             try
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                string searchValue = pager.SearchValue.Trim() ?? "";
+                bool isExport = true;
 
-                var monthListDict = Utilities.GetMonthList();
+                var paramReturnTotalCount = new OutputParameter<int?>();
 
-                IEnumerable<ExpenseModel> mainData = null;
+                var expenseList = await _applicationDbContext.Procedures.spGetExpenseListAsync(sessionUserId, searchLocationId, pager.SearchValue, null, null, pager.ColumnName, pager.SortDirection, isExport, paramReturnTotalCount);
 
-                if (!string.IsNullOrEmpty(searchValue))
-                {
-                    mainData = await _applicationDbContext.Expenses
-                                        .Join(_applicationDbContext.ExpenseTypeMasters, E => E.ExpenseTypeId, ET => ET.ExpenseTypeId, (E, ET) => new { E, ET })
-                                        .Join(_applicationDbContext.PaymentModeMasters, E2 => E2.E.PaymentModeId, PM => PM.PaymentModeId, (E2, PM) => new { E2, PM })
-                                        .Select(S => new ExpenseModel
-                                        {
-                                            ExpenseId = S.E2.E.ExpenseId,
-                                            ExpenseDate = S.E2.E.ExpenseDate.GetValueOrDefault(),
-                                            Amount = S.E2.E.Amount.GetValueOrDefault(),
-                                            ExpenseTypeName = S.E2.ET.ExpenseTypeName,
-                                            Remark = S.E2.E.Remark,
-                                            PaymentModeName = S.PM.PaymentModeName,
-                                            ExpenseMonth = S.E2.E.ExpenseMonth.GetValueOrDefault(),
-                                            ExpenseMonthName = "",// monthListDict.FirstOrDefault(f => f.Value == S.E2.E.ExpenseMonth.GetValueOrDefault()).Key,
-                                            ExpenseYear = S.E2.E.ExpenseYear.GetValueOrDefault(),
-                                        })
-                                        .ToListAsync();
-
-                    mainData = mainData.Join(monthListDict, M => M.ExpenseMonth, ML => ML.Value, (M, ML) => new { M, ML })
-                                        .Select(S => new ExpenseModel
-                                        {
-                                            ExpenseId = S.M.ExpenseId,
-                                            ExpenseDate = S.M.ExpenseDate,
-                                            Amount = S.M.Amount,
-                                            ExpenseTypeName = S.M.ExpenseTypeName,
-                                            Remark = S.M.Remark,
-                                            PaymentModeName = S.M.PaymentModeName,
-                                            ExpenseMonth = S.M.ExpenseMonth,
-                                            ExpenseMonthName = S.ML.Key,
-                                            ExpenseYear = S.M.ExpenseYear,
-                                        }).Where(Utilities.GetSearchValue<ExpenseModel>(searchValue, Constant.GlobalDateFormat));
-                }
-                else
-                {
-                    mainData = await _applicationDbContext.Expenses
-                                        .Join(_applicationDbContext.ExpenseTypeMasters, E => E.ExpenseTypeId, ET => ET.ExpenseTypeId, (E, ET) => new { E, ET })
-                                        .Join(_applicationDbContext.PaymentModeMasters, E2 => E2.E.PaymentModeId, PM => PM.PaymentModeId, (E2, PM) => new { E2, PM })
-                                        .Select(S => new ExpenseModel
-                                        {
-                                            ExpenseId = S.E2.E.ExpenseId,
-                                            ExpenseDate = S.E2.E.ExpenseDate.GetValueOrDefault(),
-                                            Amount = S.E2.E.Amount.GetValueOrDefault(),
-                                            ExpenseTypeName = S.E2.ET.ExpenseTypeName,
-                                            Remark = S.E2.E.Remark,
-                                            PaymentModeName = S.PM.PaymentModeName,
-                                            ExpenseMonth = S.E2.E.ExpenseMonth.GetValueOrDefault(),
-                                            ExpenseMonthName = "",// monthListDict.FirstOrDefault(f => f.Value == S.E2.E.ExpenseMonth.GetValueOrDefault()).Key,
-                                            ExpenseYear = S.E2.E.ExpenseYear.GetValueOrDefault(),
-                                        })
-                                        .ToListAsync();
-
-                    mainData = mainData.Join(monthListDict, M => M.ExpenseMonth, ML => ML.Value, (M, ML) => new { M, ML })
-                                        .Select(S => new ExpenseModel
-                                        {
-                                            ExpenseId = S.M.ExpenseId,
-                                            ExpenseDate = S.M.ExpenseDate,
-                                            Amount = S.M.Amount,
-                                            ExpenseTypeName = S.M.ExpenseTypeName,
-                                            Remark = S.M.Remark,
-                                            PaymentModeName = S.M.PaymentModeName,
-                                            ExpenseMonth = S.M.ExpenseMonth,
-                                            ExpenseMonthName = S.ML.Key,
-                                            ExpenseYear = S.M.ExpenseYear,
-                                        });
-
-                }
-
-                return mainData.ToList();
+                return expenseList;
             }
             catch (Exception)
             {

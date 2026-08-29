@@ -1,13 +1,11 @@
-﻿using System.Data;
-using Gizmosbuy.BAL.Commons;
+﻿using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
-using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
 using Gizmosbuy.DAL.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Gizmosbuy.BAL.Repository
 {
@@ -69,42 +67,18 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var purcahseList = await _applicationDbContext.Procedures.spGetPurchaseListAsync(sessionUserId);
+                bool isExport = false;
 
-                int start = pager.PageStart;
-                int length = pager.PageLength;
-                string searchValue = pager.SearchValue.Trim() ?? "";
-                string columnName = pager.ColumnName ?? "";
-                string sortDirection = pager.SortDirection ?? "";
+                var paramReturnTotalCount = new OutputParameter<int?>();
 
-                IList<spGetPurchaseListResult> mainData = null;
+                var purcahseList = await _applicationDbContext.Procedures.spGetPurchaseListAsync(sessionUserId, pager.SearchValue, pager.PageLength, pager.Offset, pager.ColumnName, pager.SortDirection, isExport, paramReturnTotalCount);
 
-                if (!string.IsNullOrEmpty(searchValue))
-                {
-                    mainData = purcahseList.Where(Utilities.GetSearchValue<spGetPurchaseListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
-                }
-                else
-                {
-                    mainData = purcahseList;
-                }
-
-                // Apply sorting
-                if (!string.IsNullOrEmpty(columnName))
-                {
-                    mainData = mainData.OrderByDynamic(columnName, sortDirection).ToList();
-                }
-
-                var totalCount = mainData.Count;
-                var filterCount = mainData.Count;
-
-                mainData = mainData
-                    .Skip(start)
-                    .Take(length)
-                    .ToList();
+                var totalCount = paramReturnTotalCount.Value.GetValueOrDefault();
+                var filterCount = totalCount;
 
                 var data = new
                 {
-                    data = mainData,
+                    data = purcahseList,
                     draw = pager.Draw,
                     recordsTotal = totalCount,
                     recordsFiltered = filterCount
@@ -281,27 +255,16 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var purcahseList = await _applicationDbContext.Procedures.spGetPurchaseListAsync(sessionUserId);
+                bool isExport = true;
 
-                string searchValue = pager.SearchValue.Trim() ?? "";
+                var purcahseList = await _applicationDbContext.Procedures.spGetPurchaseListAsync(sessionUserId, pager.SearchValue, null, null, pager.ColumnName, pager.SortDirection, isExport, null);
 
-                IList<spGetPurchaseListResult> mainData = null;
-
-                if (!string.IsNullOrEmpty(searchValue))
-                {
-                    mainData = purcahseList.Where(Utilities.GetSearchValue<spGetPurchaseListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
-                }
-                else
-                {
-                    mainData = purcahseList;
-                }
-
-                return mainData;
+                return purcahseList;
             }
             catch (Exception)
             {
                 throw;
-            }   
+            }
         }
     }
 }

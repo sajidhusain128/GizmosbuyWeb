@@ -52,7 +52,8 @@ namespace Gizmosbuy.Web.Controllers
             {
                 pager.PageStart = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
                 pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
-                pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+                pager.Offset = (pager.PageStart / pager.PageLength) * pager.PageLength;
+                pager.SearchValue = Request.Form["search[value]"].FirstOrDefault().Trim() ?? "";
                 pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
                 pager.SortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
                 pager.SortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
@@ -499,13 +500,15 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpGet]
         [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
-        public async Task<IActionResult> SalesExportExcel(string Search)
+        public async Task<IActionResult> SalesExportExcel(string Search, string SortBy = null, string SortOrder = null)
         {
             try
             {
                 IPager pager = new Pager();
 
-                pager.SearchValue = Search ?? "";
+                pager.SearchValue = Search.Trim() ?? "";
+                pager.ColumnName = !string.IsNullOrWhiteSpace(SortBy) ? Utility.CapitalizeFirstChar(SortBy) : "";
+                pager.SortDirection = !string.IsNullOrWhiteSpace(SortOrder) ? SortOrder : "";
 
                 var result = await _salesBL.GetSalesExport(pager);
 

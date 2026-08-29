@@ -174,12 +174,72 @@ $(document).ready(function () {
     });
 
     $("#btnExportReturnStore").click(function () {
-        location.href = "/Store/StoreTransferExportExcel?Search=" + tableStoreTransfer.search() + "&searchToLocationId=" + $("#ddlSellingStoreST").select2('val');
-    })
+        try {
+            // 1. Get the current order details [columnIndex, direction]
+            var currentOrder = tableStoreTransfer.order();
+            if (tableStoreTransfer.length > 0) {
+                var orderColumnIndex = currentOrder[0][0]; // Index of sorted column
+                var sortDirection = currentOrder[0][1];    // "asc" or "desc"
+                // 2. Get the column name defined in your setup
+                var columnName = tableStoreTransfer.columns(orderColumnIndex).dataSrc()[0];
+            }
+
+            var exportUrl = "/Store/StoreTransferExportExcel?Search=" + tableStoreTransfer.search() + "&searchToLocationId=" + $("#ddlSellingStoreST").select2('val') + (columnName != null ? "&SortBy=" + encodeURIComponent(columnName) : "") + (sortDirection != null ? "&SortOrder=" + encodeURIComponent(sortDirection) : "");
+
+            location.href = exportUrl;
+        } catch (e) {
+            console.error(e);
+        }
+    });
 
     $("#btnExportTransferPayment").click(function () {
-        location.href = "/Store/TransferPaymentExportExcel?Search=" + tableTransferPayment.search();
-    })
+        try {
+            var currentOrder = tableTransferPayment.order();
+            var orderColumnIndex = currentOrder[0][0];
+            var sortDirection = currentOrder[0][1];
+            var columnName = tableTransferPayment.columns(orderColumnIndex).dataSrc()[0];
+
+            location.href = "/Store/TransferPaymentExportExcel?Search=" + tableTransferPayment.search() + (columnName != null ? "&SortBy=" + encodeURIComponent(columnName) : "") + (sortDirection != null ? "&SortOrder=" + encodeURIComponent(sortDirection) : "");
+        } catch (e) {
+            console.error(e);
+        }
+    });
+
+    $("#btnExportStoreTransferRawData").click(function () {
+        try {
+            var currentOrder = tblSTRawData.order();
+
+            if (currentOrder.length > 0) {
+                var orderColumnIndex = currentOrder[0][0];
+                var sortDirection = currentOrder[0][1];
+                var columnName = tblSTRawData.columns(orderColumnIndex).dataSrc()[0];
+            }
+
+            var exportUrl = "/Inventory/StoreTransferRawDataExportExcel?searchLocationId=" + $("#ddlLoactionfilter").select2('val') + "&Search=" + tblSTRawData.search() + (columnName != null ? "&SortBy=" + encodeURIComponent(columnName) : "") + (sortDirection != null ? "&SortOrder=" + encodeURIComponent(sortDirection) : "");
+
+            location.href = exportUrl;
+        } catch (e) {
+            console.error(e);
+        }
+    });
+
+    $("#btnExportStoreTransferPaymentSummary").click(function () {
+        try {
+            var currentOrder = tblSTPRawData.order();
+
+            if (currentOrder.length > 0) {
+                var orderColumnIndex = currentOrder[0][0];
+                var sortDirection = currentOrder[0][1];
+                var columnName = tblSTPRawData.columns(orderColumnIndex).dataSrc()[0];
+            }
+
+            var exportUrl = "/Inventory/StoreTransferPaymentSummaryExportExcel?searchLocationId=" + $("#ddlLoactionfilter").select2('val') + "&Search=" + tblSTPRawData.search() + (columnName != null ? "&SortBy=" + encodeURIComponent(columnName) : "") + (sortDirection != null ? "&SortOrder=" + encodeURIComponent(sortDirection) : "");
+
+            location.href = exportUrl;
+        } catch (e) {
+            console.error(e);
+        }
+    });
 });
 
 function resetTransferReturnForm() {
@@ -1360,6 +1420,7 @@ function LoadTableTransferPaymentNotification() {
             serverSide: true,
             pageLength: 10,
             paging: true,
+            ordering: false,
             order: [], // disables initial sort
             "ajax": {
                 "url": "/Store/GetTransferPaymentNotificationsList",
@@ -1375,7 +1436,7 @@ function LoadTableTransferPaymentNotification() {
                 },
                 {
                     "data": null, "title": "Particular", render: function (data, type, row) {
-                        return `<b>${row.fromLocation}</b> paid &#8377; <b>${row.amount}</b> by <b>${row.transferMode}</b> on <b>${moment(row.paymentDate).format('DD/MM/YYYY')}</b>`
+                        return `<b>${row.fromLocation}</b> paid &#8377; <b>${row.amount}</b> by <b>${row.transferMode}</b> on <b>${moment(row.paymentDate).format('DD/MM/YYYY')}</b> remark <b>${row.remark}</b>`
                     }
                 },
                 {
@@ -1523,8 +1584,7 @@ function callStoreTransferRawData(locationId) {
             $('#tblStoreTransferRawData').DataTable().destroy();
         }
 
-        //$('#tblRawData thead tr').css("height","40px")
-        tblRawData = $('#tblStoreTransferRawData').DataTable({
+        tblSTRawData = $('#tblStoreTransferRawData').DataTable({
             scrollX: true,
             scrollY: 406,
             scrollCollapse: true,
@@ -1595,6 +1655,13 @@ function callStoreTransferRawData(locationId) {
             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                 $("td:first", nRow).html(iDisplayIndex + 1);
                 return nRow;
+            },
+            drawCallback: function (settings) {
+                if (settings.aoData.length == 0) {
+                    $("#btnExportStoreTransferRawData").addClass("disabled");
+                } else {
+                    $("#btnExportStoreTransferRawData").removeClass("disabled");
+                }
             }
         });
 
@@ -1611,7 +1678,7 @@ function callStoreTransferPaymentData(locationId) {
         }
 
         //$('#tblRawData thead tr').css("height","40px")
-        tblRawData = $('#tblStoreTransferPaymentSummary').DataTable({
+        tblSTPRawData = $('#tblStoreTransferPaymentSummary').DataTable({
             scrollX: true,
             scrollY: 406,
             scrollCollapse: true,
@@ -1659,6 +1726,13 @@ function callStoreTransferPaymentData(locationId) {
             fnRowCallback: function (nRow, aData, iDisplayIndex, iDisplayIndexFull) {
                 $("td:first", nRow).html(iDisplayIndex + 1);
                 return nRow;
+            },
+            drawCallback: function (settings) {
+                if (settings.aoData.length == 0) {
+                    $("#btnExportStoreTransferPaymentSummary").addClass("disabled");
+                } else {
+                    $("#btnExportStoreTransferPaymentSummary").removeClass("disabled");
+                }
             }
         });
 

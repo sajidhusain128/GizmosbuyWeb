@@ -1,5 +1,4 @@
 ﻿@using Gizmosbuy.Core.Interfaces
-@using Gizmosbuy.Core.Models
 @model Gizmosbuy.Core.Models.StoreTransferModel
 @{
     TempData["Title"] = "Create Store Transfer";
@@ -37,20 +36,20 @@
                         <div class="form-group p-2 mb-0">
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                             &nbsp;
                                         </div>
                                         <label for="txtSrNo" class="col-form-label">Serial No:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                             Type <strong>Serial No.</strong> in below input to fetch purchase record.
                                         </div>
                                         <input type="text" id="txtSrNo" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off">
 
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
@@ -59,77 +58,77 @@
 
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="ddlCategory" class="col-form-label">Category:</label>
+                                    <div class="col-md-2 col-12">
+                                        <label for="txtCategory" class="col-form-label">Category:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         @* @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @disabled = "true" }) *@
-                                        <input type="text" id="txtCategory" class="form-control" placeholder="" autocomplete="off" readonly>
+                                        <input type="text" id="txtCategory" class="form-control" placeholder="" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
-                                        <label for="ddlBrand" class="col-form-label">Brand:</label>
+                                    <div class="col-md-2 col-12">
+                                        <label for="txtBrand" class="col-form-label">Brand:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         @* @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @disabled = "true" }) *@
-                                        <input type="text" id="txtBrand" class="form-control" placeholder="" autocomplete="off" readonly>
+                                        <input type="text" id="txtBrand" class="form-control" placeholder="" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtModel" class="col-form-label">Model:</label>
                                     </div>
-                                    <div class="col-md-4">
-                                        <input type="text" id="txtModel" class="form-control" asp-for="Model" autocomplete="off" readonly>
+                                    <div class="col-md-4 col-12">
+                                        <input type="text" id="txtModel" class="form-control" asp-for="Model" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtSpecs" class="col-form-label">Specifications:</label>
                                     </div>
-                                    <div class="col-md-4">
-                                        <input type="text" id="txtSpecs" class="form-control" asp-for="Specifications" autocomplete="off" readonly>
+                                    <div class="col-md-4 col-12">
+                                        <input type="text" id="txtSpecs" class="form-control" asp-for="Specifications" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="Quantity" class="col-form-label">Quantity:</label>
                                     </div>
-                                    <div class="col-md-4">
-                                        <input type="text" id="txtQuantity" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
+                                    <div class="col-md-4 col-12">
+                                        <input type="text" id="txtQuantity" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtTransferDate" class="col-form-label">Transfer Date:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <div class="input-group">
                                             <input type="text" id="txtTransferDate" class="form-control" asp-for="TransferDate" placeholder="DD/MM/YYYY" maxlength="10" onkeypress="numberOnly()" onKeyDown="dateAutoFormatter(event)" onpaste="return false;" autocomplete="off">
                                             <span class="input-group-text" id="basic-addon1">
@@ -137,17 +136,17 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtSellingPrice" class="col-form-label">Selling Price:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <div class="input-group">
                                             <input type="text" id="txtSellingPrice" class="form-control text-right" asp-for="SellingPrice" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
                                             <span class="input-group-text" id="txtSellingPrice-addon1">
@@ -157,56 +156,56 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtSellQuantity" class="col-form-label">Selling Quantity:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         <input type="text" id="txtSellQuantity" class="form-control" onkeypress="numberOnly(event)" autocomplete="off">
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="ddlSellingStore" class="col-form-label">Store Name:</label>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12">
                                         @* <input type="text" id="ddlSellingStore" class="form-control" asp-for="SellingStore" autocomplete="off"> *@
-                                        @Html.DropDownListFor(Model => Model.ToLocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlSellingStore", @class = "form-select", @style = "width:100% !important" })
+                                        @Html.DropDownListFor(Model => Model.ToLocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlSellingStore", @class = "form-select select2-dropdown", @style = "width:100% !important" })
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                         <label for="txtBillNo" class="col-form-label">Bill No:</label>
                                     </div>
-                                    <div class="col-md-4">
-                                        <input type="text" id="txtBillNo" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" readonly>
+                                    <div class="col-md-4 col-12">
+                                        <input type="text" id="txtBillNo" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" tabindex="-1" readonly>
                                     </div>
-                                    <div class="col-auto">
+                                    <div class="col-auto col-12">
                                         <span class="field-validation-error"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 col-12">
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-12 text-right">
                                         <button type="button" class="btn btn-custom" id="btnAddTempTransferCreate" title="Add Store Transfer Entry to Above List"><i class="fas fa-plus"></i> Add Entry</button>
                                     </div>
                                 </div>
@@ -232,7 +231,7 @@
     <script src="@Url.Content("~/js/store.js")" asp-append-version="true"></script>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
 
             $('#txtTransferDate').datepicker({
                 format: 'dd/mm/yyyy',
@@ -245,47 +244,18 @@
             });
 
             var todayDate = new Date();
-            $('#txtTransferDate').datepicker("setDate",localDateFormat(todayDate, 'dd/mm/yyyy'));
+            $('#txtTransferDate').datepicker("setDate", localDateFormat(todayDate, 'dd/mm/yyyy'));
 
-            $('#ddlCategory,#ddlBrand').select2();
             $('#ddlSellingStore,#ddlSellingStoreTemp').select2();
 
             $("#txtSrNo").devbridgeAutocomplete({
                 serviceUrl: "/Purchase/GetAutoCompleteSerialNo",
                 type: "POST",
-                paramName:"searchValue",
-                transformResult: function(result, query){
+                paramName: "searchValue",
+                transformResult: function(result, query) {
 
-                    const suggestions = $.map(JSON.parse(result), function (value) {
-                        if(value.valueId > 0){
-                            return {
-                                id: value.valueId.toString(),
-                                value: value.description.toString()
-                            };
-                        }
-                    });
-
-                    return  {
-                        query: query,
-                        suggestions: suggestions
-                    };
-                },
-                minChars: 1,
-                triggerSelectOnValidInput:false,
-                onSelect: function (suggestion) {
-                    $('#hdnPurchaseId').val(suggestion.id);
-                    getPurchaseRecordInSales(suggestion.id);
-                }
-            });
-
-            $("#txtSrNoTemp").devbridgeAutocomplete({
-                serviceUrl: "/Purchase/GetAutoCompleteSerialNo",
-                type: "POST",
-                paramName:"searchValue",
-                transformResult: function(result, query){
-
-                    const suggestions = $.map(JSON.parse(result), function (value) {
-                        if(value.valueId > 0){
+                    const suggestions = $.map(JSON.parse(result), function(value) {
+                        if (value.valueId > 0) {
                             return {
                                 id: value.valueId.toString(),
                                 value: value.description.toString()
@@ -299,8 +269,36 @@
                     };
                 },
                 minChars: 1,
-                triggerSelectOnValidInput:false,
-                onSelect: function (suggestion) {
+                triggerSelectOnValidInput: false,
+                onSelect: function(suggestion) {
+                    $('#hdnPurchaseId').val(suggestion.id);
+                    getPurchaseRecordInSales(suggestion.id);
+                }
+            });
+
+            $("#txtSrNoTemp").devbridgeAutocomplete({
+                serviceUrl: "/Purchase/GetAutoCompleteSerialNo",
+                type: "POST",
+                paramName: "searchValue",
+                transformResult: function(result, query) {
+
+                    const suggestions = $.map(JSON.parse(result), function(value) {
+                        if (value.valueId > 0) {
+                            return {
+                                id: value.valueId.toString(),
+                                value: value.description.toString()
+                            };
+                        }
+                    });
+
+                    return {
+                        query: query,
+                        suggestions: suggestions
+                    };
+                },
+                minChars: 1,
+                triggerSelectOnValidInput: false,
+                onSelect: function(suggestion) {
                     $('#hdnTempPurchaseId').val(suggestion.id);
                     getPurchaseRecordInTempSales(suggestion.id);
                 }
@@ -317,63 +315,69 @@
                 scrollCollapse: true,
                 fixedColumns: true,
                 processing: true,
-                serverSide:true,
-                pageLength:10,
-                "paging":false,
-                "ajax":{
+                serverSide: true,
+                pageLength: 10,
+                "paging": false,
+                "ajax": {
                     "url": "/Store/GetTempStoreTransferList",
                     "type": "POST",
                     "datatype": "json",
-                    "data": { },
+                    "data": {},
                 },
-                "columns":[
-                    {"data": "tempStoreTransferID","title":"Sr.No."},
-                    {"data": "serialNo","title":"Serial No"},
-                    {"data": "categoryName","title":"Category"},
-                    {"data": "brandName","title":"Brand"},
-                    {"data": "model","title":"Model"},
-                    {"data": "specifications","title":"Specifications"},
-                    {"data": "sellingQuantity","title":"Selling Quantity"},
-                    {"data": "transferDate","title":"Selling Date",render:function (data, type, row){
-                        if(data === null) return "";
+                "columns": [
+                    { "data": "tempStoreTransferID", "title": "Sr.No." },
+                    { "data": "serialNo", "title": "Serial No" },
+                    { "data": "categoryName", "title": "Category" },
+                    { "data": "brandName", "title": "Brand" },
+                    { "data": "model", "title": "Model" },
+                    { "data": "specifications", "title": "Specifications" },
+                    { "data": "sellingQuantity", "title": "Selling Quantity" },
+                    {
+                        "data": "transferDate", "title": "Selling Date", render: function(data, type, row) {
+                            if (data === null) return "";
 
-                        return moment(data).format('DD/MM/YYYY');
-                    }},
-                    {"data": "sellingPrice","title":"Selling Price",render:function (data, type, row){
-                        if(data === null) return "";
+                            return moment(data).format('DD/MM/YYYY');
+                        }
+                    },
+                    {
+                        "data": "sellingPrice", "title": "Selling Price", render: function(data, type, row) {
+                            if (data === null) return "";
 
-                        return "&#8377;"+ data;
-                    }},
-                    {"data": "locationName","title":"Location"},
-                    {"data": "locationID","title":"LocationId", visible : false},
-                    {"data": "tempStoreTransferID","title":"Action",render:function (data, type, row){
-                        if(data === null) return "";
-                        var strData = '<a href="javascript:void(0)" onclick="editTempStoreTransfer(' + data + ')" class="custom-link-btn mr-3" title="Edit Temporory Store Transfer Entry"><i class="fas fa-edit fa-lg color-info"></i></a>'
-                        strData = strData + '<a href="javascript:void(0)" onclick="showDeleteTempStoreTransferModel(' + data + ')" class="custom-link-btn" title="Delete Temporory Store Transfer Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>'
-                        return strData;
-                    }},
+                            return "&#8377;" + data;
+                        }
+                    },
+                    { "data": "locationName", "title": "Location" },
+                    { "data": "locationID", "title": "LocationId", visible: false },
+                    {
+                        "data": "tempStoreTransferID", "title": "Action", render: function(data, type, row) {
+                            if (data === null) return "";
+                            var strData = '<a href="javascript:void(0)" onclick="editTempStoreTransfer(' + data + ')" class="custom-link-btn mr-3" title="Edit Temporory Store Transfer Entry"><i class="fas fa-edit fa-lg color-info"></i></a>'
+                            strData = strData + '<a href="javascript:void(0)" onclick="showDeleteTempStoreTransferModel(' + data + ')" class="custom-link-btn" title="Delete Temporory Store Transfer Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>'
+                            return strData;
+                        }
+                    },
                 ],
                 columnDefs: [
-                    { targets: 0,className: 'text-nowrap text-center'},
-                    { targets: 1,className: 'text-nowrap'},
-                    { targets: 2,className: 'text-nowrap'},
-                    { targets: 3,className: 'text-nowrap'},
-                    { targets: 4,className: 'text-nowrap'},
-                    { targets: 5,className: 'text-nowrap'},
-                    { targets: 6,className: 'text-nowrap text-right'},
-                    { targets: 7,className: 'text-nowrap'},
-                    { targets: 8,className: 'text-nowrap text-right'},
-                    { targets: 9,className: 'text-nowrap'},
-                    { targets: 10,className: 'text-nowrap text-center'},
+                    { targets: 0, className: 'text-nowrap text-center' },
+                    { targets: 1, className: 'text-nowrap' },
+                    { targets: 2, className: 'text-nowrap' },
+                    { targets: 3, className: 'text-nowrap' },
+                    { targets: 4, className: 'text-nowrap' },
+                    { targets: 5, className: 'text-nowrap' },
+                    { targets: 6, className: 'text-nowrap text-right' },
+                    { targets: 7, className: 'text-nowrap' },
+                    { targets: 8, className: 'text-nowrap text-right' },
+                    { targets: 9, className: 'text-nowrap' },
+                    { targets: 10, className: 'text-nowrap text-center' },
                 ],
-                drawCallback:function(settings){
-                    if (settings.aoData.length == 0)  {
+                drawCallback: function(settings) {
+                    if (settings.aoData.length == 0) {
                         $('#btnSalesSave').addClass("disabled");
                     } else {
                         $('#btnSalesSave').removeClass("disabled");
                     }
                 },
-                initComplete: function () {
+                initComplete: function() {
                     $('*[title]').tooltip();
                 }
             });
@@ -381,28 +385,28 @@
 
         });
 
-        function divRenderTempSales(){
+        function divRenderTempSales() {
 
             var form = $("#frmSales");
             var token = $('input[name="__RequestVerificationToken"]', form).val();
 
             $.ajax({
-                    type: "POST",
-                    url: '/Sales/GetTempSalesList',
-                    data: { __RequestVerificationToken: token },
-                    dataType: "json",
-                    async:true,
-                    success: function (response) {
+                type: "POST",
+                url: '/Sales/GetTempSalesList',
+                data: { __RequestVerificationToken: token },
+                dataType: "json",
+                async: true,
+                success: function(response) {
 
-                        if (response != "") {
-                            $('#divRenderTempSales').htmt(response);
-                        }
-
-                    },
-                    error: function (e) {
-                        ErrorToast("Something went wrong!");
+                    if (response != "") {
+                        $('#divRenderTempSales').htmt(response);
                     }
-                });
+
+                },
+                error: function(e) {
+                    ErrorToast("Something went wrong!");
+                }
+            });
         }
     </script>
 }

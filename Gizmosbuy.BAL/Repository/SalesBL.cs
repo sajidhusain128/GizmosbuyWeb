@@ -84,42 +84,18 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var salesList = await _applicationDbContext.Procedures.spGetSalesListAsync(sessionUserId);
+                bool isExport = false;
 
-                int start = pager.PageStart;
-                int length = pager.PageLength;
-                string searchValue = pager.SearchValue.Trim() ?? "";
-                string columnName = pager.ColumnName ?? "";
-                string sortDirection = pager.SortDirection ?? "";
+                var paramReturnTotalCount = new OutputParameter<int?>();
 
-                IList<spGetSalesListResult> mainData = null;
+                var salesList = await _applicationDbContext.Procedures.spGetSalesListAsync(sessionUserId, pager.SearchValue, pager.PageLength, pager.Offset, pager.ColumnName, pager.SortDirection, isExport, paramReturnTotalCount);
 
-                if (searchValue != "")
-                {
-                    mainData = salesList.Where(Utilities.GetSearchValue<spGetSalesListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
-                }
-                else
-                {
-                    mainData = salesList;
-                }
-
-                // Apply sorting
-                if (!string.IsNullOrEmpty(columnName))
-                {
-                    mainData = mainData.OrderByDynamic(columnName, sortDirection).ToList();
-                }
-
-                var totalCount = mainData.Count;
-                var filterCount = mainData.Count;
-
-                mainData = mainData
-                    .Skip(start)
-                    .Take(length)
-                    .ToList();
+                var totalCount = paramReturnTotalCount.Value.GetValueOrDefault();
+                var filterCount = totalCount;
 
                 var data = new
                 {
-                    data = mainData,
+                    data = salesList,
                     draw = pager.Draw,
                     recordsTotal = totalCount,
                     recordsFiltered = filterCount
@@ -555,7 +531,8 @@ namespace Gizmosbuy.BAL.Repository
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
                 IEnumerable<DeleteSalesType> salesDeleteList = salesReturnItems != null && salesReturnItems.Any()
-                    ? salesReturnItems.Select(s => new DeleteSalesType { 
+                    ? salesReturnItems.Select(s => new DeleteSalesType
+                    {
                         BillNo = s.BillNo,
                         SalesID = s.SalesId,
                         PurchaseID = s.PurchaseId,
@@ -580,22 +557,13 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var salesList = await _applicationDbContext.Procedures.spGetSalesListAsync(sessionUserId);
+                string searchValue = pager.SearchValue.Trim();
 
-                string searchValue = pager.SearchValue.Trim() ?? "";
+                bool isExport = true;
 
-                IList<spGetSalesListResult> mainData = null;
+                var salesList = await _applicationDbContext.Procedures.spGetSalesListAsync(sessionUserId, searchValue, null, null, pager.ColumnName, pager.SortDirection, isExport, null);
 
-                if (searchValue != "")
-                {
-                    mainData = salesList.Where(Utilities.GetSearchValue<spGetSalesListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
-                }
-                else
-                {
-                    mainData = salesList;
-                }
-
-                return mainData;
+                return salesList;
             }
             catch (Exception)
             {

@@ -1,6 +1,4 @@
 ﻿@using System.Globalization
-@using Gizmosbuy.Core.Interfaces
-@using Gizmosbuy.Core.Models
 @model Gizmosbuy.Core.Interfaces.ISalesModel
 @{
     TempData["Title"] = "Edit Sales";
@@ -35,19 +33,19 @@
                     <div class="form-group">
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                 &nbsp;
                             </div> *@
                                     <label for="txtSrNo" class="col-form-label">Serial No:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                 Type <strong>Serial No.</strong> in below input to fetch purchase record.
                             </div> *@
-                                    <input type="text" id="txtSrNo" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off" readonly>
+                                    <input type="text" id="txtSrNo" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off" tabindex="-1" readonly>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
@@ -56,79 +54,79 @@
 
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
-                                    <label for="ddlCategory" class="col-form-label">Category:</label>
+                                <div class="col-md-2 col-12">
+                                    <label for="txtCategory" class="col-form-label">Category:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     @* @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @disabled = "true" }) *@
-                                    <input type="text" id="txtCategory" class="form-control" asp-for="CategoryName" placeholder="" autocomplete="off" readonly>
+                                    <input type="text" id="txtCategory" class="form-control" asp-for="CategoryName" placeholder="" autocomplete="off" tabindex="-1" readonly>
                                     <input type="hidden" id="hdnCategoryId" asp-for="CategoryId" />
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
-                                    <label for="ddlBrand" class="col-form-label">Brand:</label>
+                                <div class="col-md-2 col-12">
+                                    <label for="txtBrand" class="col-form-label">Brand:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     @* @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @disabled = "true" }) *@
-                                    <input type="text" id="txtBrand" class="form-control" asp-for="BrandName" placeholder="" autocomplete="off" readonly>
+                                    <input type="text" id="txtBrand" class="form-control" asp-for="BrandName" placeholder="" autocomplete="off" tabindex="-1" readonly>
                                     <input type="hidden" id="hdnBrandId" asp-for="BrandId" />
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtModel" class="col-form-label">Model:</label>
                                 </div>
-                                <div class="col-md-4">
-                                    <input type="text" id="txtModel" class="form-control" asp-for="Model" autocomplete="off" readonly>
+                                <div class="col-md-4 col-12">
+                                    <input type="text" id="txtModel" class="form-control" asp-for="Model" autocomplete="off" tabindex="-1" readonly>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtSpecs" class="col-form-label">Specifications:</label>
                                 </div>
-                                <div class="col-md-4">
-                                    <input type="text" id="txtSpecs" class="form-control" asp-for="Specifications" autocomplete="off" readonly>
+                                <div class="col-md-4 col-12">
+                                    <input type="text" id="txtSpecs" class="form-control" asp-for="Specifications" autocomplete="off" tabindex="-1" readonly>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="Quantity" class="col-form-label">Quantity:</label>
                                 </div>
-                                <div class="col-md-4">
-                                    <input type="text" id="txtQuantity" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
+                                <div class="col-md-4 col-12">
+                                    <input type="text" id="txtQuantity" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" tabindex="-1" readonly>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtSellDate" class="col-form-label">Sell Date:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <div class="input-group">
                                         @{
                                             var sellDate = Model.SellingDate.GetValueOrDefault().ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -139,17 +137,17 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtSellingPrice" class="col-form-label">Selling Price:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <div class="input-group">
                                         @{
                                             var sellPrice = String.Format("{0:0.00}", Model.SellingPrice);
@@ -162,133 +160,133 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtSellQuantity" class="col-form-label">Selling Quantity:</label>
                                 </div>
-                                <div class="col-md-4">
-                                    <input type="text" id="txtSellQuantity" class="form-control" asp-for="SellingQuantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
+                                <div class="col-md-4 col-12">
+                                    <input type="text" id="txtSellQuantity" class="form-control" asp-for="SellingQuantity" onkeypress="numberOnly(event)" autocomplete="off" tabindex="-1" readonly>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtPayMode" class="col-form-label">Payment Mode:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <input type="text" id="txtPayMode" class="form-control" asp-for="PaymentModeName" autocomplete="off">
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtSellLead" class="col-form-label">Selling Lead:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <input type="text" id="txtSellLead" class="form-control" asp-for="SellingLead" autocomplete="off">
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtCustomerName" class="col-form-label">Customer Name:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <input type="text" id="txtCustomerName" class="form-control" asp-for="CustomerName" autocomplete="off">
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtContactNo" class="col-form-label">Contact No:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <input type="text" id="txtContactNo" class="form-control" asp-for="ContactNo" onkeypress="numberOnly(event)" maxlength="10" autocomplete="off">
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtLoaction" class="col-form-label">Location:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <input type="text" id="txtLoaction" class="form-control" asp-for="LocationName" autocomplete="off">
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtBillNo" class="col-form-label">Bill No:</label>
                                 </div>
-                                <div class="col-md-4">
-                                    <input type="text" id="txtBillNo" class="form-control" asp-for="BillNo" autocomplete="off" readonly>
+                                <div class="col-md-4 col-12">
+                                    <input type="text" id="txtBillNo" class="form-control" asp-for="BillNo" autocomplete="off" tabindex="-1" readonly>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtWarranty" class="col-form-label">Warranty:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <input type="text" id="txtWarranty" class="form-control" asp-for="Warranty" autocomplete="off">
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtRemark" class="col-form-label">Remark:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <input type="text" id="txtRemark" class="form-control" asp-for="Remark" autocomplete="off">
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12 text-right">
                                     <button type="button" class="btn btn-custom" id="btnSalesUpdate" title="Update Sales Entry"><i class="fas fa-pen-to-square"></i> Update</button>
                                 </div>
                             </div>
@@ -300,17 +298,11 @@
     </div>
 </div>
 
-@section Styles {
-    <link href="@Url.Content("~/lib/select2/css/select2.min.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/css/custom-css/custom-select2.css")" rel="stylesheet" />
-}
-
 @section Scripts {
-    <script src="@Url.Content("~/lib/select2/js/select2.min.js")" asp-append-version="true"></script>
     <script src="@Url.Content("~/js/scripts.js")" asp-append-version="true"></script>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
             $('#txtSellDate').datepicker({
                 format: 'dd/mm/yyyy',
                 endDate: '+0d',
@@ -320,8 +312,6 @@
                 todayBtn: true,
                 clearBtn: true
             });
-
-            $('#ddlCategory,#ddlBrand').select2();
 
             // $("#txtSrNo").devbridgeAutocomplete({
             //     serviceUrl: "/Purchase/GetAutoCompleteSerialNo",

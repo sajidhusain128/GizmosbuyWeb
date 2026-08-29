@@ -1,5 +1,5 @@
-﻿@using Gizmosbuy.Core.Interfaces
-@using Gizmosbuy.Core.Models
+﻿@using System.Globalization
+@using Gizmosbuy.Core.Interfaces
 @model Gizmosbuy.Core.Models.TransferPaymentModel
 @{
     TempData["Title"] = "Edit Transfer Payment";
@@ -33,30 +33,36 @@
                     <div class="form-group mb-0">
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtPaymentDate" class="col-form-label">Payment Date:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <div class="input-group">
-                                        <input type="text" id="txtPaymentDate" class="form-control" asp-for="PaymentDate" placeholder="DD/MM/YYYY" maxlength="10" onkeypress="numberOnly()" onKeyDown="dateAutoFormatter(event)" onpaste="return false;" autocomplete="off">
+                                        @{
+                                            var paymentDate = Model.PaymentDate.ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
+                                        }
+                                        <input type="text" id="txtPaymentDate" class="form-control" asp-for="@paymentDate" placeholder="DD/MM/YYYY" maxlength="10" onkeypress="numberOnly()" onKeyDown="dateAutoFormatter(event)" onpaste="return false;" autocomplete="off">
                                         <span class="input-group-text" id="basic-addon1">
                                             <i class="fas fa-calendar-alt"></i>
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtTransferAmount" class="col-form-label">Amount:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <div class="input-group">
-                                        <input type="text" id="txtTransferAmount" class="form-control text-right" asp-for="Amount" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
+                                        @{
+                                            var amount = String.Format("{0:0.00}", Model.Amount);
+                                        }
+                                        <input type="text" id="txtTransferAmount" class="form-control text-right" asp-for="@amount" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
                                         <span class="input-group-text" id="txtTransferAmount-addon1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-rupee" viewBox="0 0 16 16">
                                                 <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z" />
@@ -64,56 +70,58 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtTransferMode" class="col-form-label">Model of Transfer:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <input type="text" id="txtTransferMode" class="form-control" asp-for="TransferMode" autocomplete="off">
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="ddlTransferStore" class="col-form-label">Transfer Store:</label>
                                 </div>
-                                <div class="col-md-4">
-                                    @Html.DropDownListFor(Model => Model.ToLocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlTransferStore", @class = "form-select", @style = "width:100% !important" })
+                                <div class="col-md-4 col-12">
+                                    @Html.DropDownListFor(Model => Model.ToLocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlTransferStore", @class = "form-select select2-dropdown", @style = "width:100% !important" })
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtRemark" class="col-form-label">Remark:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <input type="text" id="txtRemark" class="form-control" asp-for="Remark" autocomplete="off">
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                 </div>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-custom" id="btnTransferPaymentUpdate" title="Save Transfer Payment Entry"><i class="fas fa-save"></i> Save</button>
+                                <div class="col-md-4 col-12">
+                                    <div class="text-right">
+                                        <button type="button" class="btn btn-custom" id="btnTransferPaymentUpdate" title="Save Transfer Payment Entry"><i class="fas fa-save"></i> Save</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +142,7 @@
     <script src="@Url.Content("~/js/store.js")" asp-append-version="true"></script>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
 
             $('#ddlTransferStore').select2();
 

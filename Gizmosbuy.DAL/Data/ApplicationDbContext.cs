@@ -103,6 +103,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.ExpenseDate).HasColumnType("datetime");
             entity.Property(e => e.ExpenseTypeId).HasColumnName("ExpenseTypeID");
+            entity.Property(e => e.LocationId).HasColumnName("LocationID");
             entity.Property(e => e.ModifiedDate).HasColumnType("datetime");
             entity.Property(e => e.PaymentModeId).HasColumnName("PaymentModeID");
             entity.Property(e => e.Remark)

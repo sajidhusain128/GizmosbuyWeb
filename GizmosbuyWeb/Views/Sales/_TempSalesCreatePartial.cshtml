@@ -1,10 +1,7 @@
-﻿@using Gizmosbuy.Core.Interfaces
-@using Gizmosbuy.Core.Models
-@model Gizmosbuy.Core.Models.TempSalesModel
+﻿@model Gizmosbuy.Core.Models.TempSalesModel
 @{
     ViewBag.Title = "_TempSalesCreatePartial";
 }
-
 
 <div class="custom-table table table-bordered table-responsive table-sm m-0 table-striped">
     <table id="tblSalesTemp" class="">
@@ -23,7 +20,7 @@
 <div class="col-md-12 my-2">
     <div class="row">
         <div class="text-right">
-            <button type="button" class="btn btn-custom" id="btnSalesSave" title="Save Final Added Entries"><i class="fas fa-save"></i> Save</button>
+            <button type="button" class="btn btn-custom" id="btnSalesSave" title="Save Final Added Entries" tabindex="0"><i class="fas fa-save"></i> Save</button>
         </div>
     </div>
 </div>
@@ -52,20 +49,20 @@
                                 <div class="form-group">
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                             &nbsp;
                                         </div> *@
                                                 <label for="txtSrNoTemp" class="col-form-label">Serial No:</label>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-5 col-12">
                                                 @* <div id="passwordHelpInline" class="text-muted" style="font-size: 80%;color: #08a321 !important;">
                                             Type <strong>Serial No.</strong> in below input to fetch purchase record.
                                         </div> *@
-                                                <input type="text" id="txtSrNoTemp" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off" disabled>
+                                                <input type="text" id="txtSrNoTemp" class="form-control" asp-for="SerialNo" placeholder="" autocomplete="off" tabindex="-1" disabled>
 
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
@@ -74,77 +71,77 @@
 
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtCategoryTemp" class="col-form-label">Category:</label>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-5 col-12">
                                                 @* @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @disabled = "true" }) *@
-                                                <input type="text" id="txtCategoryTemp" class="form-control" placeholder="" autocomplete="off" readonly>
+                                                <input type="text" id="txtCategoryTemp" class="form-control" placeholder="" autocomplete="off" tabindex="-1" readonly>
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtBrandTemp" class="col-form-label">Brand:</label>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-5 col-12">
                                                 @* @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @disabled = "true" }) *@
-                                                <input type="text" id="txtBrandTemp" class="form-control" placeholder="" autocomplete="off" readonly>
+                                                <input type="text" id="txtBrandTemp" class="form-control" placeholder="" autocomplete="off" tabindex="-1" readonly>
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtModelTemp" class="col-form-label">Model:</label>
                                             </div>
-                                            <div class="col-md-5">
-                                                <input type="text" id="txtModelTemp" class="form-control" asp-for="Model" autocomplete="off" readonly>
+                                            <div class="col-md-5 col-12">
+                                                <input type="text" id="txtModelTemp" class="form-control" asp-for="Model" autocomplete="off" tabindex="-1" readonly>
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtSpecsTemp" class="col-form-label">Specifications:</label>
                                             </div>
-                                            <div class="col-md-5">
-                                                <input type="text" id="txtSpecsTemp" class="form-control" asp-for="Specifications" autocomplete="off" readonly>
+                                            <div class="col-md-5 col-12">
+                                                <input type="text" id="txtSpecsTemp" class="form-control" asp-for="Specifications" autocomplete="off" tabindex="-1" readonly>
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtQuantityTemp" class="col-form-label">Quantity:</label>
                                             </div>
-                                            <div class="col-md-5">
-                                                <input type="text" id="txtQuantityTemp" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
+                                            <div class="col-md-5 col-12">
+                                                <input type="text" id="txtQuantityTemp" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" tabindex="-1" readonly>
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtSellDateTemp" class="col-form-label">Sell Date:</label>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-5 col-12">
                                                 <div class="input-group">
                                                     <input type="text" id="txtSellDateTemp" class="form-control" asp-for="SellingDate" placeholder="DD/MM/YYYY" maxlength="10" onkeypress="return false;" onKeyDown="preventBackspace();" onpaste="return false;" autocomplete="off">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -152,17 +149,17 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtSellingPriceTemp" class="col-form-label">Selling Price:</label>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-5 col-12">
                                                 <div class="input-group">
                                                     <input type="text" id="txtSellingPriceTemp" class="form-control text-right" asp-for="SellingPrice" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
                                                     <span class="input-group-text" id="txtSellingPrice-addon1">
@@ -172,124 +169,124 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtSellQuantityTemp" class="col-form-label">Selling Quantity:</label>
                                             </div>
-                                            <div class="col-md-5">
-                                                <input type="text" id="txtSellQuantityTemp" class="form-control" asp-for="SellingQuantity" onkeypress="numberOnly(event)" autocomplete="off">
+                                            <div class="col-md-5 col-12">
+                                                <input type="text" id="txtSellQuantityTemp" class="form-control" asp-for="SellingQuantity" onkeypress="numberOnly(event)" autocomplete="off" tabindex="-1">
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtPayModeTemp" class="col-form-label">Payment Mode:</label>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-5 col-12">
                                                 <input type="text" id="txtPayModeTemp" class="form-control" asp-for="PaymentModeName" autocomplete="off">
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtSellLeadTemp" class="col-form-label">Selling Lead:</label>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-5 col-12">
                                                 <input type="text" id="txtSellLeadTemp" class="form-control" asp-for="SellingLead" autocomplete="off">
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtCustomerNameTemp" class="col-form-label">Customer Name:</label>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-5 col-12">
                                                 <input type="text" id="txtCustomerNameTemp" class="form-control" asp-for="CustomerName" autocomplete="off">
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtContactNoTemp" class="col-form-label">Contact No:</label>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-5 col-12">
                                                 <input type="text" id="txtContactNoTemp" class="form-control" asp-for="ContactNo" onkeypress="numberOnly(event)" maxlength="10" autocomplete="off">
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtLoactionTemp" class="col-form-label">Location:</label>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-5 col-12">
                                                 <input type="text" id="txtLoactionTemp" class="form-control" asp-for="Location" autocomplete="off">
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtBillNoTemp" class="col-form-label">Bill No:</label>
                                             </div>
-                                            <div class="col-md-5">
-                                                <input type="text" id="txtBillNoTemp" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" readonly>
+                                            <div class="col-md-5 col-12">
+                                                <input type="text" id="txtBillNoTemp" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" tabindex="-1" readonly>
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtWarrantyTemp" class="col-form-label">Warranty:</label>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-5 col-12">
                                                 <input type="text" id="txtWarrantyTemp" class="form-control" asp-for="Warranty" autocomplete="off">
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mb-2">
                                         <div class="row align-items-center">
-                                            <div class="col-md-2">
+                                            <div class="col-md-2 col-12">
                                                 <label for="txtRemarkTemp" class="col-form-label">Remark:</label>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-5 col-12">
                                                 <input type="text" id="txtRemarkTemp" class="form-control" asp-for="Remark" autocomplete="off">
                                             </div>
-                                            <div class="col-auto">
+                                            <div class="col-auto col-12">
                                                 <span class="field-validation-error"></span>
                                             </div>
                                         </div>
@@ -299,8 +296,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Close Form"><i class="fas fa-xmark"></i> Close</button>
                         <button type="button" class="btn btn-primary" id="btnUpdateTempSales" title="Update Temporory Sales Entry"><i class="fas fa-pen-to-square"></i> Update</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Close Form"><i class="fas fa-xmark"></i> Close</button>
                     </div>
                 </div>
             </div>

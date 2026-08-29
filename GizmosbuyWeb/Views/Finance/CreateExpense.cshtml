@@ -1,8 +1,11 @@
-﻿@using Gizmosbuy.Core.Interfaces
+﻿@using Gizmosbuy.BAL.Commons
+@using Gizmosbuy.Core.Constants
+@using Gizmosbuy.Core.Interfaces
 @model Gizmosbuy.Core.Interfaces.IExpenseModel
 @{
     TempData["Title"] = "Create Expense";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string userRole = Utilities.GetSessionValue(Constant.Role, Context.Request.HttpContext) ?? "";
 }
 
 <div class="col-md-12">
@@ -31,10 +34,10 @@
                     <div class="form-group mb-0">
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtExpenseDate" class="col-form-label">Expense Date:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <div class="input-group">
                                         <input type="text" id="txtExpenseDate" class="form-control" asp-for="ExpenseDate" placeholder="DD/MM/YYYY" maxlength="10" onkeypress="numberOnly()" onKeyDown="dateAutoFormatter(event)" onpaste="return false;" autocomplete="off">
                                         <span class="input-group-text" id="basic-addon1">
@@ -42,17 +45,17 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtExpenseAmount" class="col-form-label">Amount:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <div class="input-group">
                                         <input type="text" id="txtExpenseAmount" class="form-control text-right" asp-for="Amount" onkeypress="isNumberDecimal(this, event);" autocomplete="off">
                                         <span class="input-group-text" id="txtExpenseAmount-addon1">
@@ -62,84 +65,103 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="ddlExpenseType" class="col-form-label">Transfer Store:</label>
                                 </div>
-                                <div class="col-md-4">
-                                    @Html.DropDownListFor(Model => Model.ExpenseId, new SelectList(((List<IExpenseTypeModel>)ViewBag.ExpenseTypes).Select(x => new { Value = x.ExpenseTypeId, Text = x.ExpenseTypeName }), "Value", "Text"), null, new { id = "ddlExpenseType", @class = "form-select", @style = "width:100% !important" })
+                                <div class="col-md-4 col-12">
+                                    @Html.DropDownListFor(Model => Model.ExpenseId, new SelectList(((List<IExpenseTypeModel>)ViewBag.ExpenseTypes).Select(x => new { Value = x.ExpenseTypeId, Text = x.ExpenseTypeName }), "Value", "Text"), null, new { id = "ddlExpenseType", @class = "form-select select2-dropdown", @style = "width:100% !important" })
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="ddlPaymentMode" class="col-form-label">Payment Mode:</label>
                                 </div>
-                                <div class="col-md-4">
-                                    @Html.DropDownListFor(Model => Model.PaymentModeId, new SelectList(((List<IPaymentModeModel>)ViewBag.PaymentModes).Select(x => new { Value = x.PaymentModeId, Text = x.PaymentModeName }), "Value", "Text"), null, new { id = "ddlPaymentMode", @class = "form-select", @style = "width:100% !important" })
+                                <div class="col-md-4 col-12">
+                                    @Html.DropDownListFor(Model => Model.PaymentModeId, new SelectList(((List<IPaymentModeModel>)ViewBag.PaymentModes).Select(x => new { Value = x.PaymentModeId, Text = x.PaymentModeName }), "Value", "Text"), null, new { id = "ddlPaymentMode", @class = "form-select select2-dropdown", @style = "width:100% !important" })
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtRemark" class="col-form-label">Remark:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     <input type="text" id="txtRemark" class="form-control" asp-for="Remark" autocomplete="off">
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="ddlExpenseMonth" class="col-form-label">Sell Month:</label>
                                 </div>
-                                <div class="col-md-4">
-                                    @Html.DropDownListFor(Model => Model.ExpenseMonth, (List<SelectListItem>)ViewBag.Months, "Select Month", new { id = "ddlExpenseMonth", @class = "form-select" })
+                                <div class="col-md-4 col-12">
+                                    @Html.DropDownListFor(Model => Model.ExpenseMonth, (List<SelectListItem>)ViewBag.Months, "Select Month", new { id = "ddlExpenseMonth", @class = "form-select select2-dropdown", @style = "width:100% !important" })
                                     @* <input type="text" id="txtSellMonth" class="form-control" placeholder="Month" maxlength="3" autocomplete="off" onkeydown="return false"> *@
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                     <label for="txtExpenseYear" class="col-form-label">Sell Date:</label>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 col-12">
                                     @* @Html.DropDownListFor(Model => Model.ExpenseYear, (List<SelectListItem>)ViewBag.Years, "Select Year", new { id = "ddlExpenseYear", @class = "form-select" }) *@
-                                    <input type="text" id="txtExpenseYear" class="form-control" placeholder="YYYY" min="1900" max="2099" step="1" value="@DateTime.Now.Year" maxlength="4" autocomplete="off" onkeydown="return false">
+                                    <input type="text" id="txtExpenseYear" class="form-control" placeholder="YYYY" value="@DateTime.Now.Year" maxlength="4" autocomplete="off" onkeypress="isNumberDecimal(this, event);">
                                 </div>
-                                <div class="col-auto">
+                                <div class="col-md-6 col-12">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
                         </div>
+                        @if (userRole == "SuperAdmin")
+                        {
+                            <div class="col-md-12 mb-2">
+                                <div class="row align-items-center">
+                                    <div class="col-md-2 col-12">
+                                        <label for="ddlSellingStore" class="col-form-label">Store Name:</label>
+                                    </div>
+                                    <div class="col-md-4 col-12">
+                                        @* <input type="text" id="ddlSellingStore" class="form-control" asp-for="SellingStore" autocomplete="off"> *@
+                                        @Html.DropDownListFor(Model => Model.LocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlExpenseStore", @class = "form-select select2-dropdown", @style = "width:100% !important" })
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <span class="field-validation-error"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
                         <div class="col-md-12 mb-2">
                             <div class="row align-items-center">
-                                <div class="col-md-2">
+                                <div class="col-md-2 col-12">
                                 </div>
-                                <div class="col-md-4">
-                                    <button type="button" class="btn btn-custom" id="btnExpenseSave" title="Save Expense Entry"><i class="fas fa-save"></i> Save</button>
+                                <div class="col-md-4 col-12">
+                                    <div class="text-right">
+                                        <button type="button" class="btn btn-custom" id="btnExpenseSave" title="Save Expense Entry"><i class="fas fa-save"></i> Save</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -163,6 +185,11 @@
         $(document).ready(function () {
 
             $('#ddlExpenseType,#ddlPaymentMode,#ddlExpenseMonth').select2();
+
+            if ("@userRole" === "SuperAdmin")
+            {
+                $('#ddlExpenseStore').select2();
+            }
 
             $('#txtExpenseDate').datepicker({
                 format: 'dd/mm/yyyy',

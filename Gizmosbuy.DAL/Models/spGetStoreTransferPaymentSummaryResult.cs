@@ -16,8 +16,5 @@ namespace Gizmosbuy.DAL.Models
         public string TransferMode { get; set; }
         [StringLength(200)]
         public string Remark { get; set; }
-        [StringLength(100)]
-        public string ToLocation { get; set; }
-        public bool? IsApproved { get; set; }
     }
 }

@@ -1,6 +1,11 @@
 ﻿.select2-container {
     /*width: 100% !important;*/
+    border-radius: 0.25rem;
 }
+
+    .select2-container .selection {
+        border-radius: inherit;
+    }
 
     .select2-container .select2-selection--single {
         height: 38px !important;
@@ -12,6 +17,7 @@
 
 .select2-container--default .select2-selection--single {
     border: 1px solid #ccc !important;
+    border-radius: inherit !important;
 }
 
     .select2-container--default .select2-selection--single .select2-selection__rendered {
@@ -51,6 +57,6 @@
     background-color: #08a321;
 }
 
-.select2-container--default .select2-dropdown{
-    border-radius:0px !important;
+.select2-container--default .select2-dropdown {
+    border-radius: 0.25rem !important;
 }

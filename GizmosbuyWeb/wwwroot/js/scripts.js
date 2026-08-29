@@ -31,7 +31,9 @@ $(document).ready(function () {
     })
 
     $('#txtSellingPrice').focus(function () {
-        $(this).val(0);
+        if ($(this).val() == "") {
+            $(this).val(0);
+        }
     })
 
     $('#btnSalesSave').click(function (e) {
@@ -137,7 +139,21 @@ $(document).ready(function () {
     });
 
     $("#btnExportRawData").click(function () {
-        location.href = "/Inventory/RawDateExportExcel?FromDate=" + $("#txtStartDate").val() + "&ToDate=" + $("#txtEndDate").val() + "&Search=" + tblRawData.search();
+        try {
+            // 1. Get the current order details [columnIndex, direction]
+            var currentOrder = tblRawData.order();
+            var orderColumnIndex = currentOrder[0][0]; // Index of sorted column
+            var sortDirection = currentOrder[0][1];    // "asc" or "desc"
+            // 2. Get the column name defined in your setup
+            var columnName = tblRawData.columns(orderColumnIndex).dataSrc()[0];
+
+            var exportUrl = "/Inventory/RawDateExportExcel?FromDate=" + $("#txtStartDate").val() + "&ToDate=" + $("#txtEndDate").val() + "&Search=" + tblRawData.search() + (columnName != null ? "&SortBy=" + encodeURIComponent(columnName) : "") + (sortDirection != null ? "&SortOrder=" + encodeURIComponent(sortDirection) : "");
+
+            location.href = exportUrl;
+        } catch (e) {
+
+        }
+        
     })
 
     $("#btnDeleteTempSales").click(function () {
@@ -410,11 +426,38 @@ $(document).ready(function () {
     });
 
     $("#btnExportPurchase").click(function () {
-        location.href = "/Purchase/PurchaseExportExcel?Search=" + tablePurchase.search();
+        try {
+            // 1. Get the current order details [columnIndex, direction]
+            var currentOrder = tablePurchase.order();
+            var orderColumnIndex = currentOrder[0][0]; // Index of sorted column
+            var sortDirection = currentOrder[0][1];    // "asc" or "desc"
+            // 2. Get the column name defined in your setup
+            var columnName = tablePurchase.columns(orderColumnIndex).dataSrc()[0];
+
+            var exportUrl = "/Purchase/PurchaseExportExcel?Search=" + tablePurchase.search() + (columnName != null ? "&SortBy=" + encodeURIComponent(columnName) : "") + (sortDirection != null ? "&SortOrder=" + encodeURIComponent(sortDirection) : "");
+
+            location.href = exportUrl;
+        } catch (e) {
+            console.log(e);
+        }
+        
     })
 
     $("#btnExportSales").click(function () {
-        location.href = "/Sales/SalesExportExcel?Search=" + tableSales.search();
+        try {
+            // 1. Get the current order details [columnIndex, direction]
+            var currentOrder = tableSales.order();
+            var orderColumnIndex = currentOrder[0][0]; // Index of sorted column
+            var sortDirection = currentOrder[0][1];    // "asc" or "desc"
+            // 2. Get the column name defined in your setup
+            var columnName = tableSales.columns(orderColumnIndex).dataSrc()[0];
+
+            var exportUrl = "/Sales/SalesExportExcel?Search=" + tableSales.search() + (columnName != null ? "&SortBy=" + encodeURIComponent(columnName) : "") + (sortDirection != null ? "&SortOrder=" + encodeURIComponent(sortDirection) : "");
+
+            location.href = exportUrl;
+        } catch (e) {
+            console.log(e);
+        }
     })
 });
 
@@ -1066,12 +1109,12 @@ function validateSalesForm() {
             }
         }
 
-        if ($('#ddlLoaction').val() == "") {
+        if ($('#txtLoaction').val() == "") {
             errorCount++;
-            $('#ddlLoaction').parents('.row').find('.field-validation-error').text("Loaction is required.");
+            $('#txtLoaction').parents('.row').find('.field-validation-error').text("Loaction is required.");
         }
         else {
-            $('#ddlLoaction').parents('.row').find('.field-validation-error').text("");
+            $('#txtLoaction').parents('.row').find('.field-validation-error').text("");
         }
 
         if ($('#txtBillNo').val() == "") {

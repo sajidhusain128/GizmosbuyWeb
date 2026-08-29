@@ -1,10 +1,8 @@
 ﻿@using Gizmosbuy.Core.Interfaces
-@using Gizmosbuy.Core.Models
 @model Gizmosbuy.Core.Models.TempStoreTransferModel
 @{
     ViewBag.Title = "_TempTransferCreatePartial";
 }
-
 
 <div class="custom-table table table-bordered table-responsive table-sm m-0 table-striped">
     <table id="tblTransferCreateTemp" class="">
@@ -23,7 +21,7 @@
 <div class="col-md-12 my-2">
     <div class="row">
         <div class="text-right">
-            <button type="button" class="btn btn-custom" id="btnStoreTransferSave" title="Save Final Added Entries"><i class="fas fa-save"></i> Save</button>
+            <button type="button" class="btn btn-custom" id="btnStoreTransferSave" title="Save Final Added Entries" tabindex="0"><i class="fas fa-save"></i> Save</button>
         </div>
     </div>
 </div>
@@ -79,7 +77,7 @@
                                             </div>
                                             <div class="col-md-5">
                                                 @* @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @disabled = "true" }) *@
-                                                <input type="text" id="txtCategoryTemp" class="form-control" placeholder="" autocomplete="off" readonly>
+                                                <input type="text" id="txtCategoryTemp" class="form-control" placeholder="" autocomplete="off" tabindex="-1" readonly>
                                             </div>
                                             <div class="col-auto">
                                                 <span class="field-validation-error"></span>
@@ -93,7 +91,7 @@
                                             </div>
                                             <div class="col-md-5">
                                                 @* @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @disabled = "true" }) *@
-                                                <input type="text" id="txtBrandTemp" class="form-control" placeholder="" autocomplete="off" readonly>
+                                                <input type="text" id="txtBrandTemp" class="form-control" placeholder="" autocomplete="off" tabindex="-1" readonly>
                                             </div>
                                             <div class="col-auto">
                                                 <span class="field-validation-error"></span>
@@ -106,7 +104,7 @@
                                                 <label for="txtModelTemp" class="col-form-label">Model:</label>
                                             </div>
                                             <div class="col-md-5">
-                                                <input type="text" id="txtModelTemp" class="form-control" asp-for="Model" autocomplete="off" readonly>
+                                                <input type="text" id="txtModelTemp" class="form-control" asp-for="Model" autocomplete="off" tabindex="-1" readonly>
                                             </div>
                                             <div class="col-auto">
                                                 <span class="field-validation-error"></span>
@@ -119,7 +117,7 @@
                                                 <label for="txtSpecsTemp" class="col-form-label">Specifications:</label>
                                             </div>
                                             <div class="col-md-5">
-                                                <input type="text" id="txtSpecsTemp" class="form-control" asp-for="Specifications" autocomplete="off" readonly>
+                                                <input type="text" id="txtSpecsTemp" class="form-control" asp-for="Specifications" autocomplete="off" tabindex="-1" readonly>
                                             </div>
                                             <div class="col-auto">
                                                 <span class="field-validation-error"></span>
@@ -132,7 +130,7 @@
                                                 <label for="txtQuantityTemp" class="col-form-label">Quantity:</label>
                                             </div>
                                             <div class="col-md-5">
-                                                <input type="text" id="txtQuantityTemp" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" readonly>
+                                                <input type="text" id="txtQuantityTemp" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" autocomplete="off" tabindex="-1" readonly>
                                             </div>
                                             <div class="col-auto">
                                                 <span class="field-validation-error"></span>
@@ -197,7 +195,7 @@
                                             </div>
                                             <div class="col-md-5">
                                                 @* <input type="text" id="txtSellingStoreTemp" class="form-control" asp-for="SellingStore" autocomplete="off"> *@
-                                                @Html.DropDownListFor(Model => Model.ToLocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlSellingStoreTemp", @class = "form-select", @style = "width:100% !important" })
+                                                @Html.DropDownListFor(Model => Model.ToLocationId, new SelectList(((List<ILocationModel>)ViewBag.LocationModel).Select(x => new { Value = x.LocationId, Text = x.LocationName }), "Value", "Text"), null, new { id = "ddlSellingStoreTemp", @class = "form-select select2-dropdown", @style = "width:100% !important" })
                                             </div>
                                             <div class="col-auto">
                                                 <span class="field-validation-error"></span>
@@ -210,7 +208,7 @@
                                                 <label for="txtBillNoTemp" class="col-form-label">Bill No:</label>
                                             </div>
                                             <div class="col-md-5">
-                                                <input type="text" id="txtBillNoTemp" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" readonly>
+                                                <input type="text" id="txtBillNoTemp" value="@Convert.ToString(ViewBag.NewBillNo)" class="form-control" asp-for="BillNo" autocomplete="off" tabindex="-1" readonly>
                                             </div>
                                             <div class="col-auto">
                                                 <span class="field-validation-error"></span>
@@ -222,8 +220,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Close Form"><i class="fas fa-xmark"></i> Close</button>
                         <button type="button" class="btn btn-primary" id="btnUpdateTempStoreTransfer" title="Update Temporory Store Transfer Entry"><i class="fas fa-pen-to-square"></i> Update</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" title="Close Form"><i class="fas fa-xmark"></i> Close</button>
                     </div>
                 </div>
             </div>

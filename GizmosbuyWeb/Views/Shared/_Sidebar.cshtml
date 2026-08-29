@@ -1,6 +1,5 @@
 ﻿@using Gizmosbuy.Core.Constants
 @using Gizmosbuy.BAL.Commons;
-
 @{
     string userRole = Utilities.GetSessionValue(Constant.Role, Context.Request.HttpContext);
 }
@@ -73,7 +72,7 @@
                 <hl class="menu-divider"></hl>
                 <li class="has-sub-list">
                     <div class="sidemenu-title"> Finance</div>
-                     @* <a href="javascript:void(0)">
+                    @* <a href="javascript:void(0)">
                         <div>
                             <i class="fa-regular fa-money-bill-1 "></i>
                             <span>Finance</span>
@@ -92,7 +91,7 @@
                                 </a>
                             </li>
                         }
-                        @if (userRole == "SuperAdmin")
+                        @if (userRole == "SuperAdmin" || userRole == "Admin")
                         {
                             <li>
                                 <a href="@Url.Action("Expense", "Finance")">
@@ -179,22 +178,6 @@
                     </ul>
                 </li>
             }
-            @* <li>
-                            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sales</a>
-                            <ul class="collapse list-unstyled" id="pageSubmenu">
-                                <li>
-                                    <a href="#">Page 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Page 2</a>
-                                </li>
-                                <li>
-                                    <a href="#">Page 3</a>
-                                </li>
-                            </ul> 
-                        </li> *@
-
-
         </ul>
         <div class="footer">
             @* <p>

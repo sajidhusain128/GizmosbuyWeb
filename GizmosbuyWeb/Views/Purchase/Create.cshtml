@@ -1,5 +1,4 @@
 ﻿@using Gizmosbuy.Core.Interfaces
-@using Gizmosbuy.Core.Models
 @model Gizmosbuy.Core.Models.PurchaseModel
 @{
     TempData["Title"] = "Create Purchase";
@@ -24,14 +23,14 @@
             <div class="header-title">Purchase Entry</div>
         </div>
         <div class="page-content">
-            
+
             <div class="page-body p-0">
                 @using (Html.BeginForm("Create", "Purchase", FormMethod.Post, new { id = "frmPurchase" }))
                 {
                     @Html.AntiForgeryToken()
                     <div class="col-md-6">
                         <div class="row">
-                            <div class="mb-3">
+                            <div class="">
                                 <label for="txtSrNo" class="col-form-label">Purchase Mode:</label>
                                 <div id="switchPurchaseType" class="filter-switch">
                                     <input checked="" id="rdoSingle" name="options" class="option1" type="radio" value="Single" />
@@ -43,17 +42,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 col-12">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-6 col-12">
 
-                                <div class="mb-3" id="divSinglePurchase">
+                                <div class="" id="divSinglePurchase">
                                     <label for="txtSrNo" class="col-form-label">Serial No:</label>
                                     <input type="text" id="txtSrNo" class="form-control" asp-for="SerialNo" placeholder="Serial No" autocomplete="off">
                                     <span class="field-validation-error"></span>
                                 </div>
 
-                                <div class="mb-3" id="divMultipePurchase" style="display:none;">
+                                <div class="" id="divMultipePurchase" style="display:none;">
                                     <label for="txtSrNo" class="col-form-label">Serial Nos: (Multiple)</label>
                                     <div id="divSerialContainer" class="service_box" style="max-height:240px">
                                         <div class="box-body" style="max-height:190px; overflow:auto;margin-bottom: 5px;">
@@ -80,7 +79,7 @@
                                     <span class="field-validation-error"></span>
                                 </div>
 
-                                <div class="mb-3">
+                                <div class="">
                                     <label for="txtPurchaseDate" class="col-form-label">Purchase Date:</label>
                                     <div class="input-group">
                                         <input type="text" id="txtPurchaseDate" class="form-control" asp-for="PurchaseDate" placeholder="DD/MM/YYYY" maxlength="10" pattern="[0-9/]*" onkeypress="return false;" onKeyDown="preventBackspace();" onpaste="return false;" autocomplete="off">
@@ -90,29 +89,29 @@
                                     </div>
                                     <span class="field-validation-error"></span>
                                 </div>
-                                <div class="mb-3">
+                                <div class="">
                                     <label for="ddlCategory" class="col-form-label">Category:</label>
-                                    @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select", @style = "width:100% !important" })
+                                    @Html.DropDownListFor(Model => Model.CategoryId, new SelectList(((List<ICategoryModel>)ViewBag.Categories).Select(x => new { Value = x.CategoryId, Text = x.CategoryName }), "Value", "Text"), null, new { id = "ddlCategory", @class = "form-select select2-dropdown", @style = "width:100% !important" })
                                     <span class="field-validation-error"></span>
                                 </div>
-                                <div class="mb-3">
+                                <div class="">
                                     <label for="ddlBrand" class="col-form-label">Brand:</label>
-                                    @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select", @style = "width:100% !important" })
+                                    @Html.DropDownListFor(Model => Model.BrandId, new SelectList(((List<IBrandModel>)ViewBag.Brands).Select(x => new { Value = x.BrandId, Text = x.BrandName }), "Value", "Text"), null, new { id = "ddlBrand", @class = "form-select select2-dropdown", @style = "width:100% !important" })
                                     <span class="field-validation-error"></span>
                                 </div>
-                                <div class="mb-3">
+                                <div class="">
                                     <label for="txtModel" class="col-form-label">Model:</label>
                                     <input type="text" id="txtModel" class="form-control" asp-for="Model" placeholder="Model" autocomplete="off">
                                     <span class="field-validation-error"></span>
                                 </div>
-                                <div class="mb-3">
+                                <div class="">
                                     <label for="txtSpecs" class="col-form-label">Specifications:</label>
                                     <input type="text" id="txtSpecs" class="form-control" asp-for="Specifications" placeholder="Specifications" autocomplete="off">
                                     <span class="field-validation-error"></span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
+                            <div class="col-md-6 col-12">
+                                <div class="">
                                     <label for="txtPurchasePrice" class="col-form-label">Purchase Price:</label>
                                     <div class="input-group">
                                         <input type="text" id="txtPurchasePrice" class="form-control text-right" asp-for="PurchasePrice" onkeypress="isNumberDecimal(this, event);" placeholder="Purchase Price" autocomplete="off">
@@ -124,12 +123,12 @@
                                     </div>
                                     <span class="field-validation-error"></span>
                                 </div>
-                                <div class="mb-3">
+                                <div class="">
                                     <label for="Quantity" class="col-form-label">Quantity:</label>
                                     <input type="text" id="txtQuantity" class="form-control" asp-for="Quantity" onkeypress="numberOnly(event)" placeholder="Quantity" autocomplete="off">
                                     <span class="field-validation-error"></span>
                                 </div>
-                                <div class="mb-3">
+                                <div class="">
                                     <label for="txtUpgrade" class="col-form-label">Repair/Upgrade:</label>
                                     <div class="input-group">
                                         <input type="text" id="txtUpgrade" class="form-control text-right" asp-for="UpgradePrice" onkeypress="isNumberDecimal(this, event);" placeholder="Repair/Upgrade" autocomplete="off">
@@ -141,10 +140,10 @@
                                     </div>
                                     <span class="field-validation-error"></span>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="txtPurcRepair" class="col-form-label">Purhase & Repair:</label>
+                                <div class="">
+                                    <label for="txtPurcRepair" class="col-form-label">Total (Purhase + Repair/Upgrade):</label>
                                     <div class="input-group">
-                                        <input type="text" id="txtPurcRepair" class="form-control text-right" readonly asp-for="TotalPrice" onkeypress="isNumberDecimal(this, event);" placeholder="Purhase & Repair" autocomplete="off">
+                                        <input type="text" id="txtPurcRepair" class="form-control text-right" asp-for="TotalPrice" onkeypress="isNumberDecimal(this, event);" placeholder="Total Price" autocomplete="off" tabindex="-1" readonly>
                                         <span class="input-group-text" id="txtPurchasePrice-addon1">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-currency-rupee" viewBox="0 0 16 16">
                                                 <path d="M4 3.06h2.726c1.22 0 2.12.575 2.325 1.724H4v1.051h5.051C8.855 7.001 8 7.558 6.788 7.558H4v1.317L8.437 14h2.11L6.095 8.884h.855c2.316-.018 3.465-1.476 3.688-3.049H12V4.784h-1.345c-.08-.778-.357-1.335-.793-1.732H12V2H4z"></path>
@@ -153,13 +152,13 @@
                                     </div>
                                     <span class="field-validation-error"></span>
                                 </div>
-                                <div class="mb-3">
+                                <div class="">
                                     <label for="txtPayMode" class="col-form-label">Payment Mode:</label>
                                     <input type="text" id="txtPayMode" class="form-control" asp-for="PaymentModeName" placeholder="Payment Mode" autocomplete="off">
                                     @* @Html.DropDownListFor(Model => Model.PaymentModeId, new SelectList(((List<IPaymentModeModel>)ViewBag.PaymentModes).Select(x => new { Value = x.PaymentModeId, Text = x.PaymentModeName }), "Value", "Text"), null, new { id = "ddlPayMode", @class = "form-select", @style = "width:100% !important" }) *@
                                     <span class="field-validation-error"></span>
                                 </div>
-                                <div class="mb-3">
+                                <div class="">
                                     <label for="txtBuyLead" class="col-form-label">Buying Lead:</label>
                                     <input type="text" id="txtBuyLead" class="form-control" asp-for="BuyingLead" placeholder="Buying Lead" autocomplete="off">
                                     <span class="field-validation-error"></span>
@@ -169,7 +168,7 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="row">
+                        <div class="">
                             <div class="mt-2 text-right">
                                 <button type="button" class="btn btn-custom" id="btnPurchaseSave" title="Save Purchase Entry"><i class="fas fa-save"></i> Save</button>
                             </div>
@@ -182,9 +181,8 @@
 </div>
 
 @section Styles {
-    @* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"> *@
-    <link href="@Url.Content("~/lib/select2/css/select2.min.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/css/custom-css/custom-select2.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/select2/css/select2.min.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/custom-css/custom-select2.css")" rel="stylesheet" asp-append-version="true" />
 }
 
 @section Scripts {
@@ -193,10 +191,10 @@
     <script src="@Url.Content("~/js/scripts.js")" asp-append-version="true"></script>
 
     <script>
-        $(document).ready( function () {
+        $(document).ready(function() {
 
-            $('#txtUpgrade').blur(function(){
-                if($(this).val() == ""){
+            $('#txtUpgrade').blur(function() {
+                if ($(this).val() == "") {
                     $(this).val("0");
                 }
             });
@@ -212,7 +210,7 @@
             });
 
             var todayDate = new Date();
-            $('#txtPurchaseDate').datepicker("setDate",localDateFormat(todayDate, 'dd/mm/yyyy'));
+            $('#txtPurchaseDate').datepicker("setDate", localDateFormat(todayDate, 'dd/mm/yyyy'));
 
             $('#ddlCategory,#ddlBrand').select2();
         });

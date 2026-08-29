@@ -31,7 +31,7 @@ namespace Gizmosbuy.DAL.Models
         public string ToLocation { get; set; }
         [StringLength(50)]
         public string BillNo { get; set; }
-        [StringLength(18)]
-        public string ReturnedStatus { get; set; }
+        [StringLength(20)]
+        public string TransferStatus { get; set; }
     }
 }

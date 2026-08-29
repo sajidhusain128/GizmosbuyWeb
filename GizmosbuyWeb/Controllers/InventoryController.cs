@@ -1,5 +1,4 @@
-﻿using System.Data;
-using ClosedXML.Excel;
+﻿using ClosedXML.Excel;
 using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Constants;
@@ -11,6 +10,7 @@ using GizmosbuyWeb.Filters;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
 
 namespace Gizmosbuy.Web.Controllers
 {
@@ -19,12 +19,10 @@ namespace Gizmosbuy.Web.Controllers
     public class InventoryController : Controller
     {
         private readonly IInventoryBL _inventoryBL;
-        private readonly IFinanceBL _financeBL;
         private readonly ICommonBL _commonBL;
-        public InventoryController(IInventoryBL inventoryBL, IFinanceBL financeBL, ICommonBL commonBL)
+        public InventoryController(IInventoryBL inventoryBL, ICommonBL commonBL)
         {
             _inventoryBL = inventoryBL;
-            _financeBL = financeBL;
             _commonBL = commonBL;
         }
 
@@ -51,7 +49,8 @@ namespace Gizmosbuy.Web.Controllers
 
                 pager.PageStart = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
                 pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
-                pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+                pager.Offset = (pager.PageStart / pager.PageLength) * pager.PageLength;
+                pager.SearchValue = Request.Form["search[value]"].FirstOrDefault().Trim() ?? "";
                 pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
                 pager.SortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
                 pager.SortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
@@ -131,7 +130,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpPost]
         [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
-        public async Task<IActionResult> GetSummayData(ISummaryModel summaryModel)
+        public async Task<IActionResult> GetSummayData(SummaryModel summaryModel)
         {
             try
             {
@@ -168,7 +167,7 @@ namespace Gizmosbuy.Web.Controllers
 
         [HttpGet]
         [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
-        public async Task<IActionResult> RawDateExportExcel(string FromDate, string ToDate, string Search)
+        public async Task<IActionResult> RawDateExportExcel(string FromDate = null, string ToDate = null, string Search = null, string SortBy = null, string SortOrder = null)
         {
             try
             {
@@ -180,7 +179,9 @@ namespace Gizmosbuy.Web.Controllers
 
                 IPager pager = new Pager();
 
-                pager.SearchValue = Search ?? "";
+                pager.SearchValue = !string.IsNullOrWhiteSpace(Search) ? Search.Trim() : "";
+                pager.ColumnName = !string.IsNullOrWhiteSpace(SortBy) ? Utility.CapitalizeFirstChar(SortBy) : "";
+                pager.SortDirection = !string.IsNullOrWhiteSpace(SortOrder) ? SortOrder : "";
 
                 var result = await _inventoryBL.GetRawDataExport(dateRange, pager);
 
@@ -262,7 +263,8 @@ namespace Gizmosbuy.Web.Controllers
 
                 pager.PageStart = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
                 pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
-                pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+                pager.Offset = (pager.PageStart / pager.PageLength) * pager.PageLength;
+                pager.SearchValue = Request.Form["search[value]"].FirstOrDefault().Trim() ?? "";
                 pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
                 pager.SortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
                 pager.SortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
@@ -288,7 +290,8 @@ namespace Gizmosbuy.Web.Controllers
 
                 pager.PageStart = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
                 pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
-                pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
+                pager.Offset = (pager.PageStart / pager.PageLength) * pager.PageLength;
+                pager.SearchValue = Request.Form["search[value]"].FirstOrDefault().Trim() ?? "";
                 pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
                 pager.SortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
                 pager.SortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
@@ -319,20 +322,105 @@ namespace Gizmosbuy.Web.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
-        public async Task<IActionResult> GetExpenseSummayData(ISummaryModel summaryModel)
+        public async Task<IActionResult> StoreTransferRawDataExportExcel(int searchLocationId, string Search = null, string SortBy = null, string SortOrder = null)
         {
             try
             {
-                var result = await _financeBL.GetExpenseSummaryData(summaryModel);
+                IPager pager = new Pager();
 
-                if (result == null)
+                pager.SearchValue = !string.IsNullOrWhiteSpace(Search) ? Search.Trim() : "";
+                pager.ColumnName = !string.IsNullOrWhiteSpace(SortBy) ? Utility.CapitalizeFirstChar(SortBy) : "";
+                pager.SortDirection = !string.IsNullOrWhiteSpace(SortOrder) ? SortOrder : "";
+
+                var result = await _inventoryBL.GetStoreTransferRawDataExport(searchLocationId, pager);
+
+                if (result != null && result.Count > 0)
                 {
-                    result = new List<IExpenseSummaryModel>();
-                }
+                    DataTable dt = Utilities.CreateDataTable(result); // Fetch your data
 
-                return PartialView("_ExpenseSummaryPartial", result);
+                    if (dt.Columns.Count > 0)
+                    {
+                        if (dt.Columns.Contains("StoreTransferID"))
+                        {
+                            dt.Columns.Remove("StoreTransferID");
+                        }
+                        if (dt.Columns.Contains("PurchaseID"))
+                        {
+                            dt.Columns.Remove("PurchaseID");
+                        }
+                    }
+
+                    string fileName = $"StoreTransferRawData_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        wb.Worksheets.Add(dt, "Sheet1");
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            wb.SaveAs(stream);
+                            return File(stream.ToArray(),
+                                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                        fileName);
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("PaymentSummary");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
+        public async Task<IActionResult> StoreTransferPaymentSummaryExportExcel(int searchLocationId, string Search = null, string SortBy = null, string SortOrder = null)
+        {
+            try
+            {
+                IPager pager = new Pager();
+
+                pager.SearchValue = !string.IsNullOrWhiteSpace(Search) ? Search.Trim() : "";
+                pager.ColumnName = !string.IsNullOrWhiteSpace(SortBy) ? Utility.CapitalizeFirstChar(SortBy) : "";
+                pager.SortDirection = !string.IsNullOrWhiteSpace(SortOrder) ? SortOrder : "";
+
+                var result = await _inventoryBL.GetStoreTransferPaymentSummaryExport(searchLocationId, pager);
+
+                if (result != null && result.Count > 0)
+                {
+                    DataTable dt = Utilities.CreateDataTable(result); // Fetch your data
+
+                    if (dt.Columns.Count > 0)
+                    {
+                        if (dt.Columns.Contains("TransferPaymentID"))
+                        {
+                            dt.Columns.Remove("TransferPaymentID");
+                        }
+                    }
+
+                    string fileName = $"StoreTransferPaymentSummary_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        wb.Worksheets.Add(dt, "Sheet1");
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            wb.SaveAs(stream);
+                            return File(stream.ToArray(),
+                                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                                        fileName);
+                        }
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("PaymentSummary");
+                }
             }
             catch (Exception)
             {

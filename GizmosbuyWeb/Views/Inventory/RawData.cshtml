@@ -16,45 +16,41 @@
             <div class="page-body p-0">
                 <div class="form-group mb-0">
                     <div class="row">
-                        <div class="col-md-3" style="align-content: center;">
-                            <div class="row align-items-center">
-                                <div class="col-md-12">
-                                    <label for="txtStartDate" class="col-form-label">Start Date:</label>
-                                    <div class="input-group">
-                                        <input type="text" id="txtStartDate" asp-for="StartDate" class="form-control" placeholder="DD/MM/YYYY" maxlength="10" pattern="\d{1,2}/\d{1,2}/\d{4}" onkeyup="dateAutoFormatter(event)" autocomplete="off">
-                                        <span class="input-group-text" id="basic-addon1">
-                                            <i class="fas fa-calendar-alt"></i>
-                                        </span>
-                                    </div>
+                        <div class="col-md-3 col-12">
+                            <div class="">
+                                <label for="txtStartDate" class="col-form-label">Start Date:</label>
+                                <div class="input-group">
+                                    <input type="text" id="txtStartDate" asp-for="StartDate" class="form-control" placeholder="DD/MM/YYYY" maxlength="10" pattern="\d{1,2}/\d{1,2}/\d{4}" onkeyup="dateAutoFormatter(event)" autocomplete="off">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3" style="align-content: center;">
-                            <div class="row align-items-center">
-                                <div class="col-md-12">
-                                    <label for="txtEndDate" class="col-form-label">End Date:</label>
-                                    <div class="input-group">
-                                        <input type="text" id="txtEndDate" asp-for="EndDate" class="form-control" placeholder="DD/MM/YYYY" maxlength="10" pattern="\d{1,2}/\d{1,2}/\d{4}" onkeyup="dateAutoFormatter(event)" autocomplete="off">
-                                        <span class="input-group-text" id="basic-addon1">
-                                            <i class="fas fa-calendar-alt"></i>
-                                        </span>
-                                    </div>
+                        <div class="col-md-3 col-12">
+                            <div class="">
+                                <label for="txtEndDate" class="col-form-label">End Date:</label>
+                                <div class="input-group">
+                                    <input type="text" id="txtEndDate" asp-for="EndDate" class="form-control" placeholder="DD/MM/YYYY" maxlength="10" pattern="\d{1,2}/\d{1,2}/\d{4}" onkeyup="dateAutoFormatter(event)" autocomplete="off">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
-                            <div class="row align-items-center">
-                                <div class="col-md-12">
-                                    <label for="btnSearchRawData" class="col-form-label">&nbsp;</label><br />
+                        <div class="col-md-3 col-6 mt-2 align-content-end">
+                            <div class="row">
+                                <div class="col-md-12 col-12">
                                     <button type="button" class="btn btn-custom " id="btnSearchRawData" title="Search"><i class="fas fa-search"></i> Search</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-6 mt-2 align-content-end">
                             <div class="row">
-                                <div class="col-md-12 text-right">
-                                    <label for="btnSearchRawData" class="col-form-label">&nbsp;</label><br />
-                                    <button type="button" class="btn btn-custom " id="btnExportRawData" title="Export To Excel" data-bs-toggle="tooltip"><i class="fas fa-file-excel"></i> Export</button>
+                                <div class="col-md-12 col-12">
+                                    <div class="d-flex justify-content-end">
+                                        <button type="button" class="btn btn-custom " id="btnExportRawData" title="Export To Excel" data-bs-toggle="tooltip"><i class="fas fa-file-excel"></i> Export</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +98,7 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             // var curDateMonth = new Date();
             // $('#txtEndDate').val(localDateFormat(curDateMonth, 'dd/mm/yyyy'));
@@ -119,7 +115,7 @@
                 todayHighlight: true,
                 todayBtn: true,
                 clearBtn: true
-            }).on('changeDate', function(e) {
+            }).on('changeDate', function (e) {
                 // Dynamically set the start date based on the selected date
                 $('#txtEndDate').datepicker('setStartDate', e.date);
             });
@@ -133,7 +129,7 @@
                 todayHighlight: true,
                 todayBtn: true,
                 clearBtn: true
-            }).on('changeDate', function(e) {
+            }).on('changeDate', function (e) {
                 // Dynamically set the start date based on the selected date
                 $('#txtStartDate').datepicker('setEndDate', e.date);
             });

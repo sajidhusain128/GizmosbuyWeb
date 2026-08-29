@@ -1,5 +1,4 @@
-﻿using System.Data;
-using Gizmosbuy.BAL.Commons;
+﻿using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
@@ -8,6 +7,7 @@ using Gizmosbuy.DAL.Data;
 using Gizmosbuy.DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Gizmosbuy.BAL.Repository
 {
@@ -307,48 +307,24 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var storeTransferList = await _applicationDbContext.Procedures.spGetStoreTransferListAsync(sessionUserId, searchToLocationId);
+                bool isExport = false;
 
-                int start = pager.PageStart;
-                int length = pager.PageLength;
-                string searchValue = pager.SearchValue.Trim() ?? "";
-                string columnName = pager.ColumnName ?? "";
-                string sortDirection = pager.SortDirection ?? "";
+                var paramReturnTotalCount = new OutputParameter<int?>();
 
-                IList<spGetStoreTransferListResult> mainData = null;
+                var storeTransferList = await _applicationDbContext.Procedures.spGetStoreTransferListAsync(sessionUserId, searchToLocationId, pager.SearchValue, pager.PageLength, pager.Offset, pager.ColumnName, pager.SortDirection, isExport, paramReturnTotalCount);
 
-                if (searchValue != "")
-                {
-                    mainData = storeTransferList.Where(Utilities.GetSearchValue<spGetStoreTransferListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
-                }
-                else
-                {
-                    mainData = storeTransferList;
-                }
-
-                // Apply sorting
-                if (!string.IsNullOrEmpty(columnName))
-                {
-                    mainData = mainData.OrderByDynamic(columnName, sortDirection).ToList();
-                }
-
-                var totalCount = mainData.Count;
-                var filterCount = mainData.Count;
-
-                mainData = mainData
-                    .Skip(start)
-                    .Take(length)
-                    .ToList();
+                var totalCount = paramReturnTotalCount.Value.GetValueOrDefault();
+                var filterCount = totalCount;
 
                 var data = new
                 {
-                    data = mainData,
+                    data = storeTransferList,
                     draw = pager.Draw,
                     recordsTotal = totalCount,
                     recordsFiltered = filterCount
                 };
 
-                return await Task.FromResult(data);
+                return data;
             }
             catch (Exception)
             {
@@ -490,63 +466,26 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
                 int locationId = Convert.ToInt32(Utilities.GetSessionValue("LocationId", _httpContextAccessor.HttpContext));
-                var returnNotifyList = await _applicationDbContext.Procedures.spGetStoreTransferNotificationListAsync(locationId, sessionUserId);
 
-                int start = pager.PageStart;
-                int length = pager.PageLength;
-                string searchValue = pager.SearchValue.Trim() ?? "";
-                string columnName = pager.ColumnName ?? "";
-                string sortDirection = pager.SortDirection ?? "";
+                bool isExport = false;
 
-                IEnumerable<spGetStoreTransferNotificationListResult> mainData = null;
+                var paramReturnTotalCount = new OutputParameter<int?>();
 
-                if (searchValue != "")
+                var returnNotifyList = await _applicationDbContext.Procedures.spGetStoreTransferNotificationListAsync(locationId, sessionUserId, pager.SearchValue, pager.PageLength, pager.Offset, pager.ColumnName, pager.SortDirection, isExport, paramReturnTotalCount);
+
+                var totalCount = paramReturnTotalCount.Value.GetValueOrDefault();
+                var filterCount = totalCount;
+
+                var data = new
                 {
-                    mainData = returnNotifyList.Where(Utilities.GetSearchValue<spGetStoreTransferNotificationListResult>(searchValue, Constant.GlobalDateFormat));
-                }
-                else
-                {
-                    mainData = returnNotifyList;
-                }
+                    data = returnNotifyList,
+                    draw = pager.Draw,
+                    recordsTotal = totalCount,
+                    recordsFiltered = filterCount
+                };
 
-                // Apply sorting
-                if (!string.IsNullOrEmpty(columnName))
-                {
-                    mainData = mainData.OrderByDynamic(columnName, sortDirection);
-                }
+                return data;
 
-                if (mainData != null && mainData.Any())
-                {
-                    var totalCount = mainData.ToList().Count;
-                    var filterCount = totalCount;
-
-                    mainData = mainData
-                        .Skip(start)
-                        .Take(length)
-                        .ToList();
-
-                    var data = new
-                    {
-                        data = mainData,
-                        draw = pager.Draw,
-                        recordsTotal = totalCount,
-                        recordsFiltered = filterCount
-                    };
-
-                    return data;
-                }
-                else
-                {
-                    var data = new
-                    {
-                        data = new List<object>(),
-                        draw = pager.Draw,
-                        recordsTotal = 0,
-                        recordsFiltered = 0
-                    };
-
-                    return data;
-                }
             }
             catch (Exception)
             {
@@ -621,63 +560,25 @@ namespace Gizmosbuy.BAL.Repository
             try
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
-                var returnNotifyList = await _applicationDbContext.Procedures.spGetTransferPaymentListAsync(sessionUserId);
 
-                int start = pager.PageStart;
-                int length = pager.PageLength;
-                string searchValue = pager.SearchValue.Trim() ?? "";
-                string columnName = pager.ColumnName ?? "";
-                string sortDirection = pager.SortDirection ?? "";
+                bool isExport = false;
 
-                IEnumerable<object> mainData = null;
+                var paramReturnTotalCount = new OutputParameter<int?>();
 
-                if (searchValue != "")
+                var returnNotifyList = await _applicationDbContext.Procedures.spGetTransferPaymentListAsync(sessionUserId, pager.SearchValue, pager.PageLength, pager.Offset, pager.ColumnName, pager.SortDirection, isExport, paramReturnTotalCount);
+
+                var totalCount = paramReturnTotalCount.Value.GetValueOrDefault();
+                var filterCount = totalCount;
+
+                var data = new
                 {
-                    mainData = returnNotifyList.Where(Utilities.GetSearchValue<object>(searchValue, Constant.GlobalDateFormat));
-                }
-                else
-                {
-                    mainData = returnNotifyList;
-                }
+                    data = returnNotifyList,
+                    draw = pager.Draw,
+                    recordsTotal = totalCount,
+                    recordsFiltered = filterCount
+                };
 
-                // Apply sorting
-                if (!string.IsNullOrEmpty(columnName))
-                {
-                    mainData = mainData.OrderByDynamic(columnName, sortDirection);
-                }
-
-                if (mainData != null && mainData.Any())
-                {
-                    var totalCount = mainData.ToList().Count;
-                    var filterCount = totalCount;
-
-                    mainData = mainData
-                        .Skip(start)
-                        .Take(length)
-                        .ToList();
-
-                    var data = new
-                    {
-                        data = mainData,
-                        draw = pager.Draw,
-                        recordsTotal = totalCount,
-                        recordsFiltered = filterCount
-                    };
-
-                    return data;
-                }
-                else
-                {
-                    var data = new
-                    {
-                        data = new List<object>(),
-                        draw = pager.Draw,
-                        recordsTotal = 0,
-                        recordsFiltered = 0
-                    };
-
-                    return data;
-                }
+                return data;
             }
             catch (Exception)
             {
@@ -692,63 +593,25 @@ namespace Gizmosbuy.BAL.Repository
                 //var returnNotifyList = await _applicationDbContext.TransferPayments.Where(x => x.IsApproved == false).ToListAsync();
 
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
-                var returnNotifyList = await _applicationDbContext.Procedures.spGetTransferPaymentNotificationsListAsync(sessionUserId);
 
-                int start = pager.PageStart;
-                int length = pager.PageLength;
-                string searchValue = pager.SearchValue.Trim() ?? "";
-                string columnName = pager.ColumnName ?? "";
-                string sortDirection = pager.SortDirection ?? "";
+                bool isExport = false;
 
-                IEnumerable<spGetTransferPaymentNotificationsListResult> mainData = null;
+                var paramReturnTotalCount = new OutputParameter<int?>();
 
-                if (searchValue != "")
+                var returnNotifyList = await _applicationDbContext.Procedures.spGetTransferPaymentNotificationsListAsync(sessionUserId, pager.SearchValue, pager.PageLength, pager.Offset, isExport, paramReturnTotalCount);
+
+                var totalCount = paramReturnTotalCount.Value.GetValueOrDefault();
+                var filterCount = totalCount;
+
+                var data = new
                 {
-                    mainData = returnNotifyList.Where(Utilities.GetSearchValue<spGetTransferPaymentNotificationsListResult>(searchValue, Constant.GlobalDateFormat));
-                }
-                else
-                {
-                    mainData = returnNotifyList;
-                }
+                    data = returnNotifyList,
+                    draw = pager.Draw,
+                    recordsTotal = totalCount,
+                    recordsFiltered = filterCount
+                };
 
-                // Apply sorting
-                if (!string.IsNullOrEmpty(columnName))
-                {
-                    mainData = mainData.OrderByDynamic(columnName, sortDirection);
-                }
-
-                if (mainData != null && mainData.Any())
-                {
-                    var totalCount = mainData.ToList().Count;
-                    var filterCount = totalCount;
-
-                    mainData = mainData
-                        .Skip(start)
-                        .Take(length)
-                        .ToList();
-
-                    var data = new
-                    {
-                        data = mainData,
-                        draw = pager.Draw,
-                        recordsTotal = totalCount,
-                        recordsFiltered = filterCount
-                    };
-
-                    return data;
-                }
-                else
-                {
-                    var data = new
-                    {
-                        data = new List<object>(),
-                        draw = pager.Draw,
-                        recordsTotal = 0,
-                        recordsFiltered = 0
-                    };
-
-                    return data;
-                }
+                return data;
             }
             catch (Exception)
             {
@@ -918,22 +781,13 @@ namespace Gizmosbuy.BAL.Repository
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
 
-                var storeTransferList = await _applicationDbContext.Procedures.spGetStoreTransferListAsync(sessionUserId, searchToLocationId);
-                
+                bool isExport = true;
+
+                var storeTransferList = await _applicationDbContext.Procedures.spGetStoreTransferListAsync(sessionUserId, searchToLocationId, pager.SearchValue, pager.PageLength, pager.Offset, pager.ColumnName, pager.SortDirection, isExport, null);
+
                 string searchValue = pager.SearchValue.Trim() ?? "";
 
-                IList<spGetStoreTransferListResult> mainData = null;
-
-                if (searchValue != "")
-                {
-                    mainData = storeTransferList.Where(Utilities.GetSearchValue<spGetStoreTransferListResult>(searchValue, Constant.GlobalDateFormat)).ToList();
-                }
-                else
-                {
-                    mainData = storeTransferList;
-                }
-
-                return mainData;
+                return storeTransferList;
             }
             catch (Exception)
             {
@@ -946,22 +800,12 @@ namespace Gizmosbuy.BAL.Repository
             try
             {
                 int sessionUserId = Convert.ToInt32(Utilities.GetSessionValue("UserId", _httpContextAccessor.HttpContext));
-                var returnNotifyList = await _applicationDbContext.Procedures.spGetTransferPaymentListAsync(sessionUserId);
 
-                string searchValue = pager.SearchValue.Trim() ?? "";
+                bool isExport = true;
 
-                IEnumerable<spGetTransferPaymentListResult> mainData = null;
+                var returnNotifyList = await _applicationDbContext.Procedures.spGetTransferPaymentListAsync(sessionUserId, pager.SearchValue, null, null, pager.ColumnName, pager.SortDirection, isExport, null);
 
-                if (searchValue != "")
-                {
-                    mainData = returnNotifyList.Where(Utilities.GetSearchValue<spGetTransferPaymentListResult>(searchValue, Constant.GlobalDateFormat));
-                }
-                else
-                {
-                    mainData = returnNotifyList;
-                }
-
-                return mainData.ToList();
+                return returnNotifyList;
             }
             catch (Exception)
             {

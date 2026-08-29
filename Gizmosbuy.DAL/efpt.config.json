@@ -103,6 +103,10 @@
          "ObjectType": 1
       },
       {
+         "Name": "[dbo].[spGetExpenseList]",
+         "ObjectType": 1
+      },
+      {
          "Name": "[dbo].[spGetExpenseSummaryData]",
          "ObjectType": 1
       },

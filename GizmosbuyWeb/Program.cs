@@ -1,6 +1,3 @@
-using System.Globalization;
-using System.Reflection;
-using System.Text;
 using FastReport;
 using FastReport.Export.PdfSimple;
 using Gizmosbuy.BAL.Interfaces;
@@ -15,8 +12,10 @@ using log4net.Config;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
+using System.Reflection;
+using System.Text;
 using Twilio;
 
 namespace GizmosbuyWeb

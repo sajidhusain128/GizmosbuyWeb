@@ -13,5 +13,6 @@
         public string ExpenseMonthName { get; set; }
         public short ExpenseMonth { get; set; }
         public short ExpenseYear { get; set; }
+        public int LocationId { get; set; }
     }
 }

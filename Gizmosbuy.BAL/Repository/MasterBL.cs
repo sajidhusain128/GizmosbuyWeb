@@ -4,7 +4,6 @@ using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
 using Gizmosbuy.DAL.Data;
-using Gizmosbuy.DAL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,7 +31,7 @@ namespace Gizmosbuy.BAL.Repository
 
                 if (searchValue != "")
                 {
-                    mainData =  _applicationDbContext.UserMasters
+                    mainData = _applicationDbContext.UserMasters
                         .Join(_applicationDbContext.LocationMasters, UM => UM.LocationId, LM => LM.LocationId, (UM, LM) => new { UM, LM })
                         .Select(S => new UserModel
                         {
@@ -46,7 +45,7 @@ namespace Gizmosbuy.BAL.Repository
                 else
                 {
                     mainData = _applicationDbContext.UserMasters
-                        .Join(_applicationDbContext.LocationMasters,UM => UM.LocationId,LM => LM.LocationId,(UM, LM) => new {UM, LM })
+                        .Join(_applicationDbContext.LocationMasters, UM => UM.LocationId, LM => LM.LocationId, (UM, LM) => new { UM, LM })
                         .Select(S => new UserModel
                         {
                             UserId = S.UM.UserId,

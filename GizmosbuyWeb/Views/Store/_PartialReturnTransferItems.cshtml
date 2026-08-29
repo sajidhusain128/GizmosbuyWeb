@@ -1,6 +1,4 @@
-﻿
-
-<div class="modal fade" id="tempReturnStoreTransferItemsModel" tabindex="-1" aria-labelledby="tempReturnStoreTransferItemsModelLabel" aria-hidden="true">
+﻿<div class="modal fade" id="tempReturnStoreTransferItemsModel" tabindex="-1" aria-labelledby="tempReturnStoreTransferItemsModelLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -35,14 +33,18 @@
                                     <div class="col-md-2">
                                         <label for="txtInvoiceNo" class="col-form-label">Invoice No.:</label>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-6">
                                         <input type="text" id="txtInvoiceNo" class="form-control" placeholder="" autocomplete="off">
                                     </div>
                                     <div class="col-md-2">
-                                        <button type="button" class="btn btn-custom" id="btnFetchInvoiceDetails" title="Click here to fetch invoice details"><i class="fa-solid fa-circle-arrow-down"></i> Fetch</button>
+                                        <div class="row">
+                                            <button type="button" class="btn btn-custom" id="btnFetchInvoiceDetails" title="Click here to fetch invoice details"><i class="fa-solid fa-circle-arrow-down"></i> Fetch</button>
+                                        </div>
                                     </div>
                                     <div class="col-md-3 text-right">
-                                        <button type="button" class="btn btn-info" id="btnClearInvoiceDetails" title="Clear invoice details"><i class="fa-solid fa-eraser"></i> Clear</button>
+                                        <div class="row justify-content-end">
+                                            <button type="button" class="btn btn-info" id="btnClearInvoiceDetails" title="Clear invoice details"><i class="fa-solid fa-eraser"></i> Clear</button>
+                                        </div>
                                     </div>
                                     @* <div class="col-auto">
                                         <span class="field-validation-error"></span>

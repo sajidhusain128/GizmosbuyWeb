@@ -4,6 +4,7 @@
     {
         public int PageStart { get; set; }
         public int PageLength { get; set; }
+        public int Offset { get; set; }
         public string SearchValue { get; set; }
         public int Draw { get; set; }
         public string SortDirection { get; set; }

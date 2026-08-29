@@ -1,5 +1,4 @@
-﻿
-using Gizmosbuy.Core.Interfaces;
+﻿using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.DAL.Models;
 
 namespace Gizmosbuy.BAL.Interfaces
@@ -13,5 +12,7 @@ namespace Gizmosbuy.BAL.Interfaces
         Task<object> GetStoreTransferRawData(int searchLocationId, IPager pager);
         Task<object> GetStoreTransferPaymentSummary(int searchLocationId, IPager pager);
         Task<object> GetStoreTransferCalculation(int searchLocationId);
+        Task<IList<spGetStoreTransferRawDataResult>> GetStoreTransferRawDataExport(int searchLocationId, IPager pager);
+        Task<IList<spGetStoreTransferPaymentSummaryResult>> GetStoreTransferPaymentSummaryExport(int searchLocationId, IPager pager);
     }
 }

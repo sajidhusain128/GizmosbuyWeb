@@ -23,6 +23,8 @@ public partial class Expense
 
     public short? ExpenseYear { get; set; }
 
+    public int? LocationId { get; set; }
+
     public int? CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }

@@ -4,6 +4,26 @@ var categoryList = ["Accessories", "Service", "Adjustment"];
 $(document).ready(function () {
     $('*[title]').tooltip();
 
+    if ($('.select2-dropdown').length > 0) {
+        $('.select2-dropdown').select2();
+
+        $(document).on('focus', '.select2-container', function (e) {
+            // Only open if it was focused via keyboard (tabbing) and isn't already open
+            if (e.originalEvent && !$(this).find('.select2-selection--element').length) {
+                $(this).siblings('select').select2('open');
+            }
+        });
+
+        $('.select2-dropdown').on('focus', function () {
+            $(this).select2('open');
+        });
+
+        // Ensure the search input is focused when dropdown opens
+        $('.select2-dropdown').on('select2:open', function () {
+            document.querySelector('.select2-search__field').focus();
+        });
+    }
+
     setActiveMenu();
 });
 

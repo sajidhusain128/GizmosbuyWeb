@@ -9,7 +9,7 @@
         <span class="field-validation-error">Sign(*) :- Invalid Return Qty or Blank</span>
     </div>
     <div class="custom-table table table-bordered table-responsive table-sm mt-2 mb-0 table-striped">
-        
+
         <table id="tblInvoiceDetails" class="">
             <thead>
                 <tr>
@@ -54,7 +54,7 @@
                                 <input type="hidden" id="hdnTransferPurchaseID_@item.SalesId" class="hidden_TrfrPurchaseID" value="@item.TransferPurchaseID" />
                                 <div style="display:flex">
                                     <input type="text" id="txtReturnQty_@item.SalesId" class="form-control row-input ReturnQty" style="width: 70px;text-align: center; margin:auto;height: 30px;" value="@item.SellingQuantity" onkeyup="validateReturnQtyForItems('tblInvoiceDetails',this)" autocomplete="off" disabled />
-                                <span class="field-validation-error"></span>
+                                    <span class="field-validation-error"></span>
                                 </div>
                             </td>
                         </tr>
@@ -69,5 +69,5 @@
             </tbody>
         </table>
     </div>
-    
+
 }

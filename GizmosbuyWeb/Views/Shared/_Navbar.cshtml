@@ -1,10 +1,10 @@
 ﻿@using Gizmosbuy.Core.Constants
 @using Microsoft.AspNetCore.Http;
 @using Gizmosbuy.BAL.Commons;
-
 @{
     var userName = Utilities.GetSessionValue(Constant.UserName, Context.Request.HttpContext);
 }
+
 <nav class="navbar navbar-expand navbar-toggleable fixed-top ">
     @* <i class="fas fa-chevron-left" id="sidebarCollapse"></i> *@
     <i class="fas fa-bars" id="sidebarCollapse"></i>

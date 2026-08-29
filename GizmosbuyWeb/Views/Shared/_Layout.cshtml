@@ -6,7 +6,7 @@
     <title>@TempData["Title"] - GizmosbuyWeb</title>
     <link rel="stylesheet" href="@Url.Content("~/lib/twitter-bootstrap/css/bootstrap.min.css")" asp-append-version="true" />
     <link rel="stylesheet" href="@Url.Content("~/css/custom-css/custom-sidebar.css")" asp-append-version="true" />
-    <link rel="stylesheet" href="@Url.Content("~/lib/font-awesome/css/all.min.css")"asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/lib/font-awesome/css/all.min.css")" asp-append-version="true" />
     <link rel="stylesheet" href="@Url.Content("~/lib/datatables/css/datatables.bootstrap5.min.css")" asp-append-version="true" />
     <link rel="stylesheet" href="@Url.Content("~/lib/datatables/css/fixedcolumns.datatables.min.css")" asp-append-version="true" />
     <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap-datepicker/css/bootstrap-datepicker3.min.css")" asp-append-version="true" />
@@ -23,9 +23,9 @@
             <div class="toast-body">
                 <div class="d-flex gap-3">
                     <span class="align-self-center"><i class="fa-solid fa-circle-check fa-xl"></i></span>
-                    <div class="d-flex flex-column lh-base" >
+                    <div class="d-flex flex-column lh-base">
                         <strong>Success!</strong>
-                        <span class="body-text">Successful!</span> 
+                        <span class="body-text">Successful!</span>
                     </div>
                     <button type="button"
                             class="btn-close btn-close-sm ms-auto"
@@ -40,7 +40,7 @@
                     <span class="align-self-center"><i class="fa-solid fa-circle-exclamation fa-xl"></i></span>
                     <div class="d-flex flex-column lh-base">
                         <strong>Warning!</strong>
-                        <span class="body-text">Trying again...</span>  
+                        <span class="body-text">Trying again...</span>
                     </div>
                     <button type="button"
                             class="btn-close btn-close-sm ms-auto"
@@ -55,7 +55,7 @@
                     <span class="align-self-center"><i class="fa-solid fa-triangle-exclamation fa-xl"></i></span>
                     <div class="d-flex flex-column lh-base">
                         <strong>Error!</strong>
-                        <span class="body-text">We are having issues</span> 
+                        <span class="body-text">We are having issues</span>
                     </div>
                     <button type="button"
                             class="btn-close btn-close-sm ms-auto"
@@ -68,7 +68,7 @@
 
     <div class="wrapper d-flex align-items-stretch">
         @await Html.PartialAsync("_Sidebar.cshtml")
-        <section id="content">        
+        <section id="content">
             @await Html.PartialAsync("_Navbar.cshtml")
             <main role="main" class="main-section mb-3">
                 <div class="container-fluid" style="padding:0px">
@@ -96,26 +96,26 @@
     @await RenderSectionAsync("Scripts", required: false)
 
     <script type="text/javascript">
-        $(document).ready( function () {
+            $(document).ready(function() {
 
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-            });
+                $('#sidebarCollapse').on('click', function() {
+                    $('#sidebar').toggleClass('active');
+                });
 
-            $(window).on('resize', function(){
-                var win = $(this); //this = window
+                $(window).on('resize', function() {
+                    var win = $(this); //this = window
 
-                if (win.width() <= 992) {
-                    $('#sidebar').removeClass("active");
-                }
-                else{
-                    if(!$('#sidebar').hasClass("active")){
-                        $('#sidebar').addClass("active");
+                    if (win.width() <= 992) {
+                        $('#sidebar').removeClass("active");
                     }
-                }
-            });
+                    else {
+                        if (!$('#sidebar').hasClass("active")) {
+                            $('#sidebar').addClass("active");
+                        }
+                    }
+                });
 
-        });
+            });
     </script>
 </body>
 </html>

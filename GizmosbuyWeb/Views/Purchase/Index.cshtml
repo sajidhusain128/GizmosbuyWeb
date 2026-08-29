@@ -13,14 +13,14 @@
     <div class="page-title">
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-12 col-sm-12">
+                <div class="col-md-12 col-12">
                     <div class="row">
-                        <div class="col-md-6 col-sm-6 mb-2">
+                        <div class="col-md-6 col-6 mb-2">
                             <div class="row">
                                 <a href="@Url.Action("Create", "Purchase")" class="btn btn-custom" title="Create Purchase Entry"><i class="fas fa-save"></i> Create Entry</a>
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 mb-2">
+                        <div class="col-md-6 col-6 mb-2">
                             <div class="row justify-content-end">
                                 <button id="btnExportPurchase" class="btn btn-custom" title="Export To Excel"><i class="fas fa-file-excel"></i> Export</button>
                             </div>
@@ -69,7 +69,7 @@
     <script type="text/javascript">
         var tablePurchase = null;
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             tablePurchase = $('#tblPurchase').DataTable({
                 scrollX: true,
                 scrollY: 406,
@@ -88,7 +88,7 @@
                 "columns": [
                     { "data": "serialNo", "title": "Serial No" },
                     {
-                        "data": "purchaseDate", "title": "Purchase Date", render: function (data, type, row) {
+                        "data": "purchaseDate", "title": "Purchase Date", render: function(data, type, row) {
                             if (data === null) return "";
 
                             return moment(data).format('DD/MM/YYYY');
@@ -99,7 +99,7 @@
                     { "data": "model", "title": "Model" },
                     { "data": "specifications", "title": "Specifications" },
                     {
-                        "data": "purchasePrice", "title": "Purchase Price", render: function (data, type, row) {
+                        "data": "purchasePrice", "title": "Purchase Price", render: function(data, type, row) {
                             if (data === null) return "";
 
                             return "&#8377; " + data;
@@ -107,14 +107,14 @@
                     },
                     { "data": "quantity", "title": "Quantity" },
                     {
-                        "data": "upgradePrice", "title": "Upgrade Price", render: function (data, type, row) {
+                        "data": "upgradePrice", "title": "Upgrade Price", render: function(data, type, row) {
                             if (data === null) return "";
 
                             return "&#8377; " + data;
                         }
                     },
                     {
-                        "data": "totalPrice", "title": "Total Price", render: function (data, type, row) {
+                        "data": "totalPrice", "title": "Total Price", render: function(data, type, row) {
                             if (data === null) return "";
 
                             return "&#8377; " + data;
@@ -123,7 +123,7 @@
                     { "data": "paymentMode", "title": "Payment Mode" },
                     { "data": "buyingLead", "title": "BuyingLead" },
                     {
-                        "data": "purchaseID", "title": "Action", render: function (data, type, row) {
+                        "data": "purchaseID", "title": "Action", render: function(data, type, row) {
                             if (data === null) return "";
 
                             let editUrl = row.canEdit == 0 ?
@@ -132,14 +132,14 @@
                                     `/Purchase/Edit?Id=${data}&TransferPurchaseID=${row.transferPurchaseID}` :
                                     `/Purchase/Edit?Id=${data}`;
 
-                            return '<a href="' + editUrl + '" class="custom-link-btn ' + (row.canEdit == 0 ? "disabled" : "") + ' mr-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Purchase Entry"><i class="fas fa-edit fa-lg color-info"></i></a>'+
+                            return '<a href="' + editUrl + '" class="custom-link-btn ' + (row.canEdit == 0 ? "disabled" : "") + ' mr-3" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Purchase Entry"><i class="fas fa-edit fa-lg color-info"></i></a>' +
                                 '<a href="javascript:void(0)" ' + (row.canDelete == 0 ? "" : "onclick='showDeletePurchaseModel(" + data + ")'") + ' class="custom-link-btn ' + (row.canDelete == 0 ? "disabled" : "") + '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Purchase Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>';
                         }
                     }
                     // {
                     //     "data": "purchaseID", "title": "Delete", render: function (data, type, row) {
                     //         if (data === null) return "";
-                            
+
                     //         return '<a href="javascript:void(0)" ' + (row.canDelete == 0 ? "" : "onclick='showDeletePurchaseModel(" + data + ")'") + ' class="custom-link-btn ' + (row.canDelete == 0 ? "disabled" : "") + '" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Purchase Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>';
                     //     }
                     // }
@@ -160,8 +160,15 @@
                     { targets: 12, className: 'text-nowrap text-center min-width-column', "orderable": false },
                     // { targets: 13, className: 'text-nowrap text-center min-width-column', "orderable": false }
                 ],
-                initComplete: function () {
+                initComplete: function() {
                     $('*[title]').tooltip();
+                },
+                drawCallback: function(settings) {
+                    if (settings.aoData.length == 0) {
+                        $("#btnExportPurchase").addClass("disabled");
+                    } else {
+                        $("#btnExportPurchase").removeClass("disabled");
+                    }
                 }
             });
         });

@@ -1,11 +1,11 @@
 ﻿@using Gizmosbuy.Core.Constants
 @using Gizmosbuy.BAL.Commons;
-
 @{
     string location = Utilities.GetSessionValue(Constant.Location, Context.Request.HttpContext) ?? "";
     TempData["Title"] = "Dashboard (" + location + ")";
     string userRole = Utilities.GetSessionValue(Constant.Role, Context.Request.HttpContext);
 }
+
 <div class="col-md-12">
     <div class="row">
         <div class="body-title">
@@ -21,7 +21,7 @@
         {
             var strWidth = (userRole == "SuperAdmin") ? "col-md-12" : "col-md-6";
 
-            <div class="container-block @strWidth">
+            <div class="container-block @strWidth col-12">
                 <div class="section-block">
                     <div class="page-header">
                         <div class="header-title">Store Return Notifications</div>
@@ -53,14 +53,14 @@
         @if (userRole == "Admin")
         {
 
-            <div class="container-block col-md-6">
+            <div class="container-block col-md-6 col-12">
                 <div class="section-block">
                     <div class="page-header">
                         <div class="header-title">Payment Transfer Notifications</div>
                     </div>
                     <div class="page-content p-0">
                         <div class="page-body p-0">
-                            <div id="divTransferPaymentNotification" class="custom-table table table-bordered table-responsive table-sm m-0 table-striped">
+                            <div id="divTransferPaymentNotification" class="custom-table table table-bordered table-responsive table-sm m-0 table-striped table-font-14">
                                 <table id="tblTransferPaymentNotification" class="">
                                     <thead>
                                         <tr>

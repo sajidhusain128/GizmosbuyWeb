@@ -67,7 +67,7 @@
     <script type="text/javascript">
         var tableTransferPayment = null;
 
-        $(document).ready( function () {
+        $(document).ready(function() {
 
             tableTransferPayment = $('#tblTransferPayment').DataTable({
                 scrollX: true,
@@ -75,60 +75,75 @@
                 scrollCollapse: true,
                 //fixedColumns: true,
                 processing: true,
-                serverSide:true,
-                pageLength:10,
+                serverSide: true,
+                pageLength: 10,
                 order: [], // disables initial sort
-                "paging":true,
-                "ajax":{
+                "paging": true,
+                "ajax": {
                     "url": "/Store/GetTransferPaymentList",
                     "type": "POST",
                     "datatype": "json"
                 },
-                "columns":[
-                    {"title":"Sr No.",render:function (data, type, row){
-                        return "";
-                    }},
-                    {"data": "paymentDate","title":"Payment Date",render:function (data, type, row){
-                        if(data === null) return "";
+                "columns": [
+                    {
+                        "title": "Sr No.", render: function(data, type, row) {
+                            return "";
+                        }
+                    },
+                    {
+                        "data": "paymentDate", "title": "Payment Date", render: function(data, type, row) {
+                            if (data === null) return "";
 
-                        return moment(data).format('DD/MM/YYYY');
-                    }},
-                    {"data": "amount","title":"Transfer Amount",render:function (data, type, row){
-                        if(data === null) return "";
+                            return moment(data).format('DD/MM/YYYY');
+                        }
+                    },
+                    {
+                        "data": "amount", "title": "Transfer Amount", render: function(data, type, row) {
+                            if (data === null) return "";
 
-                        return "&#8377; "+ data;
-                    }},
-                    {"data": "transferMode","title":"Payment Mode"},
-                    {"data": "remark","title":"Remark"},
-                    {"data": "toLocation","title":"To Location"},
-                    {"data": "approvedStatus","title":"Approved Status"},
-                    {"data": "transferPaymentID","title":"Action",render:function (data, type, row){
-                        if(data === null) return "";
+                            return "&#8377; " + data;
+                        }
+                    },
+                    { "data": "transferMode", "title": "Payment Mode" },
+                    { "data": "remark", "title": "Remark" },
+                    { "data": "toLocation", "title": "To Location" },
+                    { "data": "approvedStatus", "title": "Approved Status" },
+                    {
+                        "data": "transferPaymentID", "title": "Action", render: function(data, type, row) {
+                            if (data === null) return "";
 
-                        return `<a href=${row.isApproved == null ?  "/Store/EditTransferPayment?Id=" + data : "javascript:void(0)"} class="custom-link-btn mr-3 ${row.isApproved == null ? "" : "disabled"}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Transfer Payment Entry"><i class="fas fa-edit fa-lg color-info"></i></a>`+
-                        `<a href="javascript:void(0)" ${row.isApproved == null ? 'onclick="showDeleteTransferPaymentModel(' + data + ')"' : ''} class="custom-link-btn ${row.isApproved != null ? 'disabled': ''}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Transfer Payment Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>`;
-                    }}
+                            return `<a href=${row.isApproved == null ? "/Store/EditTransferPayment?Id=" + data : "javascript:void(0)"} class="custom-link-btn mr-3 ${row.isApproved == null ? "" : "disabled"}" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Transfer Payment Entry"><i class="fas fa-edit fa-lg color-info"></i></a>` +
+                                `<a href="javascript:void(0)" ${row.isApproved == null ? 'onclick="showDeleteTransferPaymentModel(' + data + ')"' : ''} class="custom-link-btn ${row.isApproved != null ? 'disabled' : ''}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Transfer Payment Entry"><i class="fas fa-trash fa-lg color-danger"></i></a>`;
+                        }
+                    }
                 ],
-                "fnRowCallback" : function(nRow, aData, iDisplayIndex){
-                           $("td:first", nRow).html(iDisplayIndex +1);
-                           return nRow;
+                "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+                    $("td:first", nRow).html(iDisplayIndex + 1);
+                    return nRow;
                 },
                 columnDefs: [
-                    { targets: 0,className: 'text-nowrap text-center'},
-                    { targets: 1,className: 'text-nowrap'},
-                    { targets: 2,className: 'text-nowrap'},
-                    { targets: 3,className: 'text-nowrap'},
-                    { targets: 4,className: 'text-nowrap'},
-                    { targets: 5,className: 'text-nowrap'},
-                    { targets: 6,className: 'text-nowrap'},
-                    { targets: 7,className: 'text-nowrap text-center min-width-column',"orderable": false}
+                    { targets: 0, className: 'text-nowrap text-center' },
+                    { targets: 1, className: 'text-nowrap' },
+                    { targets: 2, className: 'text-nowrap' },
+                    { targets: 3, className: 'text-nowrap' },
+                    { targets: 4, className: 'text-nowrap' },
+                    { targets: 5, className: 'text-nowrap' },
+                    { targets: 6, className: 'text-nowrap' },
+                    { targets: 7, className: 'text-nowrap text-center min-width-column', "orderable": false }
                 ],
                 fixedColumns: {
                     start: 0,           // Unfress frist
                     end: 1              // freeze the last column
                 },
-                initComplete: function () {
+                initComplete: function() {
                     $('*[title]').tooltip();
+                },
+                drawCallback: function(settings) {
+                    if (settings.aoData.length == 0) {
+                        $("#btnExportTransferPayment").addClass("disabled");
+                    } else {
+                        $("#btnExportTransferPayment").removeClass("disabled");
+                    }
                 }
             });
         });

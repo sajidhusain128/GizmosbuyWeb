@@ -1,6 +1,5 @@
 ﻿@using Gizmosbuy.Core.Constants
 @using Gizmosbuy.BAL.Commons;
-
 @{
     ViewBag.Title = "Sales";
     string userRole = Utilities.GetSessionValue(Constant.Role, Context.Request.HttpContext);
@@ -17,7 +16,7 @@
     <div class="page-title">
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-6 col-sm-12">
+                <div class="col-md-6 col-5">
                     <div class="row">
                         <a href="@Url.Action("Create", "Sales")" class="btn btn-custom" title="Create Sales Entry"><i class="fas fa-save"></i> Create Entry</a>
                     </div>
@@ -25,14 +24,14 @@
                 </div>
                 @if (userRole == "SuperAdmin" || userRole == "Admin")
                 {
-                    <div class="col-md-6 col-sm-12">
-                        <div class="row column-gap-3 justify-content-end">
-                            <div class="col-md-auto col-sm-6 mb-2">
+                    <div class="col-md-6 col-7">
+                        <div class="row justify-content-end">
+                            <div class="col-md-auto col-auto mx-3">
                                 <div class="row">
                                     <button id="btnRefundSalesModal" class="btn btn-custom" title="Refund Sold Items"><i class="fa-solid fa-money-bill"></i> Refund</button>
                                 </div>
                             </div>
-                            <div class="col-md-auto col-sm-6 mb-2">
+                            <div class="col-md-auto col-auto ">
                                 <div class="row">
                                     <button id="btnExportSales" class="btn btn-custom" title="Export To Excel"><i class="fas fa-file-excel"></i> Export</button>
                                 </div>
@@ -80,7 +79,7 @@
     <script type="text/javascript">
         var tableSales = null;
 
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             var form = $("#frmSales");
             var token = $('input[name="__RequestVerificationToken"]', form).val();
@@ -110,14 +109,14 @@
                     { "data": "specifications", "title": "Specifications" },
                     { "data": "sellingQuantity", "title": "Selling Quantity" },
                     {
-                        "data": "sellingDate", "title": "Selling Date", render: function (data, type, row) {
+                        "data": "sellingDate", "title": "Selling Date", render: function(data, type, row) {
                             if (data === null) return "";
 
                             return moment(data).format('DD/MM/YYYY');
                         }
                     },
                     {
-                        "data": "sellingPrice", "title": "Selling Price", render: function (data, type, row) {
+                        "data": "sellingPrice", "title": "Selling Price", render: function(data, type, row) {
                             if (data === null) return "";
 
                             return "&#8377;" + data;
@@ -131,17 +130,17 @@
                     { "data": "billNo", "title": "Bill No" },
                     { "data": "sellingLead", "title": "Selling Lead" },
                     {
-                        "data": "salesID", "title": "Edit", render: function (data, type, row) {
+                        "data": "salesID", "title": "Edit", render: function(data, type, row) {
                             if (data === null) return "";
                             return '<a href="/Sales/Edit?Id=' + data + '" class="custom-link-btn" title="Edit Sales Entry"><i class="fas fa-edit fa-lg color-info"></i></a>';
                         }
                     },
                     {
-                        "data": "billNo", "title": "Invoice Report", render: function (data, type, row) {
+                        "data": "billNo", "title": "Invoice Report", render: function(data, type, row) {
                             if (data === null) return "";
 
-                            return '<a href="/Sales/DownloadSalesReport?invoiceNo=' + data + '" class="custom-link-btn mr-3" title="Download Report"><i class="fa-solid fa-file-pdf fa-lg" style="color:#b22222;"></i></a>' +
-                                `<a href="javascript:void(0)" onclick="SendWhatsAppReport('${data}')" class="custom-link-btn" title="Download Report"><i class="fa-brands fa-square-whatsapp fa-xl color-success"></i></a>`;
+                            return '<a href="/Sales/DownloadSalesReport?invoiceNo=' + data + '" class="custom-link-btn mr-3" title="Download Invoice"><i class="fa-solid fa-file-pdf fa-lg" style="color:#b22222;"></i></a>' +
+                                `<a href="javascript:void(0)" onclick="SendWhatsAppReport('${data}')" class="custom-link-btn" title="Send to WhatsApp"><i class="fa-brands fa-square-whatsapp fa-xl color-success"></i></a>`;
                         }
                     },
                     // {"data": "billNo","title":"WhatsApp",render:function (data, type, row){
@@ -169,8 +168,15 @@
                     { targets: 16, className: 'text-nowrap text-center min-width-column', "orderable": false },
                     // { targets: 17,className: 'text-nowrap text-center min-width-column',"orderable": false}
                 ],
-                initComplete: function () {
+                initComplete: function() {
                     $('*[title]').tooltip();
+                },
+                drawCallback: function(settings) {
+                    if (settings.aoData.length == 0) {
+                        $("#btnExportSales").addClass("disabled");
+                    } else {
+                        $("#btnExportSales").removeClass("disabled");
+                    }
                 }
             });
         });

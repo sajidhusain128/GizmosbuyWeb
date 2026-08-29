@@ -1,8 +1,6 @@
 ﻿using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Office2010.Excel;
 using Gizmosbuy.BAL.Commons;
 using Gizmosbuy.BAL.Interfaces;
-using Gizmosbuy.BAL.Repository;
 using Gizmosbuy.Core.Constants;
 using Gizmosbuy.Core.Interfaces;
 using Gizmosbuy.Core.Models;
@@ -32,12 +30,26 @@ namespace Gizmosbuy.Web.Controllers
         [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
         public async Task<IActionResult> Expense()
         {
-            return View();
+            try
+            {
+                List<ILocationModel> locationModel = await _commonBL.GetAllLocations("_locationList");
+
+                if (locationModel != null && locationModel.Count > 0)
+                {
+                    ViewBag.LocationModel = locationModel;
+                }
+
+                return View();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         [HttpPost]
         [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
-        public async Task<IActionResult> GetExpenseList()
+        public async Task<IActionResult> GetExpenseList(int searchLocationId)
         {
             IPager pager = new Pager();
 
@@ -45,13 +57,14 @@ namespace Gizmosbuy.Web.Controllers
             {
                 pager.PageStart = int.Parse(Request.Form["start"].FirstOrDefault() ?? "0");
                 pager.PageLength = int.Parse(Request.Form["length"].FirstOrDefault() ?? "10");
+                pager.Offset = (pager.PageStart / pager.PageLength) * pager.PageLength;
                 pager.SearchValue = Request.Form["search[value]"].FirstOrDefault() ?? "";
                 pager.Draw = int.Parse(Request.Form["draw"].FirstOrDefault() ?? "0");
                 pager.SortColumnIndex = Request.Form["order[0][column]"].FirstOrDefault();
                 pager.SortDirection = Request.Form["order[0][dir]"].FirstOrDefault();
                 pager.ColumnName = Utility.CapitalizeFirstChar(Request.Form[$"columns[{pager.SortColumnIndex}][data]"].FirstOrDefault());
 
-                var expenseList = await _financeBL.GetExpenseList(pager);
+                var expenseList = await _financeBL.GetExpenseList(pager, searchLocationId);
 
                 return Json(expenseList);
             }
@@ -95,6 +108,23 @@ namespace Gizmosbuy.Web.Controllers
                 {
                     paymentModes = new List<IPaymentModeModel> { new PaymentModeModel { PaymentModeId = 0, PaymentModeName = "Select Payment Mode" } };
                     ViewBag.PaymentModes = paymentModes;
+                }
+
+                List<ILocationModel> cachedLocationList = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> locationModel = [.. cachedLocationList.Any() ? cachedLocationList : null];
+
+                if (locationModel != null && locationModel.Count > 0)
+                {
+                    locationModel.RemoveAll(r => r.LocationId == 1);
+                    if (!locationModel.Any(l => l.LocationId == 0))
+                        locationModel.Insert(0, new LocationModel { LocationId = 0, LocationName = "Select Expense Location" });
+
+                    ViewBag.LocationModel = locationModel;
+                }
+                else
+                {
+                    locationModel = new List<ILocationModel> { new LocationModel { LocationId = 0, LocationName = "Select Transfer Location" } };
+                    ViewBag.LocationModel = locationModel;
                 }
 
                 List<string> stringValues = new List<string> { "January", "February", "March", "April", "May", "Jun", "July", "August", "September", "October", "November", "December" };
@@ -184,6 +214,23 @@ namespace Gizmosbuy.Web.Controllers
                     ViewBag.PaymentModes = paymentModes;
                 }
 
+                List<ILocationModel> cachedLocationList = await _commonBL.GetAllLocations("_locationList");
+                List<ILocationModel> locationModel = [.. cachedLocationList.Any() ? cachedLocationList : null];
+
+                if (locationModel != null && locationModel.Count > 0)
+                {
+                    locationModel.RemoveAll(r => r.LocationId == 1);
+                    if (!locationModel.Any(l => l.LocationId == 0))
+                        locationModel.Insert(0, new LocationModel { LocationId = 0, LocationName = "Select Expense Location" });
+
+                    ViewBag.LocationModel = locationModel;
+                }
+                else
+                {
+                    locationModel = new List<ILocationModel> { new LocationModel { LocationId = 0, LocationName = "Select Transfer Location" } };
+                    ViewBag.LocationModel = locationModel;
+                }
+
                 List<string> stringValues = new List<string> { "January", "February", "March", "April", "May", "Jun", "July", "August", "September", "October", "November", "December" };
                 List<SelectListItem> selectListItems = new List<SelectListItem>();
 
@@ -199,7 +246,7 @@ namespace Gizmosbuy.Web.Controllers
 
                 ViewBag.Months = selectListItems;
 
-                IExpenseModel expenseModel = await _financeBL.GetExpenseByID(Id);                
+                IExpenseModel expenseModel = await _financeBL.GetExpenseByID(Id);
 
                 if (expenseModel != null)
                 {
@@ -267,17 +314,40 @@ namespace Gizmosbuy.Web.Controllers
             }
         }
 
+        [HttpPost]
+        [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
+        public async Task<IActionResult> GetExpenseSummayData(SummaryModel summaryModel)
+        {
+            try
+            {
+                var result = await _financeBL.GetExpenseSummaryData(summaryModel);
+
+                if (result == null)
+                {
+                    result = new List<IExpenseSummaryModel>();
+                }
+
+                return PartialView("_ExpenseSummaryPartial", result);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         [HttpGet]
         [CustomAuthorize(Role.SuperAdmin, Role.Admin)]
-        public async Task<IActionResult> ExpenseExportExcel(string Search)
+        public async Task<IActionResult> ExpenseExportExcel(int searchLocationId, string Search = null, string SortBy = null, string SortOrder = null)
         {
             try
             {
                 IPager pager = new Pager();
 
                 pager.SearchValue = Search ?? "";
+                pager.ColumnName = !string.IsNullOrWhiteSpace(SortBy) ? Utility.CapitalizeFirstChar(SortBy) : "";
+                pager.SortDirection = !string.IsNullOrWhiteSpace(SortOrder) ? SortOrder : "";
 
-                var result = await _financeBL.GetExpenseExport(pager);
+                var result = await _financeBL.GetExpenseExport(pager, searchLocationId);
 
                 if (result != null && result.Count > 0)
                 {
@@ -300,7 +370,7 @@ namespace Gizmosbuy.Web.Controllers
                         if (dt.Columns.Contains("ExpenseMonthName"))
                         {
                             dt.Columns["ExpenseMonthName"].ColumnName = "ExpenseMonth";
-                        }   
+                        }
                     }
 
                     string fileName = $"Expense_{DateTime.Now.ToString("ddMMyyyyHHmmss")}.xlsx";

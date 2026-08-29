@@ -34,7 +34,20 @@ $(document).ready(function () {
     });
 
     $("#btnExportExpense").click(function () {
-        location.href = "/Finance/ExpenseExportExcel?Search=" + tableExpense.search();
+        try {
+            // 1. Get the current order details [columnIndex, direction]
+            var currentOrder = tableExpense.order();
+            var orderColumnIndex = currentOrder[0][0]; // Index of sorted column
+            var sortDirection = currentOrder[0][1];    // "asc" or "desc"
+            // 2. Get the column name defined in your setup
+            var columnName = tableExpense.columns(orderColumnIndex).dataSrc()[0];
+
+            var exportUrl = "/Finance/ExpenseExportExcel?searchLocationId=" + $('#ddlExpenseStore').select2('val') + "&Search=" + tableExpense.search() + (columnName != null ? "&SortBy=" + encodeURIComponent(columnName) : "") + (sortDirection != null ? "&SortOrder=" + encodeURIComponent(sortDirection) : "");
+
+            location.href = exportUrl;
+        } catch (e) {
+            console.log(e);
+        }
     })
 
 });
@@ -124,6 +137,16 @@ function validateExpenseForm() {
             $('#txtExpenseYear').parents('.row').find('.field-validation-error').text("");
         }
 
+        if ($('#ddlExpenseStore').length == 1) {
+            if ($('#ddlExpenseStore').select2('val') == "0") {
+                errorCount++;
+                $('#ddlExpenseStore').parents('.row').find('.field-validation-error').text("Store Name is required.");
+            }
+            else {
+                $('#ddlExpenseStore').parents('.row').find('.field-validation-error').text("");
+            }
+        }
+
         if (errorCount > 0) {
             return false;
         }
@@ -152,6 +175,7 @@ function saveExpense() {
             var remark = $('#txtRemark').val();
             var expenseMonth = parseInt($('#ddlExpenseMonth').select2('val'));
             var expenseYear = parseInt($('#txtExpenseYear').val());
+            var locationId = $('#ddlExpenseStore').length == 1 ? parseInt($('#ddlExpenseStore').select2('val')) : 0;
 
             var hdnExpenseId = $('#hdnExpenseId').val();
 
@@ -162,7 +186,8 @@ function saveExpense() {
                 remark: remark,
                 paymentModeId: paymentModeId,
                 expenseMonth: expenseMonth,
-                expenseYear: expenseYear
+                expenseYear: expenseYear,
+                locationId: locationId
             }
 
             var form = $("#frmCreateExpense");
@@ -306,7 +331,7 @@ function getExpenseSummaryDate(locationId, month, year) {
 
             $.ajax({
                 type: "POST",
-                url: '/Inventory/GetExpenseSummayData',
+                url: '/Finance/GetExpenseSummayData',
                 data: {
                     __RequestVerificationToken: token,
                     summaryModel: model
